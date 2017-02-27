@@ -40,13 +40,13 @@ var RouteChooser = React.createClass({
       kommuneIDValidated: 'input not validated',
       kommuneFound: false,
       region: {
-        latitude: 62.13,
-        longitude: 9.99,
+        latitude: 63.43,
+        longitude: 10.41,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
       signs: [],
-      showMap: false,
+      showMap: true,
       markers: [],
       testMarkers: [{latlng: {latitude: 63.42,longitude: 10.39}, title: 'asd', description: '123'}]
     }
