@@ -191,6 +191,8 @@ var RouteChooser = React.createClass({
         maxLength={4}
         placeholder="Type in kommmune id"
         onChangeText={(text) => this.updateTextState({text})}
+        keyboardType = 'numeric'
+        onSubmitEditing = {this.findPressed}
         />
     </View>
   },
