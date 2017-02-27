@@ -104,7 +104,7 @@ var RouteChooser = React.createClass({
         </View>
       </View>
       <View style={styles.footer}>
-        <Text style={styles.blackText}>Gruppe 16 NTNU</Text>
+        <Text style={styles.greyText}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -351,13 +351,17 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 5,
+    paddingTop: 5
   },
   textField: {
     flex: 5,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     padding: 2,
+    paddingRight: 10
   },
   textInput: {
     height: 30,
@@ -365,7 +369,7 @@ var styles = StyleSheet.create({
     backgroundColor: bakgroundOfSearch
   },
   findButton: {
-    flex: 2,
+    flex: 2.355,
     borderWidth: 2,
     height: 30,
     width: 70,
@@ -378,6 +382,7 @@ var styles = StyleSheet.create({
   //divField, to be deprecated
   divField: {
     flex: 0.7,
+    paddingBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -397,7 +402,7 @@ var styles = StyleSheet.create({
   showButton: {
     flex: 1,
     borderWidth: 2,
-    height: 25,
+    height: 30,
     width: 70,
     justifyContent: 'center',
     alignItems: 'center',
@@ -429,6 +434,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: grayHeader,
     flexDirection: 'row',
+    paddingTop:1.8
   },
   mapButton: {
     flex: 2,
@@ -454,6 +460,9 @@ var styles = StyleSheet.create({
   blackText: {
     color: textColorBlack,
   },
+  greyText: {
+    color: grayHeader
+  }
 
 
 })
