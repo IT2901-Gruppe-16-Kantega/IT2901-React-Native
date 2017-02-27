@@ -118,7 +118,7 @@ var RouteChooser = React.createClass({
         region={this.state.region}
         onRegionChange={this.mapRegionChanged}
         onLongPress={this.mapPressed}
-        zoomEnabled={false}
+        zoomEnabled={true}
         >
 
       {this.state.objects.map(function(object) {
