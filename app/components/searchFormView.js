@@ -1,1 +1,1 @@
-// view shown when fetching/loading data
+// View used when user specifies what data to be fetched from NVDB
