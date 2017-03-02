@@ -25,7 +25,7 @@ var startURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=101';
 var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 //var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/46';
 
-
+// This is the old rout-chooser, now only used as reference
 
 
 var RouteChooser = React.createClass({
