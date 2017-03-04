@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import {fetchFromAPI_all, fetch_Kommuner} from './wrapper';
-import {kommuner_allinfo} from '../app/data/kommuner';
+import {kommuner_allinfo} from '../src/data/kommuner';
 import {createBST, searchForKommune} from './utils';
 import MapView from 'react-native-maps';
 

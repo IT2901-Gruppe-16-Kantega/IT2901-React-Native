@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {AppRegistry, Dimensions, StyleSheet, View} from 'react-native';
+import {AppRegistry, Dimensions, StyleSheet, View, Text} from 'react-native';
 import RouteChooser from './old_src/route-chooser';
-
-//<RouteChooser/> replace with <Index/>
+import {Provider} from 'react-redux'
+import StartingView from './src/components/startingView'
+import App from './src/index'
+import store from './src/store'
 
 var NVDB = React.createClass({
   getInitialState() {
@@ -11,10 +13,9 @@ var NVDB = React.createClass({
   },
   render() {
     return (
-      <View style={styles.container}>
-        <RouteChooser/>
-      </View>
-    );
+      <Provider store = {store}>
+        <App/>
+      </Provider>);
   },
 });
 

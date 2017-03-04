@@ -10,7 +10,7 @@ Now Am = T, the search is done; return m.
 This iterative procedure keeps track of the search boundaries via two variables. Some implementations may place the comparison for equality at the end of the algorithm, resulting in a faster comparison loop but costing one more iteration on average.[7]
 */
 
-import {kommuner_allinfo} from '../src/data/kommuner';
+import {kommuner_allinfo} from '../app/data/kommuner';
 
 var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
 var bst = new BinarySearchTree({unique: true});
