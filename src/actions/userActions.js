@@ -1,5 +1,4 @@
 export function fetchUser() {
-  console.log('fetchUSer');
   return {
     type: "FETCH_USER_FULFILLED",
     payload: {

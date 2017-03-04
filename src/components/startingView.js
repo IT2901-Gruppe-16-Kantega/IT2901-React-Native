@@ -36,18 +36,35 @@ var startingView = React.createClass({
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
-        <Text onPress={Actions.searchFormView}>searchFormView</Text>
-        <Text onPress={Actions.storedDataView}>storedDataView</Text>
-        <Text onPress={Actions.settingsView}>settingsView</Text>
+        <TouchableHighlight
+          style= {templates.button}
+          underlayColor="azure"
+          onPress = {Actions.searchFormView}
+          >
+          <Text style={{color: templates.textColorWhite}}>New search</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style= {templates.button}          underlayColor="azure"
+          onPress = {Actions.storedDataView}
+          >
+          <Text style={{color: templates.textColorWhite}}>Stored data</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style= {templates.button}          underlayColor="azure"
+          onPress = {Actions.settingsView}
+          >
+          <Text style={{color: templates.textColorWhite}}>Settings</Text>
+        </TouchableHighlight>
       </View>
+      <View style={styles.bottomPadding}></View>
       <View style={styles.footer}>
-
+        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
-
     </View>
   }
 });
 
+//move some of this to templates
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -59,13 +76,20 @@ var styles = StyleSheet.create({
     flex: 0.7
   },
   header: {
-    flex: 1.5,
+    flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.grayHeader
+    backgroundColor: templates.gray
   },
   contents: {
-    flex: 20
+    flex: 6,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: templates.gray
+  },
+  bottomPadding: {
+    flex: 6.5,
+    backgroundColor: templates.gray
   },
   footer: {
     flex:0.7,

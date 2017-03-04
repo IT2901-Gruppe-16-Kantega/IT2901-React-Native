@@ -13,7 +13,6 @@ export default function reducer(state={
   fetched: false,
   error: null,
 }, action) {
-  console.log(action.type)
   //simple switch statement based on type of action
   switch (action.type) {
     case "FETCH_USER": {
@@ -27,7 +26,6 @@ export default function reducer(state={
       }
     }
     case "FETCH_USER_FULFILLED": {
-      console.log('reducer: FETCH_USER_FULFILLED');
       return {
         ...state,
         fetching: false,
@@ -48,6 +46,5 @@ export default function reducer(state={
       }
     }
   }
-  console.log('old state returned')
   return state
 }

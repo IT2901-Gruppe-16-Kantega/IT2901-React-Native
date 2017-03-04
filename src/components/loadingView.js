@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActions from '../actions/userActions'
 
+//needs access to fetching state etc
+
 var loadingView = React.createClass({
   render() {
     return <View style={{margin: 128}}>

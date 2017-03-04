@@ -16,9 +16,6 @@ import storedDataView from './components/storedDataView'
 import settingsView from './components/settingsView'
 
 
-import PageOne from './components/PageOne';
-import PageTwo from './components/PageTwo';
-
 export default class App extends Component {
   render() {
     return (
@@ -28,7 +25,7 @@ export default class App extends Component {
             key="startingView"
             component={startingView}
             title="startingView"
-            initial={true}
+
             hideNavBar={true}
             type='reset'
             />
@@ -37,6 +34,7 @@ export default class App extends Component {
             component={searchFormView}
             title="searchFormView"
             hideNavBar={false}
+            initial={true}
             />
           <Scene
             key="storedDataView"
