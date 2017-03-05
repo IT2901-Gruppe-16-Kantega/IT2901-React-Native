@@ -4,21 +4,30 @@ PUT SOME INFORMATION ABOUT REDUCER HERE
 
 export default function reducer(state={
   //initialState
-  kommune: 'ukjent',
+  kommune_input: 'ukjent',
+  kommune: 'not input',
+  valid_kommune: false,
   fetching: false,
   fetched: false,
   error: null,
-  objects: []
+  objects: [],
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {
     case "templateAction": {
       return{...state,fetching: true}
     }
+    case "SET_KOMMUNE_INPUT": {
+      return{
+        ...state,
+        kommune_input: action.payload.text
+      }
+    }
     case "SET_KOMMUNE": {
       return{
         ...state,
-        kommune: action.payload.text
+        valid_kommune: true,
+        kommune: action.payload
       }
     }
     case "FETCH_DATA_START": {
@@ -32,7 +41,7 @@ export default function reducer(state={
         ...state,
         fetching: action.payload.fetching,
         fetched: action.payload.fetched,
-        object: action.payload.data,
+        objects: action.payload.data,
       }
     }
   }

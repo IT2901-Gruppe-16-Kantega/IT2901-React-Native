@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
@@ -15,8 +16,11 @@ import * as templates from '../utilities/templates'
 import {fetchFromAPI_all} from '../utilities/wrapper'
 
 //move create url from routechooser to utilities and import
-var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=101'
+var startUrl = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=439'
+var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 
+
+var valid = true;
 
 var searchFormView = React.createClass({
   render() {
@@ -28,7 +32,6 @@ var searchFormView = React.createClass({
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
         <View style={styles.inputArea}>
-
           <TextInput
             style={styles.textInput}
             maxLength={4}
@@ -37,7 +40,7 @@ var searchFormView = React.createClass({
             keyboardType = 'numeric'
             />
           <Text style={{color: 'white'}}>
-            {this.props.kommune}
+            {this.props.kommune_input}
           </Text>
         </View>
         <View style={styles.inputAreaPadding}></View>
@@ -57,13 +60,23 @@ var searchFormView = React.createClass({
     </View>
   },
   search: function(){
-    this.props.fetchDataStart();
-    fetchFromAPI_all(this.props.fetchDataReturned, url)
-    Actions.loadingView();
+    this.props.setKommune(this.props.kommune_input);
+    setTimeout(this.searchForKommune, 100);
+  },
+  searchForKommune: function() {
+    if(this.props.valid_kommune == true){
+      var url = baseURL+'?kommune='+this.props.kommune[0].nummer+'&inkluder=alle&srid=4326';
+      this.props.fetchDataStart();
+      fetchFromAPI_all(this.props.fetchDataReturned, url);
+      Actions.loadingView();
+    }
+    else{
+      Alert.alert("Ugyldig data", "Ukjent kommunenummer, vennligst skriv inn et gydlig kommunenummer");
+    }
   },
   updateTextState: function(text) {
     console.log('updateText');
-    this.props.setKommune(text);
+    this.props.setKommuneInput(text);
   }
 });
 
@@ -118,6 +131,11 @@ var styles = StyleSheet.create({
 
 
 
-function mapStateToProps(state) {return {kommune: state.dataReducer.kommune};}
+function mapStateToProps(state) {
+  return {
+    kommune_input: state.dataReducer.kommune_input,
+    valid_kommune: state.dataReducer.valid_kommune,
+    kommune: state.dataReducer.kommune
+  };}
 function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
 export default connect(mapStateToProps, mapDispatchToProps) (searchFormView);

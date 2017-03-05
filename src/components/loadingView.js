@@ -16,9 +16,6 @@ import * as templates from '../utilities/templates'
 //this.props.fetching
 
 var loadingView = React.createClass({
-  componentWillMount() {
-    var fetchingTemp = true;
-  },
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -27,15 +24,19 @@ var loadingView = React.createClass({
       </View>
       <View style={styles.contents}>
         <ActivityIndicator
-          animating={this.fetchingStatus}
+          animating={this.props.fetching}
           style={[styles.fetchingStatus, {height: 80}]}
           size="large"
           />
         <View style={styles.fetchingInfo}>
           <View style={styles.padding}/>
           <View style={styles.progressInfo}>
-            <Text style={{color:templates.textColorWhite}}> Some information about progress</Text>
-
+            <Text style={styles.text}> Some information about progress</Text>
+            <Text style={styles.text}> Fetching er {this.props.fetching.toString()}</Text>
+            <Text style={styles.text}> Fetched er {this.props.fetched.toString()}</Text>
+            <Text style={styles.text}> Kommune er {this.props.kommune_navn}</Text>
+            <Text style={styles.text}> Antall objekter hentet er {this.props.objects_size}
+            </Text>
           </View>
         </View>
       </View>
@@ -98,13 +99,18 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  text: {
+    color: templates.textColorWhite,
+  },
 })
 
 //trenger nok ingen actions
 function mapStateToProps(state) {
   return {
     fetching: state.dataReducer.fetching,
-    fetched: state.dataReducer.fetched
+    fetched: state.dataReducer.fetched,
+    kommune_navn: state.dataReducer.kommune[0].navn,
+    objects_size: state.dataReducer.objects.length
   };}
 function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
 export default connect(mapStateToProps, mapDispatchToProps) (loadingView);

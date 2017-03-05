@@ -199,6 +199,8 @@ var RouteChooser = React.createClass({
   updateTextState: function(input){
     this.setState({kommuneID: input.text});
   },
+
+  //this is where mapshit happens
   findPressed: function() {
     //console.log('#findPressed');
     this.setState({kommuneIDValidated: 'not validated'});

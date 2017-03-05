@@ -1,5 +1,7 @@
 // will contain actions that depend on NVDB
 import wrapper from '../utilities/wrapper'
+import {createBST, searchForKommune} from '../utilities/utils';
+createBST();
 
 export function templateAction(input) {
   console.log('templateAction');
@@ -12,12 +14,30 @@ export function templateAction(input) {
   }
 }
 
-export function setKommune(input) {
+export function setKommuneInput(input) {
   return {
-    type: "SET_KOMMUNE",
+    type: "SET_KOMMUNE_INPUT",
     payload: input
   }
 }
+
+export function setKommune(kommune_input){
+  var kommune = searchForKommune(kommune_input)
+  if(kommune.length>0){
+    return {
+      type: "SET_KOMMUNE",
+      payload: kommune,
+    }
+  }
+  else {
+    return {
+      type: "ERROR",
+      payload: "unkown kommune"
+    }
+  }
+
+}
+
 
 export function fetchDataStart(){
   return{
