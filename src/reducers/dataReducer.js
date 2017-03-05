@@ -11,6 +11,7 @@ export default function reducer(state={
   fetched: false,
   error: null,
   objects: [],
+  region: {}
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {

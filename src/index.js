@@ -25,6 +25,7 @@ export default class App extends Component {
             key="startingView"
             component={startingView}
             title="startingView"
+            initial={true}
 
             hideNavBar={true}
             type='reset'
@@ -34,7 +35,6 @@ export default class App extends Component {
             component={searchFormView}
             title="searchFormView"
             hideNavBar={false}
-            initial={true}
 
             />
           <Scene
@@ -73,7 +73,7 @@ export default class App extends Component {
           <Scene
             key="showMapView"
             component={showMapView}
-            title="showMapView"
+            title="Map"
             hideNavBar={false}
             />
         </Scene>

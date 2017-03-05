@@ -66,6 +66,7 @@ var searchFormView = React.createClass({
   searchForKommune: function() {
     if(this.props.valid_kommune == true){
       var url = baseURL+'?kommune='+this.props.kommune[0].nummer+'&inkluder=alle&srid=4326';
+      var urlShallow = baseURL+'?kommune='+this.props.kommune[0].nummer;
       this.props.fetchDataStart();
       fetchFromAPI_all(this.props.fetchDataReturned, url);
       Actions.loadingView();
