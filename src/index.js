@@ -67,7 +67,7 @@ export default class App extends Component {
           <Scene
             key="reportView"
             component={reportView}
-            title="reportView"
+            title="Report"
             hideNavBar={false}
             />
           <Scene

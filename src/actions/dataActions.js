@@ -35,17 +35,13 @@ export function setKommune(kommune_input){
       payload: "unkown kommune"
     }
   }
-
 }
-
-
 export function fetchDataStart(){
   return{
     type: "FETCH_DATA_START",
     payload: null,
   }
 }
-
 export function fetchDataReturned(data, fetched) {
   var fetching = true;
   if(fetched==true){
@@ -58,6 +54,11 @@ export function fetchDataReturned(data, fetched) {
       fetched: fetched,
       fetching: fetching,
     }
+  }
+}
+export function clearData(){
+  return{
+    type: "CLEAR_DATA",
   }
 }
 

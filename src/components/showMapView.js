@@ -18,12 +18,7 @@ var showMapView = React.createClass({
     return <View style={styles.container}>
         <MapView
           style={styles.map}
-          region={{
-            latitude: 62.13,
-            longitude: 9.99,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          region={this.props.region}
           onRegionChange={this.mapRegionChanged}
           onLongPress={this.mapPressed}
           zoomEnabled={true}
@@ -101,7 +96,8 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    objects: state.dataReducer.objects
+    objects: state.dataReducer.objects,
+    region: state.dataReducer.region
   };}
 function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
 export default connect(mapStateToProps, mapDispatchToProps) (showMapView);

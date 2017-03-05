@@ -10,7 +10,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as userActions from '../actions/userActions'
+import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
 
 
@@ -75,7 +75,7 @@ var currentSearchView = React.createClass({
         <TouchableHighlight
           style= {styles.button}
           underlayColor="azure"
-          onPress = {Actions.startingView}
+          onPress = {this.exit}
           >
           <Text style={{color: templates.textColorWhite}}>Exit</Text>
         </TouchableHighlight>
@@ -86,6 +86,10 @@ var currentSearchView = React.createClass({
   openAR() {
     console.log(this.props.objects.length);
 
+  },
+  exit() {
+    Actions.startingView();
+    this.props.clearData();
   }
 });
 
@@ -173,5 +177,5 @@ function mapStateToProps(state) {
     objects: state.dataReducer.objects,
 
   };}
-function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
 export default connect(mapStateToProps, mapDispatchToProps) (currentSearchView);

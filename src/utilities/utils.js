@@ -29,6 +29,7 @@ function searchForKommune(kommuneID) {
 }
 
 
+
 /*
 function searchForKommune(kommuneID) {
   console.log('#createBST');

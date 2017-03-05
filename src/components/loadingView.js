@@ -31,9 +31,8 @@ var loadingView = React.createClass({
         <View style={styles.fetchingInfo}>
           <View style={styles.padding}/>
           <View style={styles.progressInfo}>
-            <Text style={styles.text}> Some information about progress</Text>
-            <Text style={styles.text}> Fetching er {this.props.fetching.toString()}</Text>
-            <Text style={styles.text}> Fetched er {this.props.fetched.toString()}</Text>
+            <Text style={styles.text}> Some information about progress:</Text>
+            <Text style={styles.text}></Text>
             <Text style={styles.text}> Kommune er {this.props.kommune_navn}</Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.objects_size}
             </Text>
