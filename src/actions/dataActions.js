@@ -19,10 +19,26 @@ export function setKommune(input) {
   }
 }
 
-export function fetchData(input){
+export function fetchDataStart(){
   return{
-    type: "FETCH_DATA",
+    type: "FETCH_DATA_START",
     payload: null,
   }
 }
+
+export function fetchDataReturned(data, fetched) {
+  var fetching = true;
+  if(fetched==true){
+    fetching = false;
+  }
+  return{
+    type: "FETCH_DATA_RETURNED",
+    payload: {
+      data: data,
+      fetched: fetched,
+      fetching: fetching,
+    }
+  }
+}
+
 //function that fetches based on props

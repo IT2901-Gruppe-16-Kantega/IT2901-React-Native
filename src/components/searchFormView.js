@@ -12,6 +12,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
+import {fetchFromAPI_all} from '../utilities/wrapper'
+
+//move create url from routechooser to utilities and import
+var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=101'
 
 
 var searchFormView = React.createClass({
@@ -53,7 +57,8 @@ var searchFormView = React.createClass({
     </View>
   },
   search: function(){
-    this.props.fetchData(this.props.kommune);
+    this.props.fetchDataStart();
+    fetchFromAPI_all(this.props.fetchDataReturned, url)
     Actions.loadingView();
   },
   updateTextState: function(text) {

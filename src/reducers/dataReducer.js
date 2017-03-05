@@ -8,6 +8,7 @@ export default function reducer(state={
   fetching: false,
   fetched: false,
   error: null,
+  objects: []
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {
@@ -20,11 +21,18 @@ export default function reducer(state={
         kommune: action.payload.text
       }
     }
-    case "FETCH_DATA": {
+    case "FETCH_DATA_START": {
       return{
         ...state,
         fetching: true,
-        //insert objects reference here
+      }
+    }
+    case "FETCH_DATA_RETURNED":{
+      return {
+        ...state,
+        fetching: action.payload.fetching,
+        fetched: action.payload.fetched,
+        object: action.payload.data,
       }
     }
   }
