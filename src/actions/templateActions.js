@@ -1,7 +1,7 @@
 export function templateAction(input) {
-  console.log('templateAction');
+  console.log('TEMPLATE_ACTION');
   return {
-    type: "templateAction",
+    type: "TEMPLATE_ACTION",
     payload: {
       variable: "some data",
       inputVariable: input,

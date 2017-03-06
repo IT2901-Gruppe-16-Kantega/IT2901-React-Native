@@ -85,11 +85,17 @@ var currentSearchView = React.createClass({
   },
   openAR() {
     console.log(this.props.objects.length);
+    //kan brukes ved mottak av data fra unity
+    //this.props.fetchDataReturned(objects, true);
 
   },
   exit() {
     Actions.startingView();
     this.props.clearData();
+  },
+  createRoadSearch() {
+    //creates a raod search object and pushes to store
+    //actions.newSearch
   }
 });
 

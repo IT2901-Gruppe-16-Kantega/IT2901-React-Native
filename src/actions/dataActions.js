@@ -3,7 +3,9 @@ import wrapper from '../utilities/wrapper'
 import {createBST, searchForKommune} from '../utilities/utils';
 createBST();
 
-export function newSearch() {
+
+
+export function newSearch(roadSearch) {
   return {
     type: "NEW_SEARCH",
   }
@@ -48,15 +50,24 @@ export function fetchDataReturned(data, fetched) {
   var fetching = true;
   if(fetched==true){
     fetching = false;
-  }
-  return{
-    type: "FETCH_DATA_RETURNED",
-    payload: {
-      data: data,
-      fetched: fetched,
-      fetching: fetching,
+    return{
+      type: "FETCH_DATA_RETURNED",
+      payload: {
+        data: data,
+        fetched: fetched,
+        fetching: fetching,
+      }
     }
   }
+  else {
+    return{
+      type: "FETCHING_NOT_FINISHED",
+      payload: {
+        currentlyFetched: data.length,
+      }
+    }
+  }
+
 }
 export function clearData(){
   return{

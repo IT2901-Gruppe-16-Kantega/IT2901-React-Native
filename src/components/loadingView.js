@@ -108,7 +108,7 @@ function mapStateToProps(state) {
     fetching: state.dataReducer.fetching,
     fetched: state.dataReducer.fetched,
     kommune_navn: state.dataReducer.kommune[0].navn,
-    objects_size: state.dataReducer.objects.length
+    objects_size: state.dataReducer.numberOfObjects,
   };}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
 export default connect(mapStateToProps, null) (loadingView);

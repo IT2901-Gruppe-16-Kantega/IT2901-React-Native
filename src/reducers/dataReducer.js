@@ -11,6 +11,7 @@ export default function reducer(state={
   fetched: false,
   error: null,
   objects: [],
+  numberOfObjects: 0,
   region: {
     latitude: 63.43,
     longitude: 10.40,
@@ -18,25 +19,9 @@ export default function reducer(state={
     longitudeDelta: 1,
   },
   andel_egengeometri: null,
-
   allSearches:[],
-  roadSearch: {
-    id: 12123414,
-    description: '',
-    roadObjects: [],
-    rapport: {
-      rapportID: 123,
-      description: '',
-      rapportObjekter: [
-        {
-          id: 123,
-          description: '',
-        }
-      ]
-    }
-  }
-  ,
   valgtObjektref: 1,
+
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {
@@ -70,6 +55,12 @@ export default function reducer(state={
       return{
         ...state,
         fetching: true,
+      }
+    }
+    case "FETCHING_NOT_FINISHED": {
+      return{
+        ...state,
+        numberOfObjects: action.payload.currentlyFetched
       }
     }
     case "FETCH_DATA_RETURNED":{
