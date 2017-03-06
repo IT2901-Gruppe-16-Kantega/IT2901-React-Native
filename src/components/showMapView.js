@@ -8,7 +8,6 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as userActions from '../actions/userActions'
 import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
@@ -99,5 +98,5 @@ function mapStateToProps(state) {
     objects: state.dataReducer.objects,
     region: state.dataReducer.region
   };}
-function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (showMapView);
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (showMapView);

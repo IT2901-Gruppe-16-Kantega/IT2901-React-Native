@@ -3,14 +3,16 @@ import wrapper from '../utilities/wrapper'
 import {createBST, searchForKommune} from '../utilities/utils';
 createBST();
 
-export function templateAction(input) {
-  console.log('templateAction');
+export function newSearch() {
   return {
-    type: "templateAction",
-    payload: {
-      variable: "some data",
-      inputVariable: input,
-    }
+    type: "NEW_SEARCH",
+  }
+}
+
+export function chooseSearch(id){
+  return {
+    type: "CHOOSE_SEARCH",
+    payload: id
   }
 }
 

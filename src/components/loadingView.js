@@ -9,7 +9,6 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as userActions from '../actions/userActions'
 import * as templates from '../utilities/templates'
 
 //needs access to fetching state etc
@@ -111,5 +110,5 @@ function mapStateToProps(state) {
     kommune_navn: state.dataReducer.kommune[0].navn,
     objects_size: state.dataReducer.objects.length
   };}
-function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (loadingView);
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (loadingView);

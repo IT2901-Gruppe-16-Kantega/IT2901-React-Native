@@ -18,6 +18,25 @@ export default function reducer(state={
     longitudeDelta: 1,
   },
   andel_egengeometri: null,
+
+  allSearches:[],
+  roadSearch: {
+    id: 12123414,
+    description: '',
+    roadObjects: [],
+    rapport: {
+      rapportID: 123,
+      description: '',
+      rapportObjekter: [
+        {
+          id: 123,
+          description: '',
+        }
+      ]
+    }
+  }
+  ,
+  valgtObjektref: 1,
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {

@@ -138,5 +138,7 @@ function mapStateToProps(state) {
     valid_kommune: state.dataReducer.valid_kommune,
     kommune: state.dataReducer.kommune
   };}
-function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(dataActions, dispatch);}
+
 export default connect(mapStateToProps, mapDispatchToProps) (searchFormView);

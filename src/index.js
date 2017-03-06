@@ -34,7 +34,6 @@ export default class App extends Component {
             component={searchFormView}
             title="Search"
             hideNavBar={false}
-
             />
           <Scene
             key="storedDataView"

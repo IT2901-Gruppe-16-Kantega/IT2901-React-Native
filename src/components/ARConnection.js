@@ -8,11 +8,16 @@ var ARConnection = React.createClass() {
     }
   },
   componentDidUpdate() {
-    this.sendToAR(this.props.objects);
+    this.sendToAR(this.props.objects[this.props.referanse]);
   },
 
   sendToAR (objects) {
     //send objects elle lagre fil
+  },
+
+  //called when 
+  dataFromAR(vegSok){
+    //fileActions.storeRoadSearch(vegSok)
   }
 
 }
@@ -21,6 +26,7 @@ var ARConnection = React.createClass() {
 function mapStateToProps(state) {
   return {
     objects: state.dataReducer.objects,
+    referanse: state.dataReducer.valgtObjektref,
 
   };}
 export default connect(mapStateToProps, null) (currentSearchView);

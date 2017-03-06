@@ -17,16 +17,14 @@ import * as templates from '../utilities/templates'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 //importing just one action, if only one action is needed, bindActionCreators must be changed
-import {fetchUser} from '../actions/userActions'
 //only import actions that this component needs
-import * as userActions from '../actions/userActions'
 
 
 
 var startingView = React.createClass({
   componentWillMount() {
     //just dispactches an action no idea what happens
-    this.props.fetchUser();
+
   },
   render() {
     //may also use this for readability const {user, tweets} = this.props;
@@ -113,6 +111,8 @@ these are set as props and automatically updated when store is changed
 The return of mapDispatchToProps is which actions this component has access to
 */
 
-function mapStateToProps(state) {return {user: state.userReducer.user};}
-function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (startingView);
+function mapStateToProps(state) {
+  return {
+    fetching: state.dataReducer.fetching};}
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (startingView);
