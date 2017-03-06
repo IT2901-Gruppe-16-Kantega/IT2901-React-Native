@@ -24,45 +24,42 @@ export default class App extends Component {
           <Scene
             key="startingView"
             component={startingView}
-            title="startingView"
+            title=""
             initial={true}
-
             hideNavBar={true}
             type='reset'
             />
           <Scene
             key="searchFormView"
             component={searchFormView}
-            title="searchFormView"
+            title="Search"
             hideNavBar={false}
 
             />
           <Scene
             key="storedDataView"
             component={storedDataView}
-            title="storedDataView"
+            title="Stored Data"
             hideNavBar={false}
             />
           <Scene
             key="settingsView"
             component={settingsView}
-            title="settingsView"
+            title="Settings"
             hideNavBar={false}
             />
           <Scene
             key="loadingView"
             component={loadingView}
-            title="loadingView"
+            title=""
             hideNavBar={true}
-
             />
           <Scene
             key="currentSearchView"
             component={currentSearchView}
-            title="currentSearchView"
+            title=""
             hideNavBar={true}
             type = 'reset'
-
             />
           <Scene
             key="reportView"
