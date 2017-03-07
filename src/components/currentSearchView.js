@@ -14,7 +14,7 @@ import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
 
 
-var currentSearchView = React.createClass({
+var CurrentSearchView = React.createClass({
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -184,4 +184,4 @@ function mapStateToProps(state) {
 
   };}
 function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (currentSearchView);
+export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);

@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
 import * as reportActions from '../actions/reportActions'
 
-var reportView = React.createClass({
+var ReportView = React.createClass({
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -69,4 +69,4 @@ function mapStateToProps(state) {
     fetched: state.dataReducer.fetched,
   };}
   function mapDispatchToProps(dispatch) {return bindActionCreators(reportActions, dispatch);}
-  export default connect(mapStateToProps, mapDispatchToProps) (reportView);
+  export default connect(mapStateToProps, mapDispatchToProps) (ReportView);

@@ -12,7 +12,7 @@ import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
 
-var showMapView = React.createClass({
+var ShowMapView = React.createClass({
   render() {
     return <View style={styles.container}>
         <MapView
@@ -99,4 +99,4 @@ function mapStateToProps(state) {
     region: state.dataReducer.region
   };}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (showMapView);
+export default connect(mapStateToProps, null) (ShowMapView);

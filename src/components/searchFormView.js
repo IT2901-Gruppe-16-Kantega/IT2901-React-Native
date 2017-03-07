@@ -22,7 +22,7 @@ var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 
 var valid = true;
 
-var searchFormView = React.createClass({
+var SearchFormView = React.createClass({
   render() {
     return <View style = {styles.container}>
       <View style={styles.top}></View>
@@ -141,4 +141,4 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(dataActions, dispatch);}
 
-export default connect(mapStateToProps, mapDispatchToProps) (searchFormView);
+export default connect(mapStateToProps, mapDispatchToProps) (SearchFormView);

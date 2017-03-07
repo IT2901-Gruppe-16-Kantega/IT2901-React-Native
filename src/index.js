@@ -6,14 +6,14 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
-import startingView from './components/startingView'
-import currentSearchView from './components/currentSearchView'
-import loadingView from './components/loadingView'
-import reportView from './components/reportView'
-import searchFormView from './components/searchFormView'
-import showMapView from './components/showMapView'
-import storedDataView from './components/storedDataView'
-import settingsView from './components/settingsView'
+import StartingView from './components/StartingView'
+import CurrentSearchView from './components/CurrentSearchView'
+import LoadingView from './components/LoadingView'
+import ReportView from './components/ReportView'
+import SearchFormView from './components/SearchFormView'
+import ShowMapView from './components/ShowMapView'
+import StoredDataView from './components/StoredDataView'
+import SettingsView from './components/SettingsView'
 
 
 export default class App extends Component {
@@ -23,7 +23,7 @@ export default class App extends Component {
         <Scene key="root">
           <Scene
             key="startingView"
-            component={startingView}
+            component={StartingView}
             title=""
             initial={true}
             hideNavBar={true}
@@ -31,44 +31,44 @@ export default class App extends Component {
             />
           <Scene
             key="searchFormView"
-            component={searchFormView}
+            component={SearchFormView}
             title="Search"
             hideNavBar={false}
             />
           <Scene
             key="storedDataView"
-            component={storedDataView}
+            component={StoredDataView}
             title="Stored Data"
             hideNavBar={false}
             />
           <Scene
             key="settingsView"
-            component={settingsView}
+            component={SettingsView}
             title="Settings"
             hideNavBar={false}
             />
           <Scene
             key="loadingView"
-            component={loadingView}
+            component={LoadingView}
             title=""
             hideNavBar={true}
             />
           <Scene
             key="currentSearchView"
-            component={currentSearchView}
+            component={CurrentSearchView}
             title=""
             hideNavBar={true}
             type = 'reset'
             />
           <Scene
             key="reportView"
-            component={reportView}
+            component={ReportView}
             title="Report"
             hideNavBar={false}
             />
           <Scene
             key="showMapView"
-            component={showMapView}
+            component={ShowMapView}
             title="Map"
             hideNavBar={false}
             />

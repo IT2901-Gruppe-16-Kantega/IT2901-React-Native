@@ -21,7 +21,7 @@ import { bindActionCreators } from 'redux'
 
 
 
-var startingView = React.createClass({
+var StartingView = React.createClass({
   componentWillMount() {
     //just dispactches an action no idea what happens
 
@@ -115,4 +115,4 @@ function mapStateToProps(state) {
   return {
     fetching: state.dataReducer.fetching};}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (startingView);
+export default connect(mapStateToProps, null) (StartingView);

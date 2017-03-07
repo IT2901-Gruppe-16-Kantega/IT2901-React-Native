@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux'
 import * as storedDataActions from '../actions/storedDataActions'
 import * as templates from '../utilities/templates'
 
-var storedDataView = React.createClass({
+var StoredDataView = React.createClass({
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -67,4 +67,4 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {return {user: state.dataReducer.fetching};}
 function mapDispatchToProps(dispatch) {return bindActionCreators(storedDataActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (storedDataView);
+export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);

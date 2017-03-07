@@ -15,7 +15,7 @@ var ARConnection = React.createClass() {
     //send objects elle lagre fil
   },
 
-  //called when 
+  //called when
   dataFromAR(vegSok){
     //fileActions.storeRoadSearch(vegSok)
   }
@@ -29,4 +29,4 @@ function mapStateToProps(state) {
     referanse: state.dataReducer.valgtObjektref,
 
   };}
-export default connect(mapStateToProps, null) (currentSearchView);
+export default connect(mapStateToProps, null) (ARConnection);

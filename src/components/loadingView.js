@@ -14,7 +14,7 @@ import * as templates from '../utilities/templates'
 //needs access to fetching state etc
 //this.props.fetching
 
-var loadingView = React.createClass({
+var LoadingView = React.createClass({
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -111,4 +111,4 @@ function mapStateToProps(state) {
     objects_size: state.dataReducer.numberOfObjects,
   };}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (loadingView);
+export default connect(mapStateToProps, null) (LoadingView);
