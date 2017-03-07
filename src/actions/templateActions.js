@@ -1,14 +1,3 @@
-export function templateAction(input) {
-  console.log('TEMPLATE_ACTION');
-  return {
-    type: "TEMPLATE_ACTION",
-    payload: {
-      variable: "some data",
-      inputVariable: input,
-    }
-  }
-}
-
 //can do action in any way we want, only mandatory var is type
 export function doSomething() {
   return {

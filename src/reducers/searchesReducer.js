@@ -1,5 +1,4 @@
-
-//flytt noe av det som nå er i dataReducer hit
+//SearchReducer holds all informartion typed in by user in searchFormField
 
 export default function reducer(state={
   //initialState
@@ -7,6 +6,7 @@ export default function reducer(state={
   roadSearch: {
     id: 12123414,
     description: '',
+    searchParamters: []
     roadObjects: [],
     rapport: {
       rapportID: 123,
