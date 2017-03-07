@@ -14,7 +14,7 @@ var ARConnection = React.createClass() {
   },
 
   sendToAR (objects) {
-    //OBS andrdoid spesifikk kode
+    // Android handling code
     if (Platform.OS === 'android'){
       let mainpath = RNFS.DocumentDirectoryPath+'/data.json';
       RNFS.writeFile(mainpath, {this.props.objects}, 'utf8')
@@ -24,7 +24,7 @@ var ARConnection = React.createClass() {
       .catch((err) => {
         console.log(err.message);
       });
-      // Herfra skal dataen være tilgjengelig i unity
+      // Now data should be available for unity
     }
     // Handling for iOS
     else{
