@@ -18,6 +18,7 @@ export default function reducer(state={
     longitudeDelta: 1,
   },
   andel_egengeometri: null,
+  dataSaved: false,
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {
@@ -77,6 +78,14 @@ export default function reducer(state={
           latitudeDelta: 1,
           longitudeDelta: 1,
         }
+      }
+    }
+    // Changes Vegard
+    // TODO changes here for if data was written
+    case "SAVE_DATA": {
+      return {
+        ...state,
+        dataSaved: true,
       }
     }
   }

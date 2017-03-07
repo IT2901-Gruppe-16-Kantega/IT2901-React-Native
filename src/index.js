@@ -14,6 +14,8 @@ import searchFormView from './components/searchFormView'
 import showMapView from './components/showMapView'
 import storedDataView from './components/storedDataView'
 import settingsView from './components/settingsView'
+// Changes Vegard
+import ARConnection from './components/ARConnection'
 
 
 export default class App extends Component {
@@ -71,6 +73,13 @@ export default class App extends Component {
             key="showMapView"
             component={showMapView}
             title="Map"
+            hideNavBar={false}
+            />
+          // Changes Vegard
+          <Scene
+            key="ARConnection"
+            component={ARConnection}
+            title="ARConnection"
             hideNavBar={false}
             />
         </Scene>

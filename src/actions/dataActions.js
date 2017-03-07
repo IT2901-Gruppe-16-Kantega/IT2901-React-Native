@@ -61,5 +61,11 @@ export function clearData(){
     type: "CLEAR_DATA",
   }
 }
+// Changes Vegard
+export function saveData(){
+  return{
+    type: "SAVE_DATA",
+  }
+}
 
 //function that fetches based on props

@@ -85,6 +85,10 @@ var currentSearchView = React.createClass({
   },
   openAR() {
     console.log(this.props.objects.length);
+    // Changes Vegard
+    Actions.ARConnection();
+    this.props.saveData();
+
 
   },
   exit() {
