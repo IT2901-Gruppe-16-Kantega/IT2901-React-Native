@@ -15,6 +15,9 @@ import * as templates from '../utilities/templates'
 
 
 var CurrentSearchView = React.createClass({
+  componentDidMount() {
+    this.props.resetFetching();
+  },
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -57,7 +60,7 @@ var CurrentSearchView = React.createClass({
         <TouchableHighlight
           style= {styles.button}
           underlayColor="azure"
-          onPress = {this.openAR()}
+          onPress = {this.openAR}
           >
           <Text style={{color: templates.textColorWhite}}>AR</Text>
         </TouchableHighlight>
@@ -84,14 +87,13 @@ var CurrentSearchView = React.createClass({
     </View>
   },
   openAR() {
-    console.log(this.props.objects.length);
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
 
   },
   exit() {
     Actions.startingView();
-    this.props.clearData();
+    //this.props.clearData();
   },
   createRoadSearch() {
     //creates a raod search object and pushes to store

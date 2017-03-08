@@ -11,13 +11,32 @@ import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
+var region = {
+  latitude: 63.43,
+  longitude: 10.41,
+  latitudeDelta: 1,
+  longitudeDelta: 1,
+};
 
 var ShowMapView = React.createClass({
+  componentWillMount() {
+    var regionString = this.props.currentRoadSearch.searchParameters[0].senterpunkt.wkt;
+    var geometryString = regionString.split('(')[1].slice(0, -1);
+    var geometryParts = geometryString.split(' ');
+    var objLat = parseFloat(geometryParts[0]);
+    var objLong = parseFloat(geometryParts[1]);
+    region = {
+      latitude: objLat,
+      longitude: objLong,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+    }
+  },
   render() {
     return <View style={styles.container}>
         <MapView
           style={styles.map}
-          region={this.props.region}
+          region={region}
           onRegionChange={this.mapRegionChanged}
           onLongPress={this.mapPressed}
           zoomEnabled={true}
@@ -26,7 +45,6 @@ var ShowMapView = React.createClass({
         {this.props.objects.map(function(object) {
           var geometryString = object.geometri.wkt.split('(')[1].slice(0, -1);
           var geometryParts = geometryString.split(' ');
-
           var objLat = parseFloat(geometryParts[0]);
           var objLong = parseFloat(geometryParts[1]);
           var LatLng = {latitude: objLat, longitude: objLong};
@@ -96,7 +114,10 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     objects: state.dataReducer.objects,
-    region: state.searchReducer.region
+    region: state.searchReducer.region,
+    //currentRoadSearchID: state.dataReducer.currentRoadSearchIndex,
+    currentRoadSearch: state.dataReducer.allSearches[state.dataReducer.currentRoadSearchIndex],
+
   };}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
 export default connect(mapStateToProps, null) (ShowMapView);

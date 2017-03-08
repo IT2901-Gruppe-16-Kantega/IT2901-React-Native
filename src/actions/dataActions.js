@@ -3,6 +3,7 @@
 //REMOVE WRAPPER?
 import wrapper from '../utilities/wrapper'
 import {createBST, searchForKommune} from '../utilities/utils';
+import moment from 'moment';
 //createBST();
 
 
@@ -13,13 +14,25 @@ export function newSearch(roadSearch) {
   }
 }
 
+export function setCurrentRoadSearch(index, roadSearch){
+  return {
+    type: "SET_CURRENT_ROAD_SEARCH",
+    payload: {
+      index: index,
+      roadSearch: roadSearch
+    }
+  }
+
+}
+
 export function createSearchObject(description, objects, report, combParams){
   var roadSearch = {
     key: Date.now(),
+    date: moment().format('MMMM Do YYYY, h:mm:ss a'),
     description: description,
     roadObjects: objects,
     report: report,
-    searchParamaters: combParams
+    searchParameters: combParams
     }
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
@@ -61,7 +74,11 @@ export function fetchDataReturned(data, fetched) {
       }
     }
   }
-
+}
+export function resetFetching(){
+  return{
+    type: "RESET_FETCHING"
+  }
 }
 export function clearData(){
   return{

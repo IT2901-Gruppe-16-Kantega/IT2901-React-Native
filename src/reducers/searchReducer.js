@@ -36,11 +36,7 @@ export default function reducer(state={
 }, action) {
   switch (action.type) {
     case "INPUT_KOMMUNE": {
-      //this is ugly af, should not have region change every time we
-      var geometryString = action.payload.senterpunkt.wkt.split('(')[1].slice(0, -1);
-      var geometryParts = geometryString.split(' ');
-      var objLat = parseFloat(geometryParts[0]);
-      var objLong = parseFloat(geometryParts[1]);
+      
       return{
         ...state,
         kommune_input: action.payload,
@@ -48,12 +44,7 @@ export default function reducer(state={
         kommune_valid: true,
         kommune_input_color: '#00CC00',
         kommune_input_color_border: 'lightgray',
-        region: {
-          latitude: objLat,
-          longitude: objLong,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
-        }
+
       }
     }
     case "KOMMUNE_INPUT_NOT_VALID": {
@@ -70,6 +61,17 @@ export default function reducer(state={
           ...state,
           combinedSearchParameters: action.payload,
         }
+    }
+    case "RESET_SEARCH_PARAMETERS": {
+      return{
+        ...state,
+        kommune_input: 'ukjent',
+        kommune_valid: false,
+        kommune_input_color: 'white',
+        kommune_input_color_border: 'lightgray',
+        combinedSearchParameters: [],
+        kommune_navn: 'not defined',
+      }
     }
   }
   return state

@@ -10,7 +10,11 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
+
+//import only the actions that we need
 import * as dataActions from '../actions/dataActions'
+import * as searchActions from '../actions/searchActions'
+
 import {fetchFromAPI_all} from '../utilities/wrapper'
 
 
@@ -62,80 +66,82 @@ var LoadingView = React.createClass({
         this.props.objects,
         'report',
         this.props.combinedSearchParameters);
-      Actions.currentSearchView();
-    }
-  },
+        this.props.resetSearchParameters();
+        Actions.currentSearchView();
+      }
+    },
 
-});
+  });
 
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  //Top-leve containers
-  top: {
-    flex: 0.7
-  },
-  header: {
-    flex: 7.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.gray
-  },
-  contents: {
-    flex: 10.5,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: templates.gray
-  },
-  fetchingStatus: {  //used by fetching status
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-  },
-  fetchingInfo: {
-    flex: 10,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  padding: {
-    flex: 0.4,
-  },
-  progressInfo: {
-    flex: 1.5,
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: templates.textColorWhite,
-  },
-})
+  var styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      //justifyContent: 'center',
+      alignItems: 'stretch',
+    },
+    //Top-leve containers
+    top: {
+      flex: 0.7
+    },
+    header: {
+      flex: 7.5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: templates.gray
+    },
+    contents: {
+      flex: 10.5,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: templates.gray
+    },
+    fetchingStatus: {  //used by fetching status
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 8,
+    },
+    fetchingInfo: {
+      flex: 10,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+    padding: {
+      flex: 0.4,
+    },
+    progressInfo: {
+      flex: 1.5,
+    },
+    footer: {
+      flex:0.7,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    text: {
+      color: templates.textColorWhite,
+    },
+  })
 
-function mapStateToProps(state) {
-  return {
-    combinedSearchParameters: state.searchReducer.combinedSearchParameters,
-
-    fetching: state.dataReducer.fetching,
-    fetched: state.dataReducer.fetched,
-
-    kommune: state.searchReducer.kommune_input,
-    objects: state.dataReducer.objects,
-    objects_size: state.dataReducer.numberOfObjects,
-  };}
-
-  function mapDispatchToProps(dispatch) {
+  function mapStateToProps(state) {
     return {
-      fetchDataStart: bindActionCreators(dataActions.fetchDataStart, dispatch),
-      fetchDataReturned: bindActionCreators(dataActions.fetchDataReturned, dispatch),
-      createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch)
+      combinedSearchParameters: state.searchReducer.combinedSearchParameters,
+
+      fetching: state.dataReducer.fetching,
+      fetched: state.dataReducer.fetched,
+
+      kommune: state.searchReducer.kommune_input,
+      objects: state.dataReducer.objects,
+      objects_size: state.dataReducer.numberOfObjects,
+    };}
+
+    function mapDispatchToProps(dispatch) {
+      return {
+        fetchDataStart: bindActionCreators(dataActions.fetchDataStart, dispatch),
+        fetchDataReturned: bindActionCreators(dataActions.fetchDataReturned, dispatch),
+        createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
+        resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch)
+      }
     }
-  }
-  export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);
+    export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);

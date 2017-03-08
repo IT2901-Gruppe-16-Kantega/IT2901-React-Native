@@ -24,3 +24,9 @@ export function combineSearchParameters(kommune){
     payload: combinedSearchParameters,
   }
 }
+
+export function resetSearchParameters(){
+  return {
+    type: "RESET_SEARCH_PARAMETERS"
+  }
+}

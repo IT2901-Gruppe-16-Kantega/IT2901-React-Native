@@ -13,7 +13,8 @@ export default function reducer(state={
 
   andel_egengeometri: null,
   allSearches:[],
-  valgtObjektref: 1,
+  currentRoadSearchIndex: 0,
+  currentRoadSearch: null,
   //used by filewriter
   writing_file: false,
 
@@ -28,6 +29,13 @@ export default function reducer(state={
       return{
         ...state,
         allSearches: [...state.allSearches, action.payload],
+      }
+    }
+    case "SET_CURRENT_ROAD_SEARCH": {
+      return {
+        ...state,
+        currentRoadSearch: action.payload.currentRoadSearch,
+        currentRoadSearchIndex: action.payload.index,
       }
     }
     case "FETCH_DATA_START": {
@@ -48,6 +56,17 @@ export default function reducer(state={
         fetching: action.payload.fetching,
         fetched: action.payload.fetched,
         objects: action.payload.data,
+      }
+    }
+    case "RESET_FETCHING":{
+      return {
+        ...state,
+        kommune_input: 'ukjent',
+        kommune: 'not input',
+        valid_kommune: false,
+        fetching: false,
+        fetched: false,
+        error: null,
       }
     }
     case "CLEAR_DATA": {
