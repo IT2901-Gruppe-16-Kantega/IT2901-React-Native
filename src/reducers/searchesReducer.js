@@ -6,7 +6,7 @@ export default function reducer(state={
   roadSearch: {
     id: 12123414,
     description: '',
-    searchParamters: []
+    searchParamters: [],
     roadObjects: [],
     rapport: {
       rapportID: 123,

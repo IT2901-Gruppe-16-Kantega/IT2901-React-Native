@@ -6,14 +6,14 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
-import StartingView from './components/StartingView'
-import CurrentSearchView from './components/CurrentSearchView'
-import LoadingView from './components/LoadingView'
-import ReportView from './components/ReportView'
-import SearchFormView from './components/SearchFormView'
-import ShowMapView from './components/ShowMapView'
-import StoredDataView from './components/StoredDataView'
-import SettingsView from './components/SettingsView'
+import StartingView from './components/startingView'
+import CurrentSearchView from './components/currentSearchView'
+import LoadingView from './components/loadingView'
+import ReportView from './components/reportView'
+import SearchFormView from './components/searchFormView'
+import ShowMapView from './components/showMapView'
+import StoredDataView from './components/storedDataView'
+import SettingsView from './components/settingsView'
 
 
 export default class App extends Component {
