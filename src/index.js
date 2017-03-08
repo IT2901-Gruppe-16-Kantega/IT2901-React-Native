@@ -75,7 +75,7 @@ export default class App extends Component {
             title="Map"
             hideNavBar={false}
             />
-          // Changes Vegard
+
           <Scene
             key="ARConnection"
             component={ARConnection}

@@ -57,7 +57,7 @@ var currentSearchView = React.createClass({
         <TouchableHighlight
           style= {styles.button}
           underlayColor="azure"
-          onPress = {this.openAR()}
+          onPress = {this.openAR}
           >
           <Text style={{color: templates.textColorWhite}}>AR</Text>
         </TouchableHighlight>
@@ -84,7 +84,7 @@ var currentSearchView = React.createClass({
     </View>
   },
   openAR() {
-    console.log(this.props.objects.length);
+    //console.log(this.props.objects.length);
     // Changes Vegard
     Actions.ARConnection();
     this.props.saveData();
