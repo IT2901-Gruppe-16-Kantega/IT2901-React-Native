@@ -1,10 +1,26 @@
 //
-export function createURL(input) {
+import {createBST, searchForKommune} from '../utilities/utils';
+createBST();
+
+//functions for handling input in all searchfields
+
+export function inputKommune(input){
+  return function(dispatch) {
+    searchForKommune(input.text)
+    .then((result) => {
+      dispatch({type: "INPUT_KOMMUNE", payload: result})
+    })
+    .catch((err) => {
+      dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
+    })
+  }
+}
+
+
+export function combineSearchParameters(kommune){
+  var combinedSearchParameters = [kommune];
   return {
-    type: "CREATE_URL",
-    payload: {
-      somePayloadVariable: 'fgh',
-      inputPayloadVarible: input,
-    }
+    type: "COMBINE_PARAMETERS",
+    payload: combinedSearchParameters,
   }
 }

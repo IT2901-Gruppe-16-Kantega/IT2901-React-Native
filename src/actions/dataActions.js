@@ -1,7 +1,9 @@
 // will contain actions that depend on NVDB
+
+//REMOVE WRAPPER?
 import wrapper from '../utilities/wrapper'
 import {createBST, searchForKommune} from '../utilities/utils';
-createBST();
+//createBST();
 
 
 
@@ -11,6 +13,21 @@ export function newSearch(roadSearch) {
   }
 }
 
+export function createSearchObject(description, objects, report, combParams){
+  var roadSearch = {
+    key: Date.now(),
+    description: description,
+    roadObjects: objects,
+    report: report,
+    searchParamaters: combParams
+    }
+  return {
+    type: "ADD_NEW_SEARCH_OBJECT",
+    payload: roadSearch,
+  }
+}
+
+
 export function chooseSearch(id){
   return {
     type: "CHOOSE_SEARCH",
@@ -18,32 +35,9 @@ export function chooseSearch(id){
   }
 }
 
-export function setKommuneInput(input) {
-  return {
-    type: "SET_KOMMUNE_INPUT",
-    payload: input
-  }
-}
-
-export function setKommune(kommune_input){
-  var kommune = searchForKommune(kommune_input)
-  if(kommune.length>0){
-    return {
-      type: "SET_KOMMUNE",
-      payload: kommune,
-    }
-  }
-  else {
-    return {
-      type: "ERROR",
-      payload: "unkown kommune"
-    }
-  }
-}
 export function fetchDataStart(){
   return{
-    type: "FETCH_DATA_START",
-    payload: null,
+    type: "FETCH_DATA_START"
   }
 }
 export function fetchDataReturned(data, fetched) {
@@ -75,4 +69,9 @@ export function clearData(){
   }
 }
 
-//function that fetches based on props
+//may beused by filewriter
+export function writingFile() {
+  return {
+    type: "WRITING_FILE",
+  }
+}

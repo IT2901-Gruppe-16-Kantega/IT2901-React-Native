@@ -96,7 +96,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     objects: state.dataReducer.objects,
-    region: state.dataReducer.region
+    region: state.searchReducer.region
   };}
 //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
 export default connect(mapStateToProps, null) (ShowMapView);

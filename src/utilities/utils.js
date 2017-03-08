@@ -23,32 +23,19 @@ function createBST(){
   }
 }
 function searchForKommune(kommuneID) {
-  var id = parseInt(kommuneID);
-  return bst.search(id);
-  //if bst does not find something it returns empty arry, this should be handeled in route-chooser
-}
+  return new Promise(function(resolve, reject){
+    var id = parseInt(kommuneID);
+    var kommune = bst.search(id);
+    if(kommune.length>0){
+      resolve(kommune[0]);
+    }
+    else {
+      reject(Error("Not av valid kommuneID"));
+    }
+  })}
 
 
 
-/*
-function searchForKommune(kommuneID) {
-  console.log('#createBST');
-  var id = parseInt(kommuneID);
-  console.log('--> id: '+id);
-  var bst = new BinarySearchTree({unique:true});
-  for(index in alle_kommuner){
-    //console.log('index is now: '+ index);
-    //console.log('kommune is: ');
-    //console.log(alle_kommuner[index]);
-    var nummer  = alle_kommuner[index].nummer;
-    var data = alle_kommuner[index];
-    bst.insert(nummer, data);
-  }
-  return bst.search(id);
 
-  //if bst does not find something it returns empty arry, this should be handeled in route-chooser
-}
-
-*/
 
 export {createBST, searchForKommune};

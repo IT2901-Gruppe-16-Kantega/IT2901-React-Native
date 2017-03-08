@@ -11,13 +11,8 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as dataActions from '../actions/dataActions'
+import * as searchActions from '../actions/searchActions'
 import * as templates from '../utilities/templates'
-import {fetchFromAPI_all} from '../utilities/wrapper'
-
-//move create url from routechooser to utilities and import
-var startUrl = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=439'
-var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 
 
 var valid = true;
@@ -32,15 +27,22 @@ var SearchFormView = React.createClass({
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
         <View style={styles.inputArea}>
+          <Text style={styles.text}>Kommune</Text>
           <TextInput
-            style={styles.textInput}
+            style={{padding: 5,
+              height: 30,
+              color: 'white',
+              borderWidth: 2,
+              borderColor: this.props.kommune_input_color_border,
+              backgroundColor: this.props.kommune_input_color}}
             maxLength={4}
             placeholder="Type in kommmune id"
-            onChangeText={(text) => this.updateTextState({text})}
+            onChangeText={(text) => this.props.inputKommune({text})}
             keyboardType = 'numeric'
+            returnKeyType = 'done'
             />
           <Text style={{color: 'white'}}>
-            {this.props.kommune_input}
+            {this.props.kommune_navn}
           </Text>
         </View>
         <View style={styles.inputAreaPadding}></View>
@@ -60,25 +62,16 @@ var SearchFormView = React.createClass({
     </View>
   },
   search: function(){
-    this.props.setKommune(this.props.kommune_input);
-    setTimeout(this.searchForKommune, 100);
-  },
-  searchForKommune: function() {
-    if(this.props.valid_kommune == true){
-      var url = baseURL+'?kommune='+this.props.kommune[0].nummer+'&inkluder=alle&srid=4326';
-      var urlShallow = baseURL+'?kommune='+this.props.kommune[0].nummer;
-      this.props.fetchDataStart();
-      fetchFromAPI_all(this.props.fetchDataReturned, url);
+    //Check that all input fields are valid
+    //Then combine parameters to one file
+    if(this.props.kommune_valid==true){
+      this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();
     }
     else{
-      Alert.alert("Ugyldig data", "Ukjent kommunenummer, vennligst skriv inn et gydlig kommunenummer");
+      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
     }
   },
-  updateTextState: function(text) {
-    console.log('updateText');
-    this.props.setKommuneInput(text);
-  }
 });
 
 var styles = StyleSheet.create({
@@ -115,7 +108,7 @@ var styles = StyleSheet.create({
     padding: 5,
     height: 30,
     color: templates.gray,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   buttonArea: {
     flex: 2,
@@ -128,17 +121,36 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  text: {
+    color: templates.textColorWhite,
+  },
 })
 
 
 
 function mapStateToProps(state) {
   return {
-    kommune_input: state.dataReducer.kommune_input,
-    valid_kommune: state.dataReducer.valid_kommune,
-    kommune: state.dataReducer.kommune
+    //field used to hold input in text field for kommune
+    kommune_input: state.searchReducer.kommune_input,
+    //boolean used to check whether or not input kommuneid is valid
+    kommune_valid: state.searchReducer.kommune_valid,
+    kommune_input_color: state.searchReducer.kommune_input_color,
+    kommune_input_color_border: state.searchReducer.kommune_input_color_border,
+
+    valid_all: state.searchReducer.valid_all,
+    combinedSearchParameters: state.searchReducer.combinedSearchParameters,
+
+    //only used in debugging
+    kommune_navn: state.searchReducer.kommune_navn,
+
   };}
+
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(dataActions, dispatch);}
+  return {
+    //input search variables, uses searchActions to set variables before creatingURL
+    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (SearchFormView);

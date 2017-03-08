@@ -25,7 +25,6 @@ export default class App extends Component {
             key="startingView"
             component={StartingView}
             title=""
-            initial={true}
             hideNavBar={true}
             type='reset'
             />
@@ -34,6 +33,8 @@ export default class App extends Component {
             component={SearchFormView}
             title="Search"
             hideNavBar={false}
+            initial={true}
+
             />
           <Scene
             key="storedDataView"

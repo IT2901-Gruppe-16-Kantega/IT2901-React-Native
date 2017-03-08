@@ -10,11 +10,22 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
+import * as dataActions from '../actions/dataActions'
+import {fetchFromAPI_all} from '../utilities/wrapper'
+
+
+var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 
 //needs access to fetching state etc
 //this.props.fetching
 
 var LoadingView = React.createClass({
+  componentWillMount() {
+    var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326';
+    this.props.fetchDataStart();
+    fetchFromAPI_all(this.props.fetchDataReturned, url);
+
+  },
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -32,7 +43,7 @@ var LoadingView = React.createClass({
           <View style={styles.progressInfo}>
             <Text style={styles.text}> Some information about progress:</Text>
             <Text style={styles.text}></Text>
-            <Text style={styles.text}> Kommune er {this.props.kommune_navn}</Text>
+            <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.objects_size}
             </Text>
           </View>
@@ -46,9 +57,15 @@ var LoadingView = React.createClass({
   //may change to componentWillUpdate if we want it to be called before props change
   componentDidUpdate() {
     if(this.props.fetched==true){
+      this.props.createSearchObject(
+        'description',
+        this.props.objects,
+        'report',
+        this.props.combinedSearchParameters);
       Actions.currentSearchView();
     }
-  }
+  },
+
 });
 
 
@@ -102,13 +119,23 @@ var styles = StyleSheet.create({
   },
 })
 
-//trenger nok ingen actions
 function mapStateToProps(state) {
   return {
+    combinedSearchParameters: state.searchReducer.combinedSearchParameters,
+
     fetching: state.dataReducer.fetching,
     fetched: state.dataReducer.fetched,
-    kommune_navn: state.dataReducer.kommune[0].navn,
+
+    kommune: state.searchReducer.kommune_input,
+    objects: state.dataReducer.objects,
     objects_size: state.dataReducer.numberOfObjects,
   };}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (LoadingView);
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      fetchDataStart: bindActionCreators(dataActions.fetchDataStart, dispatch),
+      fetchDataReturned: bindActionCreators(dataActions.fetchDataReturned, dispatch),
+      createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch)
+    }
+  }
+  export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);

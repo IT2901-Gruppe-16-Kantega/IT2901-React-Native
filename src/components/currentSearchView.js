@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableHighlight
 
-  } from 'react-native';
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -36,7 +36,7 @@ var CurrentSearchView = React.createClass({
     return <View style={styles.informationView}>
       <View style={styles.informationPadding}/>
       <View style={styles.information}>
-        <Text style={{color: templates.textColorWhite}}>Valgt kommune er {this.props.kommune}</Text>
+        <Text style={{color: templates.textColorWhite}}>Valgt kommune,fra searchReducer er {this.props.kommune}</Text>
         <Text style={{color: templates.textColorWhite}}>Antall vegobjekter er {this.props.objects.length}</Text>
         <Text style={{color: templates.textColorWhite}}>Prosentandel med egengeometri</Text>
       </View>
@@ -179,9 +179,8 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    kommune: state.dataReducer.kommune[0].navn,
+    kommune: state.searchReducer.kommune_input.navn,
     objects: state.dataReducer.objects,
-
   };}
-function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
-export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
+  function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
+  export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
