@@ -20,7 +20,7 @@ var region = {
 
 var ShowMapView = React.createClass({
   componentWillMount() {
-    var regionString = this.props.currentRoadSearch.searchParameters[0].senterpunkt.wkt;
+    var regionString = this.props.region;
     var geometryString = regionString.split('(')[1].slice(0, -1);
     var geometryParts = geometryString.split(' ');
     var objLat = parseFloat(geometryParts[0]);
@@ -80,6 +80,18 @@ var ShowMapView = React.createClass({
   },
 });
 
+
+
+function mapStateToProps(state) {
+  return {
+    objects: state.dataReducer.currentRoadSearch.roadObjects,
+    region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+
+  };}
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (ShowMapView);
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -110,14 +122,3 @@ var styles = StyleSheet.create({
     color: templates.textColorWhite,
   },
 })
-
-function mapStateToProps(state) {
-  return {
-    objects: state.dataReducer.objects,
-    region: state.searchReducer.region,
-    //currentRoadSearchID: state.dataReducer.currentRoadSearchIndex,
-    currentRoadSearch: state.dataReducer.allSearches[state.dataReducer.currentRoadSearchIndex],
-
-  };}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (ShowMapView);

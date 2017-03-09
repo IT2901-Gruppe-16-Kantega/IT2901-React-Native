@@ -1,41 +1,50 @@
-/*
-PUT SOME INFORMATION ABOUT REDUCER HERE
-*/
+
 
 export default function reducer(state={
-  //initialState
-
   fetching: false,
   fetched: false,
   error: null,
-  objects: [],
-  numberOfObjects: 0,
+  numberOfObjectsToBeFetched: 0,
+  numberOfObjectsFetchedSoFar: 0,
 
-  andel_egengeometri: null,
+  objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
+
+
   allSearches:[],
-  currentRoadSearchIndex: 0,
+
+  //this holds the currently chosen roadSearch to avoid calling the entire array all the time
   currentRoadSearch: null,
+
+
+  //currently not used
+  currentRoadSearchIndex: null,
+  andel_egengeometri: null,
+
   //used by filewriter
   writing_file: false,
 
 }, action) {
-  //simple switch statement based on type of action
   switch (action.type) {
-
-
-    //arr: [...state.arr, action.newItem]
-    //list: [...state.list, newItem]
+    // cases associated with searches
     case "ADD_NEW_SEARCH_OBJECT": {
       return{
         ...state,
         allSearches: [...state.allSearches, action.payload],
+        currentRoadSearch: action.payload,
       }
     }
     case "SET_CURRENT_ROAD_SEARCH": {
       return {
         ...state,
-        currentRoadSearch: action.payload.currentRoadSearch,
-        currentRoadSearchIndex: action.payload.index,
+        currentRoadSearch: action.payload,
+      }
+    }
+
+    // cases associated with fetching
+    case "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED":{
+      return {
+        ...state,
+        numberOfObjectsToBeFetched: action.payload,
       }
     }
     case "FETCH_DATA_START": {
@@ -47,7 +56,7 @@ export default function reducer(state={
     case "FETCHING_NOT_FINISHED": {
       return{
         ...state,
-        numberOfObjects: action.payload.currentlyFetched
+        numberOfObjectsFetchedSoFar: action.payload.currentlyFetched
       }
     }
     case "FETCH_DATA_RETURNED":{
@@ -61,9 +70,7 @@ export default function reducer(state={
     case "RESET_FETCHING":{
       return {
         ...state,
-        kommune_input: 'ukjent',
-        kommune: 'not input',
-        valid_kommune: false,
+        objects: [],
         fetching: false,
         fetched: false,
         error: null,
@@ -87,6 +94,7 @@ export default function reducer(state={
         }
       }
     }
+
     //used by filewriter
     case "WRITING_FILE": {
       return {

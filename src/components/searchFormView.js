@@ -17,6 +17,20 @@ import * as templates from '../utilities/templates'
 
 var valid = true;
 
+
+/*      ---Layout----
+  TWO PARTS:
+  1. Where
+  2. What
+
+  The screen is split in two views,
+  using react-native-keyboard-spacer to make room for keyboard
+  when typing in where, only the where part is focused, the what part is hidden
+
+
+*/
+
+
 var SearchFormView = React.createClass({
   render() {
     return <View style = {styles.container}>
@@ -63,7 +77,11 @@ var SearchFormView = React.createClass({
   },
   search: function(){
     //Check that all input fields are valid
-    //Then combine parameters to one file
+    //Then combine all parameters to one file
+
+    //Should also check the number of objects that are going to be fetcehd here
+    //and give the user the ability to cancel the search if there is going to be
+    // long waiting time
     if(this.props.kommune_valid==true){
       this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();

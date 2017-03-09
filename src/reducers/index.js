@@ -10,8 +10,9 @@ import fileReducer from './fileReducer'
 import searchReducer from './searchReducer'
 
 
+
 export default combineReducers({
   dataReducer,
   fileReducer,
-  searchReducer
+  searchReducer,
 })

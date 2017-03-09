@@ -10,33 +10,14 @@ export default function reducer(state={
   kommune_input_color_border: 'lightgray',
 
   //rekkefølgen på objektene i denne må bli definert
-  combinedSearchParameters: [],
-
+  combinedSearchParameters: {},
 
   //only used when debugging
   kommune_navn: 'not defined',
-  //
-  roadSearch: {
-    id: 12123414,
-    description: '',
-    searchParamters: [],
-    roadObjects: [],
-    rapport: {
-      rapportID: 123,
-      description: '',
-      rapportObjekter: [
-        {
-          id: 123,
-          description: '',
-        }
-      ]
-    }
-  },
 
 }, action) {
   switch (action.type) {
     case "INPUT_KOMMUNE": {
-      
       return{
         ...state,
         kommune_input: action.payload,

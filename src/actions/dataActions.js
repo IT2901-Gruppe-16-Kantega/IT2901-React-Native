@@ -7,23 +7,17 @@ import moment from 'moment';
 //createBST();
 
 
+/*
+  Actions associated with searches
+*/
 
-export function newSearch(roadSearch) {
-  return {
-    type: "NEW_SEARCH",
-  }
-}
-
-export function setCurrentRoadSearch(index, roadSearch){
+export function setCurrentRoadSearch(roadSearch){
   return {
     type: "SET_CURRENT_ROAD_SEARCH",
-    payload: {
-      index: index,
-      roadSearch: roadSearch
-    }
+    payload: roadSearch,
   }
-
 }
+
 
 export function createSearchObject(description, objects, report, combParams){
   var roadSearch = {
@@ -41,22 +35,28 @@ export function createSearchObject(description, objects, report, combParams){
 }
 
 
-export function chooseSearch(id){
-  return {
-    type: "CHOOSE_SEARCH",
-    payload: id
+/*
+  Actions associated with fetching
+*/
+export function setNumberOfObjectsToBeFetched(number){
+  return{
+    type: "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED",
+    payload: number,
   }
 }
 
+//Function that sets fetching=true
 export function fetchDataStart(){
   return{
     type: "FETCH_DATA_START"
   }
 }
+//Function callback called by fetchFromAPI_all with data from API
 export function fetchDataReturned(data, fetched) {
   var fetching = true;
   if(fetched==true){
     fetching = false;
+    //return if all objects is fetched
     return{
       type: "FETCH_DATA_RETURNED",
       payload: {
@@ -67,6 +67,7 @@ export function fetchDataReturned(data, fetched) {
     }
   }
   else {
+    //return if not all objects are fetched
     return{
       type: "FETCHING_NOT_FINISHED",
       payload: {
@@ -75,18 +76,23 @@ export function fetchDataReturned(data, fetched) {
     }
   }
 }
+
 export function resetFetching(){
   return{
     type: "RESET_FETCHING"
   }
 }
+
 export function clearData(){
   return{
     type: "CLEAR_DATA",
   }
 }
 
-//may beused by filewriter
+
+/*
+  Actions associated with filewriter
+*/
 export function writingFile() {
   return {
     type: "WRITING_FILE",

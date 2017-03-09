@@ -16,6 +16,9 @@ import * as templates from '../utilities/templates'
 
 var CurrentSearchView = React.createClass({
   componentDidMount() {
+    console.log("Current roadSearch is:");
+    console.log(this.props.currentRoadSearch);
+
     this.props.resetFetching();
   },
   render() {
@@ -39,9 +42,12 @@ var CurrentSearchView = React.createClass({
     return <View style={styles.informationView}>
       <View style={styles.informationPadding}/>
       <View style={styles.information}>
-        <Text style={{color: templates.textColorWhite}}>Valgt kommune,fra searchReducer er {this.props.kommune}</Text>
-        <Text style={{color: templates.textColorWhite}}>Antall vegobjekter er {this.props.objects.length}</Text>
-        <Text style={{color: templates.textColorWhite}}>Prosentandel med egengeometri</Text>
+        <Text style={styles.text}>Informasjon om valgt vegsøk:</Text>
+        <Text style={styles.text}>Kommune:
+          {this.props.currentRoadSearch.searchParameters[0].navn}</Text>
+        <Text style={styles.text}>Antall vegobjekter er:
+          {this.props.currentRoadSearch.roadObjects.length} </Text>
+        <Text style={styles.text}>Prosentandel med egengeometri</Text>
       </View>
       <View style={styles.informationPadding}/>
     </View>
@@ -87,6 +93,7 @@ var CurrentSearchView = React.createClass({
     </View>
   },
   openAR() {
+
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
 
@@ -95,10 +102,6 @@ var CurrentSearchView = React.createClass({
     Actions.startingView();
     //this.props.clearData();
   },
-  createRoadSearch() {
-    //creates a raod search object and pushes to store
-    //actions.newSearch
-  }
 });
 
 var styles = StyleSheet.create({
@@ -176,13 +179,23 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  text: {
+    color: templates.textColorWhite,
+  },
 })
 
 
 function mapStateToProps(state) {
   return {
-    kommune: state.searchReducer.kommune_input.navn,
-    objects: state.dataReducer.objects,
+
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
   };}
-  function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      //dataActions
+      resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+    }
+  }
+  //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
   export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);

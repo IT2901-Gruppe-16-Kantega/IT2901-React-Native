@@ -21,6 +21,7 @@ function fetchFromAPI_all(callback, url){
   })
 }
 
+
 //recursively fetches if result from api contains many object, data "paginert" by NVDB
 function recursiveFetch(object, objects, callback){
   //console.log('#wrapper.recursiveFetch: ');
@@ -60,6 +61,16 @@ async function fetchData(_path) {
   }
 }
 
+async function fetchTotalNumberOfObjects(url){
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.log('ERROR: wrapper.fetchTotalNumberOfObjects');
+  }
+}
+
 /*
   The following methods fetches data from NVDB to be used in specifying offline data
   Kan hende generell fetchFromAPI burde håndtere alt, gjøres etterhver
@@ -70,4 +81,4 @@ function fetch_Kommuner(callback){
   })
 }
 
-export {fetchFromAPI_all, fetch_Kommuner};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects};
