@@ -21,29 +21,37 @@ var StoredDataView = React.createClass({
   },
   _renderHeader(section) {
     return (
-      <View>
+      <View style={styles.accordionHeader}>
         <Text style={styles.text}>
-          {section.searchParameters[0].navn} on:
-           {section.date}
+          Kommune: {section.searchParameters[0].navn}
         </Text>
       </View>
     );
   },
-
+  //must do padding better than empty textcomponents
   _renderContent(section) {
     return (
-      <View>
-        <Text>Description: {section.description}
-          Number of objects: {section.roadObjects.length}
-        </Text>
-        <TouchableHighlight
-          style= {templates.smallButton}
-          underlayColor="azure"
-          onPress = {() => this.buttonPress(section)}
-          >
-          <Text style={{color: templates.textColorWhite}}>Open</Text>
-        </TouchableHighlight>
+      <View style={styles.accordionFrame}>
+        <View style={styles.accordionContents}>
+          <Text></Text>
+          <Text style={styles.text}>Antall vegobjekter: {section.roadObjects.length}</Text>
+          <Text style={styles.text}>Beskrivelse: {section.description}</Text>
+          <Text style={styles.text}>Dato: {section.date}</Text>
+
+
+          <Text></Text>
+          <TouchableHighlight
+            style= {templates.smallButton}
+            underlayColor="azure"
+            onPress = {() => this.buttonPress(section)}
+            >
+            <Text style={styles.text}>Open</Text>
+          </TouchableHighlight>
+          <Text></Text>
+        </View>
+
       </View>
+
     );
   },
   render() {
@@ -75,19 +83,7 @@ var StoredDataView = React.createClass({
 
 
 
-//function mapDispatchToProps(dispatch) {return bindActionCreators(storedDataActions, dispatch);}
-function mapStateToProps(state) {
-  return {
-    allSearches: state.dataReducer.allSearches,
-  };}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      //dataActions
-      setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
-    }
-  }
-  export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);
 
   var styles = StyleSheet.create({
     container: {
@@ -100,17 +96,49 @@ function mapStateToProps(state) {
       flex: 0.7
     },
     header: {
-      flex: 7.5,
+      flex: 4,
       justifyContent: 'center',
       alignItems: 'center',
+      //backgroundColor: 'yellow'
       backgroundColor: templates.gray
     },
     contents: {
-      flex: 10.5,
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flex: 14,
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
       backgroundColor: templates.gray
+    },
+    accordionHeader: {
+      //flex:1,
+      borderColor: "white",
+      borderWidth: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: templates.gray,
+      padding: 10
+
+    },
+    accordionFrame: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: templates.gray,
+    },
+    accordionContentsPadding: {
+      flex: 0.1,
+    },
+    accordionContentsFrame: {
+
+    },
+    accordionContents: {
+      flex: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#8A9094',
+
+    },
+    accordionContentsPadding: {
+      flex: 0.1,
     },
     footer: {
       flex:0.7,
@@ -121,3 +149,17 @@ function mapStateToProps(state) {
       color: templates.textColorWhite,
     },
   })
+
+  //function mapDispatchToProps(dispatch) {return bindActionCreators(storedDataActions, dispatch);}
+  function mapStateToProps(state) {
+    return {
+      allSearches: state.dataReducer.allSearches,
+    };}
+
+    function mapDispatchToProps(dispatch) {
+      return {
+        //dataActions
+        setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+      }
+    }
+    export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);

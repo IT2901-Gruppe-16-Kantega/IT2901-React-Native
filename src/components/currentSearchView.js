@@ -16,9 +16,6 @@ import * as templates from '../utilities/templates'
 
 var CurrentSearchView = React.createClass({
   componentDidMount() {
-    console.log("Current roadSearch is:");
-    console.log(this.props.currentRoadSearch);
-
     this.props.resetFetching();
   },
   render() {

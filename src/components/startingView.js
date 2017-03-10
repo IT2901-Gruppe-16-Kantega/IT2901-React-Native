@@ -42,13 +42,15 @@ var StartingView = React.createClass({
           <Text style={{color: templates.textColorWhite}}>New search</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          style= {templates.button}          underlayColor="azure"
+          style= {templates.button}
+          underlayColor="azure"
           onPress = {Actions.storedDataView}
           >
           <Text style={{color: templates.textColorWhite}}>Stored data</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          style= {templates.button}          underlayColor="azure"
+          style= {templates.button}
+          underlayColor="azure"
           onPress = {Actions.settingsView}
           >
           <Text style={{color: templates.textColorWhite}}>Settings</Text>
@@ -114,5 +116,5 @@ The return of mapDispatchToProps is which actions this component has access to
 function mapStateToProps(state) {
   return {
     fetching: state.dataReducer.fetching};}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (StartingView);
+    //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+    export default connect(mapStateToProps, null) (StartingView);

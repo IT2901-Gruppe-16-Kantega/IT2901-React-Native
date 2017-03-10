@@ -52,7 +52,7 @@ var SearchFormView = React.createClass({
             maxLength={4}
             placeholder="Type in kommmune id"
             onChangeText={(text) => this.props.inputKommune({text})}
-            keyboardType = 'numeric'
+            keyboardType = "default"
             returnKeyType = 'done'
             />
           <Text style={{color: 'white'}}>
