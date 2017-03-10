@@ -14,10 +14,13 @@ import SearchFormView from './components/searchFormView'
 import ShowMapView from './components/showMapView'
 import StoredDataView from './components/storedDataView'
 import SettingsView from './components/settingsView'
+<<<<<<< HEAD
 
 import * as dataActions from './actions/dataActions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+=======
+>>>>>>> 2b0182de3ee969764134830de0f0ce351c3c9aa7
 
 
 export default class App extends Component {
