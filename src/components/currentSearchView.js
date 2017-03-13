@@ -4,7 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight
+  TouchableHighlight,
+  Linking
 
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
@@ -93,6 +94,7 @@ var CurrentSearchView = React.createClass({
 
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
+    Linking.openURL("ARApp:");
 
   },
   exit() {
