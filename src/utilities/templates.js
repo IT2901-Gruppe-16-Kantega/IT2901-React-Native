@@ -4,6 +4,7 @@ export var bakgroundOfSearch = '#646a70'
 export var textColorWhite = '#ffffff'
 export var textColorBlack = '#000000'
 export var colorOrange = 'orange'
+
 export var button = {
   borderWidth: 2,
   height: 50,

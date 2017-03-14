@@ -4,7 +4,8 @@ import {
   View,
   Text,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
+  TouchableHighlight
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
@@ -21,6 +22,11 @@ var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
 
 var LoadingView = React.createClass({
+
+  /*
+    Cancel search!
+
+  */
 
   //create URL happens here here
   componentWillMount() {
@@ -58,16 +64,23 @@ var LoadingView = React.createClass({
             <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
             <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
-          </View>
+            <TouchableHighlight
+              style= {templates.smallButton}
+              underlayColor="azure"
+              onPress = {this.cancelSearch}
+              >
+              <Text style={{color: templates.textColorWhite}}>Cancel</Text>
+            </TouchableHighlight>
+        </View>
         </View>
       </View>
+
       <View style={styles.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
   //this may be really bad as componentDidUpdate may be called a lot of times
-  //and it works ugly af
   componentDidUpdate() {
     if(this.props.fetched==true){
       this.props.createSearchObject(
@@ -79,6 +92,11 @@ var LoadingView = React.createClass({
         Actions.currentSearchView();
       }
     },
+    cancelSearch() {
+      this.props.resetSearchParameters();
+      this.props.resetFetching();
+      Actions.startingView();
+    }
   });
 
 
@@ -107,6 +125,7 @@ var LoadingView = React.createClass({
         createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
         setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
         resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
+        resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
       }
     }
     export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);

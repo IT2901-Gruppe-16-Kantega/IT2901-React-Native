@@ -16,9 +16,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 
 
 var StoredDataView = React.createClass({
-  componentWillMount() {
-    console.log(this.props.allSearches);
-  },
+
   _renderHeader(section) {
     return (
       <View style={styles.accordionHeader}>
@@ -54,6 +52,16 @@ var StoredDataView = React.createClass({
 
     );
   },
+
+  componentWillMount() {
+    return <View style ={{
+        backgroundColor: 'black',
+        flex: 1,
+      }}>
+      <Text style={{color:'white'}}>Loading</Text>
+
+    </View>
+  },
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -74,7 +82,7 @@ var StoredDataView = React.createClass({
   },
   buttonPress(section){
     this.props.setCurrentRoadSearch(section);
-    console.log(section);
+    //console.log(section);
     Actions.currentSearchView();
     //do something
   }

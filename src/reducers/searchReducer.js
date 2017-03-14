@@ -3,7 +3,13 @@
 
 
 export default function reducer(state={
-  kommune_input: 'ukjent',
+  //legg inn react.proptypes
+
+  //inputfelter
+  fylke_input: null,
+  fylke_valid: false,
+
+  kommune_input: null,
   kommune_valid: false,
   //color changes as input is validated
   kommune_input_color: 'white',
@@ -37,6 +43,21 @@ export default function reducer(state={
         kommune_input_color_border: 'lightgray',
       }
     }
+    case "INPUT_FYLKE": {
+      return{
+        ...state,
+        fylke_input: action.payload,
+        //fylke_navn: action.payload.navn,
+        fylke_valid: true,
+      }
+    }
+    case "FYLKE_INPUT_NOT_VALID": {
+      return{
+        ...state,
+        fylke_valid: false,
+        fylke_navn: 'ukjent kommuneId',
+      }
+    }
     case "COMBINE_PARAMETERS": {
         return{
           ...state,
@@ -46,7 +67,9 @@ export default function reducer(state={
     case "RESET_SEARCH_PARAMETERS": {
       return{
         ...state,
-        kommune_input: 'ukjent',
+        fylke_input: null,
+        fylke_valid: false,
+        kommune_input: null,
         kommune_valid: false,
         kommune_input_color: 'white',
         kommune_input_color_border: 'lightgray',

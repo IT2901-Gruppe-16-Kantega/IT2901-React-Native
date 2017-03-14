@@ -1,5 +1,5 @@
 //
-import {createBST, searchForKommune} from '../utilities/utils';
+import {createBST, searchForKommune, searchForFylke} from '../utilities/utils';
 createBST();
 
 //functions for handling input in all searchfields
@@ -12,6 +12,18 @@ export function inputKommune(input){
     })
     .catch((err) => {
       dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
+    })
+  }
+}
+
+export function inputFylke(input){
+  return function(dispatch) {
+    searchForFylke(input.text)
+    .then((result) => {
+      dispatch({type: "INPUT_FYLKE", payload: result})
+    })
+    .catch((err) => {
+      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: err})
     })
   }
 }

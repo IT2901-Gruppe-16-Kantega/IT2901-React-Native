@@ -24,7 +24,8 @@ var SettingsView = React.createClass({
             Her vil det komme settings slik at bruker kan definiere div instillinger
             slik som f.eks skru av/på autolagring av søk.
             Samt spesifisering av forhåndsutfylte søkeparametre:
-            kommune, veg, skilt e.l kommer opp standard ved nytt søk
+            kommune, veg, skilt e.l kommer opp standard ved nytt søk.
+            Her kan du også hente nye oppdateringer på vegobjektyper eller kommuner dersom det blir endret
           </Text>
         </View>
         <View style={styles.footer}>

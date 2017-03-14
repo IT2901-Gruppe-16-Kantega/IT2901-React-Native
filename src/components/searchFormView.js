@@ -6,13 +6,18 @@ import {
   StyleSheet,
   TouchableHighlight,
   TextInput,
-  Alert
+  Alert,
+  ListView
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as searchActions from '../actions/searchActions'
 import * as templates from '../utilities/templates'
+
+
+import {searchForFylke} from '../utilities/utils';
+
 
 
 var valid = true;
@@ -32,6 +37,7 @@ var valid = true;
 
 
 var SearchFormView = React.createClass({
+
   render() {
     return <View style = {styles.container}>
       <View style={styles.top}></View>
@@ -41,6 +47,24 @@ var SearchFormView = React.createClass({
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
         <View style={styles.inputArea}>
+          <Text style={styles.text}>Fylke</Text>
+          <TextInput
+            style={{padding: 5,
+              height: 30,
+              color: 'white',
+              borderWidth: 2,
+              borderColor: 'grey',
+              backgroundColor: 'black'}}
+            maxLength={4}
+            placeholder="Type in fylke"
+            onChangeText={(text) => this.props.inputFylke({text})}
+            keyboardType = "default"
+            returnKeyType = 'done'
+            >
+          </TextInput>
+          <Text style={{color: 'white'}}>
+            {this.props.fylke_valid}
+          </Text>
           <Text style={styles.text}>Kommune</Text>
           <TextInput
             style={{padding: 5,
@@ -149,7 +173,10 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     //field used to hold input in text field for kommune
+    fylke_input: state.searchReducer.fylke_input,
     kommune_input: state.searchReducer.kommune_input,
+    fylke_valid: state.searchReducer.fylke_valid,
+
     //boolean used to check whether or not input kommuneid is valid
     kommune_valid: state.searchReducer.kommune_valid,
     kommune_input_color: state.searchReducer.kommune_input_color,
@@ -167,6 +194,7 @@ function mapDispatchToProps(dispatch) {
   return {
     //input search variables, uses searchActions to set variables before creatingURL
     inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
   }
 }
