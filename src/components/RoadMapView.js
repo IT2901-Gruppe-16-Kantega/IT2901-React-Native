@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  ListView,
+  TouchableHighlight
  } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
@@ -10,10 +12,14 @@ import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
+import {fetchEgenskapstyper} from '../utilities/wrapper'
+
 import { Footer } from './Footer';
 
 var region = null;
 var markers = [];
+
+var listItems = [];
 
 // View that holds the map
 var RoadMapView = React.createClass({
@@ -31,9 +37,28 @@ var RoadMapView = React.createClass({
     }
 
     this.createMapMarkers();
+
+    fetchEgenskapstyper(96, function(data) {
+      for(var i = 0; i < data.egenskapstyper.length; i++) {
+        listItems.push(data.egenskapstyper[i].navn);
+      }
+    })
+  },
+
+  renderRow(rowData, sectionID, rowID) {
+    return (
+      <TouchableHighlight underlayColor="red" style={StyleSheet.flatten([styles.sidebarItemContainer, {flex: this.props.filterFlex}])}>
+        <View>
+          <Text style={styles.sidebarItem}>{rowData}</Text>
+        </View>
+      </TouchableHighlight>
+    )
   },
 
   render() {
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1.guid != r2.guid});
+    var dataSource = ds.cloneWithRows(listItems);
+
     return <View style={styles.container}>
       <View style={styles.contentView}>
         <MapView
@@ -45,9 +70,12 @@ var RoadMapView = React.createClass({
           >
           {markers}
         </MapView>
-        <View
-          style={StyleSheet.flatten([styles.sidebar, {flex: this.props.filterFlex}])}
-        >
+        <View style={StyleSheet.flatten([styles.sidebar, {flex: this.props.filterFlex}])}>
+          <ListView
+          dataSource={dataSource}
+          renderRow={this.renderRow}
+          enableEmptySections={true}
+          />
         </View>
       </View>
       <Footer />
@@ -112,6 +140,12 @@ var styles = StyleSheet.create({
   },
   sidebar: {
     backgroundColor: templates.gray,
+  },
+  sidebarItemContainer: {
+    height: 44,
+  },
+  sidebarItem: {
+    color: templates.textColorWhite,
   },
   map: {
     flex: 1,

@@ -2,7 +2,8 @@
   wrapper.js: file wich contains methods used in fetching data from server
 */
 var fetch_finished = false; //bool used to keep information about fetching state
-var url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
+const url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
+const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
@@ -81,4 +82,10 @@ function fetch_Kommuner(callback){
   })
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects};
+function fetchEgenskapstyper(objekttypeID, callback) {
+  fetchData(objekttypeURL + objekttypeID).then(function(data) {
+    callback(data, true);
+  })
+}
+
+export {fetchFromAPI_all, fetch_Kommuner, fetchEgenskapstyper, fetchTotalNumberOfObjects};

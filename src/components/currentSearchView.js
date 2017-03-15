@@ -19,6 +19,7 @@ var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
   },
+
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>

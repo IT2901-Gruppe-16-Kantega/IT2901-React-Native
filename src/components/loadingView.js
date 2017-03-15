@@ -15,29 +15,30 @@ import * as templates from '../utilities/templates'
 import * as dataActions from '../actions/dataActions'
 import * as searchActions from '../actions/searchActions'
 
-import {fetchFromAPI_all, fetchTotalNumberOfObjects} from '../utilities/wrapper'
+import {fetchFromAPI_all, fetchEgenskapstyper, fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
-var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
-var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
+const objektID = 96;
+const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/';
+const preFetchURL = 'vegobjekter/96/statistikk';
 
 var LoadingView = React.createClass({
 
   //create URL happens here here
   componentWillMount() {
     //prefetches total number of objects to be fetched
-    var preUrl = preFetchURL+'?kommune='+this.props.kommune.nummer;
+    const preURL = baseURL + preFetchURL + '?kommune=' + this.props.kommune.nummer;
     var numberOfObjectsToBeFetched = 0;
-    fetchTotalNumberOfObjects(preUrl).then(function(response){
+    fetchTotalNumberOfObjects(preURL).then(function(response) {
       numberOfObjectsToBeFetched = response.antall;
       this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
     }.bind(this));
 
     //Creates url and fetches objects
-    var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326';
+    const url = baseURL + 'vegobjekter/' + objektID + '?kommune=' + this.props.kommune.nummer + '&inkluder=alle&srid=4326';
     this.props.fetchDataStart();
     fetchFromAPI_all(this.props.fetchDataReturned, url);
-
   },
+
   render() {
     return <View style={styles.container}>
       <View style={styles.top}/>
@@ -66,10 +67,11 @@ var LoadingView = React.createClass({
       </View>
     </View>
   },
+
   //this may be really bad as componentDidUpdate may be called a lot of times
   //and it works ugly af
   componentDidUpdate() {
-    if(this.props.fetched==true){
+    if(this.props.fetched) {
       this.props.createSearchObject(
         'description',
         this.props.objects,
@@ -80,8 +82,6 @@ var LoadingView = React.createClass({
       }
     },
   });
-
-
 
   function mapStateToProps(state) {
     return {

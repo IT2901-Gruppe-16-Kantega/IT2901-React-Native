@@ -51,10 +51,11 @@ export function fetchDataStart(){
     type: "FETCH_DATA_START"
   }
 }
+
 //Function callback called by fetchFromAPI_all with data from API
 export function fetchDataReturned(data, fetched) {
   var fetching = true;
-  if(fetched==true){
+  if(fetched) {
     fetching = false;
     //return if all objects is fetched
     return{
@@ -68,7 +69,7 @@ export function fetchDataReturned(data, fetched) {
   }
   else {
     //return if not all objects are fetched
-    return{
+    return {
       type: "FETCHING_NOT_FINISHED",
       payload: {
         currentlyFetched: data.length,

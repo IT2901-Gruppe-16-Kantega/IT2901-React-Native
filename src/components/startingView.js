@@ -19,12 +19,9 @@ import { bindActionCreators } from 'redux'
 //importing just one action, if only one action is needed, bindActionCreators must be changed
 //only import actions that this component needs
 
-
-
 var StartingView = React.createClass({
   componentWillMount() {
     //just dispactches an action no idea what happens
-
   },
   render() {
     //may also use this for readability const {user, tweets} = this.props;
