@@ -56,7 +56,7 @@ var CurrentSearchView = React.createClass({
         <TouchableHighlight
           style= {styles.button}
           underlayColor="azure"
-          onPress = {Actions.showMapView}
+          onPress = {Actions.RoadMapView}
           >
           <Text style={{color: templates.textColorWhite}}>Map</Text>
         </TouchableHighlight>
