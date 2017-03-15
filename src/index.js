@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  LayoutAnimation
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -16,10 +17,12 @@ import StoredDataView from './components/storedDataView'
 import SettingsView from './components/settingsView'
 
 import * as dataActions from './actions/dataActions'
+import * as mapActions from './actions/mapActions'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
       <Router>
@@ -77,112 +80,31 @@ export default class App extends Component {
             component={RoadMapView}
             title="Map"
             hideNavBar={false}
-            onRight={ () => console.log("Show map filter") }
+            onRight={ this.toggleFilterFlex.bind(this) }
             rightTitle="Filtrer"
             />
         </Scene>
       </Router>
     )
   }
+
+  toggleFilterFlex() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    this.props.filterFlex == 0 ? this.props.setFilterFlex(3) : this.props.setFilterFlex(0);
+  }
 }
-
-
-/*
-Kode som brukes for testing med tempobjekter
-class App extends Component {
-
-componentWillMount(){
-//fill state with some fake objects
-this.props.createSearchObject(
-'TestObject 1',
-[{yolo: '123'}],
-'report',
-[{kommune: 'asd'}]);
-this.props.createSearchObject(
-'TestObject 2',
-[{yolo: '123'}],
-'report',
-[{kommune: 'asd'}]);
-}
-
-render() {
-return (
-<Router>
-<Scene key="root">
-<Scene
-key="startingView"
-component={StartingView}
-title=""
-hideNavBar={true}
-type='reset'
-initial={true}
-
-/>
-<Scene
-key="searchFormView"
-component={SearchFormView}
-title="Search"
-hideNavBar={false}
-
-/>
-<Scene
-key="storedDataView"
-component={StoredDataView}
-title="Stored Data"
-hideNavBar={false}
-
-/>
-<Scene
-key="settingsView"
-component={SettingsView}
-title="Settings"
-hideNavBar={false}
-/>
-<Scene
-key="loadingView"
-component={LoadingView}
-title=""
-hideNavBar={true}
-/>
-<Scene
-key="currentSearchView"
-component={CurrentSearchView}
-title=""
-hideNavBar={true}
-type = 'reset'
-/>
-<Scene
-key="reportView"
-component={ReportView}
-title="Report"
-hideNavBar={false}
-/>
-<Scene
-key="showMapView"
-component={ShowMapView}
-title="Map"
-hideNavBar={false}
-/>
-</Scene>
-</Router>
-)
-}
-}
-
 
 function mapStateToProps(state) {
-return {
-//Status information about search
-fetching: state.dataReducer.fetching,
-fetched: state.dataReducer.fetched,
-};}
+  return {
+    //Status information about search
+    filterFlex: state.mapReducer.filterFlex,
+  };
+}
 
 function mapDispatchToProps(dispatch) {
-return {
-createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
-}
+  return {
+    setFilterFlex: bindActionCreators(mapActions.setFilterFlex, dispatch),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (App);
-
-*/

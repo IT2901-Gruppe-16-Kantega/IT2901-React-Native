@@ -35,6 +35,7 @@ var RoadMapView = React.createClass({
 
   render() {
     return <View style={styles.container}>
+      <View style={styles.contentView}>
         <MapView
           style={styles.map}
           region={region}
@@ -44,7 +45,11 @@ var RoadMapView = React.createClass({
           >
           {markers}
         </MapView>
-
+        <View
+          style={StyleSheet.flatten([styles.sidebar, {flex: this.props.filterFlex}])}
+        >
+        </View>
+      </View>
       <Footer />
     </View>
   },
@@ -92,10 +97,8 @@ function mapStateToProps(state) {
     objects: state.dataReducer.currentRoadSearch.roadObjects,
     region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
-
+    filterFlex: state.mapReducer.filterFlex,
   };}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (RoadMapView);
 
 var styles = StyleSheet.create({
   container: {
@@ -103,22 +106,17 @@ var styles = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'stretch',
   },
-  //Top-leve containers
-  top: {
-    flex: 0.7
-  },
-  contents: {
+  contentView: {
+    flexDirection: 'row',
     flex: 18,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  },
+  sidebar: {
+    backgroundColor: templates.gray,
   },
   map: {
-    flex: 18,
-  },
-  mapPadding: {
-  },
-  text: {
-    color: templates.textColorWhite,
+    flex: 1,
   },
 })
+
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (RoadMapView);
