@@ -11,14 +11,13 @@ import CurrentSearchView from './components/currentSearchView'
 import LoadingView from './components/loadingView'
 import ReportView from './components/reportView'
 import SearchFormView from './components/searchFormView'
-import ShowMapView from './components/showMapView'
+import RoadMapView from './components/RoadMapView'
 import StoredDataView from './components/storedDataView'
 import SettingsView from './components/settingsView'
 
 import * as dataActions from './actions/dataActions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 
 export default class App extends Component {
   render() {
@@ -74,10 +73,12 @@ export default class App extends Component {
             hideNavBar={false}
             />
           <Scene
-            key="showMapView"
-            component={ShowMapView}
+            key="RoadMapView"
+            component={RoadMapView}
             title="Map"
             hideNavBar={false}
+            onRight={ () => console.log("Show map filter") }
+            rightTitle="Filtrer"
             />
         </Scene>
       </Router>
