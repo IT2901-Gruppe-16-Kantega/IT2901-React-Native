@@ -19,6 +19,7 @@ var StoredDataView = React.createClass({
   componentWillMount() {
     console.log(this.props.allSearches);
   },
+
   _renderHeader(section) {
     return (
       <View style={styles.accordionHeader}>
@@ -28,6 +29,7 @@ var StoredDataView = React.createClass({
       </View>
     );
   },
+
   //must do padding better than empty textcomponents
   _renderContent(section) {
     return (
@@ -72,6 +74,7 @@ var StoredDataView = React.createClass({
       </View>
     </View>
   },
+
   buttonPress(section){
     this.props.setCurrentRoadSearch(section);
     console.log(section);
@@ -79,11 +82,6 @@ var StoredDataView = React.createClass({
     //do something
   }
 });
-
-
-
-
-
 
   var styles = StyleSheet.create({
     container: {

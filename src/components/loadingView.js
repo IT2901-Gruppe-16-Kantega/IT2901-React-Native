@@ -6,10 +6,15 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
+import TimerMixin from 'react-timer-mixin';
+
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
+
+// 3rd party module imports
+import * as Progress from 'react-native-progress';
 
 //import only the actions that we need
 import * as dataActions from '../actions/dataActions'
@@ -22,6 +27,7 @@ const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/';
 const preFetchURL = 'vegobjekter/96/statistikk';
 
 var LoadingView = React.createClass({
+  mixins: [TimerMixin],
 
   //create URL happens here here
   componentWillMount() {
@@ -37,7 +43,20 @@ var LoadingView = React.createClass({
     const url = baseURL + 'vegobjekter/' + objektID + '?kommune=' + this.props.kommune.nummer + '&inkluder=alle&srid=4326';
     this.props.fetchDataStart();
     fetchFromAPI_all(this.props.fetchDataReturned, url);
+
+    this.state = {
+      counter: 0,
+      progress: 0
+    }
+
+    this.getProgress();
   },
+
+  /*<ActivityIndicator
+    animating={this.props.fetching}
+    style={[styles.fetchingStatus, {height: 80}]}
+    size="large"
+    />*/
 
   render() {
     return <View style={styles.container}>
@@ -46,18 +65,19 @@ var LoadingView = React.createClass({
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
-        <ActivityIndicator
-          animating={this.props.fetching}
-          style={[styles.fetchingStatus, {height: 80}]}
-          size="large"
-          />
+        <Progress.Circle
+          progress={this.state.progress}
+          color='white'
+          showsText={true}
+          size={80}
+        />
         <View style={styles.fetchingInfo}>
           <View style={styles.padding}/>
           <View style={styles.progressInfo}>
             <Text style={styles.text}> Some information about progress:</Text>
             <Text style={styles.text}></Text>
             <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
-            <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
+            <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar + this.state.counter}</Text>
             <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
           </View>
         </View>
@@ -66,6 +86,25 @@ var LoadingView = React.createClass({
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
+  },
+
+  getProgress() {
+    this.setTimeout(() => {
+      this.getProgress();
+    }, 10);
+
+    if (isNaN(this.props.numberOfObjectsFetchedSoFar / this.props.numberOfObjectsToBeFetched)) {
+      this.setState({progress: 0});
+    } else {
+      if(this.state.counter < this.props.numberOfObjectsToBeFetched) {
+        this.setState({counter: this.state.counter + 1});
+      } else {
+        this.setState({counter: this.props.numberOfObjectsToBeFetched - 100})
+      }
+
+      const progress = (this.props.numberOfObjectsFetchedSoFar + this.state.counter) / this.props.numberOfObjectsToBeFetched;
+      this.setState({progress: progress});
+    }
   },
 
   //this may be really bad as componentDidUpdate may be called a lot of times

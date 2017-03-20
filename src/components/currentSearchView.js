@@ -37,7 +37,8 @@ var CurrentSearchView = React.createClass({
       </View>
     </View>
   },
-  createInformationView(){
+
+  createInformationView() {
     return <View style={styles.informationView}>
       <View style={styles.informationPadding}/>
       <View style={styles.information}>
@@ -51,7 +52,8 @@ var CurrentSearchView = React.createClass({
       <View style={styles.informationPadding}/>
     </View>
   },
-  createButtons(){
+
+  createButtons() {
     return <View style={styles.buttons}>
       <View style={styles.buttonArea1}>
         <TouchableHighlight
@@ -92,7 +94,6 @@ var CurrentSearchView = React.createClass({
     </View>
   },
   openAR() {
-
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
     Linking.openURL("ARApp:");
@@ -187,7 +188,6 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-
     currentRoadSearch: state.dataReducer.currentRoadSearch,
   };}
 

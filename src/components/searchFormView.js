@@ -82,12 +82,12 @@ var SearchFormView = React.createClass({
     //Should also check the number of objects that are going to be fetcehd here
     //and give the user the ability to cancel the search if there is going to be
     // long waiting time
-    if(this.props.kommune_valid==true){
+    if(this.props.kommune_valid){
       this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();
     }
     else{
-      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
+      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input.");
     }
   },
 });

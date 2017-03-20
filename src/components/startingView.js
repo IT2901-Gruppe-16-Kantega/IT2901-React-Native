@@ -23,6 +23,7 @@ var StartingView = React.createClass({
   componentWillMount() {
     //just dispactches an action no idea what happens
   },
+
   render() {
     //may also use this for readability const {user, tweets} = this.props;
     return <View style= {styles.container}>
@@ -94,15 +95,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
-
-
-
-
-
-
-
-
-
 
 /*                        REDUX STUFF
 The return of mapStateToProps is what this comoponent may see from the store
