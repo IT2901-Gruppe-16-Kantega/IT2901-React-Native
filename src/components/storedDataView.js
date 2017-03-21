@@ -63,8 +63,8 @@ var StoredDataView = React.createClass({
     </View>
   },
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
@@ -75,99 +75,80 @@ var StoredDataView = React.createClass({
           renderContent={this._renderContent}
           />
       </View>
-      <View style={styles.footer}>
+      <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
   buttonPress(section){
     this.props.setCurrentRoadSearch(section);
-    //console.log(section);
     Actions.currentSearchView();
-    //do something
   }
 });
 
 
 
+var styles = StyleSheet.create({
+  //Top-leve containers
+  header: {
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //backgroundColor: 'yellow'
+    backgroundColor: templates.gray
+  },
+  contents: {
+    flex: 14,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    backgroundColor: templates.gray
+  },
+  accordionHeader: {
+    //flex:1,
+    borderColor: "white",
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.gray,
+    padding: 10
 
+  },
+  accordionFrame: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.gray,
+  },
+  accordionContentsPadding: {
+    flex: 0.1,
+  },
+  accordionContentsFrame: {
 
+  },
+  accordionContents: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#8A9094',
 
-  var styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      //justifyContent: 'center',
-      alignItems: 'stretch',
-    },
-    //Top-leve containers
-    top: {
-      flex: 0.7
-    },
-    header: {
-      flex: 4,
-      justifyContent: 'center',
-      alignItems: 'center',
-      //backgroundColor: 'yellow'
-      backgroundColor: templates.gray
-    },
-    contents: {
-      flex: 14,
-      justifyContent: 'flex-start',
-      alignItems: 'stretch',
-      backgroundColor: templates.gray
-    },
-    accordionHeader: {
-      //flex:1,
-      borderColor: "white",
-      borderWidth: 2,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: templates.gray,
-      padding: 10
+  },
+  accordionContentsPadding: {
+    flex: 0.1,
+  },
+  text: {
+    color: templates.textColorWhite,
+  },
+})
 
-    },
-    accordionFrame: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: templates.gray,
-    },
-    accordionContentsPadding: {
-      flex: 0.1,
-    },
-    accordionContentsFrame: {
+function mapStateToProps(state) {
+  return {
+    allSearches: state.dataReducer.allSearches,
+  };}
 
-    },
-    accordionContents: {
-      flex: 2,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#8A9094',
-
-    },
-    accordionContentsPadding: {
-      flex: 0.1,
-    },
-    footer: {
-      flex:0.7,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    text: {
-      color: templates.textColorWhite,
-    },
-  })
-
-  //function mapDispatchToProps(dispatch) {return bindActionCreators(storedDataActions, dispatch);}
-  function mapStateToProps(state) {
+  function mapDispatchToProps(dispatch) {
     return {
-      allSearches: state.dataReducer.allSearches,
-    };}
-
-    function mapDispatchToProps(dispatch) {
-      return {
-        //dataActions
-        setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
-      }
+      //dataActions
+      setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
     }
-    export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);
+  }
+  export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);

@@ -1,13 +1,22 @@
 //SearchReducer holds all informartion typed in by user in searchFormField
 //and packages this into url
-
+import * as templates from '../utilities/templates'
 
 export default function reducer(state={
   //legg inn react.proptypes
 
+  //input fields for fylke new
+  fylke_input: [],
+  fylke_navn: '',
+  fylke_text: '',
+  fylke_chosen: false,
+
   //inputfelter
-  fylke_input: null,
-  fylke_valid: false,
+  vei_input: null,
+  kommune_input: null,
+  objekttyper: [],
+
+
 
   kommune_input: null,
   kommune_valid: false,
@@ -18,11 +27,48 @@ export default function reducer(state={
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
 
-  //only used when debugging
-  kommune_navn: 'not defined',
+  //debugging
 
 }, action) {
   switch (action.type) {
+    case "INPUT_FYLKE_MULTIPLE": {
+      return{
+        ...state,
+        fylke_input: action.payload.result,
+        fylke_chosen: false,
+        fylke_text: action.payload.fylke_text,
+      }
+    }
+    case "INPUT_FYLKE_SINGLE": {
+      return{
+        ...state,
+        fylke_input: action.payload.result,
+        fylke_navn: action.payload.result[0].navn,
+        fylke_chosen: false,
+        fylke_text: action.payload.fylke_text,
+      }
+    }
+    case "FYLKE_INPUT_NOT_VALID": {
+      return{
+        ...state,
+        fylke_input: [],
+        fylke_navn: '',
+        fylke_text: action.payload,
+        fylke_chosen: false,
+      }
+    }
+    case "CHOOSE_FYLKE": {
+      return {
+        ...state,
+        fylke_input: action.payload,
+        fylke_valid: true,
+        fylke_navn: action.payload[0].navn,
+        fylke_text: action.payload[0].navn,
+        fylke_chosen: true,
+      }
+    }
+
+
     case "INPUT_KOMMUNE": {
       return{
         ...state,
@@ -43,21 +89,7 @@ export default function reducer(state={
         kommune_input_color_border: 'lightgray',
       }
     }
-    case "INPUT_FYLKE": {
-      return{
-        ...state,
-        fylke_input: action.payload,
-        //fylke_navn: action.payload.navn,
-        fylke_valid: true,
-      }
-    }
-    case "FYLKE_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        fylke_valid: false,
-        fylke_navn: 'ukjent kommuneId',
-      }
-    }
+
     case "COMBINE_PARAMETERS": {
         return{
           ...state,

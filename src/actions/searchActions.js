@@ -20,11 +20,29 @@ export function inputFylke(input){
   return function(dispatch) {
     searchForFylke(input.text)
     .then((result) => {
-      dispatch({type: "INPUT_FYLKE", payload: result})
+      if(result.length==1){
+        dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
+          result: result,
+          fylke_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
+          result: result,
+          fylke_text: input.text,
+        }})
+      }
     })
     .catch((err) => {
-      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: err})
+      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
     })
+  }
+}
+
+export function chooseFylke(input){
+  return{
+    type: "CHOOSE_FYLKE",
+    payload: input,
   }
 }
 

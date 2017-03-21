@@ -53,8 +53,8 @@ function searchForKommune(kommuneID) {
   function searchForFylke(fylke_navn){
     return new Promise(function(resolve, reject){
       var fylkerArray = [];
-      fylkerArray.push(fylker.filter(compareInput, fylke_navn));
-      if(fylkerArray.length > 0) {
+      fylkerArray = fylker.filter(compareInput, fylke_navn);
+      if(fylkerArray.length > 0 && fylkerArray.length != 19) {
         resolve(fylkerArray);
       }
       else {

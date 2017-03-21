@@ -23,15 +23,9 @@ import {searchForFylke} from '../utilities/utils';
 var valid = true;
 
 
-/*      ---Layout----
-  TWO PARTS:
-  1. Where
-  2. What
+/*
 
-  The screen is split in two views,
-  using react-native-keyboard-spacer to make room for keyboard
-  when typing in where, only the where part is focused, the what part is hidden
-
+  DPRECATED SEARCH VIEW, new in components.SearchView
 
 */
 
@@ -39,32 +33,14 @@ var valid = true;
 var SearchFormView = React.createClass({
 
   render() {
-    return <View style = {styles.container}>
-      <View style={styles.top}></View>
+    return <View style = {templates.container}>
+      <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
         <View style={styles.inputArea}>
-          <Text style={styles.text}>Fylke</Text>
-          <TextInput
-            style={{padding: 5,
-              height: 30,
-              color: 'white',
-              borderWidth: 2,
-              borderColor: 'grey',
-              backgroundColor: 'black'}}
-            maxLength={4}
-            placeholder="Type in fylke"
-            onChangeText={(text) => this.props.inputFylke({text})}
-            keyboardType = "default"
-            returnKeyType = 'done'
-            >
-          </TextInput>
-          <Text style={{color: 'white'}}>
-            {this.props.fylke_valid}
-          </Text>
           <Text style={styles.text}>Kommune</Text>
           <TextInput
             style={{padding: 5,
@@ -94,7 +70,7 @@ var SearchFormView = React.createClass({
           <Text style={{color: templates.textColorWhite}}>Search</Text>
         </TouchableHighlight>
       </View>
-      <View style={styles.footer}>
+      <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
@@ -117,15 +93,7 @@ var SearchFormView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -157,11 +125,6 @@ var styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: templates.gray
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: templates.textColorWhite,

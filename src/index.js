@@ -6,14 +6,16 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
-import StartingView from './components/startingView'
-import CurrentSearchView from './components/currentSearchView'
-import LoadingView from './components/loadingView'
-import ReportView from './components/reportView'
-import SearchFormView from './components/searchFormView'
-import ShowMapView from './components/showMapView'
-import StoredDataView from './components/storedDataView'
-import SettingsView from './components/settingsView'
+import StartingView from './components/StartingView'
+import CurrentSearchView from './components/CurrentSearchView'
+import LoadingView from './components/LoadingView'
+import ReportView from './components/ReportView'
+import SearchFormView from './components/SearchFormView'
+import SearchView from './components/SearchView'
+import ShowMapView from './components/ShowMapView'
+import StoredDataView from './components/StoredDataView'
+import SettingsView from './components/SettingsView'
+import * as templates from './utilities/templates'
 
 import * as dataActions from './actions/dataActions'
 import { connect } from 'react-redux'
@@ -31,14 +33,14 @@ export default class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-            initial={true}
 
             />
           <Scene
-            key="searchFormView"
-            component={SearchFormView}
+            key="SearchView"
+            component={SearchView}
             title="Search"
             hideNavBar={false}
+            initial={true}
 
             />
           <Scene
@@ -76,8 +78,10 @@ export default class App extends Component {
           <Scene
             key="showMapView"
             component={ShowMapView}
-            title="Map"
+            title=""
             hideNavBar={false}
+            navigationBarStyle={styles.navigatorStyle}
+
             />
         </Scene>
       </Router>
@@ -85,6 +89,13 @@ export default class App extends Component {
   }
 }
 
+var styles = StyleSheet.create({
+  navigatorStyle: {
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderBottomWidth: 0,
+  }
+
+ })
 
 /*
 Kode som brukes for testing med tempobjekter
@@ -169,11 +180,14 @@ hideNavBar={false}
 }
 
 
+
 function mapStateToProps(state) {
 return {
 //Status information about search
 fetching: state.dataReducer.fetching,
 fetched: state.dataReducer.fetched,
+
+filterFlex: stat....
 };}
 
 function mapDispatchToProps(dispatch) {
@@ -183,5 +197,4 @@ createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (App);
-
 */

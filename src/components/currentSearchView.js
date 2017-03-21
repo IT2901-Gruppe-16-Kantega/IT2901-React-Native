@@ -19,8 +19,8 @@ var CurrentSearchView = React.createClass({
     this.props.resetFetching();
   },
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
@@ -30,7 +30,7 @@ var CurrentSearchView = React.createClass({
       <View style={styles.bottom}>
         {this.createButtons()}
       </View>
-      <View style={styles.footer}>
+      <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
@@ -102,15 +102,8 @@ var CurrentSearchView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
+
   header: {
     flex: 4,
     justifyContent: 'center',
@@ -170,11 +163,6 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'aliceblue',
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: templates.textColorWhite,

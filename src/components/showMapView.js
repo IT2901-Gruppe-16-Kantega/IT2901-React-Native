@@ -11,12 +11,7 @@ import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
-var region = {
-  latitude: 63.43,
-  longitude: 10.41,
-  latitudeDelta: 1,
-  longitudeDelta: 1,
-};
+var region = null;
 
 var ShowMapView = React.createClass({
   componentWillMount() {
@@ -30,10 +25,10 @@ var ShowMapView = React.createClass({
       longitude: objLong,
       latitudeDelta: 1,
       longitudeDelta: 1,
-    }
+    };
   },
   render() {
-    return <View style={styles.container}>
+    return <View style={templates.container}>
         <MapView
           style={styles.map}
           region={region}
@@ -66,10 +61,6 @@ var ShowMapView = React.createClass({
             />
         })}
         </MapView>
-
-      <View style={styles.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
-      </View>
     </View>
   },
   mapRegionChanged(region) {
@@ -93,15 +84,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, null) (ShowMapView);
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
+
   contents: {
     flex: 18,
     flexDirection: 'column',
@@ -111,13 +95,7 @@ var styles = StyleSheet.create({
   map: {
     flex: 18,
   },
-  mapPadding: {
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   text: {
     color: templates.textColorWhite,
   },

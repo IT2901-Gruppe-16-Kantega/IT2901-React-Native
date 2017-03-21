@@ -4,7 +4,17 @@
 
   WORK LIST:
 
-  FIRST! velg kommune, hent skil over kommuner, vist skilt på kart
+  TODO
+  - SearchView
+  -   - veg = e, r, f
+
+
+
+
+
+
+
+  OLD! velg kommune, hent skilt over kommuner, vist skilt på kart
   - hent kommuner manuelt: DONE!
   - create fetch request based on chosen kommune: DONE!
   - lag en mer oversiktlig layout, med et felt for input mellom get data: DONE!
@@ -56,7 +66,7 @@
   -  har en when loading true state som settes true når ferdig, og da kalles vis skilt
 
   - loading, hent først antallet objekter, og gi tilbakemelding ettersom det blir hentet
-  https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk?kommune=231
+  https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk?kommune=231: DONE!
   - fiks slik at en får tilbakemelding dersom inntastet data er feil: DONE!
 
 
@@ -70,7 +80,7 @@
 
   - bruker må bestemme lokasjon
     bestemmer lokasjonen på forhånd
-    og sendes da til AR
+    og sendes da til AR: DONE!
 
   - sett default kart til google maps, slik at api-key alltid er satt,
     dette fordi android bruker google maps som standard og den feiler da på android om ingen api-key er satt
@@ -87,7 +97,7 @@
 
 
       -------NEW SHIT---------
-  - endre slik at ny søk legges til appending, dette må til for å lagre søk
+  - endre slik at ny søk legges til appending, dette må til for å lagre søk: DONE!
   - kan hende vi bør ha loading screen før map vises, evt:!
     markers lages nå objektene er hentet, her har vi allerede lang ventetid som kan brukes
   - kan være vi bør ha en loading etter exit også, men dette gjelder kun dersom storing er false, da det er sletting av state som tar tid

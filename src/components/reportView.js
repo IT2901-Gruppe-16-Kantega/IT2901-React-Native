@@ -13,8 +13,8 @@ import * as reportActions from '../actions/reportActions'
 
 var ReportView = React.createClass({
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
         <View style={styles.header}>
           <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
         </View>
@@ -23,7 +23,7 @@ var ReportView = React.createClass({
             Her vil det komme informasjon om rapporter
           </Text>
         </View>
-        <View style={styles.footer}>
+        <View style={templates.footer}>
           <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
         </View>
     </View>
@@ -31,15 +31,8 @@ var ReportView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
+
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -52,11 +45,6 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: templates.gray
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: templates.textColorWhite,

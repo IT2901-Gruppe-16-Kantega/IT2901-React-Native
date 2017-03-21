@@ -11,11 +11,8 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
-
-//import only the actions that we need
 import * as dataActions from '../actions/dataActions'
 import * as searchActions from '../actions/searchActions'
-
 import {fetchFromAPI_all, fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
 var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
@@ -23,10 +20,6 @@ var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk
 
 var LoadingView = React.createClass({
 
-  /*
-    Cancel search!
-
-  */
 
   //create URL happens here here
   componentWillMount() {
@@ -39,14 +32,14 @@ var LoadingView = React.createClass({
     }.bind(this));
 
     //Creates url and fetches objects
-    var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326';
+    var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326&antall=8000';
     this.props.fetchDataStart();
     fetchFromAPI_all(this.props.fetchDataReturned, url);
 
   },
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
@@ -64,18 +57,12 @@ var LoadingView = React.createClass({
             <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
             <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
-            <TouchableHighlight
-              style= {templates.smallButton}
-              underlayColor="azure"
-              onPress = {this.cancelSearch}
-              >
-              <Text style={{color: templates.textColorWhite}}>Cancel</Text>
-            </TouchableHighlight>
+
         </View>
         </View>
       </View>
 
-      <View style={styles.footer}>
+      <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
@@ -92,11 +79,22 @@ var LoadingView = React.createClass({
         Actions.currentSearchView();
       }
     },
+
+    /* Cancel is urrently deprecated because the fetch is in wrapper is not cancelled
+        Need to find a way to stop the ongoing fetch in wrapper
+        <TouchableHighlight
+          style= {templates.smallButton}
+          underlayColor="azure"
+          onPress = {this.cancelSearch}
+          >
+          <Text style={{color: templates.textColorWhite}}>Cancel</Text>
+        </TouchableHighlight>
     cancelSearch() {
       this.props.resetSearchParameters();
       this.props.resetFetching();
       Actions.startingView();
     }
+    */
   });
 
 
@@ -131,15 +129,8 @@ var LoadingView = React.createClass({
     export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);
 
     var styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        //justifyContent: 'center',
-        alignItems: 'stretch',
-      },
       //Top-leve containers
-      top: {
-        flex: 0.7
-      },
+
       header: {
         flex: 7.5,
         justifyContent: 'center',
@@ -169,11 +160,6 @@ var LoadingView = React.createClass({
       },
       progressInfo: {
         flex: 1.5,
-      },
-      footer: {
-        flex:0.7,
-        justifyContent: 'center',
-        alignItems: 'center',
       },
       text: {
         color: templates.textColorWhite,
