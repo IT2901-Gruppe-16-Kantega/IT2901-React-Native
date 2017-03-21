@@ -15,8 +15,10 @@
 
   -   - veg = e, r, f
 
+  - flytt deklarering av vegkategorier fra utils til egen fil under data
   - fiks, dobbeltttouch for å velge fylke
-  - endre all bruk av vei til veg, altså ordet
+  - endre all bruk av vei til veg, altså ordet DONE!
+    MEEEEEN burde nok endre variablenavn veg til vegnummer
 
 
 

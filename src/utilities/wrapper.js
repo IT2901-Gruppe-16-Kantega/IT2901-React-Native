@@ -81,7 +81,10 @@ function fetch_Kommuner(callback){
   })
 }
 
-async function fetchVeier(fylke){
+//TODO!
+// create that actually fetches what we need!
+
+async function fetchVeier(fylke, vegkategori){
   var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?fylke='+fylke.nummer+'&inkluder=egenskaper';
   try {
     const response = await fetch(url);

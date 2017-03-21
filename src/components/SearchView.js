@@ -18,7 +18,7 @@ import * as templates from '../utilities/templates'
 
 import * as dataActions from '../actions/dataActions'
 
-import {searchForFylke} from '../utilities/utils';
+import {searchForFylke, fetchVeierFromAPI} from '../utilities/utils';
 
 import {fetchTotalNumberOfObjects} from '../utilities/wrapper'
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
@@ -72,7 +72,7 @@ var SearchView = React.createClass({
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.whereContents}>
               <Text style={styles.text}>Where?</Text>
-              {this.createFylkeInputField(
+              {this.createInputField(
                 'fylke',
                 this.props.fylke_input,
                 this.props.fylke_text,
@@ -92,7 +92,19 @@ var SearchView = React.createClass({
                 this.chooseVegkategori,
                 true
               )}
+              <Text style={styles.text}>Velg vegnummer</Text>
+              {this.createInputField(
+                'Vegnummer',
+                this.props.veg_input,
+                this.props.veg_text,
+                this.props.veg_chosen,
+                this.props.veg_enabled,
+                this.props.inputVeg,
+                this.chooseVeg,
+                true
+              )}
             </View>
+
             <View style={styles.whatContents}>
 
             </View>
@@ -116,8 +128,11 @@ var SearchView = React.createClass({
     var dataSource = ds.cloneWithRows(list);
     var color = 'darkgray';
     if(editable==true){
-      color = 'white';
+      color = 'green';
     };
+    if(type=='Vegnummer'){
+      fetchVeierFromAPI(this.props.fylke_input, this.props.vegkategori_input);
+    }
     return <View style={{backgroundColor: color}}>
       <TextInput
         autocorrect= {false}
@@ -149,7 +164,16 @@ var SearchView = React.createClass({
           }}/>
     </View>
   },
-  chooseVei(input){
+  chooseVegkategori(input){
+    var chosenVegkategori = [];
+    chosenVegkategori.push(this.props.vegkategori_input.find((vegkategori) => {
+      if(vegkategori.navn == input){
+        return vegkategori;
+      }
+    }))
+    this.props.chooseVegkategori(chosenVegkategori);
+  },
+  chooseFylke(input){
     var chosenFylke = [];
     chosenFylke.push(this.props.fylke_input.find((fylke) => {
       if(fylke.navn == input){
@@ -159,7 +183,18 @@ var SearchView = React.createClass({
     this.props.chooseFylke(chosenFylke);
   },
 
+  chooseVeg(input){
+    var chosenVeg = [];
+    chosenVeg.push(this.props.veg_input.find((veg) => {
+      if(veg.navn == input){
+        return veg;
+      }
+    }))
+    this.props.chooseVeg(chosenVeg);
+  },
 
+
+  //DEPRACTED, createInputField used, this is kept for safety reasons
   createFylkeInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction){
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1.guid != r2.guid});
     var dataSource = ds.cloneWithRows(list);
@@ -194,18 +229,10 @@ var SearchView = React.createClass({
           }}/>
     </View>
   },
-  chooseFylke(input){
-    var chosenFylke = [];
-    chosenFylke.push(this.props.fylke_input.find((fylke) => {
-      if(fylke.navn == input){
-        return fylke;
-      }
-    }))
-    this.props.chooseFylke(chosenFylke);
-  },
 
 
-    search() {
+
+  search() {
       //Check that all input fields are valid
       //Then combine all parameters to one file
 
@@ -220,7 +247,7 @@ var SearchView = React.createClass({
         Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
       }
     },
-    createSearchButton(){
+  createSearchButton(){
       return <TouchableHighlight
         style= {templates.smallButton}
         underlayColor="azure"
@@ -290,6 +317,12 @@ var styles = StyleSheet.create({
     color: 'white',
     borderWidth: 2,
   },
+  textInput2: {
+    padding: 5,
+    height: 40,
+    color: 'black',
+    borderWidth: 2,
+  },
 
   buttonArea: {
     flex: 2,
@@ -315,13 +348,20 @@ function mapStateToProps(state) {
     fylke_chosen: state.searchReducer.fylke_chosen,
 
     //vegkategori fields
-    vegkategori_enabled: state.searchReducer.vei_enabled,
-    vegkategori_input: state.searchReducer.vei_input,
-    vegkategori_valid: state.searchReducer.vei_valid,
-    vegkategori_navn: state.searchReducer.vei_navn,
-    vegkategori_text: state.searchReducer.vei_text,
-    vegkategori_chosen: state.searchReducer.vei_chosen,
+    vegkategori_enabled: state.searchReducer.vegkategori_enabled,
+    vegkategori_input: state.searchReducer.vegkategori_input,
+    vegkategori_valid: state.searchReducer.vegkategori_valid,
+    vegkategori_navn: state.searchReducer.vegkategori_navn,
+    vegkategori_text: state.searchReducer.vegkategori_text,
+    vegkategori_chosen: state.searchReducer.vegkategori_chosen,
 
+    //veg fields
+    veg_enabled: state.searchReducer.veg_enabled,
+    veg_input: state.searchReducer.veg_input,
+    veg_valid: state.searchReducer.veg_valid,
+    veg_navn: state.searchReducer.veg_navn,
+    veg_text: state.searchReducer.veg_text,
+    veg_chosen: state.searchReducer.veg_chosen,
 
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
@@ -335,6 +375,9 @@ function mapDispatchToProps(dispatch) {
 
     inputVegkategori: bindActionCreators(searchActions.inputVegkategori, dispatch),
     chooseVegkategori: bindActionCreators(searchActions.chooseVegkategori, dispatch),
+
+    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
+    chooseVeg: bindActionCreators(searchActions.chooseVeg, dispatch),
 
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
     setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),

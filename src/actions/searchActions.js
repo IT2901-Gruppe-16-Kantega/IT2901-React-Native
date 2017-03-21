@@ -1,37 +1,8 @@
 //
-import {createBST, searchForKommune, searchForFylke, searchForVegkategori} from '../utilities/utils';
+import {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg} from '../utilities/utils';
 createBST();
 
 //functions for handling input in all searchfields
-export function inputVegkategori(input){
-  return function(dispatch) {
-    searchForVegkategori(input.text)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_VEGKATEGORI_SINGLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_VEGKATEGORI_MULTIPLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "VEGKATEGORI_INPUT_NOT_VALID", payload: input.text})
-    })
-  }
-}
-
-export function chooseVegkategori(input){
-  return{
-    type: "CHOOSE_VEGKATEGORI",
-    payload: input,
-  }
-}
 
 export function inputFylke(input){
   return function(dispatch) {
@@ -55,13 +26,71 @@ export function inputFylke(input){
     })
   }
 }
-
 export function chooseFylke(input){
   return{
     type: "CHOOSE_FYLKE",
     payload: input,
   }
 }
+
+export function inputVegkategori(input){
+  return function(dispatch) {
+    searchForVegkategori(input.text)
+    .then((result) => {
+      if(result.length==1){
+        dispatch({type: "INPUT_VEGKATEGORI_SINGLE", payload: {
+          result: result,
+          vegkategori_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_VEGKATEGORI_MULTIPLE", payload: {
+          result: result,
+          vegkategori_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "VEGKATEGORI_INPUT_NOT_VALID", payload: input.text})
+    })
+  }
+}
+export function chooseVegkategori(input){
+  return{
+    type: "CHOOSE_VEGKATEGORI",
+    payload: input,
+  }
+}
+
+export function inputVeg(input){
+  return function(dispatch) {
+    searchForVeg(input.text)
+    .then((result) => {
+      if(result.length==1){
+        dispatch({type: "INPUT_VEG_SINGLE", payload: {
+          result: result,
+          veg_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_VEG_MULTIPLE", payload: {
+          result: result,
+          veg_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "VEG_INPUT_NOT_VALID", payload: input.text})
+    })
+  }
+}
+export function chooseVeg(input){
+  return{
+    type: "CHOOSE_VEG",
+    payload: input,
+  }
+}
+
 
 
 export function inputKommune(input){

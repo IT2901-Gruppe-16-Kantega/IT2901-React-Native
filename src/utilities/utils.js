@@ -15,7 +15,13 @@ import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {fetchVeier} from './wrapper';
 
+const vegkategorier = [
+      {navn: 'Europaveg', id: 5492},
+      {navn: 'Riksveg', id: 5493},
+      {navn: 'Fylkesveg', id: 5494},
+      {navn: 'Kommunal veg', id: 5495}];
 
+var veier = [];
 
 var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
 var bst = new BinarySearchTree({unique: true});
@@ -52,6 +58,15 @@ function searchForKommuneNy(fylke_id, kommune_navn) {
     })
   }
 
+function filterFylke(f) {
+    return f.fylke === parseInt(this);
+  }
+
+/*
+    NEW METOHDS CURRENTLY USED
+
+*/
+
 function searchForFylke(fylke_navn){
     return new Promise(function(resolve, reject){
       var fylkerArray = [];
@@ -65,33 +80,46 @@ function searchForFylke(fylke_navn){
     })
   }
 
+function searchForVegkategori(input){
+  return new Promise(function(resolve, reject){
+    var vegkategoriArray = [];
+    vegkategoriArray = vegkategorier.filter(compareInput, input);
+    if(vegkategoriArray.length > 0 && vegkategoriArray.length != 4) {
+      resolve(vegkategoriArray);
+    }
+    else {
+      reject(Error("Not a valid vegkategori"));
+    }
+  })
+}
+
+//TODO!
+function fetchVeierFromAPI(fylke, vegtype){
+  //fetchVeier
+  //veier =
+
+}
+
+function searchForVeg(input, ){
+  return new Promise(function(resolve, reject){
+    var vegArray = [];
+    vegArray = veier.filter(compareInput, input);
+    if(vegArray.length > 0 && vegArray.length != veier.length) {
+      resolve(vegArray);
+    }
+    else {
+      reject(Error("Not a valid vegnummer"));
+    }
+  })
+}
+
 function compareInput(f){
     let stringInput = this.toString().toLowerCase();
     return f.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
   }
 
-function filterFylke(f) {
-    return f.fylke === parseInt(this);
-  }
-
-/*
-    TODO: Implement this!!
-*/
-function searchForVegkategori(){
-  return new Promise(function(resolve, reject){
-    var fylkerArray = [];
-    fylkerArray = fylker.filter(compareInput, fylke_navn);
-    if(fylkerArray.length > 0 && fylkerArray.length != 19) {
-      resolve(fylkerArray);
-    }
-    else {
-      reject(Error("Not a valid fylke"));
-    }
-  })
-}
 
 
 
 
-
-export {createBST, searchForKommune, searchForFylke, searchForVegkategori};
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVeierFromAPI};

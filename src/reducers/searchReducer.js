@@ -12,20 +12,18 @@ export default function reducer(state={
   fylke_chosen: false,
 
   //vegkategoriershit
-  vegkategorier: ['Europaveg', 'Riksveg', 'Fylkesveg', 'Kommunal veg'],
-
-  vegkategori_enabled: false,
+  vegkategori_enabled: false, //the same as saying fylike is valid
   vegkategori_input: [],
   vegkategori_navn: '',
   vegkategori_text: '',
   vegkategori_chosen: false,
 
   //VEISHIT
-  vei_enabled: false,
-  vei_input: [],
-  vei_navn: '',
-  vei_text: '',
-  vei_chosen: false,
+  veg_enabled: false,
+  veg_input: [],
+  veg_navn: '',
+  veg_text: '',
+  veg_chosen: false,
 
   fetching_veier: false,
 
@@ -48,12 +46,51 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
+    case "INPUT_VEG_MULTIPLE": {
+      return{
+        ...state,
+        veg_input: action.payload.result,
+        veg_chosen: false,
+        veg_text: action.payload.veg_text,
+      }
+    }
+    case "INPUT_VEG_SINGLE": {
+      return{
+        ...state,
+        veg_input: action.payload.result,
+        veg_navn: action.payload.result[0].navn,
+        veg_chosen: false,
+        veg_text: action.payload.veg_text,
+      }
+    }
+    case "VEG_INPUT_NOT_VALID": {
+      return{
+        ...state,
+        veg_input: [],
+        veg_navn: '',
+        veg_text: action.payload,
+        veg_chosen: false,
+      }
+    }
+    case "CHOOSE_VEG": {
+      return {
+        ...state,
+        veg_input: action.payload,
+        veg_navn: action.payload[0].navn,
+        veg_text: action.payload[0].navn,
+        veg_chosen: true,
+      }
+    }
+
+
     case "INPUT_VEGKATEGORI_MULTIPLE": {
       return{
         ...state,
         vegkategori_input: action.payload.result,
         vegkategori_chosen: false,
         vegkategori_text: action.payload.vegkategori_text,
+
+        veg_enabled: false,
       }
     }
     case "INPUT_VEGKATEGORI_SINGLE": {
@@ -63,6 +100,8 @@ export default function reducer(state={
         vegkategori_navn: action.payload.result[0].navn,
         vegkategori_chosen: false,
         vegkategori_text: action.payload.vegkategori_text,
+
+        veg_enabled: true,
       }
     }
     case "VEGKATEGORI_INPUT_NOT_VALID": {
@@ -72,16 +111,20 @@ export default function reducer(state={
         vegkategori_navn: '',
         vegkategori_text: action.payload,
         vegkategori_chosen: false,
+
+        veg_enabled: false,
+
       }
     }
     case "CHOOSE_VEGKATEGORI": {
       return {
         ...state,
         vegkategori_input: action.payload,
-        vegkategori_valid: true,
         vegkategori_navn: action.payload[0].navn,
         vegkategori_text: action.payload[0].navn,
         vegkategori_chosen: true,
+
+        veg_enabled: true,
       }
     }
 
@@ -94,7 +137,7 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
 
-        vei_enabled: false,
+        vegkategori_enabled: false,
       }
     }
     case "INPUT_FYLKE_SINGLE": {
@@ -105,7 +148,7 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
 
-        vei_enabled: true,
+        vegkategori_enabled: true,
       }
     }
     case "FYLKE_INPUT_NOT_VALID": {
@@ -116,57 +159,18 @@ export default function reducer(state={
         fylke_text: action.payload,
         fylke_chosen: false,
 
-        vei_enabled: false,
+        vegkategori_enabled: false,
       }
     }
     case "CHOOSE_FYLKE": {
       return {
         ...state,
         fylke_input: action.payload,
-        fylke_valid: true,
         fylke_navn: action.payload[0].navn,
         fylke_text: action.payload[0].navn,
         fylke_chosen: true,
 
-        vei_enabled: true,
-      }
-    }
-
-
-    case "INPUT_VEI_MULTIPLE": {
-      return{
-        ...state,
-        vei_input: action.payload.result,
-        vei_chosen: false,
-        vei_text: action.payload.fylke_text,
-      }
-    }
-    case "INPUT_VEI_SINGLE": {
-      return{
-        ...state,
-        vei_input: action.payload.result,
-        vei_navn: action.payload.result[0].navn,
-        vei_chosen: false,
-        vei_text: action.payload.fylke_text,
-      }
-    }
-    case "VEI_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        vei_input: [],
-        vei_navn: '',
-        vei_text: action.payload,
-        vei_chosen: false,
-      }
-    }
-    case "CHOOSE_VEI": {
-      return {
-        ...state,
-        vei_input: action.payload,
-        vei_valid: true,
-        vei_navn: action.payload[0].navn,
-        vei_text: action.payload[0].navn,
-        vei_chosen: true,
+        vegkategori_enabled: true,
       }
     }
 
