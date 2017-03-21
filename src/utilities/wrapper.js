@@ -81,4 +81,15 @@ function fetch_Kommuner(callback){
   })
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects};
+async function fetchVeier(fylke){
+  var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?fylke='+fylke.nummer+'&inkluder=egenskaper';
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.log('ERROR: wrapper.fetchVeier');
+  }
+}
+
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeier};

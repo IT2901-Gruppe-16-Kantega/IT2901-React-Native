@@ -13,6 +13,8 @@ This iterative procedure keeps track of the search boundaries via two variables.
 import {kommuner_allinfo} from '../data/kommuner';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
+import {fetchVeier} from './wrapper';
+
 
 
 var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
@@ -37,7 +39,7 @@ function searchForKommune(kommuneID) {
     }
   })}
 
-  function searchForKommuneNy(fylke_id, kommune_navn) {
+function searchForKommuneNy(fylke_id, kommune_navn) {
     return new Promise(function(resolve, reject) {
       var kommunerArray = [];
       kommunerArray.push(kommuner.filter(compareInput, kommune_navn).filter(filterFylke, fylke_id))
@@ -50,7 +52,7 @@ function searchForKommune(kommuneID) {
     })
   }
 
-  function searchForFylke(fylke_navn){
+function searchForFylke(fylke_navn){
     return new Promise(function(resolve, reject){
       var fylkerArray = [];
       fylkerArray = fylker.filter(compareInput, fylke_navn);
@@ -63,19 +65,33 @@ function searchForKommune(kommuneID) {
     })
   }
 
-  function compareInput(f){
+function compareInput(f){
     let stringInput = this.toString().toLowerCase();
     return f.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
   }
 
-  function filterFylke(f) {
+function filterFylke(f) {
     return f.fylke === parseInt(this);
   }
 
+/*
+    TODO: Implement this!!
+*/
+function searchForVegkategori(){
+  return new Promise(function(resolve, reject){
+    var fylkerArray = [];
+    fylkerArray = fylker.filter(compareInput, fylke_navn);
+    if(fylkerArray.length > 0 && fylkerArray.length != 19) {
+      resolve(fylkerArray);
+    }
+    else {
+      reject(Error("Not a valid fylke"));
+    }
+  })
+}
 
 
 
 
 
-
-  export {createBST, searchForKommune, searchForFylke};
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori};

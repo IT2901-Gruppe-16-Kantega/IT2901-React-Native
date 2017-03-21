@@ -6,7 +6,17 @@
 
   TODO
   - SearchView
+
+  - Give feedback that input fylke er invalid
+    - trenger mest sansylig bare å ha grået ut neste felt,
+      kanskje med tekst: skriv inn gyldig fylke
+  - gjør createInputField helt generisk
+    flytte choosefylke() inn?
+
   -   - veg = e, r, f
+
+  - fiks, dobbeltttouch for å velge fylke
+  - endre all bruk av vei til veg, altså ordet
 
 
 

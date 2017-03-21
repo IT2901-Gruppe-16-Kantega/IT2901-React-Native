@@ -1,18 +1,35 @@
 //
-import {createBST, searchForKommune, searchForFylke} from '../utilities/utils';
+import {createBST, searchForKommune, searchForFylke, searchForVegkategori} from '../utilities/utils';
 createBST();
 
 //functions for handling input in all searchfields
-
-export function inputKommune(input){
+export function inputVegkategori(input){
   return function(dispatch) {
-    searchForKommune(input.text)
+    searchForVegkategori(input.text)
     .then((result) => {
-      dispatch({type: "INPUT_KOMMUNE", payload: result})
+      if(result.length==1){
+        dispatch({type: "INPUT_VEGKATEGORI_SINGLE", payload: {
+          result: result,
+          vegkategori_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_VEGKATEGORI_MULTIPLE", payload: {
+          result: result,
+          vegkategori_text: input.text,
+        }})
+      }
     })
     .catch((err) => {
-      dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
+      dispatch({type: "VEGKATEGORI_INPUT_NOT_VALID", payload: input.text})
     })
+  }
+}
+
+export function chooseVegkategori(input){
+  return{
+    type: "CHOOSE_VEGKATEGORI",
+    payload: input,
   }
 }
 
@@ -46,6 +63,18 @@ export function chooseFylke(input){
   }
 }
 
+
+export function inputKommune(input){
+  return function(dispatch) {
+    searchForKommune(input.text)
+    .then((result) => {
+      dispatch({type: "INPUT_KOMMUNE", payload: result})
+    })
+    .catch((err) => {
+      dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
+    })
+  }
+}
 
 export function combineSearchParameters(kommune){
   var combinedSearchParameters = [kommune];
