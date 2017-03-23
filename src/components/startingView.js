@@ -24,6 +24,10 @@ var StartingView = React.createClass({
     //just dispactches an action no idea what happens
   },
 
+  componentDidMount() {
+    Actions.searchFormView();
+  },
+
   render() {
     //may also use this for readability const {user, tweets} = this.props;
     return <View style= {styles.container}>

@@ -19,14 +19,15 @@ export function setCurrentRoadSearch(roadSearch){
 }
 
 
-export function createSearchObject(description, objects, report, combParams){
+export function createSearchObject(description, objects, report, combParams, objekttypeInfo) {
   var roadSearch = {
     key: Date.now(),
     date: moment().format('MMMM Do YYYY, h:mm:ss a'),
     description: description,
     roadObjects: objects,
     report: report,
-    searchParameters: combParams
+    searchParameters: combParams,
+    objekttypeInfo: objekttypeInfo,
     }
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
@@ -47,7 +48,7 @@ export function setNumberOfObjectsToBeFetched(number){
 
 //Function that sets fetching=true
 export function fetchDataStart(){
-  return{
+  return {
     type: "FETCH_DATA_START"
   }
 }
@@ -58,7 +59,7 @@ export function fetchDataReturned(data, fetched) {
   if(fetched) {
     fetching = false;
     //return if all objects is fetched
-    return{
+    return {
       type: "FETCH_DATA_RETURNED",
       payload: {
         data: data,
@@ -97,5 +98,12 @@ export function clearData(){
 export function writingFile() {
   return {
     type: "WRITING_FILE",
+  }
+}
+
+export function setObjekttypeInfo(objekttypeInfo) {
+  return {
+    type: "SET_OBJEKTTYPE_INFO",
+    payload: objekttypeInfo,
   }
 }

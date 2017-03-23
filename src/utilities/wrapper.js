@@ -7,16 +7,16 @@ const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
-function fetchFromAPI_all(callback, url){
+function fetchFromAPI_all(callback, url) {
   //console.log('#wrapper.fetchFromAPI');
   var objects = [];
   fetchData(url).then(function(firstObject){
     var flere = firstObject.metadata.returnert;
-    if(flere > 0){
+    if(flere > 0) {
       //console.log('--> flere objekter finnes');
       recursiveFetch(firstObject, objects, callback);
     }
-    else{
+    else {
       //console.log('--> ingen flere objekter');
     }
   })
@@ -82,10 +82,10 @@ function fetch_Kommuner(callback){
   })
 }
 
-function fetchEgenskapstyper(objekttypeID, callback) {
+function fetchObjekttypeInfo(objekttypeID, callback) {
   fetchData(objekttypeURL + objekttypeID).then(function(data) {
     callback(data, true);
   })
 }
 
-export {fetchFromAPI_all, fetch_Kommuner, fetchEgenskapstyper, fetchTotalNumberOfObjects};
+export {fetchFromAPI_all, fetch_Kommuner, fetchObjekttypeInfo, fetchTotalNumberOfObjects};

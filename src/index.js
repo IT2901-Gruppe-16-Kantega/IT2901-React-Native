@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  LayoutAnimation
+  LayoutAnimation,
+  Dimensions,
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -21,6 +22,8 @@ import * as mapActions from './actions/mapActions'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
+let ScreenWidth = Dimensions.get("window").width;
 
 class App extends Component {
   render() {
@@ -78,32 +81,53 @@ class App extends Component {
           <Scene
             key="RoadMapView"
             component={RoadMapView}
-            title="Map"
+            title=""
             hideNavBar={false}
-            onRight={ this.toggleFilterFlex.bind(this) }
+            onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
+            navigationBarStyle={styles.navigatorStyle}
             />
         </Scene>
       </Router>
     )
   }
 
-  toggleFilterFlex() {
+  toggleSidebar() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    this.props.filterFlex == 0 ? this.props.setFilterFlex(3) : this.props.setFilterFlex(0);
+
+    var width = ScreenWidth / 1.5;
+    var xPos = ScreenWidth - width;
+    var frame = {width: width};
+
+    if(this.props.sidebarFrame.left == xPos) {
+      frame.left = ScreenWidth;
+      this.props.toggleSecondSidebar(false);
+    } else {
+      frame.left = xPos;
+    }
+
+    this.props.setSidebarFrame(frame);
   }
 }
+
+var styles = StyleSheet.create({
+  navigatorStyle: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderBottomWidth: 0,
+  }
+})
 
 function mapStateToProps(state) {
   return {
     //Status information about search
-    filterFlex: state.mapReducer.filterFlex,
+    sidebarFrame: state.mapReducer.sidebarFrame,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setFilterFlex: bindActionCreators(mapActions.setFilterFlex, dispatch),
+    setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
+    toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
   }
 }
 

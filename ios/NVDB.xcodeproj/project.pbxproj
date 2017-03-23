@@ -261,6 +261,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7CA37F9E2F0B46ABB4CDEE54 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		F738AE471E8013DE00DCDF6B /* NVDB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NVDB.entitlements; path = NVDB/NVDB.entitlements; sourceTree = "<group>"; };
 		F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		FB2DE4E4776F451D8B63A1D0 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -378,6 +379,7 @@
 		13B07FAE1A68108700A75B9A /* NVDB */ = {
 			isa = PBXGroup;
 			children = (
+				F738AE471E8013DE00DCDF6B /* NVDB.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -553,6 +555,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = FA2F9YPN5K;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

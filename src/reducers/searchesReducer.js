@@ -2,12 +2,14 @@
 
 export default function reducer(state={
   //initialState
+
   allSearches: [],
   roadSearch: {
     id: 12123414,
     description: '',
     searchParamters: [],
     roadObjects: [],
+    egenskapstyper: [],
     rapport: {
       rapportID: 123,
       description: '',

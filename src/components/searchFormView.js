@@ -52,7 +52,7 @@ var SearchFormView = React.createClass({
             maxLength={4}
             placeholder="Type in kommmune id"
             onChangeText={(text) => this.props.inputKommune({text})}
-            keyboardType = "default"
+            keyboardType = "numbers-and-punctuation"
             returnKeyType = 'done'
             />
           <Text style={{color: 'white'}}>
@@ -75,7 +75,8 @@ var SearchFormView = React.createClass({
       </View>
     </View>
   },
-  search: function(){
+
+  search() {
     //Check that all input fields are valid
     //Then combine all parameters to one file
 
@@ -86,7 +87,7 @@ var SearchFormView = React.createClass({
       this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();
     }
-    else{
+    else {
       Alert.alert("Ugyldig data", "Sjekk felter for korrekt input.");
     }
   },

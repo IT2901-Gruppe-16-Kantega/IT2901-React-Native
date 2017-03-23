@@ -12,6 +12,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as dataActions from '../actions/dataActions'
+
 import * as templates from '../utilities/templates'
 
 

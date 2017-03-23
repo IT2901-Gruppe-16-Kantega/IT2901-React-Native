@@ -22,3 +22,16 @@ export var smallButton = {
   alignItems: 'center',
   borderColor: 'aliceblue',
 }
+export var sidebar = {
+  position: 'absolute',
+  top: 70,
+  bottom: 0,
+
+  borderTopWidth: 3,
+  borderTopColor: colorOrange,
+  borderLeftWidth: 3,
+  borderLeftColor: colorOrange,
+  borderTopLeftRadius: 10,
+
+  backgroundColor: gray,
+}
