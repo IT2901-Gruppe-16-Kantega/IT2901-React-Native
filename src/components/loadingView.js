@@ -17,12 +17,15 @@ import {fetchFromAPI_all, fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
 var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
+var shortBaseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
 var LoadingView = React.createClass({
 
 
   //create URL happens here here
   componentWillMount() {
+    console.log('loadingView')
+    /*
     //prefetches total number of objects to be fetched
     var preUrl = preFetchURL+'?kommune='+this.props.kommune.nummer;
     var numberOfObjectsToBeFetched = 0;
@@ -30,11 +33,12 @@ var LoadingView = React.createClass({
       numberOfObjectsToBeFetched = response.antall;
       this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
     }.bind(this));
-
+    */
     //Creates url and fetches objects
-    var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326&antall=8000';
+    console.log(this.props.url);
+    //var url = baseURL+'?kommune='+this.props.kommune.nummer+'&inkluder=alle&srid=4326&antall=8000';
     this.props.fetchDataStart();
-    fetchFromAPI_all(this.props.fetchDataReturned, url);
+    fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
 
   },
   render() {
@@ -54,7 +58,7 @@ var LoadingView = React.createClass({
           <View style={styles.progressInfo}>
             <Text style={styles.text}> Some information about progress:</Text>
             <Text style={styles.text}></Text>
-            <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
+            <Text style={styles.text}> Fylke er </Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
             <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
 
@@ -101,6 +105,9 @@ var LoadingView = React.createClass({
 
   function mapStateToProps(state) {
     return {
+      url: state.searchReducer.url,
+
+
       //Fields used when creating URL
       kommune: state.searchReducer.kommune_input,
 

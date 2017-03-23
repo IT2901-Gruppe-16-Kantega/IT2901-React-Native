@@ -13,6 +13,7 @@ This iterative procedure keeps track of the search boundaries via two variables.
 import {kommuner_allinfo} from '../data/kommuner';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
+import {vegobjekttyper} from '../data/vegobjekttyper';
 import {fetchVeier} from './wrapper';
 
 const vegkategorier = [
@@ -80,6 +81,26 @@ function searchForFylke(fylke_navn){
     })
   }
 
+function searchForVegobjekttyper(input){
+  return new Promise(function(resolve, reject){
+    var vegobjekttyperArray = [];
+    vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
+    if(vegobjekttyperArray.length > 0 && vegobjekttyperArray.length != 391) {
+      resolve(vegobjekttyperArray);
+    }
+    else {
+      reject(Error("Not a valid vegobjekttype"));
+    }
+  })
+}
+
+function compareInput(input){
+    let stringInput = this.toString().toLowerCase();
+    return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+  }
+
+
+//TO be DEPRECATED
 function searchForVegkategori(input){
   return new Promise(function(resolve, reject){
     var vegkategoriArray = [];
@@ -93,7 +114,7 @@ function searchForVegkategori(input){
   })
 }
 
-//TODO!
+
 //this fetches data from NDVB, picks out uniqe roads, and adds them to veier
 function fetchVeierFromAPI(fylke, vegtype){
   fetchVeier(fylke, vegtype).then((result) => {
@@ -130,13 +151,10 @@ function searchForVeg(input, ){
   })
 }
 
-function compareInput(f){
-    let stringInput = this.toString().toLowerCase();
-    return f.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
-  }
 
 
 
 
 
-export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVeierFromAPI};
+
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVeierFromAPI, searchForVegobjekttyper};

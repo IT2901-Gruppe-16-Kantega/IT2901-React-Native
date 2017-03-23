@@ -12,6 +12,7 @@ import LoadingView from './components/LoadingView'
 import ReportView from './components/ReportView'
 import SearchFormView from './components/SearchFormView'
 import SearchView from './components/SearchView'
+import newSearchView from './components/newSearchView'
 import ShowMapView from './components/ShowMapView'
 import StoredDataView from './components/StoredDataView'
 import SettingsView from './components/SettingsView'
@@ -36,8 +37,8 @@ export default class App extends Component {
 
             />
           <Scene
-            key="SearchView"
-            component={SearchView}
+            key="newSearchView"
+            component={newSearchView}
             title="Search"
             hideNavBar={false}
             initial={true}

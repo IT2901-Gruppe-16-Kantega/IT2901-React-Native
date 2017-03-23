@@ -23,9 +23,10 @@ var ShowMapView = React.createClass({
     region = {
       latitude: objLat,
       longitude: objLong,
-      latitudeDelta: 1,
-      longitudeDelta: 1,
+      latitudeDelta: 2,
+      longitudeDelta: 2,
     };
+    console.log(region);
   },
   render() {
     return <View style={templates.container}>

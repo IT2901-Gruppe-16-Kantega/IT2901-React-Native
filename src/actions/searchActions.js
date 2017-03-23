@@ -1,8 +1,14 @@
 //
-import {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg} from '../utilities/utils';
+import {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, searchForVegobjekttyper} from '../utilities/utils';
 createBST();
 
 //functions for handling input in all searchfields
+export function setURL(url){
+  return {
+    type: "SET_URL",
+    payload: url,
+  }
+}
 
 export function inputFylke(input){
   return function(dispatch) {
@@ -33,6 +39,46 @@ export function chooseFylke(input){
   }
 }
 
+export function newInputVeg(input){
+  return {
+    type: "NEW_INPUT_VEG",
+    payload: input,
+  }
+}
+
+export function inputVegobjekttyper(input){
+  return function(dispatch) {
+    //TODO
+    searchForVegobjekttyper(input.text)
+    .then((result) => {
+      if(result.length==1){
+        dispatch({type: "INPUT_VEGOBJEKTTYPER_SINGLE", payload: {
+          result: result,
+          vegobjekttyper_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_VEGOBJEKTTYPER_MULTIPLE", payload: {
+          result: result,
+          vegobjekttyper_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "VEGOBJEKTTYPER_INPUT_NOT_VALID", payload: input.text})
+    })
+  }
+}
+export function chooseVegobjekttyper(input){
+  return{
+    type: "CHOOSE_VEGOBJEKTTYPER",
+    payload: input,
+  }
+}
+
+
+
+//TO be DEPRECATED
 export function inputVegkategori(input){
   return function(dispatch) {
     searchForVegkategori(input.text)
@@ -110,8 +156,9 @@ export function inputKommune(input){
   }
 }
 
-export function combineSearchParameters(kommune){
-  var combinedSearchParameters = [kommune];
+
+export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
+  var combinedSearchParameters = [fylke_input, veg_input, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",
     payload: combinedSearchParameters,

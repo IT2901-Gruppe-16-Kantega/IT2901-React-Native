@@ -40,7 +40,7 @@ var CurrentSearchView = React.createClass({
       <View style={styles.informationPadding}/>
       <View style={styles.information}>
         <Text style={styles.text}>Informasjon om valgt vegsøk:</Text>
-        <Text style={styles.text}>Kommune:
+        <Text style={styles.text}>Fylke:
           {this.props.currentRoadSearch.searchParameters[0].navn}</Text>
         <Text style={styles.text}>Antall vegobjekter er:
           {this.props.currentRoadSearch.roadObjects.length} </Text>

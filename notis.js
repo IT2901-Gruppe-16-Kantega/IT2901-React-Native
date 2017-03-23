@@ -17,15 +17,32 @@
     - områdefilter, vegreferanse
 
   - fiks slik at vegkategori blir nullstilt når fylke blir nullstilt
-  - flytt paddings inn i scrollviewet 
 
   - flytt deklarering av vegkategorier fra utils til egen fil under data
   - fiks, dobbeltttouch for å velge fylke
   - endre all bruk av vei til veg, altså ordet DONE!
     MEEEEEN burde nok endre variablenavn veg til vegnummer
 
+      NEW SEARCHVIEW
+  - lag prefetch som finner ut hvor mange objekter som blir hentet: DONE!
+  - fullfør søk
+  - sett maksstørrelse på listview i whatContents
+  - fiks usteended på listview, bruk bla renderSeparator
+  - fiks slik at en kan velge flere vegobjekter, dersom det er noe vi skal kunne?
+  
+
+  - Move searchparamlabel inn i createInputField
+  - slå samen styles whatContents og whereContents: DONE!
+
+  - implement kommune valg, husk at en må kunne velge flere kommuner og at valg av kommune ikke er nødvendig
 
 
+    MAIN TODO prioritert liste
+  - fiks slik at appen åpnes på telefon,
+  - fiks slik at data lagres når app lukkes
+  - legg til i setting standardsøk, dette er nødvendig før vi begynner med endelig layout
+
+  - REMEBER TO WRITE ABOUT WHY WE HAVE CHOSEN THAT THE USER MUST BE ABLE TO KNOW ROAD NAME
 
 
 
@@ -124,7 +141,7 @@
   - endre slik at ikke alle henter alle dataActions
   - fjern bruk av bst, erstatt med noe annet
   - endre slik at maks, 8000 objekter hentes istedenfor 1000
-  - veg = e, r, f
+  - veg = e, r, f, k
 
   ---Nå--
   - fullfør searchReducer etc før jeg går over til storing search datavariables: DONE!
