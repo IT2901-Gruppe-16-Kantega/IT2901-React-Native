@@ -81,6 +81,13 @@ export default function reducer(state={
         veg_chosen: true,
       }
     }
+    case "FETCHING_VEIER": {
+      return {
+        ...state,
+        fetching_veier: action.payload,
+      }
+    }
+
 
 
     case "INPUT_VEGKATEGORI_MULTIPLE": {

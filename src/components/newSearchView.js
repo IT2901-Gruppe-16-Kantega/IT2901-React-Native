@@ -43,7 +43,7 @@ Flow:
 */
 
 
-var SearchView = React.createClass({
+var newSearchView = React.createClass({
   componentDidMount() {
     //some intialization
 

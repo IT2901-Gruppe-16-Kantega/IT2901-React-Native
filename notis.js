@@ -9,16 +9,22 @@
 
   - Give feedback that input fylke er invalid
     - trenger mest sansylig bare å ha grået ut neste felt,
-      kanskje med tekst: skriv inn gyldig fylke
-  - gjør createInputField helt generisk
+      kanskje med tekst: skriv inn gyldig fylke DONE!
+  - gjør createInputField helt generisk DONE!
     flytte choosefylke() inn?
 
-  -   - veg = e, r, f
+  - FINN UT HVORDAN HENTE SKILT BASERT PÅ FYLKE VEGKATEGORI OG VEGNUMMER!!!!
+    - områdefilter, vegreferanse
+
+  - fiks slik at vegkategori blir nullstilt når fylke blir nullstilt
+  - flytt paddings inn i scrollviewet 
 
   - flytt deklarering av vegkategorier fra utils til egen fil under data
   - fiks, dobbeltttouch for å velge fylke
   - endre all bruk av vei til veg, altså ordet DONE!
     MEEEEEN burde nok endre variablenavn veg til vegnummer
+
+
 
 
 

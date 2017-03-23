@@ -6,6 +6,9 @@ var url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
+
+var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?';
+
 function fetchFromAPI_all(callback, url){
   //console.log('#wrapper.fetchFromAPI');
   var objects = [];
@@ -85,7 +88,8 @@ function fetch_Kommuner(callback){
 // create that actually fetches what we need!
 
 async function fetchVeier(fylke, vegkategori){
-  var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?fylke='+fylke.nummer+'&inkluder=egenskaper';
+  //egenskap="4591=8AND4566=5492"
+  var url = baseURL+'egenskap="4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
   try {
     const response = await fetch(url);
     const data = await response.json();

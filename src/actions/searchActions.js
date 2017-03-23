@@ -90,7 +90,12 @@ export function chooseVeg(input){
     payload: input,
   }
 }
-
+export function setFetchingVeier(input){
+  return{
+    type: "FETCHING_VEIER",
+    payload: input,
+  }
+}
 
 
 export function inputKommune(input){

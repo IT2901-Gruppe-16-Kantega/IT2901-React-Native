@@ -94,10 +94,27 @@ function searchForVegkategori(input){
 }
 
 //TODO!
+//this fetches data from NDVB, picks out uniqe roads, and adds them to veier
 function fetchVeierFromAPI(fylke, vegtype){
-  //fetchVeier
-  //veier =
+  fetchVeier(fylke, vegtype).then((result) => {
+    for(i=0; i<result.objekter.length; i++){
+      for(z=0; z<result.objekter[i].egenskaper.length; z++){
+        if(result.objekter[i].egenskaper[z].id==4568){
+          if(veier.some(veierContains, result.objekter[i].egenskaper[z].verdi)){
+          }
+          else{
+            veier.push(result.objekter[i].egenskaper[z].verdi)
+          }
+        }
+      }
+    }
+  });
+}
 
+function veierContains(value){
+  if(value==this){
+    return true;
+  }
 }
 
 function searchForVeg(input, ){
