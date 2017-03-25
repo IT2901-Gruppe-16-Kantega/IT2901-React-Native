@@ -96,12 +96,13 @@ var SidebarSecondary = React.createClass({
       if(a.navn < b.navn) { return -1; }
       return 1;
     });
+
     if(this.props.filterValueSearch) {
       var searchString = this.props.filterValueSearch;
 
       source = source.filter(function(value) {
         return value.navn.toLowerCase().indexOf(searchString.toLowerCase()) !== -1;
-      });
+      }); // bind(this)
     }
     return ds.cloneWithRows(source);
   },
