@@ -13,8 +13,6 @@ import {
 import { Actions } from 'react-native-router-flux';
 import * as templates from '../utilities/templates'
 
-import userDefaults from 'react-native-user-defaults'
-
 //importing to make redux work
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -22,12 +20,6 @@ import { bindActionCreators } from 'redux'
 //only import actions that this component needs
 
 var StartingView = React.createClass({
-  componentDidMount() {
-    userDefaults.set("HEI", "IT'S WORKING!", "group.nvdb", (err, data) => {
-      if(!err) console.log(data)
-    });
-  },
-
   render() {
     //may also use this for readability const {user, tweets} = this.props;
     return <View style= {styles.container}>

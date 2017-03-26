@@ -15,6 +15,7 @@ import * as dataActions from '../actions/dataActions'
 
 import * as templates from '../utilities/templates'
 
+import userDefaults from 'react-native-user-defaults'
 
 var CurrentSearchView = React.createClass({
   componentDidMount() {
@@ -94,12 +95,15 @@ var CurrentSearchView = React.createClass({
 
     </View>
   },
+  
   openAR() {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
-    Linking.openURL("ARApp:");
-
+    userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
+      if(!err) Linking.openURL("ARApp:");
+    });
   },
+
   exit() {
     Actions.startingView();
     //this.props.clearData();
