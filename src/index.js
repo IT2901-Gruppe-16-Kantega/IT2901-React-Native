@@ -6,22 +6,21 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
+
 import StartingView from './components/StartingView'
 import CurrentSearchView from './components/CurrentSearchView'
 import LoadingView from './components/LoadingView'
 import ReportView from './components/ReportView'
-import SearchFormView from './components/SearchFormView'
 import SearchView from './components/SearchView'
-import oldSearchView from './components/oldSearchView'
-import ShowMapView from './components/ShowMapView'
+import RoadMapView from './components/RoadMapView'
 import StoredDataView from './components/StoredDataView'
 import SettingsView from './components/SettingsView'
 import * as templates from './utilities/templates'
 
+
 import * as dataActions from './actions/dataActions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 
 export default class App extends Component {
   render() {
@@ -77,12 +76,12 @@ export default class App extends Component {
             hideNavBar={false}
             />
           <Scene
-            key="showMapView"
-            component={ShowMapView}
-            title=""
+            key="RoadMapView"
+            component={RoadMapView}
+            title="Map"
             hideNavBar={false}
-            navigationBarStyle={styles.navigatorStyle}
-
+            onRight={ () => console.log("Show map filter") }
+            rightTitle="Filtrer"
             />
         </Scene>
       </Router>
