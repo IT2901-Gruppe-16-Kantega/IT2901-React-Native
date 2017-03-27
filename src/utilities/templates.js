@@ -1,9 +1,14 @@
 // file with template colors etc to be used across entire application
-export var gray = '#444f55'
-export var bakgroundOfSearch = '#646a70'
-export var textColorWhite = '#ffffff'
-export var textColorBlack = '#000000'
-export var colorOrange = 'orange'
+export var colors = {
+  blue: '#008ec2',
+  orange: '#ed9300',
+  green: '#58b02c',
+  white: 'white',
+  lightGray: '#ececec',
+  middleGray: '#dadada',
+  darkGray: '#444f55'
+}
+
 export var button = {
   borderWidth: 2,
   height: 50,
@@ -28,10 +33,10 @@ export var sidebar = {
   bottom: 0,
 
   borderTopWidth: 3,
-  borderTopColor: colorOrange,
+  borderTopColor: colors.orange,
   borderLeftWidth: 3,
-  borderLeftColor: colorOrange,
+  borderLeftColor: colors.orange,
   borderTopLeftRadius: 10,
 
-  backgroundColor: gray,
+  backgroundColor: colors.darkGray,
 }

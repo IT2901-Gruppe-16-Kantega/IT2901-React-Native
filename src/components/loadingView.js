@@ -54,7 +54,7 @@ var LoadingView = React.createClass({
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <ActivityIndicator
@@ -74,7 +74,7 @@ var LoadingView = React.createClass({
         </View>
       </View>
       <View style={styles.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -142,14 +142,14 @@ var LoadingView = React.createClass({
         flex: 7.5,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: templates.gray
+        backgroundColor: templates.colors.darkGray
       },
       contents: {
         flex: 10.5,
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: templates.gray
+        backgroundColor: templates.colors.darkGray
       },
       fetchingStatus: {  //used by fetching status
         flex: 1,
@@ -174,6 +174,6 @@ var LoadingView = React.createClass({
         alignItems: 'center',
       },
       text: {
-        color: templates.textColorWhite,
+        color: templates.colors.white,
       },
     })

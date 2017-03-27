@@ -68267,7 +68267,7 @@ var grayHeader='#444f55';
 var bakgroundOfSearch='#646a70';
 var textColorWhite='#ffffff';
 var textColorBlack='#000000';
-var colorOrange='orange';
+var templates.colors.orange='orange';
 
 
 var styles=_reactNative.StyleSheet.create({
@@ -81278,7 +81278,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_reactNative.TouchableHighlight,{
@@ -81286,26 +81286,26 @@ style:templates.button,
 underlayColor:'azure',
 onPress:_reactNativeRouterFlux.Actions.searchFormView},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'New search')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'New search')),
 
 _react2.default.createElement(_reactNative.TouchableHighlight,{
 style:templates.button,
 underlayColor:'azure',
 onPress:_reactNativeRouterFlux.Actions.storedDataView},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Stored data')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Stored data')),
 
 _react2.default.createElement(_reactNative.TouchableHighlight,{
 style:templates.button,
 underlayColor:'azure',
 onPress:_reactNativeRouterFlux.Actions.settingsView},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Settings'))),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Settings'))),
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.bottomPadding}),
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 }});
@@ -81326,17 +81326,17 @@ header:{
 flex:7.5,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:6,
 justifyContent:'space-between',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 bottomPadding:{
 flex:6.5,
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 footer:{
 flex:0.7,
@@ -86981,7 +86981,7 @@ var gray=exports.gray='#444f55';
 var bakgroundOfSearch=exports.bakgroundOfSearch='#646a70';
 var textColorWhite=exports.textColorWhite='#ffffff';
 var textColorBlack=exports.textColorBlack='#000000';
-var colorOrange=exports.colorOrange='orange';
+var templates.colors.orange=exports.templates.colors.orange='orange';
 var button=exports.button={
 borderWidth:2,
 height:50,
@@ -87110,7 +87110,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 this.createInformationView()),
@@ -87119,7 +87119,7 @@ _react2.default.createElement(_reactNative.View,{style:styles.bottom},
 this.createButtons()),
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 },
@@ -87145,7 +87145,7 @@ style:styles.button,
 underlayColor:'azure',
 onPress:_reactNativeRouterFlux.Actions.showMapView},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Map')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Map')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.buttonPadding}),
 _react2.default.createElement(_reactNative.TouchableHighlight,{
@@ -87153,7 +87153,7 @@ style:styles.button,
 underlayColor:'azure',
 onPress:this.openAR},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'AR'))),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'AR'))),
 
 
 
@@ -87163,7 +87163,7 @@ style:styles.button,
 underlayColor:'azure',
 onPress:_reactNativeRouterFlux.Actions.reportView},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Report')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Report')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.buttonPadding}),
 _react2.default.createElement(_reactNative.TouchableHighlight,{
@@ -87171,7 +87171,7 @@ style:styles.button,
 underlayColor:'azure',
 onPress:this.exit},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Exit'))));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Exit'))));
 
 
 
@@ -87203,12 +87203,12 @@ header:{
 flex:4,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:11.5,
 flexDirection:'column',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 informationView:{
 flex:1,
@@ -87227,7 +87227,7 @@ bottom:{
 flex:2.5,
 justifyContent:'space-around',
 alignItems:'stretch',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 buttons:{
 justifyContent:'center',
@@ -87265,7 +87265,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 
 
 
@@ -91859,7 +91859,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_reactNative.ActivityIndicator,{
@@ -91879,7 +91879,7 @@ _react2.default.createElement(_reactNative.Text,{style:styles.text},' Antall obj
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 },
@@ -91942,14 +91942,14 @@ header:{
 flex:7.5,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:10.5,
 flexDirection:'column',
 justifyContent:'space-between',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 fetchingStatus:{
 flex:1,
@@ -91974,7 +91974,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 }, 514, null, "NVDB/src/components/loadingView.js");
 __d(/* NVDB/src/actions/searchActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
 
@@ -92027,7 +92027,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_reactNative.Text,{style:styles.text},'Her vil det komme informasjon om rapporter')),
@@ -92035,7 +92035,7 @@ _react2.default.createElement(_reactNative.Text,{style:styles.text},'Her vil det
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 }});
@@ -92055,14 +92055,14 @@ header:{
 flex:7.5,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:10.5,
 flexDirection:'column',
 justifyContent:'space-between',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 footer:{
 flex:0.7,
@@ -92070,7 +92070,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 
 
 
@@ -92122,7 +92122,7 @@ render:function render(){var _this=this;
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_reactNative.View,{style:styles.inputAreaPadding}),
@@ -92153,11 +92153,11 @@ style:templates.smallButton,
 underlayColor:'azure',
 onPress:this.search},
 
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'Search'))),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'Search'))),
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 },
@@ -92192,14 +92192,14 @@ header:{
 flex:7.5,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:10.5,
 flexDirection:'row',
 justifyContent:'space-between',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 inputArea:{
 flex:10,
@@ -92211,14 +92211,14 @@ flex:1},
 textInput:{
 padding:5,
 height:30,
-color:templates.gray,
+color:templates.colors.darkGray,
 backgroundColor:'white'},
 
 buttonArea:{
 flex:2,
 justifyContent:'space-around',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 footer:{
 flex:0.7,
@@ -92226,7 +92226,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 
 
 
@@ -92329,7 +92329,7 @@ pinColor:chosenColor});
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 },
@@ -92380,7 +92380,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 }, 519, null, "NVDB/src/components/showMapView.js");
 __d(/* NVDB/src/components/storedDataView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
 var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
@@ -92442,7 +92442,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_Accordion2.default,{
@@ -92452,7 +92452,7 @@ renderContent:this._renderContent})),
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 },
@@ -92484,13 +92484,13 @@ flex:4,
 justifyContent:'center',
 alignItems:'center',
 
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:14,
 justifyContent:'flex-start',
 alignItems:'stretch',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 accordionHeader:{
 
@@ -92498,7 +92498,7 @@ borderColor:"white",
 borderWidth:2,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray,
+backgroundColor:templates.colors.darkGray,
 padding:10},
 
 
@@ -92506,7 +92506,7 @@ accordionFrame:{
 flexDirection:'row',
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 accordionContentsPadding:{
 flex:0.1},
@@ -92530,7 +92530,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 
 
 
@@ -92847,7 +92847,7 @@ render:function render(){
 return _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.top}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.textColorWhite}},'NVDB-app')),
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.white}},'NVDB-app')),
 
 _react2.default.createElement(_reactNative.View,{style:styles.contents},
 _react2.default.createElement(_reactNative.Text,{style:styles.text},'Her vil det komme settings slik at bruker kan definiere div instillinger slik som f.eks skru av/p\xE5 autolagring av s\xF8k. Samt spesifisering av forh\xE5ndsutfylte s\xF8keparametre: kommune, veg, skilt e.l kommer opp standard ved nytt s\xF8k')),
@@ -92858,7 +92858,7 @@ _react2.default.createElement(_reactNative.Text,{style:styles.text},'Her vil det
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.Text,{style:{color:templates.gray}},'Gruppe 16 NTNU')));
+_react2.default.createElement(_reactNative.Text,{style:{color:templates.colors.darkGray}},'Gruppe 16 NTNU')));
 
 
 }});
@@ -92878,14 +92878,14 @@ header:{
 flex:7.5,
 justifyContent:'center',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 contents:{
 flex:10.5,
 flexDirection:'column',
 justifyContent:'space-between',
 alignItems:'center',
-backgroundColor:templates.gray},
+backgroundColor:templates.colors.darkGray},
 
 footer:{
 flex:0.7,
@@ -92893,7 +92893,7 @@ justifyContent:'center',
 alignItems:'center'},
 
 text:{
-color:templates.textColorWhite}});
+color:templates.colors.white}});
 
 
 

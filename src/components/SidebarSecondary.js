@@ -159,7 +159,7 @@ var SidebarSecondary = React.createClass({
 
 styles = StyleSheet.create({
   sidebarTitle: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
     padding: 10,
     fontSize: 20,
     fontWeight: 'bold',
@@ -168,7 +168,7 @@ styles = StyleSheet.create({
     borderRadius: 10,
   },
   sidebarItemTitle: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
   sidebarItem: {
     padding: 10,

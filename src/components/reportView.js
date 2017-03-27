@@ -16,7 +16,7 @@ var ReportView = React.createClass({
     return <View style={styles.container}>
       <View style={styles.top}/>
         <View style={styles.header}>
-          <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+          <Text style={{color: templates.colors.white}}>NVDB-app</Text>
         </View>
         <View style={styles.contents}>
           <Text style={styles.text}>
@@ -24,7 +24,7 @@ var ReportView = React.createClass({
           </Text>
         </View>
         <View style={styles.footer}>
-          <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+          <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
         </View>
     </View>
   }
@@ -44,14 +44,14 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 10.5,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   footer: {
     flex:0.7,
@@ -59,7 +59,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 

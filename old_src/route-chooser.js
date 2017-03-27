@@ -320,7 +320,6 @@ var grayHeader = '#444f55'
 var bakgroundOfSearch = '#646a70'
 var textColorWhite = '#ffffff'
 var textColorBlack = '#000000'
-var colorOrange = 'orange'
 
 //Styles
 var styles = StyleSheet.create({

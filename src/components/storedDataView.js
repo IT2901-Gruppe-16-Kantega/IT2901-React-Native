@@ -60,7 +60,7 @@ var StoredDataView = React.createClass({
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <Accordion
@@ -70,7 +70,7 @@ var StoredDataView = React.createClass({
           />
       </View>
       <View style={styles.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -98,13 +98,13 @@ var StoredDataView = React.createClass({
       justifyContent: 'center',
       alignItems: 'center',
       //backgroundColor: 'yellow'
-      backgroundColor: templates.gray
+      backgroundColor: templates.colors.darkGray
     },
     contents: {
       flex: 14,
       justifyContent: 'flex-start',
       alignItems: 'stretch',
-      backgroundColor: templates.gray
+      backgroundColor: templates.colors.darkGray
     },
     accordionHeader: {
       //flex:1,
@@ -112,7 +112,7 @@ var StoredDataView = React.createClass({
       borderWidth: 2,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: templates.gray,
+      backgroundColor: templates.colors.darkGray,
       padding: 10
 
     },
@@ -120,7 +120,7 @@ var StoredDataView = React.createClass({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: templates.gray,
+      backgroundColor: templates.colors.darkGray,
     },
     accordionContentsPadding: {
       flex: 0.1,
@@ -144,7 +144,7 @@ var StoredDataView = React.createClass({
       alignItems: 'center',
     },
     text: {
-      color: templates.textColorWhite,
+      color: templates.colors.white,
     },
   })
 

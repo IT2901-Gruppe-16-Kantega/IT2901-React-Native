@@ -55,7 +55,7 @@ var styles = StyleSheet.create({
     borderBottomColor: 'gray',
   },
   sidebarItemTitle: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
   sidebarItemDescription: {
     color: 'lightgrey',

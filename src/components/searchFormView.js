@@ -36,7 +36,7 @@ var SearchFormView = React.createClass({
     return <View style = {styles.container}>
       <View style={styles.top}></View>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
@@ -67,11 +67,11 @@ var SearchFormView = React.createClass({
           underlayColor="azure"
           onPress = {this.search}
           >
-          <Text style={{color: templates.textColorWhite}}>Search</Text>
+          <Text style={{color: templates.colors.white}}>Search</Text>
         </TouchableHighlight>
       </View>
       <View style={styles.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -107,14 +107,14 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 10.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   inputArea: {
     flex: 10,
@@ -126,14 +126,14 @@ var styles = StyleSheet.create({
   textInput: {
     padding: 5,
     height: 30,
-    color: templates.gray,
+    color: templates.colors.darkGray,
     backgroundColor: 'white',
   },
   buttonArea: {
     flex: 2,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   footer: {
     flex:0.7,
@@ -141,7 +141,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 
