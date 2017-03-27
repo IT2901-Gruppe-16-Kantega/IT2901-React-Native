@@ -25,7 +25,7 @@ class ComparatorComponent extends React.Component {
       margin: 2,
       padding: 5,
       borderRadius: 3,
-      backgroundColor: templates.color.orange,
+      backgroundColor: templates.colors.orange,
     }
   }
 
