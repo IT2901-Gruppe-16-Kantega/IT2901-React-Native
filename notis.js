@@ -37,8 +37,8 @@
   - implement kommune valg, husk at en må kunne velge flere kommuner og at valg av kommune ikke er nødvendig
 
 
-  - implementer reset searchParameters
-  - implementer clearData()
+  - implementer reset searchParameters: DONE!
+  - implementer clearData(): DONE!
 
     MAIN TODO prioritert liste
   - fiks slik at appen åpnes på telefon,
