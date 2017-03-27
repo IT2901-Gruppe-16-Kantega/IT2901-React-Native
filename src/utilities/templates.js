@@ -1,18 +1,13 @@
-
-
-
-
-
-
-/*
-
-  TEMPLATES used across the application
-
-*/
-
-/*
-  Layout style components
-*/
+// file with template colors etc to be used across entire application
+export var colors = {
+  blue: '#008ec2',
+  orange: '#ed9300',
+  green: '#58b02c',
+  white: 'white',
+  lightGray: '#ececec',
+  middleGray: '#dadada',
+  darkGray: '#444f55'
+}
 export var container = {
   flex: 1,
   alignItems: 'stretch',
@@ -21,7 +16,7 @@ export var top = {
   flex: 0.7,
 }
 
-export var footer= {
+export var footer = {
   flex:0.7,
   justifyContent: 'center',
   alignItems: 'center',
@@ -45,15 +40,16 @@ export var smallButton = {
   alignItems: 'center',
   borderColor: 'aliceblue',
 }
+export var sidebar = {
+  position: 'absolute',
+  top: 70,
+  bottom: 0,
 
+  borderTopWidth: 3,
+  borderTopColor: colors.orange,
+  borderLeftWidth: 3,
+  borderLeftColor: colors.orange,
+  borderTopLeftRadius: 10,
 
-
-/*
-  colors
-*/
-export var gray = '#444f55'
-export var grey = '#444f55'
-export var bakgroundOfSearch = '#646a70'
-export var textColorWhite = '#ffffff'
-export var textColorBlack = '#000000'
-export var colorOrange = 'orange'
+  backgroundColor: colors.darkGray,
+}

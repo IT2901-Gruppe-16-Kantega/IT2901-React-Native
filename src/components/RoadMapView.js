@@ -1,124 +1,130 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
-  StyleSheet
- } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as templates from '../utilities/templates'
+  StyleSheet,
+} from 'react-native';
+
 import MapView from 'react-native-maps';
 
-import { Footer } from './Footer';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as templates from '../utilities/templates';
 
-var region = null;
-var markers = [];
+import * as mapActions from '../actions/mapActions';
+
+import { MarkerCallout } from './MarkerCallout'
+import SidebarMain from './SidebarMain'
+import SidebarSecondary from './SidebarSecondary'
+
+// Create a reference to the map, to change it's region
+var mapRef = null;
+var coordinates = [];
 
 // View that holds the map
 var RoadMapView = React.createClass({
   componentWillMount() {
-    let regionString = this.props.region;
-    let geometryString = regionString.split('(')[1].slice(0, -1);
-    let geometryParts = geometryString.split(' ');
-    let objLat = parseFloat(geometryParts[0]);
-    let objLong = parseFloat(geometryParts[1]);
-    region = {
-      latitude: objLat,
-      longitude: objLong,
-      latitudeDelta: 1,
-      longitudeDelta: 1,
-    }
-
-    this.createMapMarkers();
+    this.updateMarkers();
   },
 
   render() {
     return <View style={styles.container}>
+      <View style={styles.top}/>
+      <View style={styles.contentView}>
         <MapView
+          ref={(ref) => {mapRef = ref}}
+          onLayout = {() => mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
           style={styles.map}
-          region={region}
-          onRegionChange={this.mapRegionChanged}
-          onLongPress={this.mapPressed}
           zoomEnabled={true}
           >
-          {markers}
+          {this.props.markers}
         </MapView>
-
-      <Footer />
+        <SidebarMain />
+        <SidebarSecondary update={this.updateMarkers} />
+      </View>
     </View>
   },
 
-  createMapMarkers() {
+  updateMarkers() {
+    coordinates = [];
 
     // Goes through each fetched object, and creates a marker for the map.
-    markers = this.props.objects.map(function(object) {
-      const geometryString = object.geometri.wkt.split('(')[1].slice(0, -1);
+    const markers = this.props.filteredObjects.map(function(roadObject) {
+      const geometryString = roadObject.geometri.wkt.split('(')[1].slice(0, -1);
       const geometryParts = geometryString.split(' ');
 
-      const objLat = parseFloat(geometryParts[0]);
-      const objLong = parseFloat(geometryParts[1]);
+      const objectLatitude = parseFloat(geometryParts[0]);
+      const objectLongitude = parseFloat(geometryParts[1]);
 
-      const latLong = {latitude: objLat, longitude: objLong};
+      const coordinate = {latitude: objectLatitude, longitude: objectLongitude};
+      coordinates.push(coordinate);
 
+      var roadObjectEgenskap;
       var chosenColor;
-      if(object.geometri.egengeometri) { chosenColor = 'green'; }
-      else { chosenColor = 'red'; }
+      var markerDescription;
 
-      const id = object.id;
-      const stringID = id.toString();
+      chosenColor = 'red';
 
       return <MapView.Marker
-        coordinate={latLong}
-        title={stringID}
-        description={stringID}
-        key={stringID}
-        pinColor={chosenColor}
-        />
+        coordinate={coordinate}
+        key={roadObject.id}
+        pinColor={chosenColor}>
+        <MapView.Callout style={{flex: 1, position: 'relative'}}>
+          <MarkerCallout roadObject={roadObject} roadObjectEgenskap={roadObjectEgenskap} />
+        </MapView.Callout>
+      </MapView.Marker>
     });
+
+    this.props.updateMapMarkers(markers);
   },
 
-  mapRegionChanged(region) {
-    // Use for marker clustering.
-  },
-
-  mapPressed(press) {
-    let coordinate = press.nativeEvent.coordinate;
-  },
+  componentDidUpdate() {
+    console.log(this.props.selectedFilterValue)
+  }
 });
 
-function mapStateToProps(state) {
-  return {
-    objects: state.dataReducer.currentRoadSearch.roadObjects,
-    region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
-    currentRoadSearch: state.dataReducer.currentRoadSearch,
-
-  };}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (RoadMapView);
-
 var styles = StyleSheet.create({
+  top: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    height: 20,
+    right: 0,
+    left: 0,
+    top: 0,
+  },
   container: {
     flex: 1,
     //justifyContent: 'center',
     alignItems: 'stretch',
   },
-  //Top-leve containers
-  top: {
-    flex: 0.7
-  },
-  contents: {
-    flex: 18,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  contentView: {
+    flex: 1,
   },
   map: {
-    flex: 18,
-  },
-  mapPadding: {
-  },
-  text: {
-    color: templates.textColorWhite,
+    position: 'absolute',
+    right: 0,
+    top: 20,
+    left: 0,
+    bottom: 0,
   },
 })
+
+function mapStateToProps(state) {
+  return {
+    allObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    filteredObjects: state.mapReducer.filteredObjects,
+
+    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
+    region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    markers: state.mapReducer.markers,
+
+    selectedFilterValue: state.mapReducer.selectedFilterValue,
+  };}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (RoadMapView);

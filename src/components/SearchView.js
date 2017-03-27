@@ -40,7 +40,7 @@ var SearchView = React.createClass({
       <View style={templates.top}/>
       <View style={styles.navigatorSpace}/>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
         <Text/>
       </View>
       <View style={styles.contentsFrame}>
@@ -107,7 +107,7 @@ var SearchView = React.createClass({
         {this.createSearchButton()}
       </View>
       <View style={templates.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -260,7 +260,7 @@ var SearchView = React.createClass({
         underlayColor="azure"
         onPress = {this.search}
         >
-        <Text style={{color: templates.textColorWhite}}>Search</Text>
+        <Text style={{color: templates.colors.white}}>Search</Text>
       </TouchableHighlight>
     },
 
@@ -296,13 +296,13 @@ var styles = StyleSheet.create({
   //Top-leve containers
   navigatorSpace:{
     flex:1.3,
-    backgroundColor: templates.gray,
+    backgroundColor: templates.colors.darkGray,
   },
   header: {
     flex: 1.5,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contentsFrame: {
     flex: 15.2,
@@ -319,7 +319,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   scrollContainer: {
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   contents: {
     flex: 1,
@@ -327,13 +327,13 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 2,
     borderBottomColor: 'darkgray',
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   hvaContents: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   searchTypeHeading: {
     flex: 2,
@@ -353,7 +353,7 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   inputContainer: {
     flex: 4,
@@ -362,7 +362,7 @@ var styles = StyleSheet.create({
   },
   parameterBottomPadding: {
     flex: 0.5,
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   parameterRightPadding: {
     flex: 0.25
@@ -374,7 +374,7 @@ var styles = StyleSheet.create({
 
   numberOfObjectsToBeFetched: {
     flex: 1,
-    backgroundColor: templates.grey,
+    backgroundColor: templates.colors.darkGray,
   },
   //components
   listItem: {
@@ -406,11 +406,11 @@ var styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
 
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 

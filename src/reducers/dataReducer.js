@@ -9,7 +9,6 @@ export default function reducer(state={
 
   objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
 
-
   allSearches:[],
 
   //this holds the currently chosen roadSearch to avoid calling the entire array all the time
@@ -23,11 +22,13 @@ export default function reducer(state={
   //used by filewriter
   writing_file: false,
 
+  objekttypeInfo: [],
+
 }, action) {
   switch (action.type) {
     // cases associated with searches
     case "ADD_NEW_SEARCH_OBJECT": {
-      return{
+      return {
         ...state,
         allSearches: [...state.allSearches, action.payload],
         currentRoadSearch: action.payload,
@@ -41,20 +42,20 @@ export default function reducer(state={
     }
 
     // cases associated with fetching
-    case "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED":{
+    case "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED": {
       return {
         ...state,
         numberOfObjectsToBeFetched: action.payload,
       }
     }
     case "FETCH_DATA_START": {
-      return{
+      return {
         ...state,
         fetching: true,
       }
     }
     case "FETCHING_NOT_FINISHED": {
-      return{
+      return {
         ...state,
         numberOfObjectsFetchedSoFar: action.payload.currentlyFetched
       }
@@ -101,6 +102,10 @@ export default function reducer(state={
         ...state,
         writing_file: true,
       }
+    }
+
+    case "SET_OBJEKTTYPE_INFO": {
+      return{...state, objekttypeInfo: action.payload}
     }
   }
   return state

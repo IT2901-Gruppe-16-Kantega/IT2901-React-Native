@@ -26,6 +26,8 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		D6435CD8B97B4DE8982DE312 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CA37F9E2F0B46ABB4CDEE54 /* libAirMaps.a */; };
+		F738AEAA1E869FA500DCDF6B /* libRCTUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F738AEA91E869F8A00DCDF6B /* libRCTUserDefaults.a */; };
+		F78262021E7FD1D5004FB6CC /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F78261E71E7FD1B4004FB6CC /* libART.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,12 +220,26 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
+		F738AEA81E869F8A00DCDF6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F738AEA41E869F8A00DCDF6B /* RCTUserDefaults.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTUserDefaults;
+		};
 		F778A50A1E43269600C80568 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3BF94AD0B6064A239EA2AF0F /* AirMaps.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
 			remoteInfo = AirMaps;
+		};
+		F78261E61E7FD1B4004FB6CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -253,6 +269,9 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7CA37F9E2F0B46ABB4CDEE54 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		F738AE471E8013DE00DCDF6B /* NVDB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NVDB.entitlements; path = NVDB/NVDB.entitlements; sourceTree = "<group>"; };
+		F738AEA41E869F8A00DCDF6B /* RCTUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTUserDefaults.xcodeproj; path = "../node_modules/react-native-user-defaults/RCTUserDefaults.xcodeproj"; sourceTree = "<group>"; };
+		F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		FB2DE4E4776F451D8B63A1D0 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,6 +288,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F738AEAA1E869FA500DCDF6B /* libRCTUserDefaults.a in Frameworks */,
+				F78262021E7FD1D5004FB6CC /* libART.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -368,6 +389,7 @@
 		13B07FAE1A68108700A75B9A /* NVDB */ = {
 			isa = PBXGroup;
 			children = (
+				F738AE471E8013DE00DCDF6B /* NVDB.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -415,6 +437,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F738AEA41E869F8A00DCDF6B /* RCTUserDefaults.xcodeproj */,
+				F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -470,10 +494,26 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F738AEA51E869F8A00DCDF6B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F738AEA91E869F8A00DCDF6B /* libRCTUserDefaults.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F778A5071E43269600C80568 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				F778A50B1E43269600C80568 /* libAirMaps.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F78261E21E7FD1B4004FB6CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F78261E71E7FD1B4004FB6CC /* libART.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,7 +563,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 820;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -534,6 +574,14 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = FA2F9YPN5K;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -552,6 +600,10 @@
 				{
 					ProductGroup = F778A5071E43269600C80568 /* Products */;
 					ProjectRef = 3BF94AD0B6064A239EA2AF0F /* AirMaps.xcodeproj */;
+				},
+				{
+					ProductGroup = F78261E21E7FD1B4004FB6CC /* Products */;
+					ProjectRef = F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -588,6 +640,10 @@
 				{
 					ProductGroup = 832341B11AAA6A8300B99B32 /* Products */;
 					ProjectRef = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
+				},
+				{
+					ProductGroup = F738AEA51E869F8A00DCDF6B /* Products */;
+					ProjectRef = F738AEA41E869F8A00DCDF6B /* RCTUserDefaults.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302E01ABCB9EE00DB3ED1 /* Products */;
@@ -793,11 +849,25 @@
 			remoteRef = F726617C1E42056200642BF0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F738AEA91E869F8A00DCDF6B /* libRCTUserDefaults.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTUserDefaults.a;
+			remoteRef = F738AEA81E869F8A00DCDF6B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F778A50B1E43269600C80568 /* libAirMaps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAirMaps.a;
 			remoteRef = F778A50A1E43269600C80568 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F78261E71E7FD1B4004FB6CC /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = F78261E61E7FD1B4004FB6CC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -895,6 +965,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -915,6 +986,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -926,6 +998,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NVDB/NVDB.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -947,6 +1020,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NVDB/NVDB.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FA2F9YPN5K;

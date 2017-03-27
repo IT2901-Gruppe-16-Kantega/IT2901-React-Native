@@ -2,23 +2,22 @@
   wrapper.js: file wich contains methods used in fetching data from server
 */
 var fetch_finished = false; //bool used to keep information about fetching state
-var url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
+const url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
+const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
 
-var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?';
-
-function fetchFromAPI_all(callback, url){
+function fetchFromAPI_all(callback, url) {
   //console.log('#wrapper.fetchFromAPI');
   var objects = [];
   fetchData(url).then(function(firstObject){
     var flere = firstObject.metadata.returnert;
-    if(flere > 0){
+    if(flere > 0) {
       //console.log('--> flere objekter finnes');
       recursiveFetch(firstObject, objects, callback);
     }
-    else{
+    else {
       //console.log('--> ingen flere objekter');
     }
   })
@@ -84,12 +83,15 @@ function fetch_Kommuner(callback){
   })
 }
 
-//TODO!
-// create that actually fetches what we need!
+function fetchObjekttypeInfo(objekttypeID, callback) {
+  fetchData(objekttypeURL + objekttypeID).then(function(data) {
+    callback(data, true);
+  })
+}
 
 async function fetchVeier(fylke, vegkategori){
   //egenskap="4591=8AND4566=5492"
-  var url = baseURL+'egenskap="4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
+  var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap=4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -99,4 +101,4 @@ async function fetchVeier(fylke, vegkategori){
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeier};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeier, fetchObjekttypeInfo};

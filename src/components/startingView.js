@@ -6,27 +6,21 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  NativeEventEmitter
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import * as templates from '../utilities/templates'
 
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-//importing just one action, if only one action is needed, bindActionCreators must be changed
-//only import actions that this component needs
-
-
 
 var StartingView = React.createClass({
-  componentWillMount() {
-  },
   render() {
     return <View style= {templates.container}>
       <View style={templates.top}></View>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <TouchableHighlight
@@ -34,21 +28,21 @@ var StartingView = React.createClass({
           underlayColor="azure"
           onPress = {Actions.SearchView}
           >
-          <Text style={{color: templates.textColorWhite}}>New search</Text>
+          <Text style={{color: templates.colors.white}}>Nytt søk</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style= {templates.button}
           underlayColor="azure"
           onPress = {Actions.storedDataView}
           >
-          <Text style={{color: templates.textColorWhite}}>Stored data</Text>
+          <Text style={{color: templates.colors.white}}>Lagrede søk</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style= {templates.button}
           underlayColor="azure"
           onPress = {Actions.settingsView}
           >
-          <Text style={{color: templates.textColorWhite}}>Settings</Text>
+          <Text style={{color: templates.colors.white}}>Innstillinger</Text>
         </TouchableHighlight>
       </View>
       <View style={styles.bottomPadding}></View>
@@ -66,17 +60,17 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 6,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   bottomPadding: {
     flex: 6.5,
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
 })
 
@@ -88,6 +82,9 @@ The return of mapDispatchToProps is which actions this component has access to
 
 function mapStateToProps(state) {
   return {
-    fetching: state.dataReducer.fetching};}
-    //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-    export default connect(mapStateToProps, null) (StartingView);
+    fetching: state.dataReducer.fetching
+  };
+}
+
+function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (StartingView);

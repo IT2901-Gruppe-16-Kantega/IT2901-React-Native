@@ -36,7 +36,7 @@ var SearchFormView = React.createClass({
     return <View style = {templates.container}>
       <View style={templates.top}></View>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
@@ -52,7 +52,7 @@ var SearchFormView = React.createClass({
             maxLength={4}
             placeholder="Type in kommmune id"
             onChangeText={(text) => this.props.inputKommune({text})}
-            keyboardType = "default"
+            keyboardType = "numbers-and-punctuation"
             returnKeyType = 'done'
             />
           <Text style={{color: 'white'}}>
@@ -67,7 +67,7 @@ var SearchFormView = React.createClass({
           underlayColor="azure"
           onPress = {this.search}
           >
-          <Text style={{color: templates.textColorWhite}}>Search</Text>
+          <Text style={{color: templates.colors.white}}>Search</Text>
         </TouchableHighlight>
       </View>
       <View style={templates.footer}>
@@ -75,19 +75,20 @@ var SearchFormView = React.createClass({
       </View>
     </View>
   },
-  search: function(){
+
+  search() {
     //Check that all input fields are valid
     //Then combine all parameters to one file
 
     //Should also check the number of objects that are going to be fetcehd here
     //and give the user the ability to cancel the search if there is going to be
     // long waiting time
-    if(this.props.kommune_valid==true){
+    if(this.props.kommune_valid){
       this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();
     }
-    else{
-      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
+    else {
+      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input.");
     }
   },
 });
@@ -98,14 +99,14 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 10.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   inputArea: {
     flex: 10,
@@ -117,17 +118,17 @@ var styles = StyleSheet.create({
   textInput: {
     padding: 5,
     height: 30,
-    color: templates.gray,
+    color: templates.colors.darkGray,
     backgroundColor: 'white',
   },
   buttonArea: {
     flex: 2,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 

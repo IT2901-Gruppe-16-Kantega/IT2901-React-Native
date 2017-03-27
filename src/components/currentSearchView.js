@@ -12,18 +12,21 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as dataActions from '../actions/dataActions'
+
 import * as templates from '../utilities/templates'
 
+import userDefaults from 'react-native-user-defaults'
 
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
   },
+
   render() {
     return <View style={templates.container}>
       <View style={templates.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         {this.createInformationView()}
@@ -36,7 +39,8 @@ var CurrentSearchView = React.createClass({
       </View>
     </View>
   },
-  createInformationView(){
+
+  createInformationView() {
     return <View style={styles.informationView}>
       <View style={styles.informationPadding}/>
       <View style={styles.information}>
@@ -50,7 +54,8 @@ var CurrentSearchView = React.createClass({
       <View style={styles.informationPadding}/>
     </View>
   },
-  createButtons(){
+
+  createButtons() {
     return <View style={styles.buttons}>
       <View style={styles.buttonArea1}>
         <TouchableHighlight
@@ -58,7 +63,7 @@ var CurrentSearchView = React.createClass({
           underlayColor="azure"
           onPress = {Actions.RoadMapView}
           >
-          <Text style={{color: templates.textColorWhite}}>Map</Text>
+          <Text style={{color: templates.colors.white}}>Map</Text>
         </TouchableHighlight>
         <View style={styles.buttonPadding}/>
         <TouchableHighlight
@@ -66,7 +71,7 @@ var CurrentSearchView = React.createClass({
           underlayColor="azure"
           onPress = {this.openAR}
           >
-          <Text style={{color: templates.textColorWhite}}>AR</Text>
+          <Text style={{color: templates.colors.white}}>AR</Text>
         </TouchableHighlight>
       </View>
 
@@ -76,7 +81,7 @@ var CurrentSearchView = React.createClass({
           underlayColor="azure"
           onPress = {Actions.reportView}
           >
-          <Text style={{color: templates.textColorWhite}}>Report</Text>
+          <Text style={{color: templates.colors.white}}>Report</Text>
         </TouchableHighlight>
         <View style={styles.buttonPadding}/>
         <TouchableHighlight
@@ -84,19 +89,21 @@ var CurrentSearchView = React.createClass({
           underlayColor="azure"
           onPress = {this.exit}
           >
-          <Text style={{color: templates.textColorWhite}}>Exit</Text>
+          <Text style={{color: templates.colors.white}}>Exit</Text>
         </TouchableHighlight>
       </View>
 
     </View>
   },
-  openAR() {
 
+  openAR() {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
-    Linking.openURL("ARApp:");
-
+    userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
+      if(!err) Linking.openURL("ARApp:");
+    });
   },
+
   exit() {
     Actions.startingView();
   },
@@ -109,12 +116,12 @@ var styles = StyleSheet.create({
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 11.5,
     flexDirection: 'column',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   informationView: {
     flex:1,
@@ -133,7 +140,7 @@ var styles = StyleSheet.create({
     flex: 2.5,
     justifyContent: 'space-around',
     alignItems: 'stretch',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   buttons: {
     justifyContent: 'center',
@@ -166,14 +173,13 @@ var styles = StyleSheet.create({
     borderColor: 'aliceblue',
   },
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 
 
 function mapStateToProps(state) {
   return {
-
     currentRoadSearch: state.dataReducer.currentRoadSearch,
   };}
 

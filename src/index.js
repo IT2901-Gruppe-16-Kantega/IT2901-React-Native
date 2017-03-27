@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  LayoutAnimation,
+  Dimensions,
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -19,10 +21,14 @@ import * as templates from './utilities/templates'
 
 
 import * as dataActions from './actions/dataActions'
+import * as mapActions from './actions/mapActions'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-export default class App extends Component {
+let ScreenWidth = Dimensions.get("window").width;
+
+class App extends Component {
   render() {
     return (
       <Router>
@@ -78,123 +84,54 @@ export default class App extends Component {
           <Scene
             key="RoadMapView"
             component={RoadMapView}
-            title="Map"
+            title=""
             hideNavBar={false}
-            onRight={ () => console.log("Show map filter") }
+            onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
+            navigationBarStyle={styles.navigatorStyle}
             />
         </Scene>
       </Router>
     )
   }
+
+  toggleSidebar() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    var width = ScreenWidth / 1.5;
+    var xPos = ScreenWidth - width;
+    var frame = {width: width};
+
+    if(this.props.sidebarFrame.left == xPos) {
+      frame.left = ScreenWidth;
+      this.props.toggleSecondSidebar(false);
+    } else {
+      frame.left = xPos;
+    }
+
+    this.props.setSidebarFrame(frame);
+  }
 }
 
 var styles = StyleSheet.create({
   navigatorStyle: {
-    backgroundColor: 'rgba(0,0,0,0)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     borderBottomWidth: 0,
   }
-
- })
-
-/*
-Kode som brukes for testing med tempobjekter
-class App extends Component {
-
-componentWillMount(){
-//fill state with some fake objects
-this.props.createSearchObject(
-'TestObject 1',
-[{yolo: '123'}],
-'report',
-[{kommune: 'asd'}]);
-this.props.createSearchObject(
-'TestObject 2',
-[{yolo: '123'}],
-'report',
-[{kommune: 'asd'}]);
-}
-
-render() {
-return (
-<Router>
-<Scene key="root">
-<Scene
-key="startingView"
-component={StartingView}
-title=""
-hideNavBar={true}
-type='reset'
-initial={true}
-
-/>
-<Scene
-key="searchFormView"
-component={SearchFormView}
-title="Search"
-hideNavBar={false}
-
-/>
-<Scene
-key="storedDataView"
-component={StoredDataView}
-title="Stored Data"
-hideNavBar={false}
-
-/>
-<Scene
-key="settingsView"
-component={SettingsView}
-title="Settings"
-hideNavBar={false}
-/>
-<Scene
-key="loadingView"
-component={LoadingView}
-title=""
-hideNavBar={true}
-/>
-<Scene
-key="currentSearchView"
-component={CurrentSearchView}
-title=""
-hideNavBar={true}
-type = 'reset'
-/>
-<Scene
-key="reportView"
-component={ReportView}
-title="Report"
-hideNavBar={false}
-/>
-<Scene
-key="showMapView"
-component={ShowMapView}
-title="Map"
-hideNavBar={false}
-/>
-</Scene>
-</Router>
-)
-}
-}
-
-
+})
 
 function mapStateToProps(state) {
-return {
-//Status information about search
-fetching: state.dataReducer.fetching,
-fetched: state.dataReducer.fetched,
-
-filterFlex: stat....
-};}
+  return {
+    //Status information about search
+    sidebarFrame: state.mapReducer.sidebarFrame,
+  };
+}
 
 function mapDispatchToProps(dispatch) {
-return {
-createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
-}
+  return {
+    setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
+    toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (App);
-*/

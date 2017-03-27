@@ -16,7 +16,6 @@ import Accordion from 'react-native-collapsible/Accordion';
 
 
 var StoredDataView = React.createClass({
-
   _renderHeader(section) {
     return (
       <View style={styles.accordionHeader}>
@@ -26,6 +25,7 @@ var StoredDataView = React.createClass({
       </View>
     );
   },
+
   //must do padding better than empty textcomponents
   _renderContent(section) {
     return (
@@ -66,7 +66,7 @@ var StoredDataView = React.createClass({
     return <View style={templates.container}>
       <View style={templates.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <Accordion
@@ -80,28 +80,35 @@ var StoredDataView = React.createClass({
       </View>
     </View>
   },
+
   buttonPress(section){
     this.props.setCurrentRoadSearch(section);
     Actions.currentSearchView();
   }
 });
 
-
-
 var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //justifyContent: 'center',
+    alignItems: 'stretch',
+  },
   //Top-leve containers
+  top: {
+    flex: 0.7
+  },
   header: {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
     //backgroundColor: 'yellow'
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   contents: {
     flex: 14,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    backgroundColor: templates.gray
+    backgroundColor: templates.colors.darkGray
   },
   accordionHeader: {
     //flex:1,
@@ -109,7 +116,7 @@ var styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray,
+    backgroundColor: templates.colors.darkGray,
     padding: 10
 
   },
@@ -117,7 +124,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.gray,
+    backgroundColor: templates.colors.darkGray,
   },
   accordionContentsPadding: {
     flex: 0.1,
@@ -135,20 +142,27 @@ var styles = StyleSheet.create({
   accordionContentsPadding: {
     flex: 0.1,
   },
+  footer: {
+    flex:0.7,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   text: {
-    color: templates.textColorWhite,
+    color: templates.colors.white,
   },
 })
 
 function mapStateToProps(state) {
   return {
     allSearches: state.dataReducer.allSearches,
-  };}
+  };
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      //dataActions
-      setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
-    }
+function mapDispatchToProps(dispatch) {
+  return {
+    //dataActions
+    setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
   }
-  export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (StoredDataView);
