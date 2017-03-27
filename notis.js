@@ -4,7 +4,55 @@
 
   WORK LIST:
 
-  FIRST! velg kommune, hent skil over kommuner, vist skilt på kart
+  TODO
+  - SearchView
+
+  - Give feedback that input fylke er invalid
+    - trenger mest sansylig bare å ha grået ut neste felt,
+      kanskje med tekst: skriv inn gyldig fylke DONE!
+  - gjør createInputField helt generisk DONE!
+    flytte choosefylke() inn?
+
+  - FINN UT HVORDAN HENTE SKILT BASERT PÅ FYLKE VEGKATEGORI OG VEGNUMMER!!!!
+    - områdefilter, vegreferanse
+
+  - fiks slik at vegkategori blir nullstilt når fylke blir nullstilt
+
+  - flytt deklarering av vegkategorier fra utils til egen fil under data
+  - fiks, dobbeltttouch for å velge fylke
+  - endre all bruk av vei til veg, altså ordet DONE!
+    MEEEEEN burde nok endre variablenavn veg til vegnummer
+
+      NEW SEARCHVIEW
+  - lag prefetch som finner ut hvor mange objekter som blir hentet: DONE!
+  - fullfør søk
+  - sett maksstørrelse på listview i whatContents
+  - fiks usteended på listview, bruk bla renderSeparator
+  - fiks slik at en kan velge flere vegobjekter, dersom det er noe vi skal kunne?
+
+
+  - Move searchparamlabel inn i createInputField
+  - slå samen styles whatContents og whereContents: DONE!
+
+  - implement kommune valg, husk at en må kunne velge flere kommuner og at valg av kommune ikke er nødvendig
+
+
+  - implementer reset searchParameters: DONE!
+  - implementer clearData(): DONE!
+
+    MAIN TODO prioritert liste
+  - fiks slik at appen åpnes på telefon,
+  - fiks slik at data lagres når app lukkes
+  - legg til i setting standardsøk, dette er nødvendig før vi begynner med endelig layout
+
+  - REMEBER TO WRITE ABOUT WHY WE HAVE CHOSEN THAT THE USER MUST BE ABLE TO KNOW ROAD NAME
+
+
+
+
+
+
+  OLD! velg kommune, hent skilt over kommuner, vist skilt på kart
   - hent kommuner manuelt: DONE!
   - create fetch request based on chosen kommune: DONE!
   - lag en mer oversiktlig layout, med et felt for input mellom get data: DONE!
@@ -56,7 +104,7 @@
   -  har en when loading true state som settes true når ferdig, og da kalles vis skilt
 
   - loading, hent først antallet objekter, og gi tilbakemelding ettersom det blir hentet
-  https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk?kommune=231
+  https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk?kommune=231: DONE!
   - fiks slik at en får tilbakemelding dersom inntastet data er feil: DONE!
 
 
@@ -70,7 +118,7 @@
 
   - bruker må bestemme lokasjon
     bestemmer lokasjonen på forhånd
-    og sendes da til AR
+    og sendes da til AR: DONE!
 
   - sett default kart til google maps, slik at api-key alltid er satt,
     dette fordi android bruker google maps som standard og den feiler da på android om ingen api-key er satt
@@ -87,7 +135,7 @@
 
 
       -------NEW SHIT---------
-  - endre slik at ny søk legges til appending, dette må til for å lagre søk
+  - endre slik at ny søk legges til appending, dette må til for å lagre søk: DONE!
   - kan hende vi bør ha loading screen før map vises, evt:!
     markers lages nå objektene er hentet, her har vi allerede lang ventetid som kan brukes
   - kan være vi bør ha en loading etter exit også, men dette gjelder kun dersom storing er false, da det er sletting av state som tar tid
@@ -96,7 +144,7 @@
   - endre slik at ikke alle henter alle dataActions
   - fjern bruk av bst, erstatt med noe annet
   - endre slik at maks, 8000 objekter hentes istedenfor 1000
-  - veg = e, r, f
+  - veg = e, r, f, k
 
   ---Nå--
   - fullfør searchReducer etc før jeg går over til storing search datavariables: DONE!

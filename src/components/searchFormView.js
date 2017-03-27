@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableHighlight,
   TextInput,
-  Alert
+  Alert,
+  ListView
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
@@ -15,26 +16,25 @@ import * as searchActions from '../actions/searchActions'
 import * as templates from '../utilities/templates'
 
 
+import {searchForFylke} from '../utilities/utils';
+
+
+
 var valid = true;
 
 
-/*      ---Layout----
-  TWO PARTS:
-  1. Where
-  2. What
+/*
 
-  The screen is split in two views,
-  using react-native-keyboard-spacer to make room for keyboard
-  when typing in where, only the where part is focused, the what part is hidden
-
+  DPRECATED SEARCH VIEW, new in components.SearchView
 
 */
 
 
 var SearchFormView = React.createClass({
+
   render() {
-    return <View style = {styles.container}>
-      <View style={styles.top}></View>
+    return <View style = {templates.container}>
+      <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
@@ -70,8 +70,8 @@ var SearchFormView = React.createClass({
           <Text style={{color: templates.colors.white}}>Search</Text>
         </TouchableHighlight>
       </View>
-      <View style={styles.footer}>
-        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
+      <View style={templates.footer}>
+        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -94,15 +94,7 @@ var SearchFormView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -135,11 +127,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: templates.colors.darkGray
   },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   text: {
     color: templates.colors.white,
   },
@@ -150,7 +137,10 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     //field used to hold input in text field for kommune
+    fylke_input: state.searchReducer.fylke_input,
     kommune_input: state.searchReducer.kommune_input,
+    fylke_valid: state.searchReducer.fylke_valid,
+
     //boolean used to check whether or not input kommuneid is valid
     kommune_valid: state.searchReducer.kommune_valid,
     kommune_input_color: state.searchReducer.kommune_input_color,
@@ -168,6 +158,7 @@ function mapDispatchToProps(dispatch) {
   return {
     //input search variables, uses searchActions to set variables before creatingURL
     inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
   }
 }

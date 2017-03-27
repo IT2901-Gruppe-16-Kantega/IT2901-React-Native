@@ -8,6 +8,19 @@ export var colors = {
   middleGray: '#dadada',
   darkGray: '#444f55'
 }
+export var container = {
+  flex: 1,
+  alignItems: 'stretch',
+}
+export var top = {
+  flex: 0.7,
+}
+
+export var footer = {
+  flex:0.7,
+  justifyContent: 'center',
+  alignItems: 'center',
+}
 
 export var button = {
   borderWidth: 2,

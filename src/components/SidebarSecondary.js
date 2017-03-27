@@ -114,11 +114,13 @@ var SidebarSecondary = React.createClass({
     for(var i = 0; i < this.props.allObjects.length; i++) {
       const objekt = this.props.allObjects[i];
 
-      for(var j = 0; j < objekt.egenskaper.length; j++) {
-        const egenskap = objekt.egenskaper[j];
+      if(objekt.egenskaper) {
+        for(var j = 0; j < objekt.egenskaper.length; j++) {
+          const egenskap = objekt.egenskaper[j];
 
-        if(egenskap.enum_id == value.id) {
-          filtered.push(objekt);
+          if(egenskap.enum_id == value.id) {
+            filtered.push(objekt);
+          }
         }
       }
     }

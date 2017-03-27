@@ -8,14 +8,17 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
-import StartingView from './components/startingView'
-import CurrentSearchView from './components/currentSearchView'
-import LoadingView from './components/loadingView'
-import ReportView from './components/reportView'
-import SearchFormView from './components/searchFormView'
+
+import StartingView from './components/StartingView'
+import CurrentSearchView from './components/CurrentSearchView'
+import LoadingView from './components/LoadingView'
+import ReportView from './components/ReportView'
+import SearchView from './components/SearchView'
 import RoadMapView from './components/RoadMapView'
-import StoredDataView from './components/storedDataView'
-import SettingsView from './components/settingsView'
+import StoredDataView from './components/StoredDataView'
+import SettingsView from './components/SettingsView'
+import * as templates from './utilities/templates'
+
 
 import * as dataActions from './actions/dataActions'
 import * as mapActions from './actions/mapActions'
@@ -40,8 +43,8 @@ class App extends Component {
 
             />
           <Scene
-            key="searchFormView"
-            component={SearchFormView}
+            key="SearchView"
+            component={SearchView}
             title="Search"
             hideNavBar={false}
 

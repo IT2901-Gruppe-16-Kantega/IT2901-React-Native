@@ -4,55 +4,52 @@ import {
   View,
   Text,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
+  TouchableHighlight
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as templates from '../utilities/templates'
 
-//import only the actions that we need
+import * as templates from '../utilities/templates'
 import * as dataActions from '../actions/dataActions'
 import * as searchActions from '../actions/searchActions'
 import * as mapActions from '../actions/mapActions'
 
 import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
-const objektID = 96;
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/';
-const preFetchURL = 'vegobjekter/96/statistikk';
 
 var LoadingView = React.createClass({
-
   //create URL happens here here
   componentWillMount() {
+    console.log('loadingView')
+
     //prefetches total number of objects to be fetched
-    const preURL = baseURL + preFetchURL + '?kommune=' + this.props.kommune.nummer;
+    const preFetchURL = 'vegobjekter/96/statistikk';
+    /*const preURL = baseURL + preFetchURL + '?kommune=' + this.props.kommune.nummer;
     var numberOfObjectsToBeFetched = 0;
     fetchTotalNumberOfObjects(preURL).then(function(response) {
       numberOfObjectsToBeFetched = response.antall;
       this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
-    }.bind(this));
+    }.bind(this));*/
 
-    fetchObjekttypeInfo(96, function(data) {
+    fetchObjekttypeInfo(this.props.combinedSearchParameters[2].id, function(data) {
       this.props.setObjekttypeInfo(data);
 
       // SELECT THE FIRST FILTER AS DEFAULT FOR THE MAPVIEW
       this.props.selectedFilter = data.egenskapstyper[0];
 
-      fetchFromAPI_all(this.props.fetchDataReturned, url);
-
+      fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
-    //Creates url and fetches objects
-    const url = baseURL + 'vegobjekter/' + objektID + '?kommune=' + this.props.kommune.nummer + '&inkluder=alle&srid=4326';
     this.props.fetchDataStart();
   },
 
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
@@ -67,20 +64,20 @@ var LoadingView = React.createClass({
           <View style={styles.progressInfo}>
             <Text style={styles.text}> Some information about progress:</Text>
             <Text style={styles.text}></Text>
-            <Text style={styles.text}> Kommune, er {this.props.kommune.navn}</Text>
+            <Text style={styles.text}> Fylke er </Text>
             <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
             <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
-          </View>
+
+        </View>
         </View>
       </View>
-      <View style={styles.footer}>
-        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
+      <View style={templates.footer}>
+        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
 
   //this may be really bad as componentDidUpdate may be called a lot of times
-  //and it works ugly af
   componentDidUpdate() {
     if(this.props.fetched) {
       this.props.createSearchObject(
@@ -93,10 +90,28 @@ var LoadingView = React.createClass({
         Actions.currentSearchView();
       }
     },
+
+    /* Cancel is urrently deprecated because the fetch is in wrapper is not cancelled
+        Need to find a way to stop the ongoing fetch in wrapper
+        <TouchableHighlight
+          style= {templates.smallButton}
+          underlayColor="azure"
+          onPress = {this.cancelSearch}
+          >
+          <Text style={{color: templates.textColorWhite}}>Cancel</Text>
+        </TouchableHighlight>
+    cancelSearch() {
+      this.props.resetSearchParameters();
+      this.props.resetFetching();
+      Actions.startingView();
+    }
+    */
   });
 
   function mapStateToProps(state) {
     return {
+      url: state.searchReducer.url,
+
       //Fields used when creating URL
       kommune: state.searchReducer.kommune_input,
 
@@ -122,22 +137,15 @@ var LoadingView = React.createClass({
         createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
         setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
         resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
-
         setObjekttypeInfo: bindActionCreators(dataActions.setObjekttypeInfo, dispatch),
+        resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
       }
     }
     export default connect(mapStateToProps, mapDispatchToProps) (LoadingView);
 
     var styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        //justifyContent: 'center',
-        alignItems: 'stretch',
-      },
       //Top-leve containers
-      top: {
-        flex: 0.7
-      },
+
       header: {
         flex: 7.5,
         justifyContent: 'center',
@@ -167,11 +175,6 @@ var LoadingView = React.createClass({
       },
       progressInfo: {
         flex: 1.5,
-      },
-      footer: {
-        flex:0.7,
-        justifyContent: 'center',
-        alignItems: 'center',
       },
       text: {
         color: templates.colors.white,

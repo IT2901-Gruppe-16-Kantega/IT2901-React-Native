@@ -7,6 +7,7 @@ const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
+
 function fetchFromAPI_all(callback, url) {
   //console.log('#wrapper.fetchFromAPI');
   var objects = [];
@@ -88,4 +89,16 @@ function fetchObjekttypeInfo(objekttypeID, callback) {
   })
 }
 
-export {fetchFromAPI_all, fetch_Kommuner, fetchObjekttypeInfo, fetchTotalNumberOfObjects};
+async function fetchVeier(fylke, vegkategori){
+  //egenskap="4591=8AND4566=5492"
+  var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap=4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.log('ERROR: wrapper.fetchVeier');
+  }
+}
+
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeier, fetchObjekttypeInfo};

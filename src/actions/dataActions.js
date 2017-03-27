@@ -1,10 +1,4 @@
-// will contain actions that depend on NVDB
-
-//REMOVE WRAPPER?
-import wrapper from '../utilities/wrapper'
-import {createBST, searchForKommune} from '../utilities/utils';
 import moment from 'moment';
-//createBST();
 
 
 /*
@@ -74,6 +68,7 @@ export function fetchDataReturned(data, fetched) {
       type: "FETCHING_NOT_FINISHED",
       payload: {
         currentlyFetched: data.length,
+
       }
     }
   }

@@ -1,7 +1,6 @@
 /*
 starting page of application
 */
-//import reactm react native, and router shit
 import React from 'react'
 import {
   StyleSheet,
@@ -13,17 +12,13 @@ import {
 import { Actions } from 'react-native-router-flux';
 import * as templates from '../utilities/templates'
 
-//importing to make redux work
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-//importing just one action, if only one action is needed, bindActionCreators must be changed
-//only import actions that this component needs
 
 var StartingView = React.createClass({
   render() {
-    //may also use this for readability const {user, tweets} = this.props;
-    return <View style= {styles.container}>
-      <View style={styles.top}></View>
+    return <View style= {templates.container}>
+      <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.colors.white}}>NVDB-app</Text>
       </View>
@@ -31,7 +26,7 @@ var StartingView = React.createClass({
         <TouchableHighlight
           style= {templates.button}
           underlayColor="azure"
-          onPress = {Actions.searchFormView}
+          onPress = {Actions.SearchView}
           >
           <Text style={{color: templates.colors.white}}>Nytt søk</Text>
         </TouchableHighlight>
@@ -51,8 +46,8 @@ var StartingView = React.createClass({
         </TouchableHighlight>
       </View>
       <View style={styles.bottomPadding}></View>
-      <View style={styles.footer}>
-        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
+      <View style={templates.footer}>
+        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   }
@@ -60,15 +55,7 @@ var StartingView = React.createClass({
 
 //move some of this to templates
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -85,11 +72,6 @@ var styles = StyleSheet.create({
     flex: 6.5,
     backgroundColor: templates.colors.darkGray
   },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 })
 
 /*                        REDUX STUFF
@@ -100,6 +82,9 @@ The return of mapDispatchToProps is which actions this component has access to
 
 function mapStateToProps(state) {
   return {
-    fetching: state.dataReducer.fetching};}
-    //function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-    export default connect(mapStateToProps, null) (StartingView);
+    fetching: state.dataReducer.fetching
+  };
+}
+
+function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (StartingView);
