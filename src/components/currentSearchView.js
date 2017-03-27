@@ -95,7 +95,7 @@ var CurrentSearchView = React.createClass({
 
     </View>
   },
-  
+
   openAR() {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
