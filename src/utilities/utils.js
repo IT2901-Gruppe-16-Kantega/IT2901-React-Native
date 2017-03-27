@@ -11,6 +11,18 @@ This iterative procedure keeps track of the search boundaries via two variables.
 */
 
 import {kommuner_allinfo} from '../data/kommuner';
+import {fylker} from '../data/fylker';
+import {kommuner} from '../data/kommuner';
+import {vegobjekttyper} from '../data/vegobjekttyper';
+import {fetchVeier} from './wrapper';
+
+const vegkategorier = [
+      {navn: 'Europaveg', id: 5492},
+      {navn: 'Riksveg', id: 5493},
+      {navn: 'Fylkesveg', id: 5494},
+      {navn: 'Kommunal veg', id: 5495}];
+
+var veier = [];
 
 var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
 var bst = new BinarySearchTree({unique: true});
@@ -23,32 +35,126 @@ function createBST(){
   }
 }
 function searchForKommune(kommuneID) {
-  var id = parseInt(kommuneID);
-  return bst.search(id);
-  //if bst does not find something it returns empty arry, this should be handeled in route-chooser
-}
+  return new Promise(function(resolve, reject){
+    var id = parseInt(kommuneID);
+    var kommune = bst.search(id);
+    if(kommune.length > 0){
+      resolve(kommune[0]);
+    }
+    else {
+      reject(Error("Not av valid kommuneID"));
+    }
+  })}
 
+function searchForKommuneNy(fylke_id, kommune_navn) {
+    return new Promise(function(resolve, reject) {
+      var kommunerArray = [];
+      kommunerArray.push(kommuner.filter(compareInput, kommune_navn).filter(filterFylke, fylke_id))
+      if(kommunerArray.length > 0) {
+        resolve(kommunerArray);
+      }
+      else {
+        reject(Error("Not a valid kommune."));
+      }
+    })
+  }
 
+function filterFylke(f) {
+    return f.fylke === parseInt(this);
+  }
 
 /*
-function searchForKommune(kommuneID) {
-  console.log('#createBST');
-  var id = parseInt(kommuneID);
-  console.log('--> id: '+id);
-  var bst = new BinarySearchTree({unique:true});
-  for(index in alle_kommuner){
-    //console.log('index is now: '+ index);
-    //console.log('kommune is: ');
-    //console.log(alle_kommuner[index]);
-    var nummer  = alle_kommuner[index].nummer;
-    var data = alle_kommuner[index];
-    bst.insert(nummer, data);
-  }
-  return bst.search(id);
-
-  //if bst does not find something it returns empty arry, this should be handeled in route-chooser
-}
+    NEW METOHDS CURRENTLY USED
 
 */
 
-export {createBST, searchForKommune};
+function searchForFylke(fylke_navn){
+    return new Promise(function(resolve, reject){
+      var fylkerArray = [];
+      fylkerArray = fylker.filter(compareInput, fylke_navn);
+      if(fylkerArray.length > 0 && fylkerArray.length != 19) {
+        resolve(fylkerArray);
+      }
+      else {
+        reject(Error("Not a valid fylke"));
+      }
+    })
+  }
+
+function searchForVegobjekttyper(input){
+  return new Promise(function(resolve, reject){
+    var vegobjekttyperArray = [];
+    vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
+    if(vegobjekttyperArray.length > 0 && vegobjekttyperArray.length != 391) {
+      resolve(vegobjekttyperArray);
+    }
+    else {
+      reject(Error("Not a valid vegobjekttype"));
+    }
+  })
+}
+
+function compareInput(input){
+    let stringInput = this.toString().toLowerCase();
+    return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+  }
+
+
+//TO be DEPRECATED
+function searchForVegkategori(input){
+  return new Promise(function(resolve, reject){
+    var vegkategoriArray = [];
+    vegkategoriArray = vegkategorier.filter(compareInput, input);
+    if(vegkategoriArray.length > 0 && vegkategoriArray.length != 4) {
+      resolve(vegkategoriArray);
+    }
+    else {
+      reject(Error("Not a valid vegkategori"));
+    }
+  })
+}
+
+
+//this fetches data from NDVB, picks out uniqe roads, and adds them to veier
+function fetchVeierFromAPI(fylke, vegtype){
+  fetchVeier(fylke, vegtype).then((result) => {
+    for(i=0; i<result.objekter.length; i++){
+      for(z=0; z<result.objekter[i].egenskaper.length; z++){
+        if(result.objekter[i].egenskaper[z].id==4568){
+          if(veier.some(veierContains, result.objekter[i].egenskaper[z].verdi)){
+          }
+          else{
+            veier.push(result.objekter[i].egenskaper[z].verdi)
+          }
+        }
+      }
+    }
+  });
+}
+
+function veierContains(value){
+  if(value==this){
+    return true;
+  }
+}
+
+function searchForVeg(input, ){
+  return new Promise(function(resolve, reject){
+    var vegArray = [];
+    vegArray = veier.filter(compareInput, input);
+    if(vegArray.length > 0 && vegArray.length != veier.length) {
+      resolve(vegArray);
+    }
+    else {
+      reject(Error("Not a valid vegnummer"));
+    }
+  })
+}
+
+
+
+
+
+
+
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVeierFromAPI, searchForVegobjekttyper};

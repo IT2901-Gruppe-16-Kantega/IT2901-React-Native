@@ -53,4 +53,8 @@ fastlane/Preview.html
 fastlane/screenshots
 
 # testfiles
-app/REDUX_TUTORIALFILE
+app/REDUX_TUTORIALFILE.js
+
+# old files
+src/components/oldSearchView.js
+notis.js

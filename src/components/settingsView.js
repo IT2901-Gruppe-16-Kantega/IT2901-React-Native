@@ -14,8 +14,8 @@ import * as templates from '../utilities/templates'
 
 var SettingsView = React.createClass({
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
+    return <View style={templates.container}>
+      <View style={templates.top}/>
         <View style={styles.header}>
           <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
         </View>
@@ -24,10 +24,11 @@ var SettingsView = React.createClass({
             Her vil det komme settings slik at bruker kan definiere div instillinger
             slik som f.eks skru av/på autolagring av søk.
             Samt spesifisering av forhåndsutfylte søkeparametre:
-            kommune, veg, skilt e.l kommer opp standard ved nytt søk
+            kommune, veg, skilt e.l kommer opp standard ved nytt søk.
+            Her kan du også hente nye oppdateringer på vegobjektyper eller kommuner dersom det blir endret
           </Text>
         </View>
-        <View style={styles.footer}>
+        <View style={templates.footer}>
           <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
         </View>
     </View>
@@ -35,15 +36,7 @@ var SettingsView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -56,11 +49,6 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: templates.gray
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: templates.textColorWhite,

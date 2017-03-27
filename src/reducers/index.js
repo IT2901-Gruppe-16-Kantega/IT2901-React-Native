@@ -7,11 +7,12 @@ import {combineReducers} from 'redux'
 
 import dataReducer from './dataReducer'
 import fileReducer from './fileReducer'
-import searchesReducer from './searchesReducer'
+import searchReducer from './searchReducer'
+
 
 
 export default combineReducers({
   dataReducer,
   fileReducer,
-  searchesReducer
+  searchReducer,
 })

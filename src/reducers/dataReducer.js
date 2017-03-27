@@ -1,54 +1,50 @@
-/*
-PUT SOME INFORMATION ABOUT REDUCER HERE
-*/
+
 
 export default function reducer(state={
-  //initialState
-  kommune_input: 'ukjent',
-  kommune: 'not input',
-  valid_kommune: false,
   fetching: false,
   fetched: false,
   error: null,
-  objects: [],
-  numberOfObjects: 0,
-  region: {
-    latitude: 63.43,
-    longitude: 10.40,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
-  },
-  andel_egengeometri: null,
+  numberOfObjectsToBeFetched: 0,
+  numberOfObjectsFetchedSoFar: 0,
+
+  objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
+
+
   allSearches:[],
-  valgtObjektref: 1,
+
+  //this holds the currently chosen roadSearch to avoid calling the entire array all the time
+  currentRoadSearch: null,
+
+
+  //currently not used
+  currentRoadSearchIndex: null,
+  andel_egengeometri: null,
+
+  //used by filewriter
+  writing_file: false,
 
 }, action) {
-  //simple switch statement based on type of action
   switch (action.type) {
-    case "templateAction": {
-      return{...state,fetching: true}
-    }
-    case "SET_KOMMUNE_INPUT": {
+    // cases associated with searches
+    case "ADD_NEW_SEARCH_OBJECT": {
       return{
         ...state,
-        kommune_input: action.payload.text
+        allSearches: [...state.allSearches, action.payload],
+        currentRoadSearch: action.payload,
       }
     }
-    case "SET_KOMMUNE": {
-      var geometryString = action.payload[0].senterpunkt.wkt.split('(')[1].slice(0, -1);
-      var geometryParts = geometryString.split(' ');
-      var objLat = parseFloat(geometryParts[0]);
-      var objLong = parseFloat(geometryParts[1]);
-      return{
+    case "SET_CURRENT_ROAD_SEARCH": {
+      return {
         ...state,
-        valid_kommune: true,
-        kommune: action.payload,
-        region: {
-          latitude: objLat,
-          longitude: objLong,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
-        }
+        currentRoadSearch: action.payload,
+      }
+    }
+
+    // cases associated with fetching
+    case "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED":{
+      return {
+        ...state,
+        numberOfObjectsToBeFetched: action.payload,
       }
     }
     case "FETCH_DATA_START": {
@@ -60,7 +56,7 @@ export default function reducer(state={
     case "FETCHING_NOT_FINISHED": {
       return{
         ...state,
-        numberOfObjects: action.payload.currentlyFetched
+        numberOfObjectsFetchedSoFar: action.payload.currentlyFetched
       }
     }
     case "FETCH_DATA_RETURNED":{
@@ -69,6 +65,15 @@ export default function reducer(state={
         fetching: action.payload.fetching,
         fetched: action.payload.fetched,
         objects: action.payload.data,
+      }
+    }
+    case "RESET_FETCHING":{
+      return {
+        ...state,
+        objects: [],
+        fetching: false,
+        fetched: false,
+        error: null,
       }
     }
     case "CLEAR_DATA": {
@@ -87,6 +92,14 @@ export default function reducer(state={
           latitudeDelta: 1,
           longitudeDelta: 1,
         }
+      }
+    }
+
+    //used by filewriter
+    case "WRITING_FILE": {
+      return {
+        ...state,
+        writing_file: true,
       }
     }
   }

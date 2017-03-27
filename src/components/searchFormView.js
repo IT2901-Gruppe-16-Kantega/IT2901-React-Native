@@ -6,41 +6,57 @@ import {
   StyleSheet,
   TouchableHighlight,
   TextInput,
-  Alert
+  Alert,
+  ListView
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as dataActions from '../actions/dataActions'
+import * as searchActions from '../actions/searchActions'
 import * as templates from '../utilities/templates'
-import {fetchFromAPI_all} from '../utilities/wrapper'
 
-//move create url from routechooser to utilities and import
-var startUrl = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?kommune=439'
-var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96';
+
+import {searchForFylke} from '../utilities/utils';
+
 
 
 var valid = true;
 
+
+/*
+
+  DPRECATED SEARCH VIEW, new in components.SearchView
+
+*/
+
+
 var SearchFormView = React.createClass({
+
   render() {
-    return <View style = {styles.container}>
-      <View style={styles.top}></View>
+    return <View style = {templates.container}>
+      <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.textColorWhite}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <View style={styles.inputAreaPadding}></View>
         <View style={styles.inputArea}>
+          <Text style={styles.text}>Kommune</Text>
           <TextInput
-            style={styles.textInput}
+            style={{padding: 5,
+              height: 30,
+              color: 'white',
+              borderWidth: 2,
+              borderColor: this.props.kommune_input_color_border,
+              backgroundColor: this.props.kommune_input_color}}
             maxLength={4}
             placeholder="Type in kommmune id"
-            onChangeText={(text) => this.updateTextState({text})}
-            keyboardType = 'numeric'
+            onChangeText={(text) => this.props.inputKommune({text})}
+            keyboardType = "default"
+            returnKeyType = 'done'
             />
           <Text style={{color: 'white'}}>
-            {this.props.kommune_input}
+            {this.props.kommune_navn}
           </Text>
         </View>
         <View style={styles.inputAreaPadding}></View>
@@ -54,43 +70,30 @@ var SearchFormView = React.createClass({
           <Text style={{color: templates.textColorWhite}}>Search</Text>
         </TouchableHighlight>
       </View>
-      <View style={styles.footer}>
+      <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
   search: function(){
-    this.props.setKommune(this.props.kommune_input);
-    setTimeout(this.searchForKommune, 100);
-  },
-  searchForKommune: function() {
-    if(this.props.valid_kommune == true){
-      var url = baseURL+'?kommune='+this.props.kommune[0].nummer+'&inkluder=alle&srid=4326';
-      var urlShallow = baseURL+'?kommune='+this.props.kommune[0].nummer;
-      this.props.fetchDataStart();
-      fetchFromAPI_all(this.props.fetchDataReturned, url);
+    //Check that all input fields are valid
+    //Then combine all parameters to one file
+
+    //Should also check the number of objects that are going to be fetcehd here
+    //and give the user the ability to cancel the search if there is going to be
+    // long waiting time
+    if(this.props.kommune_valid==true){
+      this.props.combineSearchParameters(this.props.kommune_input);
       Actions.loadingView();
     }
     else{
-      Alert.alert("Ugyldig data", "Ukjent kommunenummer, vennligst skriv inn et gydlig kommunenummer");
+      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
     }
   },
-  updateTextState: function(text) {
-    console.log('updateText');
-    this.props.setKommuneInput(text);
-  }
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -115,7 +118,7 @@ var styles = StyleSheet.create({
     padding: 5,
     height: 30,
     color: templates.gray,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   buttonArea: {
     flex: 2,
@@ -123,10 +126,8 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: templates.gray
   },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
+  text: {
+    color: templates.textColorWhite,
   },
 })
 
@@ -134,11 +135,31 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    kommune_input: state.dataReducer.kommune_input,
-    valid_kommune: state.dataReducer.valid_kommune,
-    kommune: state.dataReducer.kommune
+    //field used to hold input in text field for kommune
+    fylke_input: state.searchReducer.fylke_input,
+    kommune_input: state.searchReducer.kommune_input,
+    fylke_valid: state.searchReducer.fylke_valid,
+
+    //boolean used to check whether or not input kommuneid is valid
+    kommune_valid: state.searchReducer.kommune_valid,
+    kommune_input_color: state.searchReducer.kommune_input_color,
+    kommune_input_color_border: state.searchReducer.kommune_input_color_border,
+
+    valid_all: state.searchReducer.valid_all,
+    combinedSearchParameters: state.searchReducer.combinedSearchParameters,
+
+    //only used in debugging
+    kommune_navn: state.searchReducer.kommune_navn,
+
   };}
+
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(dataActions, dispatch);}
+  return {
+    //input search variables, uses searchActions to set variables before creatingURL
+    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
+    combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (SearchFormView);

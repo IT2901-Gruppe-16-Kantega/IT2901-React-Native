@@ -11,13 +11,28 @@ import { bindActionCreators } from 'redux'
 import * as templates from '../utilities/templates'
 import MapView from 'react-native-maps';
 
+var region = null;
 
 var ShowMapView = React.createClass({
+  componentWillMount() {
+    var regionString = this.props.region;
+    var geometryString = regionString.split('(')[1].slice(0, -1);
+    var geometryParts = geometryString.split(' ');
+    var objLat = parseFloat(geometryParts[0]);
+    var objLong = parseFloat(geometryParts[1]);
+    region = {
+      latitude: objLat,
+      longitude: objLong,
+      latitudeDelta: 2,
+      longitudeDelta: 2,
+    };
+    console.log(region);
+  },
   render() {
-    return <View style={styles.container}>
+    return <View style={templates.container}>
         <MapView
           style={styles.map}
-          region={this.props.region}
+          region={region}
           onRegionChange={this.mapRegionChanged}
           onLongPress={this.mapPressed}
           zoomEnabled={true}
@@ -26,7 +41,6 @@ var ShowMapView = React.createClass({
         {this.props.objects.map(function(object) {
           var geometryString = object.geometri.wkt.split('(')[1].slice(0, -1);
           var geometryParts = geometryString.split(' ');
-
           var objLat = parseFloat(geometryParts[0]);
           var objLong = parseFloat(geometryParts[1]);
           var LatLng = {latitude: objLat, longitude: objLong};
@@ -48,10 +62,6 @@ var ShowMapView = React.createClass({
             />
         })}
         </MapView>
-
-      <View style={styles.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
-      </View>
     </View>
   },
   mapRegionChanged(region) {
@@ -62,16 +72,21 @@ var ShowMapView = React.createClass({
   },
 });
 
+
+
+function mapStateToProps(state) {
+  return {
+    objects: state.dataReducer.currentRoadSearch.roadObjects,
+    region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+
+  };}
+//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
+export default connect(mapStateToProps, null) (ShowMapView);
+
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   //Top-leve containers
-  top: {
-    flex: 0.7
-  },
+
   contents: {
     flex: 18,
     flexDirection: 'column',
@@ -81,22 +96,8 @@ var styles = StyleSheet.create({
   map: {
     flex: 18,
   },
-  mapPadding: {
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   text: {
     color: templates.textColorWhite,
   },
 })
-
-function mapStateToProps(state) {
-  return {
-    objects: state.dataReducer.objects,
-    region: state.dataReducer.region
-  };}
-//function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}
-export default connect(mapStateToProps, null) (ShowMapView);

@@ -1,55 +1,56 @@
-// will contain actions that depend on NVDB
-import wrapper from '../utilities/wrapper'
-import {createBST, searchForKommune} from '../utilities/utils';
-createBST();
+import moment from 'moment';
 
 
+/*
+  Actions associated with searches
+*/
 
-export function newSearch(roadSearch) {
+export function setCurrentRoadSearch(roadSearch){
   return {
-    type: "NEW_SEARCH",
+    type: "SET_CURRENT_ROAD_SEARCH",
+    payload: roadSearch,
   }
 }
 
-export function chooseSearch(id){
-  return {
-    type: "CHOOSE_SEARCH",
-    payload: id
-  }
-}
 
-export function setKommuneInput(input) {
-  return {
-    type: "SET_KOMMUNE_INPUT",
-    payload: input
-  }
-}
-
-export function setKommune(kommune_input){
-  var kommune = searchForKommune(kommune_input)
-  if(kommune.length>0){
-    return {
-      type: "SET_KOMMUNE",
-      payload: kommune,
+export function createSearchObject(description, objects, report, combParams){
+  var roadSearch = {
+    key: Date.now(),
+    date: moment().format('MMMM Do YYYY, h:mm:ss a'),
+    description: description,
+    roadObjects: objects,
+    report: report,
+    searchParameters: combParams
     }
-  }
-  else {
-    return {
-      type: "ERROR",
-      payload: "unkown kommune"
-    }
+  return {
+    type: "ADD_NEW_SEARCH_OBJECT",
+    payload: roadSearch,
   }
 }
+
+
+/*
+  Actions associated with fetching
+*/
+export function setNumberOfObjectsToBeFetched(number){
+  return{
+    type: "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED",
+    payload: number,
+  }
+}
+
+//Function that sets fetching=true
 export function fetchDataStart(){
   return{
-    type: "FETCH_DATA_START",
-    payload: null,
+    type: "FETCH_DATA_START"
   }
 }
+//Function callback called by fetchFromAPI_all with data from API
 export function fetchDataReturned(data, fetched) {
   var fetching = true;
   if(fetched==true){
     fetching = false;
+    //return if all objects is fetched
     return{
       type: "FETCH_DATA_RETURNED",
       payload: {
@@ -60,19 +61,35 @@ export function fetchDataReturned(data, fetched) {
     }
   }
   else {
+    //return if not all objects are fetched
     return{
       type: "FETCHING_NOT_FINISHED",
       payload: {
         currentlyFetched: data.length,
+
       }
     }
   }
-
 }
+
+export function resetFetching(){
+  return{
+    type: "RESET_FETCHING"
+  }
+}
+
 export function clearData(){
   return{
     type: "CLEAR_DATA",
   }
 }
 
-//function that fetches based on props
+
+/*
+  Actions associated with filewriter
+*/
+export function writingFile() {
+  return {
+    type: "WRITING_FILE",
+  }
+}
