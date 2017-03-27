@@ -97,7 +97,6 @@ var CurrentSearchView = React.createClass({
   },
   exit() {
     Actions.startingView();
-    //this.props.clearData();
   },
 });
 

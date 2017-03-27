@@ -29,13 +29,16 @@
   - sett maksstørrelse på listview i whatContents
   - fiks usteended på listview, bruk bla renderSeparator
   - fiks slik at en kan velge flere vegobjekter, dersom det er noe vi skal kunne?
-  
+
 
   - Move searchparamlabel inn i createInputField
   - slå samen styles whatContents og whereContents: DONE!
 
   - implement kommune valg, husk at en må kunne velge flere kommuner og at valg av kommune ikke er nødvendig
 
+
+  - implementer reset searchParameters
+  - implementer clearData()
 
     MAIN TODO prioritert liste
   - fiks slik at appen åpnes på telefon,

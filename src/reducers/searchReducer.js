@@ -191,14 +191,28 @@ export default function reducer(state={
     case "RESET_SEARCH_PARAMETERS": {
       return{
         ...state,
-        fylke_input: null,
-        fylke_valid: false,
-        kommune_input: null,
-        kommune_valid: false,
-        kommune_input_color: 'white',
-        kommune_input_color_border: 'lightgray',
+        fylke_input: [],
+        fylke_navn: '',
+        fylke_text: '',
+        fylke_chosen: false,
+
+        new_veg_input: '',
+
+        vegobjekttyper_input: [],
+        vegobjekttyper_navn: '',
+        vegobjekttyper_text: '',
+        vegobjekttyper_chosen: false,
+
+        url: '',
+
+        //VEISHIT, DEPRECATED?
+        veg_enabled: false,
+        veg_input: [],
+        veg_navn: '',
+        veg_text: '',
+        veg_chosen: false,
+
         combinedSearchParameters: [],
-        kommune_navn: 'not defined',
       }
     }
 
