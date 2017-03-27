@@ -10,7 +10,7 @@ import promise from 'redux-promise-middleware'
 import reducer from './reducers'
 
 //debug
-const middleware = applyMiddleware(promise(), thunk, logger())
+const middleware = applyMiddleware(promise(), thunk)
 
 //kjøring
 //const middleware = applyMiddleware(promise(), thunk)
