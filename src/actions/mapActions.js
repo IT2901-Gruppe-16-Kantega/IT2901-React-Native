@@ -46,3 +46,10 @@ export function setFilteredObjects(objects) {
     payload: objects,
   }
 }
+
+export function selectObject(roadObject) {
+  return {
+    type: "SELECT_OBJECT",
+    payload: roadObject,
+  }
+}

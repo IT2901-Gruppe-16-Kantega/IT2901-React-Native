@@ -54,6 +54,17 @@ export default function reducer(state={
         fetching: true,
       }
     }
+    case "START_ASYNC_LOADING": {
+      return {
+        ...state,
+      }
+    }
+    case "FINISHED_ASYNC_LOADING": {
+      return {
+        ...state,
+        allSearches: [...state.allSearches, action.payload],
+      }
+    }
     case "FETCHING_NOT_FINISHED": {
       return {
         ...state,
@@ -105,6 +116,7 @@ export default function reducer(state={
     }
 
     case "SET_OBJEKTTYPE_INFO": {
+      console.log("SET_OBJEKTTYPE_INFO");
       return{...state, objekttypeInfo: action.payload}
     }
   }

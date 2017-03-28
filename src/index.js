@@ -94,8 +94,11 @@ class App extends Component {
           <Scene
             key="ObjectInfoView"
             component={ObjectInfoView}
+            sceneStyle={{paddingTop: 64}}
             title=""
             hideNavBar={false}
+            rightTitle="Rediger"
+            onRight={ () => console.log('hei') }
             />
         </Scene>
       </Router>

@@ -12,7 +12,7 @@ import * as templates from '../utilities/templates';
 
 import * as mapActions from '../actions/mapActions';
 
-import { MarkerCallout } from './MarkerCallout'
+import MarkerCallout from './MarkerCallout'
 import SidebarMain from './SidebarMain'
 import SidebarSecondary from './SidebarSecondary'
 
@@ -27,19 +27,21 @@ var RoadMapView = React.createClass({
   },
 
   render() {
+    const padding = { edgePadding: { top: 40, right: 40, bottom: 40, left: 40 }};
+
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
         <MapView
           ref={(ref) => {mapRef = ref}}
-          onLayout = {() => mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
+          onLayout = {() => mapRef.fitToCoordinates(coordinates, { padding, animated: true })}
           style={styles.map}
           zoomEnabled={true}
           >
           {this.updateMarkers()}
         </MapView>
         <SidebarMain />
-        <SidebarSecondary update={this.updateMarkers} />
+        <SidebarSecondary />
       </View>
     </View>
   },
@@ -63,17 +65,17 @@ var RoadMapView = React.createClass({
         return (egenskap.id == this.props.selectedFilter.id);
       });
 
-      var chosenColor;
-      var markerDescription;
-
-      chosenColor = 'red';
-
       return <MapView.Marker
         coordinate={coordinate}
         key={roadObject.id}
-        pinColor={chosenColor}>
+        pinColor={templates.colors.blue}
+        >
         <MapView.Callout style={{flex: 1, position: 'relative'}}>
-          <MarkerCallout roadObject={roadObject} selectedFilter={this.props ? this.props.selectedFilter : null} roadObjectEgenskap={roadObjectEgenskap} />
+          <MarkerCallout
+            roadObject={roadObject}
+            selectedFilter={this.props.selectedFilter}
+            roadObjectEgenskap={roadObjectEgenskap}
+          />
         </MapView.Callout>
       </MapView.Marker>
     }.bind(this));
@@ -120,11 +122,14 @@ function mapStateToProps(state) {
 
     selectedFilter: state.mapReducer.selectedFilter,
     selectedFilterValue: state.mapReducer.selectedFilterValue,
+
+    selectedObject: state.mapReducer.selectedObject,
   };}
 
 function mapDispatchToProps(dispatch) {
   return {
     updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
   }
 };
 

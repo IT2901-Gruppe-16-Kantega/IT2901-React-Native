@@ -7,43 +7,48 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as mapActions from '../actions/mapActions'
+import * as templates from '../utilities/templates';
 
-export class MarkerCallout extends React.Component {
+import PropertyValue from './PropertyValue';
+
+var MarkerCallout = React.createClass({
   render() {
     var {roadObject, roadObjectEgenskap} = this.props;
 
     return <View>
-      <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
-      <Text>ID: {roadObject.id}</Text>
-      <Text>{this.getEgenskapInfo()}</Text>
       <TouchableHighlight
-        onPress={Actions.ObjectInfoView}>
-        <Text>HeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHeiHei</Text>
+        onPress={this.openSomething}>
+        <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       </TouchableHighlight>
+      <PropertyValue property={"ID"} value={roadObject.id} />
+      {this.getEgenskapInfo()}
     </View>
-  }
+  },
 
   openSomething() {
-    console.log("hei");
-  }
+    this.props.selectObject(this.props.roadObject);
+    Actions.ObjectInfoView();
+  },
 
   getEgenskapInfo() {
-    console.log(this.props.roadObjectEgenskap)
-
-    if(!this.props.selectedFilter) {
-      return "Velg et filter for å få mer informasjon.";
+    if(Object.keys(this.props.selectedFilter).length === 0) {
+      return <Text>Velg et filter for å få mer informasjon.</Text>
     }
-    var egenskapInfo = this.props.selectedFilter.navn;
+    var {roadObjectEgenskap} = this.props;
+    var egenskapNavn = this.props.selectedFilter.navn;
 
-    if(this.props.roadObjectEgenskap == null) {
-      return "Ingen info om " + egenskapInfo;
+    if(roadObjectEgenskap == null) {
+      return <Text>"Ingen info om " + egenskapNavn.toLowerCase()</Text>
     } else {
-      return egenskapInfo + ": " + this.props.roadObjectEgenskap.verdi.toString() + this.getPostfix();
+      return <PropertyValue
+        property={egenskapNavn}
+        value={roadObjectEgenskap.verdi.toString() + this.getPostfix()} />
     }
-  }
+  },
 
   getPostfix() {
     var {selectedFilter} = this.props;
@@ -55,11 +60,13 @@ export class MarkerCallout extends React.Component {
     }
     return "";
   }
-}
+});
 
 var styles = StyleSheet.create({
   title: {
     fontSize: 20,
+    fontWeight: 'bold',
+    color: templates.colors.blue,
   }
 })
 
@@ -70,4 +77,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null) (MarkerCallout);
+function mapDispatchToProps(dispatch) {
+  return {
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (MarkerCallout);
