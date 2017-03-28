@@ -28,7 +28,7 @@ export var button = {
   padding: 2,
   justifyContent: 'center',
   alignItems: 'center',
-  borderColor: 'aliceblue',
+  borderColor: colors.orange,
 }
 export var smallButton = {
   borderWidth: 2,
