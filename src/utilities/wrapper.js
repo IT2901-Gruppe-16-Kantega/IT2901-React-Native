@@ -89,7 +89,7 @@ function fetchObjekttypeInfo(objekttypeID, callback) {
   })
 }
 
-async function fetchVeier(fylke, vegkategori){
+async function fetchVeger(fylke, vegkategori){
   //egenskap="4591=8AND4566=5492"
   var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap=4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
   try {
@@ -97,8 +97,8 @@ async function fetchVeier(fylke, vegkategori){
     const data = await response.json();
     return data;
   } catch(error) {
-    console.log('ERROR: wrapper.fetchVeier');
+    console.log('ERROR: wrapper.fetchVeger');
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeier, fetchObjekttypeInfo};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo};

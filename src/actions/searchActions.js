@@ -130,15 +130,15 @@ export function inputVeg(input){
     })
   }
 }
-export function chooseVeg(input){
+export function chooseVeg(input) {
   return{
     type: "CHOOSE_VEG",
     payload: input,
   }
 }
-export function setFetchingVeier(input){
+export function setFetchingVeger(input) {
   return{
-    type: "FETCHING_VEIER",
+    type: "FETCHING_VEGER",
     payload: input,
   }
 }

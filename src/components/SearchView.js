@@ -20,7 +20,7 @@ import * as templates from '../utilities/templates'
 
 import Button from './Button'
 
-import {searchForFylke, fetchVeierFromAPI} from '../utilities/utils';
+import {searchForFylke, fetchVegerFromAPI} from '../utilities/utils';
 import {fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
@@ -188,7 +188,7 @@ var SearchView = React.createClass({
 
         fetchTotalNumberOfObjects(preurl).then(function(response) {
           if(response.antall == undefined) {
-            Alert.alert("Ugyldig veg", "Sjekk at veien du har skrevet inn eksiterer og at format er vegkategori+vegnummer (E6 f.eks)");
+            Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
           }
           else {
             this.props.setURL(url);

@@ -33,14 +33,14 @@ export default function reducer(state={
   vegkategori_text: '',
   vegkategori_chosen: false,
 
-  //VEISHIT
+  //VEGSHIT
   veg_enabled: false,
   veg_input: [],
   veg_navn: '',
   veg_text: '',
   veg_chosen: false,
 
-  fetching_veier: false,
+  fetching_veger: false,
 
   //inputfelter
   kommune_input: null,
@@ -205,7 +205,7 @@ export default function reducer(state={
 
         url: '',
 
-        //VEISHIT, DEPRECATED?
+        //VEGSHIT, DEPRECATED?
         veg_enabled: false,
         veg_input: [],
         veg_navn: '',
@@ -251,10 +251,10 @@ export default function reducer(state={
         veg_chosen: true,
       }
     }
-    case "FETCHING_VEIER": {
+    case "FETCHING_VEGER": {
       return {
         ...state,
-        fetching_veier: action.payload,
+        fetching_veger: action.payload,
       }
     }
 
