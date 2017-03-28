@@ -1,10 +1,4 @@
-import {
-  AsyncStorage
-} from 'react-native';
-
 import moment from 'moment';
-
-import userDefaults from 'react-native-user-defaults'
 
 /*
   Actions associated with searches
@@ -29,29 +23,9 @@ export function createSearchObject(description, objects, report, combParams, obj
     objekttypeInfo: objekttypeInfo,
   }
 
-  AsyncStorage.setItem('allSearches', JSON.stringify([roadSearch]));
-
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
     payload: roadSearch,
-  }
-}
-
-export function startAsyncLoading() {
-  AsyncStorage.getItem('allSearches').then(allSearches => {
-    finishedAsyncLoading(JSON.parse(allSearches));
-  });
-  return {
-    type: "START_ASYNC_LOADING",
-  }
-}
-
-export function finishedAsyncLoading(allSearches) {
-  console.log("FINISHED LOADING");
-
-  return {
-    type: "FINISHED_ASYNC_LOADING",
-    payload: allSearches,
   }
 }
 

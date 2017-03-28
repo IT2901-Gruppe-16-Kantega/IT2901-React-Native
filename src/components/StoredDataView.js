@@ -15,13 +15,7 @@ import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
 import Accordion from 'react-native-collapsible/Accordion';
 
-import userDefaults from 'react-native-user-defaults'
-
 var StoredDataView = React.createClass({
-  componentDidMount() {
-    //this.props.startAsyncLoading();
-  },
-
   render() {
     return <View style={templates.container}>
       <View style={templates.top}/>
@@ -153,7 +147,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     //dataActions
-    startAsyncLoading: bindActionCreators(dataActions.startAsyncLoading, dispatch),
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
   }
 }

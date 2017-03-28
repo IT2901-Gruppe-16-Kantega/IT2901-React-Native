@@ -5,7 +5,6 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
-  TouchableHighlight,
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
