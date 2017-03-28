@@ -153,14 +153,14 @@ var LoadingView = React.createClass({
         flex: 7.5,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: templates.colors.darkGray
+        backgroundColor: templates.colors.white
       },
       contents: {
         flex: 10.5,
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: templates.colors.darkGray
+        backgroundColor: templates.colors.white
       },
       fetchingStatus: {  //used by fetching status
         flex: 1,
@@ -180,6 +180,6 @@ var LoadingView = React.createClass({
         flex: 1.5,
       },
       text: {
-        color: templates.colors.white,
+        color: templates.colors.darkGray,
       },
     })

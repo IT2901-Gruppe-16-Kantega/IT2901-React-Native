@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
   NativeEventEmitter
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
@@ -19,7 +18,7 @@ import Button from './Button'
 
 var StartingView = React.createClass({
   render() {
-    return <View style= {templates.container}>
+    return <View style={templates.container}>
       <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
@@ -32,7 +31,7 @@ var StartingView = React.createClass({
       </View>
 
       <View style={styles.bottomPadding}></View>
-      
+
       <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>

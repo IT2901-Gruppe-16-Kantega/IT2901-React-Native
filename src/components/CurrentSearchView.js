@@ -17,6 +17,8 @@ import * as templates from '../utilities/templates'
 
 import userDefaults from 'react-native-user-defaults'
 
+import Button from './Button'
+
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
@@ -26,7 +28,7 @@ var CurrentSearchView = React.createClass({
     return <View style={templates.container}>
       <View style={templates.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         {this.createInformationView()}
@@ -35,7 +37,7 @@ var CurrentSearchView = React.createClass({
         {this.createButtons()}
       </View>
       <View style={templates.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -57,40 +59,17 @@ var CurrentSearchView = React.createClass({
 
   createButtons() {
     return <View style={styles.buttons}>
+
       <View style={styles.buttonArea1}>
-        <TouchableHighlight
-          style= {styles.button}
-          underlayColor="azure"
-          onPress = {Actions.RoadMapView}
-          >
-          <Text style={{color: templates.colors.white}}>Map</Text>
-        </TouchableHighlight>
+        <Button text="Kart" onPress={Actions.RoadMapView} />
         <View style={styles.buttonPadding}/>
-        <TouchableHighlight
-          style= {styles.button}
-          underlayColor="azure"
-          onPress = {this.openAR}
-          >
-          <Text style={{color: templates.colors.white}}>AR</Text>
-        </TouchableHighlight>
+        <Button text="AR" onPress={this.openAR} />
       </View>
 
       <View style={styles.buttonArea2}>
-        <TouchableHighlight
-          style= {styles.button}
-          underlayColor="azure"
-          onPress = {Actions.reportView}
-          >
-          <Text style={{color: templates.colors.white}}>Report</Text>
-        </TouchableHighlight>
+        <Button text="Rapport" onPress={Actions.reportView} />
         <View style={styles.buttonPadding}/>
-        <TouchableHighlight
-          style= {styles.button}
-          underlayColor="azure"
-          onPress = {this.exit}
-          >
-          <Text style={{color: templates.colors.white}}>Exit</Text>
-        </TouchableHighlight>
+        <Button text="Tilbake" onPress={this.exit} />
       </View>
 
     </View>
@@ -116,12 +95,12 @@ var styles = StyleSheet.create({
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contents: {
     flex: 11.5,
     flexDirection: 'column',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   informationView: {
     flex:1,
@@ -137,10 +116,10 @@ var styles = StyleSheet.create({
   },
 
   bottom: {
-    flex: 2.5,
+    flex: 5,
     justifyContent: 'space-around',
     alignItems: 'stretch',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   buttons: {
     justifyContent: 'center',
@@ -173,7 +152,7 @@ var styles = StyleSheet.create({
     borderColor: 'aliceblue',
   },
   text: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
 })
 

@@ -39,17 +39,17 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contents: {
     flex: 10.5,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   text: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
 })
 

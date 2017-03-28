@@ -46,21 +46,21 @@ class App extends Component {
           <Scene
             key="SearchView"
             component={SearchView}
-            title="Search"
+            title="Søk"
             hideNavBar={false}
 
             />
           <Scene
             key="storedDataView"
             component={StoredDataView}
-            title="Stored Data"
+            title="Lagrede søk"
             hideNavBar={false}
 
             />
           <Scene
             key="settingsView"
             component={SettingsView}
-            title="Settings"
+            title="Innstillinger"
             hideNavBar={false}
             />
           <Scene
@@ -79,7 +79,7 @@ class App extends Component {
           <Scene
             key="reportView"
             component={ReportView}
-            title="Report"
+            title="Rapport"
             hideNavBar={false}
             />
           <Scene

@@ -93,13 +93,13 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     //backgroundColor: 'yellow'
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contents: {
     flex: 14,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   accordionHeader: {
     //flex:1,
@@ -107,7 +107,7 @@ var styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
     padding: 10
 
   },
@@ -115,7 +115,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   accordionContentsPadding: {
     flex: 0.1,
@@ -134,7 +134,7 @@ var styles = StyleSheet.create({
     flex: 0.1,
   },
   text: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
 })
 
