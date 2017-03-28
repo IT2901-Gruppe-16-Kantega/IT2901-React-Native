@@ -30,7 +30,7 @@ export default function reducer(state={
       return {...state, markers: action.payload}
     }
     case "SELECT_FILTER": {
-      console.log("SELECT_FILTER");
+      console.log(action.payload);
       return {...state, selectedFilter: action.payload, showSecondSidebar: true}
     }
     case "SELECT_FILTER_VALUE": {

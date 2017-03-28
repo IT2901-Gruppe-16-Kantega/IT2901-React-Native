@@ -36,7 +36,7 @@ var RoadMapView = React.createClass({
           style={styles.map}
           zoomEnabled={true}
           >
-          {this.props.markers}
+          {this.updateMarkers()}
         </MapView>
         <SidebarMain />
         <SidebarSecondary update={this.updateMarkers} />
@@ -48,7 +48,7 @@ var RoadMapView = React.createClass({
     coordinates = [];
 
     // Goes through each fetched object, and creates a marker for the map.
-    const markers = this.props.filteredObjects.map(function(roadObject) {
+    return this.props.allObjects.map(function(roadObject) {
       const geometryString = roadObject.geometri.wkt.split('(')[1].slice(0, -1);
       const geometryParts = geometryString.split(' ');
 
@@ -58,7 +58,11 @@ var RoadMapView = React.createClass({
       const coordinate = {latitude: objectLatitude, longitude: objectLongitude};
       coordinates.push(coordinate);
 
-      var roadObjectEgenskap;
+      var roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
+        console.log(egenskap.id + ', ' + this.props.selectedFilter.id);
+        return (egenskap.id == this.props.selectedFilter.id);
+      });
+
       var chosenColor;
       var markerDescription;
 
@@ -69,17 +73,13 @@ var RoadMapView = React.createClass({
         key={roadObject.id}
         pinColor={chosenColor}>
         <MapView.Callout style={{flex: 1, position: 'relative'}}>
-          <MarkerCallout roadObject={roadObject} roadObjectEgenskap={roadObjectEgenskap} />
+          <MarkerCallout roadObject={roadObject} selectedFilter={this.props ? this.props.selectedFilter : null} roadObjectEgenskap={roadObjectEgenskap} />
         </MapView.Callout>
       </MapView.Marker>
-    });
+    }.bind(this));
 
     this.props.updateMapMarkers(markers);
   },
-
-  componentDidUpdate() {
-    console.log(this.props.selectedFilterValue)
-  }
 });
 
 var styles = StyleSheet.create({
@@ -118,6 +118,7 @@ function mapStateToProps(state) {
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     markers: state.mapReducer.markers,
 
+    selectedFilter: state.mapReducer.selectedFilter,
     selectedFilterValue: state.mapReducer.selectedFilterValue,
   };}
 

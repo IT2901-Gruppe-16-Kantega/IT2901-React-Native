@@ -1023,6 +1023,7 @@
 				CODE_SIGN_ENTITLEMENTS = NVDB/NVDB.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FA2F9YPN5K;
 				INFOPLIST_FILE = NVDB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
