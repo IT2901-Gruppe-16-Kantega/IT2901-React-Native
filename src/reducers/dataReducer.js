@@ -105,6 +105,7 @@ export default function reducer(state={
     }
 
     case "SET_OBJEKTTYPE_INFO": {
+      console.log("SET_OBJEKTTYPE_INFO");
       return{...state, objekttypeInfo: action.payload}
     }
   }

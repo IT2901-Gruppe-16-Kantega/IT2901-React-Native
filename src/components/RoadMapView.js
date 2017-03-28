@@ -12,7 +12,7 @@ import * as templates from '../utilities/templates';
 
 import * as mapActions from '../actions/mapActions';
 
-import { MarkerCallout } from './MarkerCallout'
+import MarkerCallout from './MarkerCallout'
 import SidebarMain from './SidebarMain'
 import SidebarSecondary from './SidebarSecondary'
 
@@ -27,19 +27,21 @@ var RoadMapView = React.createClass({
   },
 
   render() {
+    const padding = { edgePadding: { top: 40, right: 40, bottom: 40, left: 40 }};
+
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
         <MapView
           ref={(ref) => {mapRef = ref}}
-          onLayout = {() => mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
+          onLayout = {() => mapRef.fitToCoordinates(coordinates, { padding, animated: true })}
           style={styles.map}
           zoomEnabled={true}
           >
-          {this.props.markers}
+          {this.updateMarkers()}
         </MapView>
         <SidebarMain />
-        <SidebarSecondary update={this.updateMarkers} />
+        <SidebarSecondary />
       </View>
     </View>
   },
@@ -48,7 +50,7 @@ var RoadMapView = React.createClass({
     coordinates = [];
 
     // Goes through each fetched object, and creates a marker for the map.
-    const markers = this.props.filteredObjects.map(function(roadObject) {
+    return this.props.allObjects.map(function(roadObject) {
       const geometryString = roadObject.geometri.wkt.split('(')[1].slice(0, -1);
       const geometryParts = geometryString.split(' ');
 
@@ -58,28 +60,28 @@ var RoadMapView = React.createClass({
       const coordinate = {latitude: objectLatitude, longitude: objectLongitude};
       coordinates.push(coordinate);
 
-      var roadObjectEgenskap;
-      var chosenColor;
-      var markerDescription;
-
-      chosenColor = 'red';
+      var roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
+        console.log(egenskap.id + ', ' + this.props.selectedFilter.id);
+        return (egenskap.id == this.props.selectedFilter.id);
+      });
 
       return <MapView.Marker
         coordinate={coordinate}
         key={roadObject.id}
-        pinColor={chosenColor}>
+        pinColor={templates.colors.blue}
+        >
         <MapView.Callout style={{flex: 1, position: 'relative'}}>
-          <MarkerCallout roadObject={roadObject} roadObjectEgenskap={roadObjectEgenskap} />
+          <MarkerCallout
+            roadObject={roadObject}
+            selectedFilter={this.props.selectedFilter}
+            roadObjectEgenskap={roadObjectEgenskap}
+          />
         </MapView.Callout>
       </MapView.Marker>
-    });
+    }.bind(this));
 
     this.props.updateMapMarkers(markers);
   },
-
-  componentDidUpdate() {
-    console.log(this.props.selectedFilterValue)
-  }
 });
 
 var styles = StyleSheet.create({
@@ -118,12 +120,16 @@ function mapStateToProps(state) {
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     markers: state.mapReducer.markers,
 
+    selectedFilter: state.mapReducer.selectedFilter,
     selectedFilterValue: state.mapReducer.selectedFilterValue,
+
+    selectedObject: state.mapReducer.selectedObject,
   };}
 
 function mapDispatchToProps(dispatch) {
   return {
     updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
   }
 };
 

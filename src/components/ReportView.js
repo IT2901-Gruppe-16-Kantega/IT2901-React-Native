@@ -5,9 +5,11 @@ import {
   Text,
   StyleSheet
   } from 'react-native';
+
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import * as templates from '../utilities/templates'
 import * as reportActions from '../actions/reportActions'
 

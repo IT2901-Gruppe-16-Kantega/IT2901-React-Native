@@ -128,8 +128,6 @@ var SidebarSecondary = React.createClass({
     console.log("FilteredLength: " + filtered.length);
     this.props.selectFilterValue(value);
     this.props.setFilteredObjects(filtered);
-
-    this.props.update();
   },
 
   renderRow(rowData, sectionID, rowID, highlightRow) {

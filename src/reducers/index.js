@@ -1,4 +1,4 @@
-/*
+ /*
   COMBINES REDUCERS INTO ONE AND EXPORTS,
   IMPORTED BY STORE.js
 */
@@ -10,6 +10,7 @@ import fileReducer from './fileReducer'
 import searchReducer from './searchReducer'
 import mapReducer from './mapReducer'
 import filterReducer from './filterReducer'
+import uiReducer from './uiReducer'
 
 export default combineReducers({
   dataReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
   searchReducer,
   mapReducer,
   filterReducer,
+  uiReducer,
 })

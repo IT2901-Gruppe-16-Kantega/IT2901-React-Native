@@ -16,6 +16,7 @@ export default function reducer(state={
   selectedFilterValue: {},
 
   filterValueSearch: '',
+  selectedObject: null,
 
 }, action) {
   //simple switch statement based on type of action
@@ -30,7 +31,7 @@ export default function reducer(state={
       return {...state, markers: action.payload}
     }
     case "SELECT_FILTER": {
-      console.log("SELECT_FILTER");
+      console.log(action.payload);
       return {...state, selectedFilter: action.payload, showSecondSidebar: true}
     }
     case "SELECT_FILTER_VALUE": {
@@ -41,6 +42,9 @@ export default function reducer(state={
     }
     case "SET_FILTERED_OBJECTS": {
       return {...state, filteredObjects: action.payload}
+    }
+    case "SELECT_OBJECT": {
+      return {...state, selectedObject: action.payload}
     }
   }
   return state

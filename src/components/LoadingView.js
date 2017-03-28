@@ -5,7 +5,6 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
-  TouchableHighlight
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -41,6 +40,7 @@ var LoadingView = React.createClass({
       // SELECT THE FIRST FILTER AS DEFAULT FOR THE MAPVIEW
       this.props.selectedFilter = data.egenskapstyper[0];
 
+      console.log(this.props.url);
       fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
@@ -85,9 +85,11 @@ var LoadingView = React.createClass({
         this.props.objects,
         'report',
         this.props.combinedSearchParameters,
-        this.props.objekttypeInfo);
-        this.props.resetSearchParameters();
-        Actions.currentSearchView();
+        this.props.objekttypeInfo
+      );
+
+      this.props.resetSearchParameters();
+      Actions.currentSearchView();
       }
     },
 
@@ -126,6 +128,7 @@ var LoadingView = React.createClass({
       numberOfObjectsFetchedSoFar: state.dataReducer.numberOfObjectsFetchedSoFar,
 
       objekttypeInfo: state.dataReducer.objekttypeInfo,
+      allSearches: state.dataReducer.allSearches,
       selectedFilter: state.mapReducer.selectedFilter,
     };}
 

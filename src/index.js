@@ -17,8 +17,9 @@ import SearchView from './components/SearchView'
 import RoadMapView from './components/RoadMapView'
 import StoredDataView from './components/StoredDataView'
 import SettingsView from './components/SettingsView'
-import * as templates from './utilities/templates'
+import ObjectInfoView from './components/ObjectInfoView'
 
+import * as templates from './utilities/templates'
 
 import * as dataActions from './actions/dataActions'
 import * as mapActions from './actions/mapActions'
@@ -89,6 +90,15 @@ class App extends Component {
             onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
             navigationBarStyle={styles.navigatorStyle}
+            />
+          <Scene
+            key="ObjectInfoView"
+            component={ObjectInfoView}
+            sceneStyle={{paddingTop: 64}}
+            title=""
+            hideNavBar={false}
+            rightTitle="Rediger"
+            onRight={ () => console.log('hei') }
             />
         </Scene>
       </Router>

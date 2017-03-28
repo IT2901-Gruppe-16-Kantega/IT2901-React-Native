@@ -4,9 +4,10 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight
-
+  TouchableHighlight,
+  AsyncStorage
 } from 'react-native';
+
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -14,8 +15,31 @@ import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
 import Accordion from 'react-native-collapsible/Accordion';
 
-
 var StoredDataView = React.createClass({
+  render() {
+    return <View style={templates.container}>
+      <View style={templates.top}/>
+      <View style={styles.header}>
+        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
+      </View>
+      <View style={styles.contents}>
+        <Accordion
+          sections={this.props.allSearches}
+          renderHeader={this._renderHeader}
+          renderContent={this._renderContent}
+          />
+      </View>
+      <View style={templates.footer}>
+        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+      </View>
+    </View>
+  },
+
+  buttonPress(section){
+    this.props.setCurrentRoadSearch(section);
+    Actions.currentSearchView();
+  },
+
   _renderHeader(section) {
     return (
       <View style={styles.accordionHeader}>
@@ -51,39 +75,6 @@ var StoredDataView = React.createClass({
       </View>
 
     );
-  },
-
-  componentWillMount() {
-    return <View style ={{
-        backgroundColor: 'black',
-        flex: 1,
-      }}>
-      <Text style={{color:'white'}}>Loading</Text>
-
-    </View>
-  },
-  render() {
-    return <View style={templates.container}>
-      <View style={templates.top}/>
-      <View style={styles.header}>
-        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
-      </View>
-      <View style={styles.contents}>
-        <Accordion
-          sections={this.props.allSearches}
-          renderHeader={this._renderHeader}
-          renderContent={this._renderContent}
-          />
-      </View>
-      <View style={templates.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
-      </View>
-    </View>
-  },
-
-  buttonPress(section){
-    this.props.setCurrentRoadSearch(section);
-    Actions.currentSearchView();
   }
 });
 
@@ -141,11 +132,6 @@ var styles = StyleSheet.create({
   },
   accordionContentsPadding: {
     flex: 0.1,
-  },
-  footer: {
-    flex:0.7,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: templates.colors.white,

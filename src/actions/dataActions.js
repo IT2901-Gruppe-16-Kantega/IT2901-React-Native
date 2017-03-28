@@ -1,6 +1,5 @@
 import moment from 'moment';
 
-
 /*
   Actions associated with searches
 */
@@ -22,13 +21,13 @@ export function createSearchObject(description, objects, report, combParams, obj
     report: report,
     searchParameters: combParams,
     objekttypeInfo: objekttypeInfo,
-    }
+  }
+
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
     payload: roadSearch,
   }
 }
-
 
 /*
   Actions associated with fetching

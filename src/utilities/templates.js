@@ -15,7 +15,6 @@ export var container = {
 export var top = {
   flex: 0.7,
 }
-
 export var footer = {
   flex:0.7,
   justifyContent: 'center',
