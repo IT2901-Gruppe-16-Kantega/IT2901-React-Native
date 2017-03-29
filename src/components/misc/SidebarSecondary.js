@@ -28,6 +28,16 @@ const NOT_EQUAL = "!=";
 const EQUAL = "=";
 var selectedFunction;
 
+const datatype = {
+  flerverdiAttributtTekst: 30,
+  tekst: 1,
+  tall: 2,
+  flerverdiattributtTall: 31,
+  dato: 8,
+  binaerObjekt: 27,
+  geomPunkt: 17,
+}
+
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var SidebarSecondary = React.createClass({
   render() {
@@ -42,53 +52,82 @@ var SidebarSecondary = React.createClass({
 
     return <View style={StyleSheet.flatten([templates.sidebar, this.secondSidebarFrame()])}>
       <TouchableHighlight
-        onPress={() => this.props.toggleSecondSidebar(false)}>
+        underlayColor={templates.colors.blue}
+        onPress={this.props.toggleSecondSidebar.bind(this, false)}>
         <View><Text style={styles.sidebarTitle}>{"<"} {this.props.selectedFilter.navn}</Text></View>
       </TouchableHighlight>
 
       {this.createComparators()}
-
-      <View style={{margin: 20}}>
-        <TextInput
-          style={{height: 20, color: 'white'}}
-          placeholder="Start søk..."
-          onChangeText={(text) => this.props.inputFilterValueText(text)}
-          keyboardType = "default"
-          returnKeyType = 'done'
-          />
-      </View>
+      {this.createSearchBox()}
 
       {listView}
     </View>
   },
 
-  // datatyper
-  /*FlerverdiAttributt, Tekst = 30
-  Tekst = 1
-  Tall = 2
-  Flerverdiattributt, Tall = 31
-  Dato = 8
-  BinærObjekt = 27
-  GeomPunkt = 17
-  */
+  createTextInputs(placeholders, type) {
+    var inputs = [];
+    for(var i = 0; i < placeholders.length; i++) {
+      inputs.push(<TextInput
+        key={placeholders[i]}
+        style={styles.textInputStyle}
+        placeholder={placeholders[i]}
+        onChangeText={(text) => this.props.inputFilterValueText(text)}
+        keyboardType={type}
+        returnKeyType='done'
+      />)
+    }
+    return <View style={{margin: 5, flexDirection: 'row'}}>{inputs}</View>
+  },
+
+  createSearchBox() {
+    if(this.props.selectedFunction === HAS_VALUE || this.props.selectedFunction === HAS_NOT_VALUE) {
+      return;
+    }
+
+    const dt = this.props.selectedFilter.datatype;
+    if(dt === datatype.dato) {
+      return this.createTextInputs(["DD", "MM", "YYYY"], "numbers-and-punctuation");
+    }
+    else if(dt === datatype.flerverdiAttributtTekst || dt === datatype.flerverdiattributtTall) {
+      return this.createTextInputs(["Start søk..."], "default");
+    }
+    else if(dt === datatype.binaerObjekt) {
+      return this.createTextInputs(["Skriv inn noe..."], "ascii-capable");
+    }
+    else if(dt === datatype.geomPunkt) {
+      return this.createTextInputs(["Lat", "Long", "Alt"], "numbers-and-punctuation");
+    }
+    else if(dt === datatype.tall) {
+      return this.createTextInputs(["<Tallverdi>"], "numbers-and-punctuation");
+    }
+    else {
+      return this.createTextInputs(["<Tekstverdi>"], "default");
+    }
+  },
 
   createComparators() {
     var comparators = [
-      <ComparatorComponent key={HAS_VALUE} type={HAS_VALUE} />,
-      <ComparatorComponent key={HAS_NOT_VALUE} type={HAS_NOT_VALUE} />,
-      <ComparatorComponent key={NOT_EQUAL} type={NOT_EQUAL} />,
-      <ComparatorComponent key={EQUAL} type={EQUAL} />
+      <View key="VALUE" style={styles.buttonContainer}>
+        <ComparatorComponent type={HAS_VALUE} />
+        <ComparatorComponent type={HAS_NOT_VALUE} />
+      </View>,
+      <View key="EQUALITY" style={styles.buttonContainer}>
+        <ComparatorComponent type={NOT_EQUAL} />
+        <ComparatorComponent type={EQUAL} />
+      </View>
     ];
 
     const dt = this.props.selectedFilter.datatype;
-    if(dt == 2 || dt == 31 || dt == 8) {
-      comparators.push(<ComparatorComponent key={LARGER_OR_EQUAL} type={LARGER_OR_EQUAL} />);
-      comparators.push(<ComparatorComponent key={SMALLER_OR_EQUAL} type={SMALLER_OR_EQUAL} />);
+    if(dt == datatype.tall || dt == datatype.flerverdiattributtTall || dt == datatype.dato) {
+      comparators.push(
+        <View key="LARGERSMALLER" style={styles.buttonContainer}>
+          <ComparatorComponent key={LARGER_OR_EQUAL} type={LARGER_OR_EQUAL} />
+          <ComparatorComponent key={SMALLER_OR_EQUAL} type={SMALLER_OR_EQUAL} />
+        </View>
+      );
     }
 
-    return <View>
-      {comparators}
-    </View>
+    return <View>{comparators}</View>
   },
 
   getDataSource() {
@@ -134,8 +173,8 @@ var SidebarSecondary = React.createClass({
     return (
       <TouchableHighlight
         key={rowID}
-        onPress={() => this.selectValue(rowData)}
-        style={styles.sidebarItemContainer}>
+        underlayColor={templates.colors.blue}
+        onPress={() => this.selectValue(rowData)}>
         <View style={styles.sidebarItem}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
         </View>
@@ -158,23 +197,31 @@ var SidebarSecondary = React.createClass({
 })
 
 styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: 'row',
+  },
   sidebarTitle: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
     padding: 10,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
   },
-  sidebarItemContainer: {
-    borderRadius: 10,
-  },
   sidebarItemTitle: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
   sidebarItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'gray',
+    borderBottomColor: templates.colors.middleGray,
   },
+  textInputStyle: {
+    flex: 1,
+    height: 50,
+    backgroundColor: templates.colors.lightGray,
+    borderRadius: 3,
+    margin: 2,
+    padding: 10,
+  }
 })
 
 function mapStateToProps(state) {
@@ -184,6 +231,7 @@ function mapStateToProps(state) {
     showSecondSidebar: state.mapReducer.showSecondSidebar,
     selectedFilter: state.mapReducer.selectedFilter,
     filterValueSearch: state.mapReducer.filterValueSearch,
+    selectedFunction: state.filterReducer.selectedFunction,
   };
 }
 

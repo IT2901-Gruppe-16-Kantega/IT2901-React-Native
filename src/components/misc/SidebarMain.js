@@ -10,6 +10,8 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Button from '../misc/Button'
+
 import * as templates from '../../utilities/templates';
 import * as dataActions from '../../actions/dataActions';
 import * as mapActions from '../../actions/mapActions';
@@ -34,8 +36,9 @@ var SidebarMain = React.createClass({
     return (
       <TouchableHighlight
         key={rowID}
+        underlayColor={templates.colors.blue}
         onPress={() => this.props.selectFilter(rowData)}
-        style={styles.sidebarItemContainer}>
+        >
         <View style={styles.sidebarItem}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
           <Text style={styles.sidebarItemDescription}>{rowData.beskrivelse}</Text>
@@ -46,20 +49,18 @@ var SidebarMain = React.createClass({
 })
 
 var styles = StyleSheet.create({
-  sidebarItemContainer: {
-    borderRadius: 10,
-  },
   sidebarItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'gray',
+    borderBottomColor: templates.colors.middleGray,
   },
   sidebarItemTitle: {
-    color: templates.colors.white,
+    fontWeight: 'bold',
+    color: templates.colors.darkGray,
   },
   sidebarItemDescription: {
-    color: 'lightgrey',
-    fontSize: 10,
+    color: templates.colors.darkGray,
+    fontSize: 11,
   },
 })
 

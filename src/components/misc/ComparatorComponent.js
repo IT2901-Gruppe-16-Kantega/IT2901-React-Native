@@ -15,6 +15,7 @@ class ComparatorComponent extends React.Component {
   render() {
     return <TouchableHighlight
       style={this.getButtonStyle()}
+      underlayColor={templates.colors.blue}
       onPress={() => this.props.selectFunction(this.props.type)}>
       <View><Text style={this.getTextStyle()}>{this.props.type}</Text></View>
     </TouchableHighlight>
@@ -22,6 +23,7 @@ class ComparatorComponent extends React.Component {
 
   getButtonStyle() {
     return {
+      flex: 1,
       margin: 2,
       padding: 5,
       borderRadius: 3,
@@ -30,7 +32,7 @@ class ComparatorComponent extends React.Component {
   }
 
   getTextStyle() {
-    return {fontWeight: this.props.selectedFunction == this.props.type ? 'bold' : 'normal'}
+    return {fontSize: 15, textAlign: 'center', fontWeight: this.props.selectedFunction == this.props.type ? 'bold' : '100'}
   }
 }
 

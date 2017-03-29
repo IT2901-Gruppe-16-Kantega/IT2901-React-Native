@@ -1,5 +1,6 @@
 // file with template colors etc to be used across entire application
 export var colors = {
+  black: 'black',
   blue: '#008ec2',
   orange: '#ed9300',
   green: '#58b02c',
@@ -30,10 +31,10 @@ export var sidebar = {
   bottom: 0,
 
   borderTopWidth: 3,
-  borderTopColor: colors.orange,
+  borderTopColor: colors.blue,
   borderLeftWidth: 3,
-  borderLeftColor: colors.orange,
+  borderLeftColor: colors.blue,
   borderTopLeftRadius: 10,
 
-  backgroundColor: colors.darkGray,
+  backgroundColor: colors.white,
 }
