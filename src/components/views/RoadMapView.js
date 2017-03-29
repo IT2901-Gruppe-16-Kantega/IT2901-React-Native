@@ -4,6 +4,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -48,42 +49,69 @@ var RoadMapView = React.createClass({
     </View>
   },
 
+  parseGeometry(string) {
+    const wkt = string.slice(string.indexOf("(") + 1, -1);
+    const wktArray = wkt.split(",")
+
+    objectCoords = [];
+    for(var i = 0; i < wktArray.length; i++) {
+      const parts = wktArray[i].trim().split(' ');
+      const latitude = parseFloat(parts[0]);
+      const longitude = parseFloat(parts[1]);
+
+      objectCoords.push({latitude: latitude, longitude: longitude});
+    }
+    return objectCoords;
+  },
+
   updateMarkers() {
     coordinates = [];
 
     // Goes through each fetched object, and creates a marker for the map.
     return this.props.allObjects.map(function(roadObject) {
-      const geometryString = roadObject.geometri.wkt.split('(')[1].slice(0, -1);
-      const geometryParts = geometryString.split(' ');
+      const objectCoordinates = this.parseGeometry(roadObject.geometri.wkt);
+      coordinates.push(objectCoordinates[0]);
 
-      const objectLatitude = parseFloat(geometryParts[0]);
-      const objectLongitude = parseFloat(geometryParts[1]);
+      var roadObjectEgenskap;
+      // Some objects don't have any properties
+      if(roadObject.egenskaper) {
+        roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
+          return (egenskap.id == this.props.selectedFilter.id);
+        });
+      }
 
-      const coordinate = {latitude: objectLatitude, longitude: objectLongitude};
-      coordinates.push(coordinate);
-
-      var roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
-        console.log(egenskap.id + ', ' + this.props.selectedFilter.id);
-        return (egenskap.id == this.props.selectedFilter.id);
-      });
-
-      return <MapView.Marker
-        coordinate={coordinate}
-        key={roadObject.id}
-        pinColor={templates.colors.blue}
-        >
-        <MapView.Callout style={{flex: 1, position: 'relative'}}>
-          <MarkerCallout
-            roadObject={roadObject}
-            selectedFilter={this.props.selectedFilter}
-            roadObjectEgenskap={roadObjectEgenskap}
-          />
-        </MapView.Callout>
-      </MapView.Marker>
+      if(objectCoordinates.length == 1) {
+        return <MapView.Marker
+          coordinate={objectCoordinates[0]}
+          key={roadObject.id}
+          pinColor={templates.colors.blue}
+          >
+          <MapView.Callout style={{flex: 1, position: 'relative'}}>
+            <MarkerCallout
+              roadObject={roadObject}
+              selectedFilter={this.props.selectedFilter}
+              roadObjectEgenskap={roadObjectEgenskap}
+            />
+          </MapView.Callout>
+        </MapView.Marker>
+      } else {
+        return <MapView.Polyline
+          key={roadObject.id}
+          ref={roadObject.id}
+          coordinates={objectCoordinates}
+          strokeWidth={3}
+          strokeColor={templates.colors.blue}
+          onPress={this.tapPolyline.bind(this, roadObject)}/>
+      }
     }.bind(this));
 
     this.props.updateMapMarkers(markers);
   },
+
+  tapPolyline(object) {
+    this.props.selectObject(object);
+    Actions.ObjectInfoView();
+  }
 });
 
 var styles = StyleSheet.create({

@@ -37,9 +37,3 @@ export var sidebar = {
 
   backgroundColor: colors.darkGray,
 }
-
-export var buttonStyle = {
-  small: "small",
-  large: "large",
-  list: "list",
-}

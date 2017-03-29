@@ -82,7 +82,7 @@ var CurrentSearchView = React.createClass({
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
     userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-      if(!err) Linking.openURL("ARApp:");
+      if(!err) Linking.openURL("com.nvdb.ar:");
     });
   },
 

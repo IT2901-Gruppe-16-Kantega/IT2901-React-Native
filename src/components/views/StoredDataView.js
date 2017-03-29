@@ -66,7 +66,7 @@ var StoredDataView = React.createClass({
           <PropertyValue property={"Dato"} value={section.date} />
 
           <Button
-            style={templates.buttonStyle.small}
+            style={"small"}
             onPress={this.buttonPress.bind(this, section)}
             text={"Åpne"}
           />
