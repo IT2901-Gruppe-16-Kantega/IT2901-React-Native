@@ -8,6 +8,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import * as values from '../../utilities/values';
 import * as templates from '../../utilities/templates';
 import * as filterActions from '../../actions/filterActions';
 
@@ -16,9 +17,17 @@ class ComparatorComponent extends React.Component {
     return <TouchableHighlight
       style={this.getButtonStyle()}
       underlayColor={templates.colors.blue}
-      onPress={() => this.props.selectFunction(this.props.type)}>
+      onPress={this.selectFunction.bind(this, this.props.type)}>
       <View><Text style={this.getTextStyle()}>{this.props.type}</Text></View>
     </TouchableHighlight>
+  }
+
+  selectFunction(type) {
+    this.props.selectFunction(this.props.type);
+
+    if(this.props.type === values.comparators.HAS_VALUE || this.props.type === values.comparators.HAS_NOT_VALUE) {
+      this.props.deselectFilterValue();
+    }
   }
 
   getButtonStyle() {
@@ -45,6 +54,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     selectFunction: bindActionCreators(filterActions.selectFunction, dispatch),
+    deselectFilterValue: bindActionCreators(filterActions.deselectFilterValue, dispatch),
   }
 };
 

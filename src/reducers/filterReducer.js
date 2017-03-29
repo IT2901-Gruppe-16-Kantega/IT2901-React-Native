@@ -2,11 +2,44 @@
 export default function reducer(state={
   selectedFunction: null,
 
+  selectedFilter: {},
+  selectedFilterValue: {},
+  allSelectedFilters: [],
+
+  filterValueSearch: '',
+
 }, action) {
-  //simple switch statement based on type of action
   switch (action.type) {
     case "SELECT_FUNCTION": {
-      return{...state, selectedFunction: action.payload}
+      return {...state, selectedFunction: action.payload}
+    }
+    case "DESELECT_FUNCTION": {
+      return {...state, selectedFunction: null}
+    }
+    case "SELECT_FILTER": {
+      console.log("selectFilter")
+      return {...state, selectedFilter: action.payload}
+    }
+    case "DESELECT_FILTER": {
+      return {...state, selectedFilter: {}}
+    }
+    case "SELECT_FILTER_VALUE": {
+      return {...state, selectedFilterValue: action.payload}
+    }
+    case "DESELECT_FILTER_VALUE": {
+      return {...state, selectedFilterValue: {}}
+    }
+    case "INPUT_FILTER_VALUE_TEXT": {
+      return {...state, filterValueSearch: action.payload}
+    }
+    case "ADD_FILTER": {
+      return {...state, allSelectedFilters: state.allSelectedFilters.concat([action.payload])}
+    }
+    case "REMOVE_FILTER": {
+      var newFilters = state.allSelectedFilters.filter(f => {
+        f.id !== action.payload;
+      });
+      return {...state, allSelectedFilters: newFilters}
     }
   }
   return state

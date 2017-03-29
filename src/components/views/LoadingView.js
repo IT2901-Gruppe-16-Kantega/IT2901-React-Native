@@ -129,7 +129,7 @@ var LoadingView = React.createClass({
 
       objekttypeInfo: state.dataReducer.objekttypeInfo,
       allSearches: state.dataReducer.allSearches,
-      selectedFilter: state.mapReducer.selectedFilter,
+      selectedFilter: state.filterReducer.selectedFilter,
     };}
 
     function mapDispatchToProps(dispatch) {

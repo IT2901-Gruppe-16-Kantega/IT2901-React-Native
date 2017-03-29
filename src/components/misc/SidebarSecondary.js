@@ -15,18 +15,12 @@ import { connect } from 'react-redux';
 
 import ComparatorComponent from './ComparatorComponent';
 
+import * as values from '../../utilities/values';
 import * as templates from '../../utilities/templates';
+import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
 
 let ScreenWidth = Dimensions.get("window").width;
-
-const HAS_VALUE = "Har verdi";
-const HAS_NOT_VALUE = "Har ikke verdi";
-const LARGER_OR_EQUAL = ">=";
-const SMALLER_OR_EQUAL = "<=";
-const NOT_EQUAL = "!=";
-const EQUAL = "=";
-var selectedFunction;
 
 const datatype = {
   flerverdiAttributtTekst: 30,
@@ -42,26 +36,77 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var SidebarSecondary = React.createClass({
   render() {
     var listView;
-    if(this.props.selectedFilter && this.props.selectedFilter.tillatte_verdier) {
-      listView = <ListView
-        dataSource={this.getDataSource()}
-        renderRow={this.renderRow}
-        enableEmptySections={true}
-      />
+    if(this.props.selectedFilter && this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
+      if(this.props.selectedFunction !== values.comparators.HAS_VALUE && this.props.selectedFunction !== values.comparators.HAS_NOT_VALUE) {
+        listView = <ListView
+          dataSource={this.getDataSource()}
+          renderRow={this.renderRow}
+          enableEmptySections={true}
+        />
+      }
     }
 
     return <View style={StyleSheet.flatten([templates.sidebar, this.secondSidebarFrame()])}>
       <TouchableHighlight
         underlayColor={templates.colors.blue}
-        onPress={this.props.toggleSecondSidebar.bind(this, false)}>
+        onPress={this.hideSidebar}>
         <View><Text style={styles.sidebarTitle}>{"<"} {this.props.selectedFilter.navn}</Text></View>
       </TouchableHighlight>
+
+      <View>
+        <TouchableHighlight
+          onPress={this.addFilter}
+          underlayColor={templates.colors.blue}
+          style={styles.addFilterButton} >
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>Legg til filter</Text>
+        </TouchableHighlight>
+      </View>
 
       {this.createComparators()}
       {this.createSearchBox()}
 
       {listView}
     </View>
+  },
+
+  hideSidebar() {
+    this.props.deselectFilterValue();
+    this.props.deselectFunction();
+    this.props.toggleSecondSidebar(false)
+  },
+
+  addFilter() {
+    if(!this.props.selectedFilter) {
+      console.log("Velg et filter")
+      return;
+    }
+
+    if(!this.props.selectedFunction) {
+      console.log("Velg en sammenlikningsfunksjon")
+      return;
+    }
+
+    const {comparators} = values;
+    if(!this.props.selectedFilterValue.id) {
+      if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
+        console.log("Velg verdi")
+        return;
+      }
+    }
+
+    var filter = {
+      id: this.props.selectedFilter.id,
+      func: this.props.selectedFunction,
+      value: this.props.selectedFilterValue.id,
+    }
+
+    this.props.addFilter(filter)
+
+    this.props.toggleSecondSidebar(false);
+    this.props.deselectFilterValue();
+    this.props.deselectFunction();
+
+    console.log(this.props.allSelectedFilters);
   },
 
   createTextInputs(placeholders, type) {
@@ -80,22 +125,21 @@ var SidebarSecondary = React.createClass({
   },
 
   createSearchBox() {
-    if(this.props.selectedFunction === HAS_VALUE || this.props.selectedFunction === HAS_NOT_VALUE) {
+    const {comparators} = values;
+    if(!this.props.selectedFunction || this.props.selectedFunction === comparators.HAS_VALUE || this.props.selectedFunction === comparators.HAS_NOT_VALUE) {
       return;
     }
 
     const dt = this.props.selectedFilter.datatype;
+    if(dt === datatype.geomPunkt) {
+      return;
+    }
+
     if(dt === datatype.dato) {
       return this.createTextInputs(["DD", "MM", "YYYY"], "numbers-and-punctuation");
     }
     else if(dt === datatype.flerverdiAttributtTekst || dt === datatype.flerverdiattributtTall) {
       return this.createTextInputs(["Start søk..."], "default");
-    }
-    else if(dt === datatype.binaerObjekt) {
-      return this.createTextInputs(["Skriv inn noe..."], "ascii-capable");
-    }
-    else if(dt === datatype.geomPunkt) {
-      return this.createTextInputs(["Lat", "Long", "Alt"], "numbers-and-punctuation");
     }
     else if(dt === datatype.tall) {
       return this.createTextInputs(["<Tallverdi>"], "numbers-and-punctuation");
@@ -108,12 +152,8 @@ var SidebarSecondary = React.createClass({
   createComparators() {
     var comparators = [
       <View key="VALUE" style={styles.buttonContainer}>
-        <ComparatorComponent type={HAS_VALUE} />
-        <ComparatorComponent type={HAS_NOT_VALUE} />
-      </View>,
-      <View key="EQUALITY" style={styles.buttonContainer}>
-        <ComparatorComponent type={NOT_EQUAL} />
-        <ComparatorComponent type={EQUAL} />
+        <ComparatorComponent type={values.comparators.HAS_VALUE} />
+        <ComparatorComponent type={values.comparators.HAS_NOT_VALUE} />
       </View>
     ];
 
@@ -121,8 +161,16 @@ var SidebarSecondary = React.createClass({
     if(dt == datatype.tall || dt == datatype.flerverdiattributtTall || dt == datatype.dato) {
       comparators.push(
         <View key="LARGERSMALLER" style={styles.buttonContainer}>
-          <ComparatorComponent key={LARGER_OR_EQUAL} type={LARGER_OR_EQUAL} />
-          <ComparatorComponent key={SMALLER_OR_EQUAL} type={SMALLER_OR_EQUAL} />
+          <ComparatorComponent type={values.comparators.LARGER_OR_EQUAL} />
+          <ComparatorComponent type={values.comparators.SMALLER_OR_EQUAL} />
+        </View>
+      );
+    }
+    if(dt != datatype.geomPunkt) {
+      comparators.push(
+        <View key="EQUALITY" style={styles.buttonContainer}>
+          <ComparatorComponent type={values.comparators.NOT_EQUAL} />
+          <ComparatorComponent type={values.comparators.EQUAL} />
         </View>
       );
     }
@@ -163,10 +211,8 @@ var SidebarSecondary = React.createClass({
         }
       }
     }
-    console.log("AllLength: " + this.props.allObjects.length)
-    console.log("FilteredLength: " + filtered.length);
+
     this.props.selectFilterValue(value);
-    this.props.setFilteredObjects(filtered);
   },
 
   renderRow(rowData, sectionID, rowID, highlightRow) {
@@ -175,11 +221,18 @@ var SidebarSecondary = React.createClass({
         key={rowID}
         underlayColor={templates.colors.blue}
         onPress={() => this.selectValue(rowData)}>
-        <View style={styles.sidebarItem}>
+        <View style={this.getRowStyle(rowData.id)}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
         </View>
       </TouchableHighlight>
     )
+  },
+
+  getRowStyle(id) {
+    if(id === this.props.selectedFilterValue.id) {
+      return [styles.sidebarItem, {backgroundColor: templates.colors.blue}]
+    }
+    return styles.sidebarItem;
   },
 
   secondSidebarFrame() {
@@ -197,11 +250,18 @@ var SidebarSecondary = React.createClass({
 })
 
 styles = StyleSheet.create({
+  addFilterButton: {
+    backgroundColor: templates.colors.green,
+    padding: 10,
+    margin: 2,
+    borderRadius: 3,
+    alignItems: 'center',
+  },
   buttonContainer: {
     flexDirection: 'row',
   },
   sidebarTitle: {
-    color: templates.colors.darkGray,
+    color: templates.colors.black,
     padding: 10,
     fontSize: 22,
     fontWeight: 'bold',
@@ -229,18 +289,25 @@ function mapStateToProps(state) {
     allObjects: state.dataReducer.currentRoadSearch.roadObjects,
     sidebarFrame: state.mapReducer.sidebarFrame,
     showSecondSidebar: state.mapReducer.showSecondSidebar,
-    selectedFilter: state.mapReducer.selectedFilter,
-    filterValueSearch: state.mapReducer.filterValueSearch,
+
+    selectedFilter: state.filterReducer.selectedFilter,
+    selectedFilterValue: state.filterReducer.selectedFilterValue,
+
+    filterValueSearch: state.filterReducer.filterValueSearch,
     selectedFunction: state.filterReducer.selectedFunction,
+
+    allSelectedFilters: state.filterReducer.allSelectedFilters,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectFilterValue: bindActionCreators(mapActions.selectFilterValue, dispatch),
+    deselectFunction: bindActionCreators(filterActions.deselectFunction, dispatch),
+    selectFilterValue: bindActionCreators(filterActions.selectFilterValue, dispatch),
+    deselectFilterValue: bindActionCreators(filterActions.deselectFilterValue, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
-    inputFilterValueText: bindActionCreators(mapActions.inputFilterValueText, dispatch),
-    setFilteredObjects: bindActionCreators(mapActions.setFilteredObjects, dispatch),
+    inputFilterValueText: bindActionCreators(filterActions.inputFilterValueText, dispatch),
+    addFilter: bindActionCreators(filterActions.addFilter, dispatch),
   }
 };
 

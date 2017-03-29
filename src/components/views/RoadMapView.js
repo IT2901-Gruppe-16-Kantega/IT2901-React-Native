@@ -158,15 +158,14 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     allObjects: state.dataReducer.currentRoadSearch.roadObjects,
-    filteredObjects: state.mapReducer.filteredObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
     region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     markers: state.mapReducer.markers,
 
-    selectedFilter: state.mapReducer.selectedFilter,
-    selectedFilterValue: state.mapReducer.selectedFilterValue,
+    selectedFilter: state.filterReducer.selectedFilter,
+    selectedFilterValue: state.filterReducer.selectedFilterValue,
 
     selectedObject: state.mapReducer.selectedObject,
   };}

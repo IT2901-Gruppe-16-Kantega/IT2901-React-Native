@@ -19,34 +19,6 @@ export function toggleSecondSidebar(open) {
   }
 }
 
-export function selectFilter(filter) {
-  return {
-    type: "SELECT_FILTER",
-    payload: filter,
-  }
-}
-
-export function selectFilterValue(filterValue) {
-  return {
-    type: "SELECT_FILTER_VALUE",
-    payload: filterValue,
-  }
-}
-
-export function inputFilterValueText(text) {
-  return {
-    type: "INPUT_FILTER_VALUE_TEXT",
-    payload: text,
-  }
-}
-
-export function setFilteredObjects(objects) {
-  return {
-    type: "SET_FILTERED_OBJECTS",
-    payload: objects,
-  }
-}
-
 export function selectObject(roadObject) {
   return {
     type: "SELECT_OBJECT",

@@ -72,8 +72,8 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    selectedFilters: state.mapReducer.selectedFilter,
-    selectedFilterValue: state.mapReducer.selectedFilterValue,
+    selectedFilter: state.filterReducer.selectedFilter,
+    selectedFilterValue: state.filterReducer.selectedFilterValue,
   };
 }
 
