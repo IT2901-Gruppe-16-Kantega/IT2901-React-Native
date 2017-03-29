@@ -16,6 +16,8 @@ import * as dataActions from '../actions/dataActions'
 import * as searchActions from '../actions/searchActions'
 import * as mapActions from '../actions/mapActions'
 
+import PropertyValue from './PropertyValue'
+
 import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../utilities/wrapper'
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/';
@@ -62,12 +64,9 @@ var LoadingView = React.createClass({
         <View style={styles.fetchingInfo}>
           <View style={styles.padding}/>
           <View style={styles.progressInfo}>
-            <Text style={styles.text}> Some information about progress:</Text>
-            <Text style={styles.text}></Text>
-            <Text style={styles.text}> Fylke er </Text>
-            <Text style={styles.text}> Antall objekter hentet er {this.props.numberOfObjectsFetchedSoFar}</Text>
-            <Text style={styles.text}> Antall objekter som skal hentes er {this.props.numberOfObjectsToBeFetched}</Text>
-
+            <Text style={styles.text}>Informasjon om søket:</Text>
+            <PropertyValue property={"Antall objekter hentet"} value={this.props.numberOfObjectsFetchedSoFar} />
+            <PropertyValue property={"Antall objekter totalt"} value={this.props.numberOfObjectsToBeFetched} />
         </View>
         </View>
       </View>
