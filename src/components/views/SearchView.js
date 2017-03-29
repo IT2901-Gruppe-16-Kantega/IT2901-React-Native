@@ -102,7 +102,7 @@ var SearchView = React.createClass({
       {this.createNumerOfObjectsToBeFetcher()}
 
       <View style={styles.buttonArea}>
-        <Button text="Søk" onPress={this.search} style={templates.buttonStyle.small} />
+        <Button text="Søk" onPress={this.search} style={"small"} />
       </View>
       <View style={templates.footer}>
         <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
@@ -154,7 +154,7 @@ var SearchView = React.createClass({
         renderRow={(rowData) => {
           if(!choosenBool){
             return <Button
-              style={templates.buttonStyle.list}
+              style={"list"}
               onPress={chooserFunction.bind(this, rowData.navn)}
               text={rowData.navn}
             />
