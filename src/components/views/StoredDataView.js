@@ -1,4 +1,3 @@
-// View that shows all stored data
 import React, { Component } from 'react';
 import {
   View,
@@ -9,15 +8,20 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as dataActions from '../actions/dataActions'
-import * as templates from '../utilities/templates'
+import { connect } from 'react-redux'
+
 import Accordion from 'react-native-collapsible/Accordion';
 
-import Button from './Button'
-import PropertyValue from './PropertyValue'
+import Button from '../misc/Button'
+import PropertyValue from '../misc/PropertyValue'
 
+import * as templates from '../../utilities/templates'
+import * as dataActions from '../../actions/dataActions'
+
+/*
+View that shows all stored data
+*/
 var StoredDataView = React.createClass({
   render() {
     return <View style={templates.container}>
@@ -40,7 +44,7 @@ var StoredDataView = React.createClass({
 
   buttonPress(section){
     this.props.setCurrentRoadSearch(section);
-    Actions.currentSearchView();
+    Actions.CurrentSearchView();
   },
 
   _renderHeader(section) {

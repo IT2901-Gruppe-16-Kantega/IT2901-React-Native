@@ -1,6 +1,3 @@
-/*
-starting page of application
-*/
 import React from 'react'
 import {
   StyleSheet,
@@ -8,14 +5,18 @@ import {
   View,
   NativeEventEmitter
 } from 'react-native';
+
 import { Actions } from 'react-native-router-flux';
-import * as templates from '../utilities/templates'
-
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import Button from './Button'
+import Button from '../misc/Button'
 
+import * as templates from '../../utilities/templates'
+
+/*
+starting page of application
+*/
 var StartingView = React.createClass({
   render() {
     return <View style={templates.container}>
@@ -26,8 +27,8 @@ var StartingView = React.createClass({
 
       <View style={styles.contents}>
         <Button text={"Nytt søk"} onPress={Actions.SearchView} />
-        <Button text={"Lagrede søk"} onPress={Actions.storedDataView} />
-        <Button text={"Innstillinger"} onPress={Actions.settingsView} />
+        <Button text={"Lagrede søk"} onPress={Actions.StoredDataView} />
+        <Button text={"Innstillinger"} onPress={Actions.SettingsView} />
       </View>
 
       <View style={styles.bottomPadding}></View>

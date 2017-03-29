@@ -5,7 +5,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-import * as templates from '../utilities/templates'
+import * as templates from '../../utilities/templates'
 
 var Button = React.createClass({
   render() {

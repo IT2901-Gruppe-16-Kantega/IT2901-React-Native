@@ -1,4 +1,3 @@
-// View that shows informatin about a single report
 import React, { Component } from 'react';
 import {
   View,
@@ -7,12 +6,15 @@ import {
   } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import * as templates from '../utilities/templates'
-import * as reportActions from '../actions/reportActions'
+import * as templates from '../../utilities/templates'
+import * as reportActions from '../../actions/reportActions'
 
+/*
+View that shows information about a single report
+*/
 var ReportView = React.createClass({
   render() {
     return <View style={templates.container}>

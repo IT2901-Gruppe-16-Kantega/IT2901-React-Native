@@ -1,17 +1,20 @@
-//currently not used, but may be used to specify username, autoloading on/off etc
 import React, { Component } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-
  } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as settingsActions from '../actions/settingsActions'
-import * as templates from '../utilities/templates'
 
+import { Actions } from 'react-native-router-flux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import * as templates from '../../utilities/templates'
+import * as settingsActions from '../../actions/settingsActions'
+
+/*
+currently not used, but may be used to specify username, autoloading on/off etc
+*/
 var SettingsView = React.createClass({
   render() {
     return <View style={templates.container}>

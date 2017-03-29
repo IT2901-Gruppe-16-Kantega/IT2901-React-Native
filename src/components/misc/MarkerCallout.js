@@ -10,10 +10,10 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as mapActions from '../actions/mapActions'
-import * as templates from '../utilities/templates';
-
 import PropertyValue from './PropertyValue';
+
+import * as templates from '../../utilities/templates';
+import * as mapActions from '../../actions/mapActions'
 
 var MarkerCallout = React.createClass({
   render() {

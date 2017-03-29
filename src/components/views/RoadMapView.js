@@ -4,23 +4,25 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import MapView from 'react-native-maps';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as templates from '../utilities/templates';
+import MarkerCallout from '../misc/MarkerCallout'
+import SidebarMain from '../misc/SidebarMain'
+import SidebarSecondary from '../misc/SidebarSecondary'
 
-import * as mapActions from '../actions/mapActions';
-
-import MarkerCallout from './MarkerCallout'
-import SidebarMain from './SidebarMain'
-import SidebarSecondary from './SidebarSecondary'
+import * as templates from '../../utilities/templates';
+import * as mapActions from '../../actions/mapActions';
 
 // Create a reference to the map, to change it's region
 var mapRef = null;
 var coordinates = [];
 
-// View that holds the map
+/*
+View that holds the map
+*/
 var RoadMapView = React.createClass({
   componentWillMount() {
     this.updateMarkers();

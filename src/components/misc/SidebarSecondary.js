@@ -10,13 +10,13 @@ import {
   Text
 } from 'react-native';
 
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import * as mapActions from '../actions/mapActions';
-import * as templates from '../utilities/templates';
+import { connect } from 'react-redux';
 
 import ComparatorComponent from './ComparatorComponent';
+
+import * as templates from '../../utilities/templates';
+import * as mapActions from '../../actions/mapActions';
 
 let ScreenWidth = Dimensions.get("window").width;
 
