@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {AppRegistry, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {Provider} from 'react-redux'
-import StartingView from './src/components/views/StartingView'
 import App from './src/index'
 import store from './src/store'
 
