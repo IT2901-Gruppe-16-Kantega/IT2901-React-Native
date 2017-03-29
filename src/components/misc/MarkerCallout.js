@@ -21,7 +21,7 @@ var MarkerCallout = React.createClass({
 
     return <View>
       <TouchableHighlight
-        onPress={this.openSomething}>
+        onPress={this.openObjectInformation}>
         <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       </TouchableHighlight>
       <PropertyValue property={"ID"} value={roadObject.id} />
@@ -29,7 +29,7 @@ var MarkerCallout = React.createClass({
     </View>
   },
 
-  openSomething() {
+  openObjectInformation() {
     this.props.selectObject(this.props.roadObject);
     Actions.ObjectInfoView();
   },
@@ -54,7 +54,7 @@ var MarkerCallout = React.createClass({
     var {selectedFilter} = this.props;
 
     if(selectedFilter.datatype_tekst == "Tall" || selectedFilter.datatype_tekst == "Flerverdiattributt, Tall") {
-      if(selectedFilter.enhet != null) {
+      if(selectedFilter.enhet && this.props.selectedEgenskap && this.props.selectedEgenskap.enhet) {
         return " " + this.props.selectedEgenskap.enhet.kortnavn;
       }
     }

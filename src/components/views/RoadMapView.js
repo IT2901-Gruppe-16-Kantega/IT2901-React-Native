@@ -25,7 +25,7 @@ var coordinates = [];
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentWillMount() {
+  componentDidMount() {
     this.updateMarkers();
   },
 
@@ -41,7 +41,7 @@ var RoadMapView = React.createClass({
           style={styles.map}
           zoomEnabled={true}
           >
-          {this.updateMarkers()}
+          {this.props.markers}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
@@ -65,10 +65,10 @@ var RoadMapView = React.createClass({
   },
 
   updateMarkers() {
-    coordinates = [];
+    console.log("updated")
 
     // Goes through each fetched object, and creates a marker for the map.
-    return this.props.allObjects.map(function(roadObject) {
+    var markers = this.props.allObjects.map(function(roadObject) {
       const objectCoordinates = this.parseGeometry(roadObject.geometri.wkt);
       coordinates.push(objectCoordinates[0]);
 
@@ -80,32 +80,47 @@ var RoadMapView = React.createClass({
         });
       }
 
+      const color = objectCoordinates.length == 1 ? templates.colors.blue : this.getRandomColor();
+      const marker = this.createMarker(roadObject, objectCoordinates[0], roadObjectEgenskap, color);
       if(objectCoordinates.length == 1) {
-        return <MapView.Marker
-          coordinate={objectCoordinates[0]}
-          key={roadObject.id}
-          pinColor={templates.colors.blue}
-          >
-          <MapView.Callout style={{flex: 1, position: 'relative'}}>
-            <MarkerCallout
-              roadObject={roadObject}
-              selectedFilter={this.props.selectedFilter}
-              roadObjectEgenskap={roadObjectEgenskap}
-            />
-          </MapView.Callout>
-        </MapView.Marker>
+        return marker;
       } else {
-        return <MapView.Polyline
-          key={roadObject.id}
-          ref={roadObject.id}
+
+        return [<MapView.Polyline
+          key={roadObject.id + 'poly'}
           coordinates={objectCoordinates}
           strokeWidth={3}
-          strokeColor={templates.colors.blue}
-          onPress={this.tapPolyline.bind(this, roadObject)}/>
+          strokeColor={color} />, marker]
       }
+
     }.bind(this));
 
     this.props.updateMapMarkers(markers);
+  },
+
+  createMarker(obj, coords, props, color) {
+    return <MapView.Marker
+      coordinate={coords}
+      key={obj.id}
+      pinColor={color}
+      >
+      <MapView.Callout style={{flex: 1, position: 'relative'}}>
+        <MarkerCallout
+          roadObject={obj}
+          selectedFilter={this.props.selectedFilter}
+          roadObjectEgenskap={props}
+        />
+      </MapView.Callout>
+    </MapView.Marker>
+  },
+
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   },
 
   tapPolyline(object) {
