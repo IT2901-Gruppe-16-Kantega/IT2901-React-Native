@@ -1,4 +1,4 @@
-package com.nvdb;
+package com.nvdb.rn;
 
 import com.facebook.react.ReactActivity;
 

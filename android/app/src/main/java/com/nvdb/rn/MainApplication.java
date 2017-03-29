@@ -1,4 +1,4 @@
-package com.nvdb;
+package com.nvdb.rn;
 
 import android.app.Application;
 import android.util.Log;
