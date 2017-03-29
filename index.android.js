@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {AppRegistry, Dimensions, StyleSheet, View, Text} from 'react-native';
-import RouteChooser from './old_src/route-chooser';
 import {Provider} from 'react-redux'
-import StartingView from './src/components/startingView'
+import StartingView from './src/components/views/startingView'
 import App from './src/index'
 import store from './src/store'
 

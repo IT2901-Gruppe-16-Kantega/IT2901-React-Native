@@ -10,15 +10,19 @@ import {
   LayoutAnimation
 } from 'react-native';
 
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import PropertyValue from './PropertyValue';
+import PropertyValue from '../misc/PropertyValue';
 
-import * as uiActions from '../actions/uiActions';
-import * as templates from '../utilities/templates';
+import * as templates from '../../utilities/templates';
+import * as uiActions from '../../actions/uiActions';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+/*
+Shows information about a selected object
+*/
 var ObjectInfoView = React.createClass({
   componentWillMount() {
     Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)

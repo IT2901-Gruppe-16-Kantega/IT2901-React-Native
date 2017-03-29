@@ -1,4 +1,3 @@
-// view shown when fetching/loading data
 import React, { Component } from 'react';
 import {
   View,
@@ -8,20 +7,22 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import * as templates from '../utilities/templates'
-import * as dataActions from '../actions/dataActions'
-import * as searchActions from '../actions/searchActions'
-import * as mapActions from '../actions/mapActions'
+import PropertyValue from '../misc/PropertyValue'
 
-import PropertyValue from './PropertyValue'
-
-import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../utilities/wrapper'
+import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
+import * as templates from '../../utilities/templates'
+import * as dataActions from '../../actions/dataActions'
+import * as mapActions from '../../actions/mapActions'
+import * as searchActions from '../../actions/searchActions'
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/';
 
+/*
+view shown when fetching/loading data
+*/
 var LoadingView = React.createClass({
   //create URL happens here here
   componentWillMount() {
@@ -88,7 +89,7 @@ var LoadingView = React.createClass({
       );
 
       this.props.resetSearchParameters();
-      Actions.currentSearchView();
+      Actions.CurrentSearchView();
       }
     },
 
@@ -104,7 +105,7 @@ var LoadingView = React.createClass({
     cancelSearch() {
       this.props.resetSearchParameters();
       this.props.resetFetching();
-      Actions.startingView();
+      Actions.StartingView();
     }
     */
   });

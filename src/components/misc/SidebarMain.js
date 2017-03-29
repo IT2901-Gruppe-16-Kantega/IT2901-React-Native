@@ -7,12 +7,12 @@ import {
   Text
 } from 'react-native';
 
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as templates from '../utilities/templates';
-import * as dataActions from '../actions/dataActions';
-import * as mapActions from '../actions/mapActions';
+import * as templates from '../../utilities/templates';
+import * as dataActions from '../../actions/dataActions';
+import * as mapActions from '../../actions/mapActions';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var SidebarMain = React.createClass({

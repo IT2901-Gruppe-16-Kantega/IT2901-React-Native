@@ -5,11 +5,11 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as filterActions from '../actions/filterActions';
-import * as templates from '../utilities/templates';
+import * as templates from '../../utilities/templates';
+import * as filterActions from '../../actions/filterActions';
 
 class ComparatorComponent extends React.Component {
   render() {

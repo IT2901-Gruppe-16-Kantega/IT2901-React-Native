@@ -1,4 +1,3 @@
-// Shows information about current search, buttons for viewing map and opening AR
 import React, { Component } from 'react';
 import {
   View,
@@ -8,17 +7,21 @@ import {
   Linking
 
 } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as dataActions from '../actions/dataActions'
 
-import * as templates from '../utilities/templates'
+import { Actions } from 'react-native-router-flux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import userDefaults from 'react-native-user-defaults'
 
-import Button from './Button'
+import Button from '../misc/Button'
 
+import * as templates from '../../utilities/templates'
+import * as dataActions from '../../actions/dataActions'
+
+/*
+Shows information about current search, buttons for viewing map and opening AR
+*/
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
@@ -67,7 +70,7 @@ var CurrentSearchView = React.createClass({
       </View>
 
       <View style={styles.buttonArea2}>
-        <Button text="Rapport" onPress={Actions.reportView} />
+        <Button text="Rapport" onPress={Actions.ReportView} />
         <View style={styles.buttonPadding}/>
         <Button text="Tilbake" onPress={this.exit} />
       </View>
@@ -84,7 +87,7 @@ var CurrentSearchView = React.createClass({
   },
 
   exit() {
-    Actions.startingView();
+    Actions.StartingView();
   },
 });
 

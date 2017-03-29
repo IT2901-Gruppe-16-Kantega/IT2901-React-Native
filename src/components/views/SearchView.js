@@ -1,4 +1,3 @@
-// View used when user specifies what data to be fetched from NVDB
 import React, { Component } from 'react';
 import {
   View,
@@ -11,25 +10,27 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import * as dataActions from '../actions/dataActions'
-import * as searchActions from '../actions/searchActions'
-import * as templates from '../utilities/templates'
+import Button from '../misc/Button'
 
-import Button from './Button'
-
-import {searchForFylke, fetchVegerFromAPI} from '../utilities/utils';
-import {fetchTotalNumberOfObjects} from '../utilities/wrapper'
+import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
+import {fetchTotalNumberOfObjects} from '../../utilities/wrapper'
+import {vegobjekttyper} from '../../data/vegobjekttyper';
+import * as templates from '../../utilities/templates'
+import * as dataActions from '../../actions/dataActions'
+import * as searchActions from '../../actions/searchActions'
 
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
 var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
 var valid = true;
 const vegobjekttyperMedPunkt = [];
-import {vegobjekttyper} from '../data/vegobjekttyper';
 
+/*
+View used when user specifies what data to be fetched from NVDB
+*/
 var SearchView = React.createClass({
   componentDidMount() {
   },
@@ -194,7 +195,7 @@ var SearchView = React.createClass({
             this.props.setURL(url);
             this.props.combineSearchParameters(this.props.fylke_input[0], this.props.new_veg_input, this.props.vegobjekttyper_input[0]);
 
-            Actions.loadingView();
+            Actions.LoadingView();
           }
         }.bind(this));
 

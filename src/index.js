@@ -1,3 +1,4 @@
+// react imports
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -8,24 +9,25 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
+// redux imports
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import StartingView from './components/StartingView'
-import CurrentSearchView from './components/CurrentSearchView'
-import LoadingView from './components/LoadingView'
-import ReportView from './components/ReportView'
-import SearchView from './components/SearchView'
-import RoadMapView from './components/RoadMapView'
-import StoredDataView from './components/StoredDataView'
-import SettingsView from './components/SettingsView'
-import ObjectInfoView from './components/ObjectInfoView'
+// application view imports
+import CurrentSearchView from './components/views/CurrentSearchView'
+import LoadingView from './components/views/LoadingView'
+import ObjectInfoView from './components/views/ObjectInfoView'
+import ReportView from './components/views/ReportView'
+import RoadMapView from './components/views/RoadMapView'
+import SearchView from './components/views/SearchView'
+import SettingsView from './components/views/SettingsView'
+import StartingView from './components/views/StartingView'
+import StoredDataView from './components/views/StoredDataView'
 
+// misc imports
 import * as templates from './utilities/templates'
-
 import * as dataActions from './actions/dataActions'
 import * as mapActions from './actions/mapActions'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 let ScreenWidth = Dimensions.get("window").width;
 
@@ -35,7 +37,7 @@ class App extends Component {
       <Router>
         <Scene key="root">
           <Scene
-            key="startingView"
+            key="StartingView"
             component={StartingView}
             title=""
             hideNavBar={true}
@@ -51,33 +53,33 @@ class App extends Component {
 
             />
           <Scene
-            key="storedDataView"
+            key="StoredDataView"
             component={StoredDataView}
             title="Lagrede søk"
             hideNavBar={false}
 
             />
           <Scene
-            key="settingsView"
+            key="SettingsView"
             component={SettingsView}
             title="Innstillinger"
             hideNavBar={false}
             />
           <Scene
-            key="loadingView"
+            key="LoadingView"
             component={LoadingView}
             title=""
             hideNavBar={true}
             />
           <Scene
-            key="currentSearchView"
+            key="CurrentSearchView"
             component={CurrentSearchView}
             title=""
             hideNavBar={true}
             type = 'reset'
             />
           <Scene
-            key="reportView"
+            key="ReportView"
             component={ReportView}
             title="Rapport"
             hideNavBar={false}
