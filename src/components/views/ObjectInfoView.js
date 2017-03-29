@@ -84,7 +84,7 @@ var ObjectInfoView = React.createClass({
           <TextInput
             ref={h}
             style={styles.value}
-            value={rowData.verdi}
+            value={rowData.verdi.toString()}
             onFocus={this.inputFocused.bind(this, h)}
           />
           <Text>Datatype: {rowData.datatype_tekst} ({rowData.datatype})</Text>
