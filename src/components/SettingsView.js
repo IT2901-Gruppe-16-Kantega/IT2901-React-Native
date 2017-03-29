@@ -17,7 +17,7 @@ var SettingsView = React.createClass({
     return <View style={templates.container}>
       <View style={templates.top}/>
         <View style={styles.header}>
-          <Text style={{color: templates.colors.white}}>NVDB-app</Text>
+          <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
         </View>
         <View style={styles.contents}>
           <Text style={styles.text}>
@@ -29,7 +29,7 @@ var SettingsView = React.createClass({
           </Text>
         </View>
         <View style={templates.footer}>
-          <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+          <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
         </View>
     </View>
   }
@@ -41,17 +41,17 @@ var styles = StyleSheet.create({
     flex: 7.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contents: {
     flex: 10.5,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   text: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
 })
 

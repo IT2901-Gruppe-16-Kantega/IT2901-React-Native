@@ -14,7 +14,7 @@ import {kommuner_allinfo} from '../data/kommuner';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';
-import {fetchVeier} from './wrapper';
+import {fetchVeger} from './wrapper';
 
 const vegkategorier = [
       {navn: 'Europaveg', id: 5492},
@@ -22,7 +22,7 @@ const vegkategorier = [
       {navn: 'Fylkesveg', id: 5494},
       {navn: 'Kommunal veg', id: 5495}];
 
-var veier = [];
+var veger = [];
 
 var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
 var bst = new BinarySearchTree({unique: true});
@@ -115,16 +115,16 @@ function searchForVegkategori(input){
 }
 
 
-//this fetches data from NDVB, picks out uniqe roads, and adds them to veier
-function fetchVeierFromAPI(fylke, vegtype){
-  fetchVeier(fylke, vegtype).then((result) => {
+//this fetches data from NDVB, picks out uniqe roads, and adds them to veger
+function fetchVegerFromAPI(fylke, vegtype){
+  fetchVeger(fylke, vegtype).then((result) => {
     for(i=0; i<result.objekter.length; i++){
       for(z=0; z<result.objekter[i].egenskaper.length; z++){
         if(result.objekter[i].egenskaper[z].id==4568){
-          if(veier.some(veierContains, result.objekter[i].egenskaper[z].verdi)){
+          if(veger.some(vegerContains, result.objekter[i].egenskaper[z].verdi)){
           }
           else{
-            veier.push(result.objekter[i].egenskaper[z].verdi)
+            veger.push(result.objekter[i].egenskaper[z].verdi)
           }
         }
       }
@@ -132,17 +132,17 @@ function fetchVeierFromAPI(fylke, vegtype){
   });
 }
 
-function veierContains(value){
+function vegerContains(value) {
   if(value==this){
     return true;
   }
 }
 
-function searchForVeg(input, ){
-  return new Promise(function(resolve, reject){
+function searchForVeg(input, ) {
+  return new Promise(function(resolve, reject) {
     var vegArray = [];
-    vegArray = veier.filter(compareInput, input);
-    if(vegArray.length > 0 && vegArray.length != veier.length) {
+    vegArray = veger.filter(compareInput, input);
+    if(vegArray.length > 0 && vegArray.length != veger.length) {
       resolve(vegArray);
     }
     else {
@@ -157,4 +157,4 @@ function searchForVeg(input, ){
 
 
 
-export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVeierFromAPI, searchForVegobjekttyper};
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVegerFromAPI, searchForVegobjekttyper};

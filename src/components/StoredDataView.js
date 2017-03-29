@@ -15,12 +15,15 @@ import * as dataActions from '../actions/dataActions'
 import * as templates from '../utilities/templates'
 import Accordion from 'react-native-collapsible/Accordion';
 
+import Button from './Button'
+import PropertyValue from './PropertyValue'
+
 var StoredDataView = React.createClass({
   render() {
     return <View style={templates.container}>
       <View style={templates.top}/>
       <View style={styles.header}>
-        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
+        <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
       </View>
       <View style={styles.contents}>
         <Accordion
@@ -30,7 +33,7 @@ var StoredDataView = React.createClass({
           />
       </View>
       <View style={templates.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+        <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
     </View>
   },
@@ -43,9 +46,7 @@ var StoredDataView = React.createClass({
   _renderHeader(section) {
     return (
       <View style={styles.accordionHeader}>
-        <Text style={styles.text}>
-          Kommune: {section.searchParameters[0].navn}
-        </Text>
+        <PropertyValue property={"Fylke"} value={section.searchParameters[0].navn} />
       </View>
     );
   },
@@ -55,23 +56,17 @@ var StoredDataView = React.createClass({
     return (
       <View style={styles.accordionFrame}>
         <View style={styles.accordionContents}>
-          <Text></Text>
-          <Text style={styles.text}>Antall vegobjekter: {section.roadObjects.length}</Text>
-          <Text style={styles.text}>Beskrivelse: {section.description}</Text>
-          <Text style={styles.text}>Dato: {section.date}</Text>
 
+          <PropertyValue property={"Antall vegobjekter"} value={section.roadObjects.length} />
+          <PropertyValue property={"Beskrivelse"} value={section.description} />
+          <PropertyValue property={"Dato"} value={section.date} />
 
-          <Text></Text>
-          <TouchableHighlight
-            style= {templates.smallButton}
-            underlayColor="azure"
-            onPress = {() => this.buttonPress(section)}
-            >
-            <Text style={styles.text}>Open</Text>
-          </TouchableHighlight>
-          <Text></Text>
+          <Button
+            style={templates.buttonStyle.small}
+            onPress={this.buttonPress.bind(this, section)}
+            text={"Åpne"}
+          />
         </View>
-
       </View>
 
     );
@@ -92,14 +87,13 @@ var styles = StyleSheet.create({
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    //backgroundColor: 'yellow'
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contents: {
     flex: 14,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   accordionHeader: {
     //flex:1,
@@ -107,7 +101,7 @@ var styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.orange,
     padding: 10
 
   },
@@ -115,7 +109,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   accordionContentsPadding: {
     flex: 0.1,
@@ -127,14 +121,11 @@ var styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#8A9094',
+    backgroundColor: templates.colors.middleGray,
 
   },
   accordionContentsPadding: {
     flex: 0.1,
-  },
-  text: {
-    color: templates.colors.white,
   },
 })
 

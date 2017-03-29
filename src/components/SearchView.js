@@ -4,32 +4,31 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
   TextInput,
   Alert,
   ListView,
   ScrollView,
 } from 'react-native';
+
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
+import * as dataActions from '../actions/dataActions'
 import * as searchActions from '../actions/searchActions'
 import * as templates from '../utilities/templates'
 
-import * as dataActions from '../actions/dataActions'
+import Button from './Button'
 
-import {searchForFylke, fetchVeierFromAPI} from '../utilities/utils';
-
+import {searchForFylke, fetchVegerFromAPI} from '../utilities/utils';
 import {fetchTotalNumberOfObjects} from '../utilities/wrapper'
+
 var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
 var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
-
 
 var valid = true;
 const vegobjekttyperMedPunkt = [];
 import {vegobjekttyper} from '../data/vegobjekttyper';
-
-
 
 var SearchView = React.createClass({
   componentDidMount() {
@@ -93,8 +92,6 @@ var SearchView = React.createClass({
                 <View style={styles.parameterRightPadding}><Text></Text></View>
               </View>
               <View style={styles.parameterBottomPadding}><Text></Text></View>
-              {this.createObjekttyperList()}
-
             </View>
           </ScrollView>
         </View>
@@ -104,7 +101,7 @@ var SearchView = React.createClass({
       {this.createNumerOfObjectsToBeFetcher()}
 
       <View style={styles.buttonArea}>
-        {this.createSearchButton()}
+        <Button text="Søk" onPress={this.search} style={templates.buttonStyle.small} />
       </View>
       <View style={templates.footer}>
         <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
@@ -112,101 +109,7 @@ var SearchView = React.createClass({
     </View>
   },
 
-  createVegobjekttyperInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction, multiInputEnabled){
-    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-    var dataSource = ds.cloneWithRows(list);
-    var color = 'darkgray';
-    if(editable==true){
-      color = 'green';
-    };
-
-    return <View style={styles.inputContainer}>
-      <TextInput
-        autocorrect= {false}
-        autofocus = {editable}
-        editable = {editable}
-        style={styles.textInput}
-        placeholder={'Skriv inn '+type}
-        onChangeText={(text) => inputFunction({text})}
-        keyboardType = "default"
-        returnKeyType = 'done'
-        value = {textType}
-        />
-      <ListView
-        style={styles.listViewStyle}
-        dataSource={dataSource}
-        enableEmptySections= {true}
-        renderRow={(rowData) => {
-          if(!choosenBool){
-            return <TouchableHighlight
-              style= {styles.listItem}
-              underlayColor="azure"
-              onPress = {() => chooserFunction(rowData.navn)}
-              >
-              <Text style={styles.listItemText}>{rowData.navn}</Text>
-            </TouchableHighlight>
-          }
-          else {
-            return <View></View>
-          }
-          }}/>
-    </View>
-  },
-  chooseVegobjekttyper (input){
-    var chosenVegobjekttyper = [];
-    chosenVegobjekttyper.push(this.props.vegobjekttyper_input.find((vegobjekttype) => {
-      if(vegobjekttype.navn == input){
-        return vegobjekttype;
-      }
-    }))
-    this.props.chooseVegobjekttyper(chosenVegobjekttyper);
-  },
-  createObjekttyperList(){
-    return <View style={styles.chosenObjekttyper}>
-    </View>
-  },
-
-  //Slå sammen med den generelle etter at den er ferdig
-  createInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction, multiInputEnabled){
-    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-    var dataSource = ds.cloneWithRows(list);
-    var color = 'darkgray';
-    if(editable==true){
-      color = 'green';
-    };
-
-    return <View style={styles.inputContainer}>
-      <TextInput
-        autocorrect= {false}
-        autofocus = {editable}
-        editable = {editable}
-        style={styles.textInput}
-        placeholder={'Skriv inn '+type}
-        onChangeText={(text) => inputFunction({text})}
-        keyboardType = "default"
-        returnKeyType = 'done'
-        value = {textType}
-        />
-      <ListView
-        dataSource={dataSource}
-        enableEmptySections= {true}
-        renderRow={(rowData) => {
-          if(!choosenBool){
-            return <TouchableHighlight
-              style= {styles.listItem}
-              underlayColor="azure"
-              onPress = {() => chooserFunction(rowData.navn)}
-              >
-              <Text style={styles.listItemText}>{rowData.navn}</Text>
-            </TouchableHighlight>
-          }
-          else {
-            return <View></View>
-          }
-          }}/>
-    </View>
-  },
-  chooseFylke(input){
+  chooseFylke(input) {
     var chosenFylke = [];
     chosenFylke.push(this.props.fylke_input.find((fylke) => {
       if(fylke.navn == input){
@@ -215,7 +118,54 @@ var SearchView = React.createClass({
     }))
     this.props.chooseFylke(chosenFylke);
   },
-  createVegInput(){
+
+  chooseVegobjekttyper(input) {
+    console.log("choose" + input)
+    var chosenVegobjekttyper = [];
+    chosenVegobjekttyper.push(this.props.vegobjekttyper_input.find((vegobjekttype) => {
+      if(vegobjekttype.navn == input){
+        return vegobjekttype;
+      }
+    }))
+    this.props.chooseVegobjekttyper(chosenVegobjekttyper);
+  },
+
+  //Slå sammen med den generelle etter at den er ferdig
+  createInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction, multiInputEnabled){
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
+    var dataSource = ds.cloneWithRows(list);
+
+    return <View style={styles.inputContainer}>
+      <TextInput
+        autocorrect={false}
+        autofocus={editable}
+        editable={editable}
+        style={styles.textInput}
+        placeholder={'Skriv inn '+type}
+        onChangeText={(text) => inputFunction({text})}
+        keyboardType="default"
+        returnKeyType='done'
+        value={textType}
+        />
+      <ListView
+        dataSource={dataSource}
+        enableEmptySections= {true}
+        renderRow={(rowData) => {
+          if(!choosenBool){
+            return <Button
+              style={templates.buttonStyle.list}
+              onPress={chooserFunction.bind(this, rowData.navn)}
+              text={rowData.navn}
+            />
+          }
+          else {
+            return <View></View>
+          }
+          }}/>
+    </View>
+  },
+
+  createVegInput() {
     return <View style={styles.inputContainer}>
       <TextInput
         autocorrect= {false}
@@ -228,20 +178,19 @@ var SearchView = React.createClass({
     </View>
   },
 
-
   search() {
-      if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
+      if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
         const veg = this.props.new_veg_input.text;
         var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
         var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
 
-        fetchTotalNumberOfObjects(preurl).then(function(response){
-          if(response.antall==undefined){
-            Alert.alert("Ugyldig veg", "Sjekk at veien du har skrevet inn eksiterer og at format er vegkategori+vegnummer (E6 f.eks)");
+        fetchTotalNumberOfObjects(preurl).then(function(response) {
+          if(response.antall == undefined) {
+            Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
           }
-          else{
+          else {
             this.props.setURL(url);
             this.props.combineSearchParameters(this.props.fylke_input[0], this.props.new_veg_input, this.props.vegobjekttyper_input[0]);
 
@@ -250,20 +199,10 @@ var SearchView = React.createClass({
         }.bind(this));
 
       }
-      else{
+      else {
         Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
       }
     },
-  createSearchButton(){
-      return <TouchableHighlight
-        style= {templates.smallButton}
-        underlayColor="azure"
-        onPress = {this.search}
-        >
-        <Text style={{color: templates.colors.white}}>Search</Text>
-      </TouchableHighlight>
-    },
-
 
   //TODO
   //fungerer nå, men bør gjøre håndtering av manglende input bedre
@@ -284,25 +223,23 @@ var SearchView = React.createClass({
     }
     else{
       return <View style={styles.numberOfObjectsToBeFetched}>
-        <Text style={styles.text}>Antall objekter som blir hentet: ikke nok data!</Text>
+        <Text style={styles.text}>Antall objekter som blir hentet: ?</Text>
       </View>
     }
   }
-
 });
 
 var styles = StyleSheet.create({
-
   //Top-leve containers
-  navigatorSpace:{
+  navigatorSpace: {
     flex:1.3,
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   header: {
     flex: 1.5,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
   contentsFrame: {
     flex: 15.2,
@@ -312,14 +249,13 @@ var styles = StyleSheet.create({
   },
 
   //Containers in contentsFrame
-
   contentsArea: {
     flex: 10,
     justifyContent: 'center',
     alignItems: 'stretch',
   },
   scrollContainer: {
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   contents: {
     flex: 1,
@@ -327,13 +263,13 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 2,
     borderBottomColor: 'darkgray',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   hvaContents: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   searchTypeHeading: {
     flex: 2,
@@ -353,68 +289,47 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   inputContainer: {
     flex: 4,
-    backgroundColor: 'darkgray'
+    backgroundColor: templates.colors.lightGray
 
   },
   parameterBottomPadding: {
     flex: 0.5,
-    backgroundColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.white,
   },
   parameterRightPadding: {
     flex: 0.25
   },
-  chosenObjekttyper: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
 
   numberOfObjectsToBeFetched: {
     flex: 1,
-    backgroundColor: templates.colors.darkGray,
-  },
-  //components
-  listItem: {
-    borderWidth: 0.5,
-    padding: 2,
-    height: 30,
-    justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'lightgray',
+    backgroundColor: templates.colors.white,
   },
-  listItemText: {
-    color: 'white',
-  },
+
+  //components
   textInput: {
     padding: 5,
     height: 40,
-    color: 'white',
+    color: templates.colors.darkGray,
     borderWidth: 2,
-    borderColor: 'lightgray',
-  },
-  textInput2: {
-    padding: 5,
-    height: 40,
-    color: 'black',
-    borderWidth: 2,
+    borderColor: templates.colors.middleGray,
   },
 
   buttonArea: {
     flex: 2,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: templates.colors.darkGray
+    backgroundColor: templates.colors.white
   },
 
   text: {
-    color: templates.colors.white,
+    color: templates.colors.darkGray,
   },
 })
-
-
 
 function mapStateToProps(state) {
   return {
@@ -428,17 +343,12 @@ function mapStateToProps(state) {
     //veg fields
     new_veg_input: state.searchReducer.new_veg_input,
 
-    //kommune fields
-
     //vegobjekttyper fields
     vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
     vegobjekttyper_valid: state.searchReducer.vegobjekttyper_valid,
     vegobjekttyper_navn: state.searchReducer.vegobjekttyper_navn,
     vegobjekttyper_text: state.searchReducer.vegobjekttyper_text,
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
-    //kommune fields
-
-
 
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
@@ -465,8 +375,6 @@ function mapDispatchToProps(dispatch) {
 
     inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
     chooseVeg: bindActionCreators(searchActions.chooseVeg, dispatch),
-
-
   }
 }
 
