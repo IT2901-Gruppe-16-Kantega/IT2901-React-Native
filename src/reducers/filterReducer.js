@@ -36,8 +36,9 @@ export default function reducer(state={
       return {...state, allSelectedFilters: state.allSelectedFilters.concat([action.payload])}
     }
     case "REMOVE_FILTER": {
+      var remFilter = action.payload;
       var newFilters = state.allSelectedFilters.filter(f => {
-        f.id !== action.payload;
+        return (!(f.egenskap.id === remFilter.egenskap.id && f.funksjon === remFilter.funksjon && f.verdi.id === remFilter.verdi.id));
       });
       return {...state, allSelectedFilters: newFilters}
     }

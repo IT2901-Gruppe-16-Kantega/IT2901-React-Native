@@ -49,13 +49,26 @@ var SidebarMain = React.createClass({
   },
 
   allSelectedFiltersList() {
+    var style = {padding: 10, color: templates.colors.white}
     var views = [];
     for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
-      const f = this.props.allSelectedFilters[i];
-      views.push(<Text key={f.id}>{f.id} {f.func} {f.value}</Text>);
+      const filter = this.props.allSelectedFilters[i];
+      console.log(filter);
+
+      const key = filter.egenskap.id + filter.funksjon + filter.verdi.navn;
+      views.push(
+        <View key={key} style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: templates.colors.black}}>
+          <Text style={style}>{filter.egenskap.navn} {filter.funksjon} {filter.verdi.navn}</Text>
+          <TouchableHighlight
+            onPress={this.props.removeFilter.bind(this, filter)}
+            >
+            <Text style={{color: 'red', fontSize: 30, fontWeight: 'bold'}}>X</Text>
+          </TouchableHighlight>
+        </View>
+      );
     }
 
-    return views;
+    return <View style={{backgroundColor: templates.colors.blue}}><Text style={[style, {fontSize: 18, fontWeight: 'bold'}]}>Valgte filter:</Text>{views}</View>;
   },
 
   selectFilter(filter) {
@@ -90,6 +103,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    removeFilter: bindActionCreators(filterActions.removeFilter, dispatch),
     selectFilter: bindActionCreators(filterActions.selectFilter, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
   }

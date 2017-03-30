@@ -95,9 +95,9 @@ var SidebarSecondary = React.createClass({
     }
 
     var filter = {
-      id: this.props.selectedFilter.id,
-      func: this.props.selectedFunction,
-      value: this.props.selectedFilterValue.id,
+      egenskap: this.props.selectedFilter,
+      funksjon: this.props.selectedFunction,
+      verdi: this.props.selectedFilterValue,
     }
 
     this.props.addFilter(filter)

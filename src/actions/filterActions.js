@@ -45,9 +45,9 @@ export function addFilter(filter) {
   }
 }
 
-export function removeFilter(id) {
+export function removeFilter(filter) {
   return {
     type: "REMOVE_FILTER",
-    payload: id,
+    payload: filter,
   }
 }
