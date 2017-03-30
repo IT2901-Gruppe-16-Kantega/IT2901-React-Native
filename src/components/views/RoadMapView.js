@@ -107,7 +107,6 @@ var RoadMapView = React.createClass({
       <MapView.Callout style={{flex: 1, position: 'relative'}}>
         <MarkerCallout
           roadObject={obj}
-          selectedFilter={this.props.selectedFilter}
           roadObjectEgenskap={props}
         />
       </MapView.Callout>

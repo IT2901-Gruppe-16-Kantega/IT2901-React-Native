@@ -35,18 +35,24 @@ var MarkerCallout = React.createClass({
   },
 
   getEgenskapInfo() {
-    if(Object.keys(this.props.selectedFilter).length === 0) {
-      return <Text>Velg et filter for å få mer informasjon.</Text>
-    }
-    var {roadObjectEgenskap} = this.props;
-    var egenskapNavn = this.props.selectedFilter.navn;
+    var textComponents = [<Text> </Text>];
 
-    if(roadObjectEgenskap == null) {
-      return <Text>"Ingen info om " + egenskapNavn.toLowerCase()</Text>
-    } else {
-      return <PropertyValue
-        property={egenskapNavn}
-        value={roadObjectEgenskap.verdi.toString() + this.getPostfix()} />
+    if(this.props.allSelectedFilters) {
+      for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
+        const filter = this.props.allSelectedFilters[i];
+        const egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
+          return e.id == filter.egenskap.id;
+        })
+
+        var tekst = "-";
+        if(egenskapsInfo) { tekst = egenskapsInfo.verdi }
+
+        textComponents.push(
+          <PropertyValue key={filter.egenskap.navn} property={filter.egenskap.navn} value={tekst} />
+        );
+      }
+
+      return textComponents;
     }
   },
 
@@ -74,6 +80,7 @@ function mapStateToProps(state) {
   return {
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
+    allSelectedFilters: state.filterReducer.allSelectedFilters,
   };
 }
 
