@@ -42,7 +42,7 @@ class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-            initial={true}
+
 
             />
           <Scene
@@ -50,7 +50,7 @@ class App extends Component {
             component={SearchView}
             title="Søk"
             hideNavBar={false}
-
+            initial={true}
             />
           <Scene
             key="StoredDataView"

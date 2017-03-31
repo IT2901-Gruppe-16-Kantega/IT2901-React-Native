@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Button from '../misc/Button'
+import InputField from '../misc/InputField'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects} from '../../utilities/wrapper'
@@ -45,20 +46,24 @@ var SearchView = React.createClass({
       </View>
       <View style={styles.contentsFrame}>
         <View style={styles.contentsArea}>
-          <ScrollView style={styles.scrollContainer}>
+
+          <ScrollView
+            style={styles.scrollContainer}
+            scrollEnabled={false}
+            keyboardShouldPersistTaps='always'
+            >
             <View style={styles.contents}>
               <View style={styles.searchTypeHeading}><Text style={styles.text}>Hvor?</Text></View>
               <View style={styles.searchParameterContainer}>
                 <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
-                {this.createInputField(
-                  'fylke',
-                  this.props.fylke_input,
-                  this.props.fylke_text,
-                  this.props.fylke_chosen,
-                  true,
-                  this.props.inputFylke,
-                  this.chooseFylke
-                )}
+                <InputField type='fylke'
+                  list={this.props.fylke_input}
+                  textType={this.props.fylke_text}
+                  choosenBool={this.props.fylke_chosen}
+                  editable={true}
+                  inputFunction={this.props.inputFylke}
+                  chooserFunction={this.props.chooseFylke}
+                  />
                 <View style={styles.parameterRightPadding}><Text></Text></View>
               </View>
               <View style={styles.parameterBottomPadding}><Text></Text></View>
@@ -78,29 +83,28 @@ var SearchView = React.createClass({
 
 
             <View style={styles.hvaContents}>
-              <View style={styles.searchTypeHeading}><Text style={styles.text}>Hva?</Text></View>
-              <View style={styles.searchParameterContainer}>
-                <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
-                {this.createInputField(
-                  'vegobjekttype',
-                  this.props.vegobjekttyper_input,
-                  this.props.vegobjekttyper_text,
-                  this.props.vegobjekttyper_chosen,
-                  true,
-                  this.props.inputVegobjekttyper,
-                  this.chooseVegobjekttyper
-                )}
-                <View style={styles.parameterRightPadding}><Text></Text></View>
-              </View>
+              <View style={styles.hvaHeading}><Text style={styles.text}>Hva?</Text></View>
+            <View style={styles.vegobjekttypeArea}>
+              <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
+                <InputField type='vegobjekttype'
+                  list={this.props.vegobjekttyper_input}
+                  textType={this.props.vegobjekttyper_text}
+                  choosenBool={this.props.vegobjekttyper_chosen}
+                  editable={true}
+                  inputFunction={this.props.inputVegobjekttyper}
+                  chooserFunction={this.props.chooseVegobjekttyper}
+                  />
+              <View style={styles.parameterRightPadding}><Text></Text></View>
+            </View>
               <View style={styles.parameterBottomPadding}><Text></Text></View>
             </View>
+
           </ScrollView>
+
         </View>
       </View>
       <View style={styles.parameterBottomPadding}><Text></Text></View>
-
       {this.createNumerOfObjectsToBeFetcher()}
-
       <View style={styles.buttonArea}>
         <Button text="Søk" onPress={this.search} style={"small"} />
       </View>
@@ -110,61 +114,6 @@ var SearchView = React.createClass({
     </View>
   },
 
-  chooseFylke(input) {
-    var chosenFylke = [];
-    chosenFylke.push(this.props.fylke_input.find((fylke) => {
-      if(fylke.navn == input){
-        return fylke;
-      }
-    }))
-    this.props.chooseFylke(chosenFylke);
-  },
-
-  chooseVegobjekttyper(input) {
-    console.log("choose" + input)
-    var chosenVegobjekttyper = [];
-    chosenVegobjekttyper.push(this.props.vegobjekttyper_input.find((vegobjekttype) => {
-      if(vegobjekttype.navn == input){
-        return vegobjekttype;
-      }
-    }))
-    this.props.chooseVegobjekttyper(chosenVegobjekttyper);
-  },
-
-  //Slå sammen med den generelle etter at den er ferdig
-  createInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction, multiInputEnabled){
-    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
-    var dataSource = ds.cloneWithRows(list);
-
-    return <View style={styles.inputContainer}>
-      <TextInput
-        autocorrect={false}
-        autofocus={editable}
-        editable={editable}
-        style={styles.textInput}
-        placeholder={'Skriv inn '+type}
-        onChangeText={(text) => inputFunction({text})}
-        keyboardType="default"
-        returnKeyType='done'
-        value={textType}
-        />
-      <ListView
-        dataSource={dataSource}
-        enableEmptySections= {true}
-        renderRow={(rowData) => {
-          if(!choosenBool){
-            return <Button
-              style={"list"}
-              onPress={chooserFunction.bind(this, rowData.navn)}
-              text={rowData.navn}
-            />
-          }
-          else {
-            return <View></View>
-          }
-          }}/>
-    </View>
-  },
 
   createVegInput() {
     return <View style={styles.inputContainer}>
@@ -175,6 +124,9 @@ var SearchView = React.createClass({
         onChangeText={(text) => this.props.newInputVeg({text})}
         keyboardType = "default"
         returnKeyType = 'done'
+        onBlur={()=>{
+          console.log('asd');
+        }}
         />
     </View>
   },
@@ -266,35 +218,52 @@ var styles = StyleSheet.create({
     borderBottomColor: 'darkgray',
     backgroundColor: templates.colors.white,
   },
-  hvaContents: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-  },
   searchTypeHeading: {
     flex: 2,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: templates.colors.white
+  },
+  hvaContents: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.colors.white,
+    minHeight:200,
+    maxHeight:250,
+  },
+  hvaHeading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.colors.white
+  },
+  vegobjekttypeArea: {
+    flex: 4,
+    flexDirection: 'row',
+    backgroundColor: templates.colors.white
   },
 
   listViewStyle: {
     flex:1,
   },
+
+
   searchParameterContainer: {
     flex: 1,
     flexDirection: 'row',
   },
   searchLabel: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 11,
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: templates.colors.white,
   },
   inputContainer: {
     flex: 4,
-    backgroundColor: templates.colors.lightGray
+    backgroundColor: templates.colors.white
 
   },
   parameterBottomPadding: {
@@ -317,7 +286,7 @@ var styles = StyleSheet.create({
     height: 40,
     color: templates.colors.darkGray,
     borderWidth: 2,
-    borderColor: templates.colors.middleGray,
+    borderColor: templates.colors.darkGray,
   },
 
   buttonArea: {

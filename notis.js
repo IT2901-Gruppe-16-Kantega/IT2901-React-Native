@@ -39,11 +39,15 @@
 
   - implementer reset searchParameters: DONE!
   - implementer clearData(): DONE!
+  - legg til "min posisjon"
+  - legg til v/g etc etter e/k i søk på veg
+  - finn ut hva som skjer dersom man søker etter en vei som eksisterer, men som ikke er i fylket bruker har valgt, husk å skrive om i Test
+  - legg til support for NVDB som ikke fungerer
 
     MAIN TODO prioritert liste
+  - legg til i setting standardsøk, dette er nødvendig før vi begynner med endelig layout
   - fiks slik at appen åpnes på telefon,
   - fiks slik at data lagres når app lukkes
-  - legg til i setting standardsøk, dette er nødvendig før vi begynner med endelig layout
 
   - REMEBER TO WRITE ABOUT WHY WE HAVE CHOSEN THAT THE USER MUST BE ABLE TO KNOW ROAD NAME
 
@@ -170,7 +174,7 @@
   Sjekk HTTP lokal SERVER
 
 
-  -- implementer flux-håndtering av state
+  -- implementer flux-håndtering av state: DEPRECATED!
 
 */
 
