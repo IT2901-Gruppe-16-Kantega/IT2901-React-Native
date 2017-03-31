@@ -48,7 +48,7 @@ var MarkerCallout = React.createClass({
         if(egenskapsInfo) { tekst = egenskapsInfo.verdi }
 
         textComponents.push(
-          <PropertyValue key={filter.egenskap.navn} property={filter.egenskap.navn} value={tekst} />
+          <PropertyValue key={filter.egenskap.navn + i} property={filter.egenskap.navn} value={tekst} />
         );
       }
 
