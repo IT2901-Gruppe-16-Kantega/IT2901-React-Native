@@ -57,7 +57,7 @@ export default function reducer(state={
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
 
-  //debugging
+  searchCoordinate: null,
 
 }, action) {
   switch (action.type) {
@@ -301,6 +301,9 @@ export default function reducer(state={
 
         veg_enabled: true,
       }
+    }
+    case "SELECT_SEARCH_COORDINATE": {
+      return {...state, searchCoordinate: action.payload}
     }
   }
   return state

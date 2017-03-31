@@ -7,7 +7,8 @@ export var colors = {
   white: 'white',
   lightGray: '#ececec',
   middleGray: '#dadada',
-  darkGray: '#444f55'
+  darkGray: '#444f55',
+  red: 'red',
 }
 
 export var container = {

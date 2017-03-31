@@ -35,7 +35,7 @@ var MarkerCallout = React.createClass({
   },
 
   getEgenskapInfo() {
-    var textComponents = [<Text> </Text>];
+    var textComponents = [<Text key={"spacer"}> </Text>];
 
     if(this.props.allSelectedFilters) {
       for(var i = 0; i < this.props.allSelectedFilters.length; i++) {

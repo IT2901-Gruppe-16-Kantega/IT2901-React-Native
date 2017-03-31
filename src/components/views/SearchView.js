@@ -48,6 +48,7 @@ var SearchView = React.createClass({
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.contents}>
               <View style={styles.searchTypeHeading}><Text style={styles.text}>Hvor?</Text></View>
+              <Button text={"🗺"} style={"small"} onPress={Actions.RoadSelectView} />
               <View style={styles.searchParameterContainer}>
                 <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
                 {this.createInputField(
@@ -113,7 +114,7 @@ var SearchView = React.createClass({
   chooseFylke(input) {
     var chosenFylke = [];
     chosenFylke.push(this.props.fylke_input.find((fylke) => {
-      if(fylke.navn == input){
+      if(fylke.navn === input) {
         return fylke;
       }
     }))
@@ -121,7 +122,6 @@ var SearchView = React.createClass({
   },
 
   chooseVegobjekttyper(input) {
-    console.log("choose" + input)
     var chosenVegobjekttyper = [];
     chosenVegobjekttyper.push(this.props.vegobjekttyper_input.find((vegobjekttype) => {
       if(vegobjekttype.navn == input){

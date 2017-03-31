@@ -14,7 +14,7 @@ export function inputFylke(input){
   return function(dispatch) {
     searchForFylke(input.text)
     .then((result) => {
-      if(result.length==1){
+      if(result.length == 1){
         dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
           result: result,
           fylke_text: input.text,
@@ -168,5 +168,12 @@ export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
 export function resetSearchParameters(){
   return {
     type: "RESET_SEARCH_PARAMETERS"
+  }
+}
+
+export function selectSearchCoordinate(coordinate) {
+  return {
+    type: "SELECT_SEARCH_COORDINATE",
+    payload: coordinate,
   }
 }

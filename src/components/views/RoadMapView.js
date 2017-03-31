@@ -39,7 +39,6 @@ var RoadMapView = React.createClass({
           ref={(ref) => {mapRef = ref}}
           onLayout = {() => mapRef.fitToCoordinates(coordinates, { padding, animated: true })}
           style={styles.map}
-          zoomEnabled={true}
           >
           {this.props.markers}
         </MapView>
@@ -65,7 +64,7 @@ var RoadMapView = React.createClass({
   },
 
   updateMarkers() {
-    console.log("updated")
+    coordinates = []
 
     // Goes through each fetched object, and creates a marker for the map.
     var markers = this.props.allObjects.map(function(roadObject) {
@@ -74,7 +73,7 @@ var RoadMapView = React.createClass({
 
       var roadObjectEgenskap;
       // Some objects don't have any properties
-      if(roadObject.egenskaper) {
+      if(this.props.selectedFilter && roadObject.egenskaper) {
         roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
           return (egenskap.id == this.props.selectedFilter.id);
         });

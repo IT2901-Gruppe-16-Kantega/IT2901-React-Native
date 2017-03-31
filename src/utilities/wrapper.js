@@ -63,7 +63,7 @@ async function fetchData(_path) {
   }
 }
 
-async function fetchTotalNumberOfObjects(url){
+async function fetchTotalNumberOfObjects(url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -79,6 +79,13 @@ async function fetchTotalNumberOfObjects(url){
 */
 function fetch_Kommuner(callback){
   fetchData(url_kommuner).then(function(data){
+    callback(data, true);
+  })
+}
+
+function fetchCloseby(coordinate, callback) {
+  const url = "https://www.vegvesen.no/nvdb/api/v2/posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100";
+  fetchData(url).then(function(data) {
     callback(data, true);
   })
 }
@@ -101,4 +108,4 @@ async function fetchVeger(fylke, vegkategori){
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchCloseby};

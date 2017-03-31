@@ -68,7 +68,7 @@ function filterFylke(f) {
 
 */
 
-function searchForFylke(fylke_navn){
+function searchForFylke(fylke_navn) {
     return new Promise(function(resolve, reject){
       var fylkerArray = [];
       fylkerArray = fylker.filter(compareInput, fylke_navn);

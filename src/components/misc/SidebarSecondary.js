@@ -21,7 +21,10 @@ import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
 
 let ScreenWidth = Dimensions.get("window").width;
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+// The different kind of datatypes in the NVDB database
+// MARK: Move to values file
 const datatype = {
   flerverdiAttributtTekst: 30,
   tekst: 1,
@@ -32,11 +35,13 @@ const datatype = {
   geomPunkt: 17,
 }
 
-var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+/*
+This component is for selecting advanced filtering.
+*/
 var SidebarSecondary = React.createClass({
   render() {
     var listView;
-    if(this.props.selectedFilter && this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
+    if(this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
       if(this.props.selectedFunction !== values.comparators.HAS_VALUE && this.props.selectedFunction !== values.comparators.HAS_NOT_VALUE) {
         listView = <ListView
           dataSource={this.getDataSource()}
@@ -57,8 +62,8 @@ var SidebarSecondary = React.createClass({
         <TouchableHighlight
           onPress={this.addFilter}
           underlayColor={templates.colors.blue}
-          style={styles.addFilterButton} >
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>Legg til filter</Text>
+          style={this.addFilterButtonStyle()} >
+          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>{this.status().message}</Text>
         </TouchableHighlight>
       </View>
 
@@ -69,29 +74,54 @@ var SidebarSecondary = React.createClass({
     </View>
   },
 
+  addFilterButtonStyle() {
+    return {
+      backgroundColor: this.status().canAdd ? templates.colors.green : templates.colors.red,
+      padding: 10,
+      margin: 2,
+      borderRadius: 3,
+      alignItems: 'center',
+    };
+  },
+
   hideSidebar() {
     this.props.deselectFilterValue();
     this.props.deselectFunction();
     this.props.toggleSecondSidebar(false)
   },
 
-  addFilter() {
-    if(!this.props.selectedFilter) {
-      console.log("Velg et filter")
-      return;
-    }
-
+  status() {
     if(!this.props.selectedFunction) {
-      console.log("Velg en sammenlikningsfunksjon")
-      return;
+      return {
+        message: "Velg funksjon",
+        longMessage: "Velg en sammenlikningsfunksjon, for eksempel 'Har verdi'.",
+        canAdd: false }
+    }
+    if(false) {
+      // Go through already added filter combinations
+      return {
+        message: "Umulig kobinasjon",
+        longMessage: "Denne kombinasjonen kan ikke velges sammen med filtrene du allerede har valgt.",
+        canAdd: false }
     }
 
     const {comparators} = values;
     if(!this.props.selectedFilterValue.id) {
       if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
-        console.log("Velg verdi")
-        return;
+        return {
+          message: "Skriv inn verdi",
+          longMessage: "Den valgte sammenlikningsfunksjonen trenger en tilhørende verdi.",
+          canAdd: false }
       }
+    }
+
+    return { message: "Legg til filter", longMessage: "", canAdd: true }
+  },
+
+  addFilter() {
+    if(!this.status().canAdd) {
+      alert(this.status().longMessage)
+      return;
     }
 
     var filter = {
@@ -194,33 +224,12 @@ var SidebarSecondary = React.createClass({
     return ds.cloneWithRows(source);
   },
 
-  selectValue(value) {
-    var {selectedFilter} = this.props;
-
-    var filtered = [];
-    for(var i = 0; i < this.props.allObjects.length; i++) {
-      const objekt = this.props.allObjects[i];
-
-      if(objekt.egenskaper) {
-        for(var j = 0; j < objekt.egenskaper.length; j++) {
-          const egenskap = objekt.egenskaper[j];
-
-          if(egenskap.enum_id == value.id) {
-            filtered.push(objekt);
-          }
-        }
-      }
-    }
-
-    this.props.selectFilterValue(value);
-  },
-
   renderRow(rowData, sectionID, rowID, highlightRow) {
     return (
       <TouchableHighlight
         key={rowID}
         underlayColor={templates.colors.blue}
-        onPress={() => this.selectValue(rowData)}>
+        onPress={this.props.selectFilterValue.bind(this, rowData)}>
         <View style={this.getRowStyle(rowData.id)}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
         </View>
@@ -250,13 +259,6 @@ var SidebarSecondary = React.createClass({
 })
 
 styles = StyleSheet.create({
-  addFilterButton: {
-    backgroundColor: templates.colors.green,
-    padding: 10,
-    margin: 2,
-    borderRadius: 3,
-    alignItems: 'center',
-  },
   buttonContainer: {
     flexDirection: 'row',
   },

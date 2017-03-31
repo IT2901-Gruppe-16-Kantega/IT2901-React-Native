@@ -60,7 +60,7 @@ var SidebarMain = React.createClass({
           <TouchableHighlight
             onPress={this.props.removeFilter.bind(this, filter)}
             >
-            <Text style={{color: 'red', fontSize: 30, fontWeight: 'bold', paddingLeft: 10}}>x</Text>
+            <Text style={{color: templates.colors.red, fontSize: 15, fontWeight: 'bold', paddingLeft: 10}}>❌</Text>
           </TouchableHighlight>
           <Text style={style}>
             <Text style={{fontWeight: 'bold'}}>{filter.egenskap.navn}</Text>
