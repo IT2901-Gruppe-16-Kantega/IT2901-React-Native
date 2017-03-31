@@ -20,7 +20,7 @@ The callout shown when the user taps a pin on the map view.
 */
 var MarkerCallout = React.createClass({
   render() {
-    var {roadObject, roadObjectEgenskap} = this.props;
+    var {roadObject} = this.props;
 
     return <View>
       <TouchableHighlight

@@ -14,6 +14,7 @@ import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 
+import {comparators, datatype} from '../../utilities/values';
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions';
 
@@ -25,22 +26,15 @@ var coordinates = [];
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentDidMount() {
-    this.updateMarkers();
-  },
-
   render() {
-    const padding = { edgePadding: { top: 40, right: 40, bottom: 40, left: 40 }};
-
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
         <MapView
           ref={(ref) => {mapRef = ref}}
-          onLayout = {() => mapRef.fitToCoordinates(coordinates, { padding, animated: true })}
           style={styles.map}
           >
-          {this.props.markers}
+          {this.mapObjects()}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
@@ -63,24 +57,27 @@ var RoadMapView = React.createClass({
     return objectCoords;
   },
 
-  updateMarkers() {
+  mapObjects() {
     coordinates = []
 
     // Goes through each fetched object, and creates a marker for the map.
     var markers = this.props.allObjects.map(function(roadObject) {
+
+      /*var filter = {
+        egenskap: this.props.selectedFilter,
+        funksjon: this.props.selectedFunction,
+        verdi: verdi,
+      }*/
+      // Filtering
+      if(this.shouldSkipObject(roadObject)) {
+        return;
+      }
+
       const objectCoordinates = this.parseGeometry(roadObject.geometri.wkt);
       coordinates.push(objectCoordinates[0]);
 
-      var roadObjectEgenskap;
-      // Some objects don't have any properties
-      if(this.props.selectedFilter && roadObject.egenskaper) {
-        roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
-          return (egenskap.id == this.props.selectedFilter.id);
-        });
-      }
-
       const color = objectCoordinates.length == 1 ? templates.colors.blue : this.getRandomColor();
-      const marker = this.createMarker(roadObject, objectCoordinates[0], roadObjectEgenskap, color);
+      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
       if(objectCoordinates.length == 1) {
         return marker;
       } else {
@@ -94,10 +91,65 @@ var RoadMapView = React.createClass({
 
     }.bind(this));
 
-    this.props.updateMapMarkers(markers);
+    return markers;
   },
 
-  createMarker(obj, coords, props, color) {
+  shouldSkipObject(roadObject) {
+    if(this.props.allSelectedFilters) {
+      for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
+        const filter = this.props.allSelectedFilters[i];
+
+        if(roadObject.egenskaper) {
+          const markerProperty = roadObject.egenskaper.find(e => {
+            return e.id === filter.egenskap.id;
+          })
+
+          // If the marker has the selected property
+          if(markerProperty) {
+            // Skip the marker if the selected filter is HAS_NOT_VALUE
+            if(filter.funksjon === comparators.HAS_NOT_VALUE) {
+              return true;
+            }
+
+            if(filter.egenskap.tillatte_verdier) {
+              const isEqual = markerProperty.enum_id === filter.verdi.id;
+              if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
+                return true;
+              }
+            } else {
+              if(filter.egenskap.datatype === datatype.dato) {
+
+              }
+              const isEqual = markerProperty.verdi === filter.verdi;
+              console.log(markerProperty.verdi + ', ' + filter.verdi);
+              if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
+                return true;
+              }
+            }
+          }
+          else {
+            // Skip the marker if the property doesn't exist
+            if(filter.funksjon === comparators.HAS_VALUE || 
+               filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+               filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
+          }
+        }
+        else {
+          if(filter.funksjon === comparators.HAS_VALUE || 
+             filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+             filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
+        }
+      }
+    }
+  },
+
+  componentDidUpdate() {
+    if(mapRef) {
+      mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 300, right: 200, bottom: 300, left: 50 }, animated: true })
+    }
+  },
+
+  createMarker(obj, coords, color) {
     return <MapView.Marker
       coordinate={coords}
       key={obj.id}
@@ -106,7 +158,6 @@ var RoadMapView = React.createClass({
       <MapView.Callout style={{flex: 1, position: 'relative'}}>
         <MarkerCallout
           roadObject={obj}
-          roadObjectEgenskap={props}
         />
       </MapView.Callout>
     </MapView.Marker>
@@ -166,6 +217,8 @@ function mapStateToProps(state) {
     selectedFilterValue: state.filterReducer.selectedFilterValue,
 
     selectedObject: state.mapReducer.selectedObject,
+
+    allSelectedFilters: state.filterReducer.allSelectedFilters,
   };}
 
 function mapDispatchToProps(dispatch) {

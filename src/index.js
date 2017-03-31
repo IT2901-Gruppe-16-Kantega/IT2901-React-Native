@@ -104,7 +104,7 @@ class App extends Component {
   toggleSidebar() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
-    var width = ScreenWidth / 1.5;
+    var width = ScreenWidth / 2.25;
     var xPos = ScreenWidth - width;
     var frame = {width: width};
 
