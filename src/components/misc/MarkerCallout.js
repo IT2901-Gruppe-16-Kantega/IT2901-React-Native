@@ -15,6 +15,9 @@ import PropertyValue from './PropertyValue';
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
 
+/*
+The callout shown when the user taps a pin on the map view.
+*/
 var MarkerCallout = React.createClass({
   render() {
     var {roadObject, roadObjectEgenskap} = this.props;
@@ -29,17 +32,29 @@ var MarkerCallout = React.createClass({
     </View>
   },
 
+  // Called when the user taps the title of the callout
+  // Opens the object info view.
   openObjectInformation() {
     this.props.selectObject(this.props.roadObject);
     Actions.ObjectInfoView();
   },
 
+  // Cycles through all the selected filters, and adds information
+  // about each of them to the callout bubble.
   getEgenskapInfo() {
     var textComponents = [<Text key={"spacer"}> </Text>];
+    var propertiesAdded = [];
 
     if(this.props.allSelectedFilters) {
       for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
         const filter = this.props.allSelectedFilters[i];
+
+        // Only add one of each property to the callout
+        if(propertiesAdded.includes(filter.egenskap.id)) {
+          continue;
+        }
+
+        // Finds the information about the selected property of this object
         const egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
           return e.id == filter.egenskap.id;
         })
@@ -48,14 +63,16 @@ var MarkerCallout = React.createClass({
         if(egenskapsInfo) { tekst = egenskapsInfo.verdi }
 
         textComponents.push(
-          <PropertyValue key={filter.egenskap.navn + i} property={filter.egenskap.navn} value={tekst} />
+          <PropertyValue key={filter.egenskap.id + i} property={filter.egenskap.navn} value={tekst} />
         );
+        propertiesAdded.push(filter.egenskap.id);
       }
 
       return textComponents;
     }
   },
 
+  // Returns eventual postfixes, for example 'mm' for measurements
   getPostfix() {
     var {selectedFilter} = this.props;
 
