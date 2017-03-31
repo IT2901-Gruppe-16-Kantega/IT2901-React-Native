@@ -6,7 +6,7 @@ export default function reducer(state={
   selectedFilterValue: {},
   allSelectedFilters: [],
 
-  filterValueSearch: '',
+  filterValueText: null,
 
 }, action) {
   switch (action.type) {
@@ -30,7 +30,10 @@ export default function reducer(state={
       return {...state, selectedFilterValue: {}}
     }
     case "INPUT_FILTER_VALUE_TEXT": {
-      return {...state, filterValueSearch: action.payload}
+      return {...state, filterValueText: action.payload}
+    }
+    case "CLEAR_FILTER_VALUE_TEXT": {
+      return {...state, filterValueText: null}
     }
     case "ADD_FILTER": {
       return {...state, allSelectedFilters: state.allSelectedFilters.concat([action.payload])}
@@ -38,7 +41,7 @@ export default function reducer(state={
     case "REMOVE_FILTER": {
       var remFilter = action.payload;
       var newFilters = state.allSelectedFilters.filter(f => {
-        return (!(f.egenskap.id === remFilter.egenskap.id && f.funksjon === remFilter.funksjon && f.verdi.id === remFilter.verdi.id));
+        return (!(f.egenskap.id === remFilter.egenskap.id && f.funksjon === remFilter.funksjon && f.verdi === remFilter.verdi));
       });
       return {...state, allSelectedFilters: newFilters}
     }

@@ -13,27 +13,17 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import moment from 'moment';
+
 import ComparatorComponent from './ComparatorComponent';
 
-import * as values from '../../utilities/values';
+import {comparators, datatype} from '../../utilities/values';
 import * as templates from '../../utilities/templates';
 import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
 
 let ScreenWidth = Dimensions.get("window").width;
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-// The different kind of datatypes in the NVDB database
-// MARK: Move to values file
-const datatype = {
-  flerverdiAttributtTekst: 30,
-  tekst: 1,
-  tall: 2,
-  flerverdiattributtTall: 31,
-  dato: 8,
-  binaerObjekt: 27,
-  geomPunkt: 17,
-}
 
 /*
 This component is for selecting advanced filtering.
@@ -42,7 +32,7 @@ var SidebarSecondary = React.createClass({
   render() {
     var listView;
     if(this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
-      if(this.props.selectedFunction !== values.comparators.HAS_VALUE && this.props.selectedFunction !== values.comparators.HAS_NOT_VALUE) {
+      if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
         listView = <ListView
           dataSource={this.getDataSource()}
           renderRow={this.renderRow}
@@ -87,31 +77,127 @@ var SidebarSecondary = React.createClass({
   hideSidebar() {
     this.props.deselectFilterValue();
     this.props.deselectFunction();
+    this.props.clearFilterValueText();
     this.props.toggleSecondSidebar(false)
   },
 
   status() {
+    // Failure if not selected a filter function (NOT_EQUAL, EQUAL, >= etc)
     if(!this.props.selectedFunction) {
       return {
         message: "Velg funksjon",
         longMessage: "Velg en sammenlikningsfunksjon, for eksempel 'Har verdi'.",
-        canAdd: false }
-    }
-    if(false) {
-      // Go through already added filter combinations
-      return {
-        message: "Umulig kobinasjon",
-        longMessage: "Denne kombinasjonen kan ikke velges sammen med filtrene du allerede har valgt.",
-        canAdd: false }
+        canAdd: false
+      }
     }
 
-    const {comparators} = values;
-    if(!this.props.selectedFilterValue.id) {
-      if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
-        return {
-          message: "Skriv inn verdi",
-          longMessage: "Den valgte sammenlikningsfunksjonen trenger en tilhørende verdi.",
-          canAdd: false }
+    // Need to write a value or select one if the filter function is not HAS_VALUE or HAS_NOT_VALUE
+    if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
+
+      // Need to select a value from list if the selected filter is an enum
+      if(this.props.selectedFilter.tillatte_verdier) {
+        if(!this.props.selectedFilterValue.id) {
+          return {
+            message: "Velg verdi",
+            longMessage: "Den valgte sammenlikningsfunksjonen trenger en tilhørende verdi.",
+            canAdd: false
+          }
+        }
+      }
+      // Need to write a value if the selected filter has number, text or date type
+      else {
+        if(!this.props.filterValueText) {
+          return {
+            message: "Skriv inn verdi",
+            longMessage: "Skriv inn en verdi i tekstfeltet.",
+            canAdd: false
+          }
+        }
+        else if(this.props.selectedFilter.datatype == datatype.tall && isNaN(parseFloat(this.props.filterValueText))) {
+          return {
+            message: "Skriv inn tallverdi",
+            longMessage: "Verdien i tekstfeltet må være et tall.",
+            canAdd: false
+          }
+        }
+        else if(this.props.selectedFilter.datatype == datatype.dato && !moment(this.props.filterValueText, "YYYY-MM-DD").isValid()) {
+          return {
+            message: "Ugyldig dato",
+            longMessage: "Skriv inn dato i formatet 'ÅÅÅÅ-MM-DD'",
+            canAdd: false,
+          }
+        }
+      }
+    }
+
+    // Failure if conflicts with already selected filter (eg: HAS_VALUE and HAS_NOT_VALUE)
+    const verdi = this.props.selectedFilter.tillatte_verdier ? this.props.selectedFilterValue.id : this.props.filterValueText;
+    const selFunc = this.props.selectedFunction;
+
+    const filteredFilters = this.props.allSelectedFilters.filter(f => {
+      const fVerdi = f.egenskap.tillatte_verdier ? f.verdi.id : f.verdi;
+
+      // Different filters
+      if(!(f.egenskap === this.props.selectedFilter)) {
+        return false;
+      }
+
+      const fComparatorFunction = (f.funksjon === comparators.NOT_EQUAL ||
+         f.funksjon === comparators.EQUAL ||
+         f.funksjon === comparators.LARGER_OR_EQUAL ||
+         f.funksjon === comparators.SMALLER_OR_EQUAL);
+
+      const selComparatorFunction = (selFunc === comparators.NOT_EQUAL ||
+         selFunc === comparators.EQUAL ||
+         selFunc === comparators.LARGER_OR_EQUAL ||
+         selFunc === comparators.SMALLER_OR_EQUAL);
+
+      // HAS_NOT_VALUE and any comparison conflicts
+      if(fComparatorFunction && selFunc === comparators.HAS_NOT_VALUE || selComparatorFunction && f.funksjon === comparators.HAS_NOT_VALUE) {
+        return true;
+      }
+
+      // HAS_NOT_VALUE and HAS_VALUE conflicts
+      if((f.funksjon === comparators.HAS_VALUE && selFunc === comparators.HAS_NOT_VALUE) ||
+         (f.funksjon === comparators.HAS_NOT_VALUE && selFunc === comparators.HAS_VALUE)) {
+        console.log("HAS_VALUE and HAS_NOT_VALUE conflicts")
+        return true;
+      }
+
+      if(fVerdi == verdi) {
+        // Filters has the same value, but comparators conflicts
+        if(fComparatorFunction && selComparatorFunction) {
+          return true;
+        }
+      }
+
+      if((fVerdi > verdi && f.funksjon === comparators.LARGER_OR_EQUAL && selFunc === comparators.SMALLER_OR_EQUAL) ||
+         (fVerdi < verdi && f.funksjon === comparators.SMALLER_OR_EQUAL && selFunc === comparators.LARGER_OR_EQUAL)) {
+        return true;
+      }
+    });
+
+    if(filteredFilters.length > 0) {
+      return {
+        message: "Umulig kombinasjon",
+        longMessage: "Denne kombinasjonen kan ikke velges sammen med filtrene du allerede har valgt.",
+        canAdd: false
+      }
+    }
+
+    // Failure if the exact same filter already exists
+    const filteredFilters2 = this.props.allSelectedFilters.filter(f => {
+      const fVerdi = f.egenskap.tillatte_verdier ? f.verdi.id : f.verdi;
+      return (f.egenskap === this.props.selectedFilter &&
+                f.funksjon === this.props.selectedFunction &&
+                fVerdi === verdi);
+    });
+
+    if(filteredFilters2.length > 0) {
+      return {
+        message: "Eksisterer allerede",
+        longMessage: "Dette filteret har du allerede lagt til.",
+        canAdd: false,
       }
     }
 
@@ -124,10 +210,16 @@ var SidebarSecondary = React.createClass({
       return;
     }
 
+    var verdi;
+    if(this.props.selectedFilter.tillatte_verdier) { verdi = this.props.selectedFilterValue }
+    else if(this.props.selectedFilter.datatype === datatype.tall) { verdi = parseFloat(this.props.filterValueText) }
+    else if(this.props.selectedFilter.datatype === datatype.dato) { verdi = this.props.filterValueText.substring(0, 10) }
+    else { verdi = this.props.filterValueText }
+
     var filter = {
       egenskap: this.props.selectedFilter,
       funksjon: this.props.selectedFunction,
-      verdi: this.props.selectedFilterValue,
+      verdi: verdi,
     }
 
     this.props.addFilter(filter)
@@ -135,27 +227,22 @@ var SidebarSecondary = React.createClass({
     this.props.toggleSecondSidebar(false);
     this.props.deselectFilterValue();
     this.props.deselectFunction();
-
-    console.log(this.props.allSelectedFilters);
+    this.props.clearFilterValueText();
   },
 
-  createTextInputs(placeholders, type) {
-    var inputs = [];
-    for(var i = 0; i < placeholders.length; i++) {
-      inputs.push(<TextInput
-        key={placeholders[i]}
-        style={styles.textInputStyle}
-        placeholder={placeholders[i]}
-        onChangeText={(text) => this.props.inputFilterValueText(text)}
-        keyboardType={type}
-        returnKeyType='done'
-      />)
-    }
-    return <View style={{margin: 5, flexDirection: 'row'}}>{inputs}</View>
+  createTextInput(placeholder, type) {
+    return <TextInput
+      key={placeholder}
+      style={styles.textInputStyle}
+      placeholder={placeholder}
+      onChangeText={(text) => this.props.inputFilterValueText(text)}
+      keyboardType={type}
+      value={this.props.filterValueText}
+      returnKeyType='done'
+    />
   },
 
   createSearchBox() {
-    const {comparators} = values;
     if(!this.props.selectedFunction || this.props.selectedFunction === comparators.HAS_VALUE || this.props.selectedFunction === comparators.HAS_NOT_VALUE) {
       return;
     }
@@ -166,46 +253,46 @@ var SidebarSecondary = React.createClass({
     }
 
     if(dt === datatype.dato) {
-      return this.createTextInputs(["DD", "MM", "YYYY"], "numbers-and-punctuation");
+      return this.createTextInput("ÅÅÅÅ-MM-DD", "numbers-and-punctuation");
     }
     else if(dt === datatype.flerverdiAttributtTekst || dt === datatype.flerverdiattributtTall) {
-      return this.createTextInputs(["Start søk..."], "default");
+      return this.createTextInput("Start søk...", "default");
     }
     else if(dt === datatype.tall) {
-      return this.createTextInputs(["<Tallverdi>"], "numbers-and-punctuation");
+      return this.createTextInput("<Tallverdi>", "numbers-and-punctuation");
     }
     else {
-      return this.createTextInputs(["<Tekstverdi>"], "default");
+      return this.createTextInput("<Tekstverdi>", "default");
     }
   },
 
   createComparators() {
-    var comparators = [
+    var comparatorComponents = [
       <View key="VALUE" style={styles.buttonContainer}>
-        <ComparatorComponent type={values.comparators.HAS_VALUE} />
-        <ComparatorComponent type={values.comparators.HAS_NOT_VALUE} />
+        <ComparatorComponent type={comparators.HAS_VALUE} />
+        <ComparatorComponent type={comparators.HAS_NOT_VALUE} />
       </View>
     ];
 
     const dt = this.props.selectedFilter.datatype;
-    if(dt == datatype.tall || dt == datatype.flerverdiattributtTall || dt == datatype.dato) {
-      comparators.push(
+    if(dt == datatype.tall || dt == datatype.dato) { //dt == datatype.flerverdiattributtTall
+      comparatorComponents.push(
         <View key="LARGERSMALLER" style={styles.buttonContainer}>
-          <ComparatorComponent type={values.comparators.LARGER_OR_EQUAL} />
-          <ComparatorComponent type={values.comparators.SMALLER_OR_EQUAL} />
+          <ComparatorComponent type={comparators.LARGER_OR_EQUAL} />
+          <ComparatorComponent type={comparators.SMALLER_OR_EQUAL} />
         </View>
       );
     }
     if(dt != datatype.geomPunkt) {
-      comparators.push(
+      comparatorComponents.push(
         <View key="EQUALITY" style={styles.buttonContainer}>
-          <ComparatorComponent type={values.comparators.NOT_EQUAL} />
-          <ComparatorComponent type={values.comparators.EQUAL} />
+          <ComparatorComponent type={comparators.EQUAL} />
+          <ComparatorComponent type={comparators.NOT_EQUAL} />
         </View>
       );
     }
 
-    return <View>{comparators}</View>
+    return <View>{comparatorComponents}</View>
   },
 
   getDataSource() {
@@ -214,13 +301,14 @@ var SidebarSecondary = React.createClass({
       return 1;
     });
 
-    if(this.props.filterValueSearch) {
-      var searchString = this.props.filterValueSearch;
+    if(this.props.filterValueText) {
+      var searchString = this.props.filterValueText;
 
       source = source.filter(function(value) {
         return value.navn.toLowerCase().indexOf(searchString.toLowerCase()) !== -1;
       }); // bind(this)
     }
+
     return ds.cloneWithRows(source);
   },
 
@@ -277,12 +365,13 @@ styles = StyleSheet.create({
     borderBottomColor: templates.colors.middleGray,
   },
   textInputStyle: {
-    flex: 1,
-    height: 50,
     backgroundColor: templates.colors.lightGray,
     borderRadius: 3,
     margin: 2,
     padding: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    height: 35,
   }
 })
 
@@ -295,7 +384,7 @@ function mapStateToProps(state) {
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
 
-    filterValueSearch: state.filterReducer.filterValueSearch,
+    filterValueText: state.filterReducer.filterValueText,
     selectedFunction: state.filterReducer.selectedFunction,
 
     allSelectedFilters: state.filterReducer.allSelectedFilters,
@@ -309,6 +398,7 @@ function mapDispatchToProps(dispatch) {
     deselectFilterValue: bindActionCreators(filterActions.deselectFilterValue, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
     inputFilterValueText: bindActionCreators(filterActions.inputFilterValueText, dispatch),
+    clearFilterValueText: bindActionCreators(filterActions.clearFilterValueText, dispatch),
     addFilter: bindActionCreators(filterActions.addFilter, dispatch),
   }
 };

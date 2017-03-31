@@ -40,7 +40,7 @@ export function setNumberOfObjectsToBeFetched(number){
 }
 
 //Function that sets fetching=true
-export function fetchDataStart(){
+export function fetchDataStart() {
   return {
     type: "FETCH_DATA_START"
   }

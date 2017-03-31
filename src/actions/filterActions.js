@@ -38,6 +38,10 @@ export function inputFilterValueText(text) {
   }
 }
 
+export function clearFilterValueText() {
+  return { type: "CLEAR_FILTER_VALUE_TEXT" }
+}
+
 export function addFilter(filter) {
   return {
     type: "ADD_FILTER",
