@@ -41,7 +41,7 @@ function searchForKommune(input, fylke){
   var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
   return new Promise(function(resolve, reject){
     var kommunerArray = filteredKommuneList.filter(compareInput, input);
-    if(kommunerArray.length > 0 && kommunerArray.length != 426) {
+    if(kommunerArray.length > 0 && kommunerArray.length != filteredKommuneList.length) {
       resolve(kommunerArray);
     }
     else {

@@ -78,7 +78,7 @@ var SearchView = React.createClass({
               <View style={styles.parameterBottomPadding}><Text></Text></View>
 
 
-              <View style={styles.searchParameterContainer}>
+              <View style={styles.kommuneArea}>
                 <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
                 <InputField type='kommune'
                   list={this.props.kommune_input}
@@ -117,7 +117,7 @@ var SearchView = React.createClass({
           </View>
         </View>
         <View style={styles.parameterBottomPadding}><Text></Text></View>
-
+        {this.createNumerOfObjectsToBeFetcher()}
         <View style={styles.buttonArea}>
           <Button text="Søk" onPress={this.search} style={"small"} />
         </View>
@@ -148,7 +148,6 @@ var SearchView = React.createClass({
     //this function need to be optimized
     search() {
       if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
-
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
         const veg = this.props.veg_input.text;
@@ -193,7 +192,6 @@ var SearchView = React.createClass({
             var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
           }
 
-
           fetchTotalNumberOfObjects(preurl).then(function(response) {
             if(response.antall == undefined) {
               Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
@@ -227,15 +225,30 @@ var SearchView = React.createClass({
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
         const veg = this.props.veg_input.text;
-        var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-        var numberOfObjectsToBeFetched = 0;
-        fetchTotalNumberOfObjects(preurl).then(function(response){
-          numberOfObjectsToBeFetched = response.antall;
-          this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
-        }.bind(this));
-        return <View style={styles.numberOfObjectsToBeFetched}>
-          <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
-        </View>
+
+        if(this.props.kommune_chosen){
+          const kommuneID = this.props.kommune_input[0].nummer;
+          var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+          var numberOfObjectsToBeFetched = 0;
+          fetchTotalNumberOfObjects(preurl).then(function(response){
+            numberOfObjectsToBeFetched = response.antall;
+            this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
+          }.bind(this));
+          return <View style={styles.numberOfObjectsToBeFetched}>
+            <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
+          </View>
+        }
+        else{
+          var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
+          var numberOfObjectsToBeFetched = 0;
+          fetchTotalNumberOfObjects(preurl).then(function(response){
+            numberOfObjectsToBeFetched = response.antall;
+            this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
+          }.bind(this));
+          return <View style={styles.numberOfObjectsToBeFetched}>
+            <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
+          </View>
+        }
       }
       else{
         return <View style={styles.numberOfObjectsToBeFetched}>
@@ -287,6 +300,15 @@ var SearchView = React.createClass({
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: templates.colors.white
+    },
+    kommuneArea: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: templates.colors.white,
+      minHeight:0,
+      maxHeight:130,
     },
     hvaContents: {
       flex: 1,
