@@ -20,6 +20,8 @@ export default function reducer(state={
   kommune_text: '',
   kommune_chosen: false,
 
+  kommune_enabled: false,
+
   //vegobjekttyper fields
   vegobjekttyper_input: [],
   vegobjekttyper_navn: '',
@@ -54,6 +56,7 @@ export default function reducer(state={
         fylke_input: action.payload.result,
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
+        kommune_enabled: false,
       }
     }
     case "INPUT_FYLKE_SINGLE": {
@@ -63,7 +66,7 @@ export default function reducer(state={
         fylke_navn: action.payload.result[0].navn,
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
-
+        kommune_enabled: false,
       }
     }
     case "INPUT_FYLKE_NOT_VALID": {
@@ -73,6 +76,8 @@ export default function reducer(state={
         fylke_navn: '',
         fylke_text: action.payload,
         fylke_chosen: false,
+
+        kommune_enabled: false,
       }
     }
     case "CHOOSE_FYLKE": {
@@ -82,6 +87,8 @@ export default function reducer(state={
         fylke_navn: action.payload[0].navn,
         fylke_text: action.payload[0].navn,
         fylke_chosen: true,
+
+        kommune_enabled: true,
       }
     }
 
@@ -186,6 +193,7 @@ export default function reducer(state={
         kommune_navn: '',
         kommune_text: '',
         kommune_chosen: false,
+        kommune_enabled: false,
 
         vegobjekttyper_input: [],
         vegobjekttyper_navn: '',

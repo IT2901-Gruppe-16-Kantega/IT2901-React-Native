@@ -1,22 +1,9 @@
-/*
-Given an array A of n elements with values or records A0 ... An−1, sorted such that A0 ≤ ... ≤ An−1, and target value T, the following subroutine uses binary search to find the index of T in A.[6]
-
-Set L to 0 and R to n − 1.
-If L > R, the search terminates as unsuccessful.
-Set m (the position of the middle element) to the floor (the largest previous integer) of (L + R) / 2.
-If Am < T, set L to m + 1 and go to step 2.
-If Am > T, set R to m – 1 and go to step 2.
-Now Am = T, the search is done; return m.
-This iterative procedure keeps track of the search boundaries via two variables. Some implementations may place the comparison for equality at the end of the algorithm, resulting in a faster comparison loop but costing one more iteration on average.[7]
-*/
 
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';
+//Not used:
 import {fetchVeger} from './wrapper';
-
-
-
 
 
 //NOT used??
@@ -24,15 +11,10 @@ function filterFylke(f) {
     return f.fylke === parseInt(this);
   }
 
-/*
-    NEW METOHDS CURRENTLY USED
-
-*/
 
 function searchForFylke(fylke_navn){
     return new Promise(function(resolve, reject){
-      var fylkerArray = [];
-      fylkerArray = fylker.filter(compareInput, fylke_navn);
+      var fylkerArray = fylker.filter(compareInput, fylke_navn);
       if(fylkerArray.length > 0 && fylkerArray.length != 19) {
         resolve(fylkerArray);
       }
@@ -44,8 +26,7 @@ function searchForFylke(fylke_navn){
 
 function searchForVegobjekttyper(input){
   return new Promise(function(resolve, reject){
-    var vegobjekttyperArray = [];
-    vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
+    var vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
     if(vegobjekttyperArray.length > 0 && vegobjekttyperArray.length != 391) {
       resolve(vegobjekttyperArray);
     }
@@ -55,11 +36,12 @@ function searchForVegobjekttyper(input){
   })
 }
 
-function searchForKommune(input){
+//handle chosen fylke
+function searchForKommune(input, fylke){
+  var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
   return new Promise(function(resolve, reject){
-    var kommunerArray = [];
-    kommunerArray = kommuner.filter(compareInput, input);
-    if(kommunerArray.length > 0 && kommunerArray.length != 391) {
+    var kommunerArray = filteredKommuneList.filter(compareInput, input);
+    if(kommunerArray.length > 0 && kommunerArray.length != 426) {
       resolve(kommunerArray);
     }
     else {
@@ -68,10 +50,14 @@ function searchForKommune(input){
   })
 }
 
-
+//Comparator used by all search functions
 function compareInput(input){
     let stringInput = this.toString().toLowerCase();
     return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+  }
+
+function filterKommuneList(input){
+  return input.fylke==this;
   }
 
 
@@ -100,10 +86,6 @@ function vegerContains(value) {
     return true;
   }
 }
-
-
-
-
 
 
 export {searchForKommune, searchForFylke, searchForVegobjekttyper};

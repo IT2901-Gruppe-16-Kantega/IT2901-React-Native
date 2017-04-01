@@ -2,15 +2,8 @@
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
 
 
-/* TODO
-create searchForKommune
-  remove utils. searchForVeg etc
-
-
-*/
 
 //functions for handling input in all searchfields
-
 
 export function inputFylke(input){
   return function(dispatch) {
@@ -48,9 +41,9 @@ export function inputVeg(input){
   }
 }
 
-export function inputKommune(input){
+export function inputKommune(input, fylke){
   return function(dispatch) {
-    searchForKommune(input.text)
+    searchForKommune(input.text, fylke)
     .then((result) => {
       if(result.length==1){
         dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {

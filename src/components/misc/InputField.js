@@ -19,17 +19,17 @@ choosenBool ,
 editable,
 inputFunction,
 chooserFunction,
+extData
 */
-var ds;
-var dataSource;
+
 
 var InputField = React.createClass({
   componentWillMount(){
 
   },
   render() {
-    ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
-    dataSource = ds.cloneWithRows(this.props.list)
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
+    var dataSource = ds.cloneWithRows(this.props.list)
     return <View style={styles.inputContainer}>
       <TextInput
         autocorrect={false}
@@ -37,7 +37,13 @@ var InputField = React.createClass({
         editable={this.props.editable}
         style={styles.textInput}
         placeholder={'Skriv inn '+this.props.type}
-        onChangeText={(text) => this.props.inputFunction({text})}
+        onChangeText={(text) => {
+          if(this.props.type=='kommune'){
+            this.props.inputFunction({text}, this.props.extData)
+          }else{
+            this.props.inputFunction({text})
+          }
+        }}
         keyboardType="default"
         returnKeyType='done'
         value={this.props.textType}
@@ -51,13 +57,13 @@ var InputField = React.createClass({
             return <Button
               style={"list"}
               onPress={()=>{
-                var chosenFylke = [];
-                chosenFylke.push(this.props.list.find((fylke) => {
-                  if(fylke.navn == rowData.navn){
-                    return fylke;
+                var chosenData = [];
+                chosenData.push(this.props.list.find((data) => {
+                  if(data.navn == rowData.navn){
+                    return data;
                   }
                 }))
-                this.props.chooserFunction(chosenFylke)}}
+                this.props.chooserFunction(chosenData)}}
               text={rowData.navn}
             />
           }
