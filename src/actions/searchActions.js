@@ -27,7 +27,7 @@ export function inputFylke(input){
       }
     })
     .catch((err) => {
-      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input.text})
     })
   }
 }
@@ -40,7 +40,7 @@ export function chooseFylke(input){
 
 export function inputVeg(input){
   return {
-    type: "NEW_INPUT_VEG",
+    type: "INPUT_VEG",
     payload: input,
   }
 }
@@ -71,17 +71,6 @@ export function inputVegobjekttyper(input){
 export function chooseVegobjekttyper(input){
   return{
     type: "CHOOSE_VEGOBJEKTTYPER",
-    payload: input,
-  }
-}
-
-
-
-//TO be DEPRECATED
-
-export function setFetchingVeger(input) {
-  return{
-    type: "FETCHING_VEGER",
     payload: input,
   }
 }

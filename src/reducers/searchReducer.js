@@ -12,7 +12,7 @@ export default function reducer(state={
   fylke_chosen: false,
 
   //Vegshit
-  new_veg_input: '',
+  veg_input: '',
 
   //vegobjekttyper fields
   vegobjekttyper_input: [],
@@ -26,21 +26,6 @@ export default function reducer(state={
 
   //Lots here to be DEPRECATED
 
-  //vegkategoriershit
-  vegkategori_enabled: false, //the same as saying fylike is valid
-  vegkategori_input: [],
-  vegkategori_navn: '',
-  vegkategori_text: '',
-  vegkategori_chosen: false,
-
-  //VEGSHIT
-  veg_enabled: false,
-  veg_input: [],
-  veg_navn: '',
-  veg_text: '',
-  veg_chosen: false,
-
-  fetching_veger: false,
 
   //inputfelter
   kommune_input: null,
@@ -89,7 +74,7 @@ export default function reducer(state={
         vegkategori_enabled: true,
       }
     }
-    case "FYLKE_INPUT_NOT_VALID": {
+    case "INPUT_FYLKE_NOT_VALID": {
       return{
         ...state,
         fylke_input: [],
@@ -112,10 +97,10 @@ export default function reducer(state={
       }
     }
 
-    case 'NEW_INPUT_VEG': {
+    case 'INPUT_VEG': {
       return{
         ...state,
-        new_veg_input: action.payload,
+        veg_input: action.payload,
       }
     }
 

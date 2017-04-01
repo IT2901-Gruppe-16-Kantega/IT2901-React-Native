@@ -135,7 +135,7 @@ var SearchView = React.createClass({
       if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
-        const veg = this.props.new_veg_input.text;
+        const veg = this.props.veg_input.text;
         var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
         var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
 
@@ -145,7 +145,7 @@ var SearchView = React.createClass({
           }
           else {
             this.props.setURL(url);
-            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.new_veg_input, this.props.vegobjekttyper_input[0]);
+            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.vegobjekttyper_input[0]);
 
             Actions.LoadingView();
           }
@@ -163,7 +163,7 @@ var SearchView = React.createClass({
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.new_veg_input.text;
+      const veg = this.props.veg_input.text;
       var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
       var numberOfObjectsToBeFetched = 0;
       fetchTotalNumberOfObjects(preurl).then(function(response){
@@ -311,7 +311,7 @@ function mapStateToProps(state) {
     fylke_chosen: state.searchReducer.fylke_chosen,
 
     //veg fields
-    new_veg_input: state.searchReducer.new_veg_input,
+    veg_input: state.searchReducer.veg_input,
 
     //vegobjekttyper fields
     vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
