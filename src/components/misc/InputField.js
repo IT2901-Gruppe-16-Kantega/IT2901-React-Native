@@ -19,6 +19,7 @@ choosenBool ,
 editable,
 inputFunction,
 chooserFunction,
+colorController,
 extData
 */
 
@@ -31,23 +32,25 @@ var InputField = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.list)
     return <View style={styles.inputContainer}>
-      <TextInput
-        autocorrect={false}
-        autofocus={this.props.editable}
-        editable={this.props.editable}
-        style={styles.textInput}
-        placeholder={'Skriv inn '+this.props.type}
-        onChangeText={(text) => {
-          if(this.props.type=='kommune'){
-            this.props.inputFunction({text}, this.props.extData)
-          }else{
-            this.props.inputFunction({text})
-          }
-        }}
-        keyboardType="default"
-        returnKeyType='done'
-        value={this.props.textType}
-        />
+      <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
+        <TextInput
+          autocorrect={false}
+          autofocus={this.props.editable}
+          editable={this.props.editable}
+          style={styles.textInput}
+          placeholder={'Skriv inn '+this.props.type}
+          onChangeText={(text) => {
+            if(this.props.type=='kommune'){
+              this.props.inputFunction({text}, this.props.extData)
+            }else{
+              this.props.inputFunction({text})
+            }
+          }}
+          keyboardType="default"
+          returnKeyType='done'
+          value={this.props.textType}
+          />
+      </View>
       <ListView
         keyboardShouldPersistTaps='always'
         dataSource={dataSource}
@@ -78,15 +81,17 @@ var InputField = React.createClass({
 var styles = StyleSheet.create({
   inputContainer: {
     flex: 4,
-    backgroundColor: templates.colors.white
+    backgroundColor: templates.colors.white,
 
   },
   textInput: {
     padding: 5,
     height: 40,
     color: templates.colors.darkGray,
-    borderWidth: 2,
-    borderColor: templates.colors.darkGray,
+    backgroundColor: templates.colors.lightGray,
+    borderTopWidth: 3,
+    borderTopColor: 'red',
+
   },
 })
 

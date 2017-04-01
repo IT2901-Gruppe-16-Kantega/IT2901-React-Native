@@ -10,6 +10,7 @@ export default function reducer(state={
   fylke_navn: '',
   fylke_text: '',
   fylke_chosen: false,
+  fylke_color: templates.colors.orange,
 
   //Vegshit
   veg_input: '',
@@ -19,6 +20,7 @@ export default function reducer(state={
   kommune_navn: '',
   kommune_text: '',
   kommune_chosen: false,
+  kommune_color: templates.colors.lightGray,
 
   kommune_enabled: false,
 
@@ -27,6 +29,7 @@ export default function reducer(state={
   vegobjekttyper_navn: '',
   vegobjekttyper_text: '',
   vegobjekttyper_chosen: false,
+  vegobjekttyper_color: templates.colors.orange,
 
   //
   url: '',
@@ -50,7 +53,12 @@ export default function reducer(state={
         fylke_input: action.payload.result,
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
+        fylke_color: templates.colors.orange,
+
         kommune_enabled: false,
+        kommune_color: templates.colors.lightGray,
+        kommune_input: [],
+
       }
     }
     case "INPUT_FYLKE_SINGLE": {
@@ -60,7 +68,11 @@ export default function reducer(state={
         fylke_navn: action.payload.result[0].navn,
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
+        fylke_color: templates.colors.orange,
         kommune_enabled: false,
+        kommune_color: templates.colors.lightGray,
+        kommune_input: [],
+
       }
     }
     case "INPUT_FYLKE_NOT_VALID": {
@@ -70,8 +82,12 @@ export default function reducer(state={
         fylke_navn: '',
         fylke_text: action.payload,
         fylke_chosen: false,
+        fylke_color: 'red',
 
         kommune_enabled: false,
+        kommune_color: templates.colors.lightGray,
+        kommune_input: [],
+
       }
     }
     case "CHOOSE_FYLKE": {
@@ -81,8 +97,10 @@ export default function reducer(state={
         fylke_navn: action.payload[0].navn,
         fylke_text: action.payload[0].navn,
         fylke_chosen: true,
+        fylke_color: templates.colors.green,
 
         kommune_enabled: true,
+        kommune_color: templates.colors.orange,
       }
     }
 
@@ -99,6 +117,7 @@ export default function reducer(state={
         kommune_input: action.payload.result,
         kommune_text: action.payload.kommune_text,
         kommune_chosen: false,
+        kommune_color: templates.colors.orange,
       }
     }
     case "INPUT_KOMMUNE_SINGLE": {
@@ -108,6 +127,7 @@ export default function reducer(state={
         kommune_navn: action.payload.result[0].navn,
         kommune_text: action.payload.kommune_text,
         kommune_chosen: false,
+        kommune_color: templates.colors.orange,
       }
     }
     case "INPUT_KOMMUNE_NOT_VALID": {
@@ -117,6 +137,7 @@ export default function reducer(state={
         kommune_navn: '',
         kommune_text: action.payload,
         kommune_chosen: false,
+        kommune_color: 'red',
       }
     }
     case "CHOOSE_KOMMUNE": {
@@ -126,6 +147,8 @@ export default function reducer(state={
         kommune_navn: action.payload[0].navn,
         kommune_text: action.payload[0].navn,
         kommune_chosen: true,
+        kommune_color: templates.colors.green,
+
       }
     }
 
@@ -135,7 +158,7 @@ export default function reducer(state={
         vegobjekttyper_input: action.payload.result,
         vegobjekttyper_chosen: false,
         vegobjekttyper_text: action.payload.vegobjekttyper_text,
-
+        vegobjekttyper_color: templates.colors.orange,
       }
     }
     case "INPUT_VEGOBJEKTTYPER_SINGLE": {
@@ -145,6 +168,7 @@ export default function reducer(state={
         vegobjekttyper_navn: action.payload.result[0].navn,
         vegobjekttyper_chosen: false,
         vegobjekttyper_text: action.payload.vegobjekttyper_text,
+        vegobjekttyper_color: templates.colors.orange,
       }
     }
     case "INPUT_VEGOBJEKTTYPER_NOT_VALID": {
@@ -154,6 +178,7 @@ export default function reducer(state={
         vegobjekttyper_navn: '',
         vegobjekttyper_text: action.payload,
         vegobjekttyper_chosen: false,
+        vegobjekttyper_color: 'red',
       }
     }
     case "CHOOSE_VEGOBJEKTTYPER": {
@@ -163,6 +188,7 @@ export default function reducer(state={
         vegobjekttyper_navn: action.payload[0].navn,
         vegobjekttyper_text: action.payload[0].navn,
         vegobjekttyper_chosen: true,
+        vegobjekttyper_color: templates.colors.green,
       }
     }
 
