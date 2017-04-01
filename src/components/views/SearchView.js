@@ -19,14 +19,15 @@ import Button from '../misc/Button'
 import InputField from '../misc/InputField'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
-import {fetchTotalNumberOfObjects} from '../../utilities/wrapper'
+import {fetchTotalNumberOfObjects, fetchVeg} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as searchActions from '../../actions/searchActions'
 
-var preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
-var baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+const minBaseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+const preFetchURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/statistikk';
+const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
 
 var valid = true;
@@ -44,8 +45,7 @@ var SearchView = React.createClass({
       <View style={templates.top}/>
       <View style={styles.navigatorSpace}/>
       <View style={styles.header}>
-        <Text style={{color: templates.colors.white}}>NVDB-app</Text>
-        <Text/>
+        <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
       </View>
       <View style={styles.contentsFrame}>
         <View style={styles.contentsArea}>
@@ -68,6 +68,7 @@ var SearchView = React.createClass({
                     inputFunction={this.props.inputFylke}
                     chooserFunction={this.props.chooseFylke}
                     colorController={this.props.fylke_color}
+                    updateFunction={this.createDynamicData}
                     />
                   <View style={styles.parameterRightPadding}><Text></Text></View>
                 </View>
@@ -91,8 +92,9 @@ var SearchView = React.createClass({
                   editable={this.props.kommune_enabled}
                   inputFunction={this.props.inputKommune}
                   chooserFunction={this.props.chooseKommune}
-                  extData={this.props.fylke_input}
                   colorController={this.props.kommune_color}
+                  updateFunction={this.createDynamicData}
+                  extData={this.props.fylke_input}
                   />
                 <View style={styles.parameterRightPadding}><Text></Text></View>
               </View>
@@ -112,6 +114,7 @@ var SearchView = React.createClass({
                   inputFunction={this.props.inputVegobjekttyper}
                   chooserFunction={this.props.chooseVegobjekttyper}
                   colorController={this.props.vegobjekttyper_color}
+                  updateFunction={this.createDynamicData}
                   />
                 <View style={styles.parameterRightPadding}><Text></Text></View>
               </View>
@@ -123,7 +126,9 @@ var SearchView = React.createClass({
         </View>
       </View>
       <View style={styles.parameterBottomPadding}><Text></Text></View>
-      {this.createNumerOfObjectsToBeFetcher()}
+        <View style={styles.numberOfObjectsToBeFetched}>
+          <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
+        </View>
       <View style={styles.buttonArea}>
         <Button text="Søk" onPress={this.search} style={"small"} />
       </View>
@@ -135,20 +140,123 @@ var SearchView = React.createClass({
 
   //TODO
   //legg til noe som sjekker at input veg faktisk inneholder noe som kan brukes slik at vi får gitt feedback
+  //if k veg seg kommune = rød
   createVegInput() {
-    return <View style={styles.inputContainer}>
+    return <View style={{
+      flex: 4,
+      backgroundColor: templates.colors.white,
+      borderBottomWidth: 2,
+      borderBottomColor: this.props.veg_color,
+      }}>
       <TextInput
         autocorrect= {false}
-        style={styles.textInput}
-        placeholder={'Skriv inn veg. Type+nummer(R136)'}
-        onChangeText={(text) => this.props.inputVeg({text})}
+        style={{
+          padding: 5,
+          height: 40,
+          color: templates.colors.darkGray,
+          backgroundColor:templates.colors.lightGray
+        }}
+        placeholderColor={templates.colors.placeholderColor}
+        placeholder={'Skriv inn veg'}
+        onChangeText={(text) => {
+          this.props.inputVeg({text});
+        }}
+        onBlur={this.createDynamicData}
         keyboardType = "default"
         returnKeyType = 'done'
         />
     </View>
   },
+
+  //createDynamic fields and validity info
+  createDynamicData() {
+    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
+      const objektID = this.props.vegobjekttyper_input[0].id;
+      const fylkeID = this.props.fylke_input[0].nummer;
+      const veg = this.props.veg_input.text;
+      var vegURL= ''
+      var numberURL=''
+      if(this.props.kommune_chosen){
+        const kommuneID = this.props.kommune_input[0].nummer;
+        var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
+        var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+      }
+      else{
+        var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
+        var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
+      }
+      fetchVeg(vegURL).then((response)=>{
+        console.log(response);
+        if(response.antall == 0){
+          this.props.setValidityOfVeg(false)
+        }
+        else if(response.antall>0){
+          this.props.setValidityOfVeg(true)
+        }
+        else{
+          this.props.setValidityOfVeg(false)
+        }
+      })
+      fetchTotalNumberOfObjects(numberURL).then((response)=>{
+        this.props.setNumberOfObjectsToBeFetched(response.antall);
+      });
+    }
+    else if (this.props.vegobjekttyper_chosen&&!this.props.fylke_chosen){
+      const objektID = this.props.vegobjekttyper_input[0].id;
+      var numberURL = baseURL+objektID+'/statistikk';
+      fetchTotalNumberOfObjects(numberURL).then((response)=>{
+
+        this.props.setNumberOfObjectsToBeFetched(response.antall);
+      });
+    }
+  },
   //this function need to be optimized
-  search() {
+  //can now handle validity of search much better:
+  //search yes if all is valid
+
+  //TODO sjekk TODO i metode
+
+    //fiks en bedre metode slik at ting blir oppdatert i veg obj
+    //evt legg til en loading overlay
+  search(){
+    setTimeout(()=>{
+      if(this.props.numberOfObjectsToBeFetched==0){
+        Alert.alert("Feil", "Dette søket generer ingen objekter");
+      }
+      else if (!this.props.vegobjekttyper_chosen){
+        Alert.alert("Feil", "Ingen vegobjekttyper spesifisert")
+      }
+      else if (!this.props.fylke_chosen){
+        Alert.alert("Feil", "Fylke ikke spesifisert");
+        //TODO kan gi bruker en mulighet til å hente data, men med advarsel om at det tar lang tid!
+
+      }
+      else if(!this.props.veg_valid){
+        Alert.alert("Feil", "Ingen veg spesifisert")
+        //TODO gi bruker mulighet til å gå videre allikevel
+      }
+      else{
+        var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
+        if(vegType=='k'){
+          if(this.kommune_chosen){
+            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+            Actions.LoadingView();
+          }
+          else{
+            Alert.alert("Feil", "Kommune må spesifiseres når vegtype er kommunalveg")
+          }
+        }
+        else{
+          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+          Actions.LoadingView();
+        }
+      }
+    }, 1000)
+
+
+  },
+
+  searchOld() {
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
@@ -216,42 +324,8 @@ var SearchView = React.createClass({
     }
   },
   //fungerer nå, men bør gjøre håndtering av manglende input bedre
-  createNumerOfObjectsToBeFetcher(){
-    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
-      const objektID = this.props.vegobjekttyper_input[0].id;
-      const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
+  //bør samle denne og checkRoadValid i en metode som heter create dynamic data
 
-      if(this.props.kommune_chosen){
-        const kommuneID = this.props.kommune_input[0].nummer;
-        var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-        var numberOfObjectsToBeFetched = 0;
-        fetchTotalNumberOfObjects(preurl).then(function(response){
-          numberOfObjectsToBeFetched = response.antall;
-          this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
-        }.bind(this));
-        return <View style={styles.numberOfObjectsToBeFetched}>
-          <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
-        </View>
-      }
-      else{
-        var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-        var numberOfObjectsToBeFetched = 0;
-        fetchTotalNumberOfObjects(preurl).then(function(response){
-          numberOfObjectsToBeFetched = response.antall;
-          this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
-        }.bind(this));
-        return <View style={styles.numberOfObjectsToBeFetched}>
-          <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
-        </View>
-      }
-    }
-    else{
-      return <View style={styles.numberOfObjectsToBeFetched}>
-        <Text style={styles.text}>Antall objekter som blir hentet: ?</Text>
-      </View>
-    }
-  }
 });
 
 var styles = StyleSheet.create({
@@ -343,11 +417,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: templates.colors.white,
   },
-  inputContainer: {
-    flex: 4,
-    backgroundColor: templates.colors.white
-
-  },
   parameterBottomPadding: {
     flex: 0.5,
     backgroundColor: templates.colors.white,
@@ -393,6 +462,8 @@ function mapStateToProps(state) {
 
     //veg fields
     veg_input: state.searchReducer.veg_input,
+    veg_color: state.searchReducer.veg_color,
+    veg_valid: state.searchReducer.veg_valid,
 
     //kommune
     kommune_input: state.searchReducer.kommune_input,
@@ -420,6 +491,7 @@ function mapStateToProps(state) {
       chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
 
       inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
+      setValidityOfVeg: bindActionCreators(searchActions.setValidityOfVeg, dispatch),
 
       inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
       chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),

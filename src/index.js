@@ -47,9 +47,10 @@ class App extends Component {
           <Scene
             key="SearchView"
             component={SearchView}
-            title="Søk"
+            title={<Text style={{color:"orange"}}>Søk</Text>}
             hideNavBar={false}
             initial={true}
+            navigationBarStyle={styles.navigatorStyle}
             />
           <Scene
             key="StoredDataView"

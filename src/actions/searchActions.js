@@ -41,6 +41,21 @@ export function inputVeg(input){
   }
 }
 
+export function setValidityOfVeg(input){
+  return function(dispatch) {
+    if(input){
+      dispatch({
+        type: "INPUT_VEG_VALID"
+      })
+    }
+    else {
+      dispatch({
+        type: "INPUT_VEG_NOT_VALID"
+      })
+    }
+  }
+}
+
 export function inputKommune(input, fylke){
   return function(dispatch) {
     searchForKommune(input.text, fylke)

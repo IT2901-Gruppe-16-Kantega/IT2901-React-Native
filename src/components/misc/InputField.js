@@ -20,6 +20,7 @@ editable,
 inputFunction,
 chooserFunction,
 colorController,
+updateFunction,
 extData
 */
 
@@ -31,13 +32,29 @@ var InputField = React.createClass({
   render() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.list)
+    var colorBackground =''
+    var placeholderColorVar =''
+    if(this.props.editable){
+      colorBackground = templates.colors.lightGray
+      placeholderColorVar=templates.colors.placeholderColor
+    }
+    else{
+      colorBackground = templates.colors.middleGray
+      placeholderColorVar = templates.colors.middleGray
+    }
     return <View style={styles.inputContainer}>
       <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
         <TextInput
           autocorrect={false}
           autofocus={this.props.editable}
           editable={this.props.editable}
-          style={styles.textInput}
+          style={{
+            padding: 5,
+            height: 40,
+            color: templates.colors.darkGray,
+            backgroundColor: colorBackground
+          }}
+          placeholderTextColor={placeholderColorVar}
           placeholder={'Skriv inn '+this.props.type}
           onChangeText={(text) => {
             if(this.props.type=='kommune'){
@@ -46,6 +63,7 @@ var InputField = React.createClass({
               this.props.inputFunction({text})
             }
           }}
+          onBlur={this.props.updateFunction}
           keyboardType="default"
           returnKeyType='done'
           value={this.props.textType}

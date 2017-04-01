@@ -6,7 +6,8 @@ export var colors = {
   white: 'white',
   lightGray: '#ececec',
   middleGray: '#dadada',
-  darkGray: '#444f55'
+  darkGray: '#444f55',
+  placeholderColor: '#c4c4c4',
 }
 
 export var container = {

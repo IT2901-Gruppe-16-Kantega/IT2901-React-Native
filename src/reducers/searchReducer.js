@@ -14,13 +14,15 @@ export default function reducer(state={
 
   //Vegshit
   veg_input: '',
+  veg_color: templates.colors.orange,
+  veg_valid: false,
 
   //kommune fields
   kommune_input: [],
   kommune_navn: '',
   kommune_text: '',
   kommune_chosen: false,
-  kommune_color: templates.colors.lightGray,
+  kommune_color: templates.colors.middleGray,
 
   kommune_enabled: false,
 
@@ -56,7 +58,7 @@ export default function reducer(state={
         fylke_color: templates.colors.orange,
 
         kommune_enabled: false,
-        kommune_color: templates.colors.lightGray,
+        kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
       }
@@ -70,7 +72,7 @@ export default function reducer(state={
         fylke_text: action.payload.fylke_text,
         fylke_color: templates.colors.orange,
         kommune_enabled: false,
-        kommune_color: templates.colors.lightGray,
+        kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
       }
@@ -85,7 +87,7 @@ export default function reducer(state={
         fylke_color: 'red',
 
         kommune_enabled: false,
-        kommune_color: templates.colors.lightGray,
+        kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
       }
@@ -108,6 +110,21 @@ export default function reducer(state={
       return{
         ...state,
         veg_input: action.payload,
+      }
+    }
+
+    case 'INPUT_VEG_VALID': {
+      return{
+        ...state,
+        veg_valid: true,
+        veg_color: templates.colors.green,
+      }
+    }
+    case 'INPUT_VEG_NOT_VALID': {
+      return{
+        ...state,
+        veg_valid: false,
+        veg_color: 'red',
       }
     }
 
@@ -206,6 +223,7 @@ export default function reducer(state={
         fylke_navn: '',
         fylke_text: '',
         fylke_chosen: false,
+        fylke_color: templates.colors.orange,
 
         veg_input: '',
 
@@ -214,11 +232,13 @@ export default function reducer(state={
         kommune_text: '',
         kommune_chosen: false,
         kommune_enabled: false,
+        kommune_color: templates.colors.middleGray,
 
         vegobjekttyper_input: [],
         vegobjekttyper_navn: '',
         vegobjekttyper_text: '',
         vegobjekttyper_chosen: false,
+        vegobjekttyper_color: templates.colors.orange,
 
         url: '',
 
