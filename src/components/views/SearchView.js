@@ -121,7 +121,7 @@ var SearchView = React.createClass({
         autocorrect= {false}
         style={styles.textInput}
         placeholder={'Skriv inn veg. Type+nummer(R136)'}
-        onChangeText={(text) => this.props.newInputVeg({text})}
+        onChangeText={(text) => this.props.inputVeg({text})}
         keyboardType = "default"
         returnKeyType = 'done'
         onBlur={()=>{
@@ -330,7 +330,7 @@ function mapDispatchToProps(dispatch) {
     inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
     chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
 
-    newInputVeg: bindActionCreators(searchActions.newInputVeg, dispatch),
+    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
 
     inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
     chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
@@ -339,12 +339,6 @@ function mapDispatchToProps(dispatch) {
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
     setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 
-    //TO be DEPRECATED
-    inputVegkategori: bindActionCreators(searchActions.inputVegkategori, dispatch),
-    chooseVegkategori: bindActionCreators(searchActions.chooseVegkategori, dispatch),
-
-    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
-    chooseVeg: bindActionCreators(searchActions.chooseVeg, dispatch),
   }
 }
 

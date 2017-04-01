@@ -1,6 +1,5 @@
 //
-import {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, searchForVegobjekttyper} from '../utilities/utils';
-createBST();
+import {searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, searchForVegobjekttyper} from '../utilities/utils';
 
 //functions for handling input in all searchfields
 export function setURL(url){
@@ -39,7 +38,7 @@ export function chooseFylke(input){
   }
 }
 
-export function newInputVeg(input){
+export function inputVeg(input){
   return {
     type: "NEW_INPUT_VEG",
     payload: input,
@@ -79,63 +78,7 @@ export function chooseVegobjekttyper(input){
 
 
 //TO be DEPRECATED
-export function inputVegkategori(input){
-  return function(dispatch) {
-    searchForVegkategori(input.text)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_VEGKATEGORI_SINGLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_VEGKATEGORI_MULTIPLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "VEGKATEGORI_INPUT_NOT_VALID", payload: input.text})
-    })
-  }
-}
-export function chooseVegkategori(input){
-  return{
-    type: "CHOOSE_VEGKATEGORI",
-    payload: input,
-  }
-}
 
-export function inputVeg(input){
-  return function(dispatch) {
-    searchForVeg(input.text)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_VEG_SINGLE", payload: {
-          result: result,
-          veg_text: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_VEG_MULTIPLE", payload: {
-          result: result,
-          veg_text: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "VEG_INPUT_NOT_VALID", payload: input.text})
-    })
-  }
-}
-export function chooseVeg(input) {
-  return{
-    type: "CHOOSE_VEG",
-    payload: input,
-  }
-}
 export function setFetchingVeger(input) {
   return{
     type: "FETCHING_VEGER",
