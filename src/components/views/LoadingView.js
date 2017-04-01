@@ -37,7 +37,7 @@ var LoadingView = React.createClass({
       this.props.setNumberOfObjectsToBeFetched(numberOfObjectsToBeFetched);
     }.bind(this));*/
 
-    fetchObjekttypeInfo(this.props.combinedSearchParameters[2].id, function(data) {
+    fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
       this.props.setObjekttypeInfo(data);
 
       // SELECT THE FIRST FILTER AS DEFAULT FOR THE MAPVIEW

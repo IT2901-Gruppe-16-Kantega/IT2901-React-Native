@@ -100,8 +100,7 @@ export function chooseVegobjekttyper(input){
   }
 }
 
-
-export function combineSearchParameters(fylke_input, veg_input, kommmune_input, vegobjekttype){
+export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype){
   var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",

@@ -144,28 +144,75 @@ var SearchView = React.createClass({
     /*
     Need to handle case where vegtype er kommune, and vegobjekter er null
     */
+
+    //this function need to be optimized
     search() {
       if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
+
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
         const veg = this.props.veg_input.text;
-        var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-        var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+        var vegType = veg.substring(0,1).toLowerCase();
+        if(vegType=='k'){
+          console.log('kommune mandatory')
+          if(this.props.kommune_chosen){
+            const kommuneID = this.props.kommune_input[0].nummer;
+            var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+            var url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
 
-        fetchTotalNumberOfObjects(preurl).then(function(response) {
-          if(response.antall == undefined) {
-            Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
+            fetchTotalNumberOfObjects(preurl).then(function(response) {
+              if(response.antall == undefined) {
+                Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
+              }
+              else {
+                this.props.setURL(url);
+                if(this.props.kommune_chosen==true){
+                  this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+                }
+                else{
+                  this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input,'Kommune ikke valgt', this.props.vegobjekttyper_input[0]);
+                }
+                Actions.LoadingView();
+              }
+            }.bind(this));
           }
-          else {
-            this.props.setURL(url);
-            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-            Actions.LoadingView();
+          else{
+            Alert.alert("Mangler kommune", "Kommune må fylles ut når veg er av type k");
           }
-        }.bind(this));
+        }
 
+        else{
+          console.log('komune not mandatory')
+          if(this.props.kommune_chosen){
+            const kommuneID = this.props.kommune_input[0].nummer;
+            var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+            var url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+          }
+          else{
+            var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
+            var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+          }
+
+
+          fetchTotalNumberOfObjects(preurl).then(function(response) {
+            if(response.antall == undefined) {
+              Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
+            }
+            else {
+              this.props.setURL(url);
+              if(this.props.kommune_chosen==true){
+                this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+              }
+              else{
+                this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input,'Kommune ikke valgt', this.props.vegobjekttyper_input[0]);
+              }
+              Actions.LoadingView();
+            }
+          }.bind(this));
+        }
       }
       else {
-        Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
+        Alert.alert("Ikke nok informasjon", "Fyll inn obligatoriske felter");
       }
     },
 

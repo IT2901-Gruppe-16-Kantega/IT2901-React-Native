@@ -32,9 +32,6 @@ export default function reducer(state={
   url: '',
 
 
-  //Lots here to be DEPRECATED
-
-
   //inputfelter
   objekttyper: [],
 
