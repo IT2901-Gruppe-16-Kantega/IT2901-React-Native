@@ -64,7 +64,7 @@ export function inputVegobjekttyper(input){
       }
     })
     .catch((err) => {
-      dispatch({type: "VEGOBJEKTTYPER_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "INPUT_VEGOBJEKTTYPER_NOT_VALID", payload: input.text})
     })
   }
 }

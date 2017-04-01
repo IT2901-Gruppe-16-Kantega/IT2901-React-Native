@@ -123,7 +123,7 @@ export default function reducer(state={
         vegobjekttyper_text: action.payload.vegobjekttyper_text,
       }
     }
-    case "VEGOBJEKTTYPER_INPUT_NOT_VALID": {
+    case "INPUT_VEGOBJEKTTYPER_NOT_VALID": {
       return{
         ...state,
         vegobjekttyper_input: [],
@@ -141,9 +141,6 @@ export default function reducer(state={
         vegobjekttyper_chosen: true,
       }
     }
-
-
-
 
 
     case "INPUT_KOMMUNE": {
@@ -201,92 +198,7 @@ export default function reducer(state={
       }
     }
 
-    case "INPUT_VEG_MULTIPLE": {
-      return{
-        ...state,
-        veg_input: action.payload.result,
-        veg_chosen: false,
-        veg_text: action.payload.veg_text,
-      }
-    }
-    case "INPUT_VEG_SINGLE": {
-      return{
-        ...state,
-        veg_input: action.payload.result,
-        veg_navn: action.payload.result[0].navn,
-        veg_chosen: false,
-        veg_text: action.payload.veg_text,
-      }
-    }
-    case "VEG_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        veg_input: [],
-        veg_navn: '',
-        veg_text: action.payload,
-        veg_chosen: false,
-      }
-    }
-    case "CHOOSE_VEG": {
-      return {
-        ...state,
-        veg_input: action.payload,
-        veg_navn: action.payload[0].navn,
-        veg_text: action.payload[0].navn,
-        veg_chosen: true,
-      }
-    }
-    case "FETCHING_VEGER": {
-      return {
-        ...state,
-        fetching_veger: action.payload,
-      }
-    }
 
-    case "INPUT_VEGKATEGORI_MULTIPLE": {
-      return{
-        ...state,
-        vegkategori_input: action.payload.result,
-        vegkategori_chosen: false,
-        vegkategori_text: action.payload.vegkategori_text,
-
-        veg_enabled: false,
-      }
-    }
-    case "INPUT_VEGKATEGORI_SINGLE": {
-      return{
-        ...state,
-        vegkategori_input: action.payload.result,
-        vegkategori_navn: action.payload.result[0].navn,
-        vegkategori_chosen: false,
-        vegkategori_text: action.payload.vegkategori_text,
-
-        veg_enabled: true,
-      }
-    }
-    case "VEGKATEGORI_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        vegkategori_input: [],
-        vegkategori_navn: '',
-        vegkategori_text: action.payload,
-        vegkategori_chosen: false,
-
-        veg_enabled: false,
-
-      }
-    }
-    case "CHOOSE_VEGKATEGORI": {
-      return {
-        ...state,
-        vegkategori_input: action.payload,
-        vegkategori_navn: action.payload[0].navn,
-        vegkategori_text: action.payload[0].navn,
-        vegkategori_chosen: true,
-
-        veg_enabled: true,
-      }
-    }
   }
   return state
 }
