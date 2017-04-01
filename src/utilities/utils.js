@@ -10,55 +10,16 @@ Now Am = T, the search is done; return m.
 This iterative procedure keeps track of the search boundaries via two variables. Some implementations may place the comparison for equality at the end of the algorithm, resulting in a faster comparison loop but costing one more iteration on average.[7]
 */
 
-import {kommuner_allinfo} from '../data/kommuner';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';
 import {fetchVeger} from './wrapper';
 
-const vegkategorier = [
-      {navn: 'Europaveg', id: 5492},
-      {navn: 'Riksveg', id: 5493},
-      {navn: 'Fylkesveg', id: 5494},
-      {navn: 'Kommunal veg', id: 5495}];
 
-var veger = [];
 
-var BinarySearchTree = require('binary-search-tree').BinarySearchTree;
-var bst = new BinarySearchTree({unique: true});
 
-function createBST(){
-  for(index in kommuner_allinfo){
-    var nummer  = kommuner_allinfo[index].nummer;
-    var data = kommuner_allinfo[index];
-    bst.insert(nummer, data);
-  }
-}
-function searchForKommune(kommuneID) {
-  return new Promise(function(resolve, reject){
-    var id = parseInt(kommuneID);
-    var kommune = bst.search(id);
-    if(kommune.length > 0){
-      resolve(kommune[0]);
-    }
-    else {
-      reject(Error("Not av valid kommuneID"));
-    }
-  })}
 
-function searchForKommuneNy(fylke_id, kommune_navn) {
-    return new Promise(function(resolve, reject) {
-      var kommunerArray = [];
-      kommunerArray.push(kommuner.filter(compareInput, kommune_navn).filter(filterFylke, fylke_id))
-      if(kommunerArray.length > 0) {
-        resolve(kommunerArray);
-      }
-      else {
-        reject(Error("Not a valid kommune."));
-      }
-    })
-  }
-
+//NOT used??
 function filterFylke(f) {
     return f.fylke === parseInt(this);
   }
@@ -94,28 +55,30 @@ function searchForVegobjekttyper(input){
   })
 }
 
+function searchForKommune(input){
+  return new Promise(function(resolve, reject){
+    var kommunerArray = [];
+    kommunerArray = kommuner.filter(compareInput, input);
+    if(kommunerArray.length > 0 && kommunerArray.length != 391) {
+      resolve(kommunerArray);
+    }
+    else {
+      reject(Error("Not a valid kommune"));
+    }
+  })
+}
+
+
 function compareInput(input){
     let stringInput = this.toString().toLowerCase();
     return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
   }
 
 
-//TO be DEPRECATED
-function searchForVegkategori(input){
-  return new Promise(function(resolve, reject){
-    var vegkategoriArray = [];
-    vegkategoriArray = vegkategorier.filter(compareInput, input);
-    if(vegkategoriArray.length > 0 && vegkategoriArray.length != 4) {
-      resolve(vegkategoriArray);
-    }
-    else {
-      reject(Error("Not a valid vegkategori"));
-    }
-  })
-}
 
 
-//this fetches data from NDVB, picks out uniqe roads, and adds them to veger
+//Not used now, but kept in case we need them
+var veger = [];
 function fetchVegerFromAPI(fylke, vegtype){
   fetchVeger(fylke, vegtype).then((result) => {
     for(i=0; i<result.objekter.length; i++){
@@ -138,23 +101,9 @@ function vegerContains(value) {
   }
 }
 
-function searchForVeg(input, ) {
-  return new Promise(function(resolve, reject) {
-    var vegArray = [];
-    vegArray = veger.filter(compareInput, input);
-    if(vegArray.length > 0 && vegArray.length != veger.length) {
-      resolve(vegArray);
-    }
-    else {
-      reject(Error("Not a valid vegnummer"));
-    }
-  })
-}
 
 
 
 
 
-
-
-export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVegerFromAPI, searchForVegobjekttyper};
+export {searchForKommune, searchForFylke, searchForVegobjekttyper};

@@ -14,6 +14,12 @@ export default function reducer(state={
   //Vegshit
   veg_input: '',
 
+  //kommune fields
+  kommune_input: [],
+  kommune_navn: '',
+  kommune_text: '',
+  kommune_chosen: false,
+
   //vegobjekttyper fields
   vegobjekttyper_input: [],
   vegobjekttyper_navn: '',
@@ -28,21 +34,10 @@ export default function reducer(state={
 
 
   //inputfelter
-  kommune_input: null,
   objekttyper: [],
-
-
-
-  kommune_input: null,
-  kommune_valid: false,
-  //color changes as input is validated
-  kommune_input_color: 'white',
-  kommune_input_color_border: 'lightgray',
 
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
-
-  //debugging
 
 }, action) {
   switch (action.type) {
@@ -59,8 +54,6 @@ export default function reducer(state={
         fylke_input: action.payload.result,
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
-
-        vegkategori_enabled: false,
       }
     }
     case "INPUT_FYLKE_SINGLE": {
@@ -71,7 +64,6 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
 
-        vegkategori_enabled: true,
       }
     }
     case "INPUT_FYLKE_NOT_VALID": {
@@ -81,8 +73,6 @@ export default function reducer(state={
         fylke_navn: '',
         fylke_text: action.payload,
         fylke_chosen: false,
-
-        vegkategori_enabled: false,
       }
     }
     case "CHOOSE_FYLKE": {
@@ -92,8 +82,6 @@ export default function reducer(state={
         fylke_navn: action.payload[0].navn,
         fylke_text: action.payload[0].navn,
         fylke_chosen: true,
-
-        vegkategori_enabled: true,
       }
     }
 
@@ -104,6 +92,41 @@ export default function reducer(state={
       }
     }
 
+    case "INPUT_KOMMUNE_MULTIPLE": {
+      return{
+        ...state,
+        kommune_input: action.payload.result,
+        kommune_text: action.payload.kommune_text,
+        kommune_chosen: false,
+      }
+    }
+    case "INPUT_KOMMUNE_SINGLE": {
+      return{
+        ...state,
+        kommune_input: action.payload.result,
+        kommune_navn: action.payload.result[0].navn,
+        kommune_text: action.payload.kommune_text,
+        kommune_chosen: false,
+      }
+    }
+    case "INPUT_KOMMUNE_NOT_VALID": {
+      return{
+        ...state,
+        kommune_input: [],
+        kommune_navn: '',
+        kommune_text: action.payload,
+        kommune_chosen: false,
+      }
+    }
+    case "CHOOSE_KOMMUNE": {
+      return {
+        ...state,
+        kommune_input: action.payload,
+        kommune_navn: action.payload[0].navn,
+        kommune_text: action.payload[0].navn,
+        kommune_chosen: true,
+      }
+    }
 
     case "INPUT_VEGOBJEKTTYPER_MULTIPLE": {
       return{
@@ -143,27 +166,6 @@ export default function reducer(state={
     }
 
 
-    case "INPUT_KOMMUNE": {
-      return{
-        ...state,
-        kommune_input: action.payload,
-        kommune_navn: action.payload.navn,
-        kommune_valid: true,
-        kommune_input_color: '#00CC00',
-        kommune_input_color_border: 'lightgray',
-
-      }
-    }
-    case "KOMMUNE_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        kommune_valid: false,
-        kommune_navn: 'ukjent kommuneId',
-        kommune_input_color: '#FF3333',
-        kommune_input_color_border: 'lightgray',
-      }
-    }
-
     case "COMBINE_PARAMETERS": {
         return{
           ...state,
@@ -178,7 +180,12 @@ export default function reducer(state={
         fylke_text: '',
         fylke_chosen: false,
 
-        new_veg_input: '',
+        veg_input: '',
+
+        kommune_input: [],
+        kommune_navn: '',
+        kommune_text: '',
+        kommune_chosen: false,
 
         vegobjekttyper_input: [],
         vegobjekttyper_navn: '',
@@ -186,13 +193,6 @@ export default function reducer(state={
         vegobjekttyper_chosen: false,
 
         url: '',
-
-        //VEGSHIT, DEPRECATED?
-        veg_enabled: false,
-        veg_input: [],
-        veg_navn: '',
-        veg_text: '',
-        veg_chosen: false,
 
         combinedSearchParameters: [],
       }

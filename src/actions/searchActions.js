@@ -1,13 +1,16 @@
 //
-import {searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, searchForVegobjekttyper} from '../utilities/utils';
+import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
+
+
+/* TODO
+create searchForKommune
+  remove utils. searchForVeg etc
+
+
+*/
 
 //functions for handling input in all searchfields
-export function setURL(url){
-  return {
-    type: "SET_URL",
-    payload: url,
-  }
-}
+
 
 export function inputFylke(input){
   return function(dispatch) {
@@ -45,6 +48,35 @@ export function inputVeg(input){
   }
 }
 
+export function inputKommune(input){
+  return function(dispatch) {
+    searchForKommune(input.text)
+    .then((result) => {
+      if(result.length==1){
+        dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
+          result: result,
+          kommune_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
+          result: result,
+          kommune_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input.text})
+    })
+  }
+}
+export function chooseKommune(input){
+  return{
+    type: "CHOOSE_KOMMUNE",
+    payload: input,
+  }
+}
+
 export function inputVegobjekttyper(input){
   return function(dispatch) {
     //TODO
@@ -76,21 +108,8 @@ export function chooseVegobjekttyper(input){
 }
 
 
-export function inputKommune(input){
-  return function(dispatch) {
-    searchForKommune(input.text)
-    .then((result) => {
-      dispatch({type: "INPUT_KOMMUNE", payload: result})
-    })
-    .catch((err) => {
-      dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
-    })
-  }
-}
-
-
-export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
-  var combinedSearchParameters = [fylke_input, veg_input, vegobjekttype];
+export function combineSearchParameters(fylke_input, veg_input, kommmune_input, vegobjekttype){
+  var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",
     payload: combinedSearchParameters,
@@ -100,5 +119,12 @@ export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
 export function resetSearchParameters(){
   return {
     type: "RESET_SEARCH_PARAMETERS"
+  }
+}
+
+export function setURL(url){
+  return {
+    type: "SET_URL",
+    payload: url,
   }
 }

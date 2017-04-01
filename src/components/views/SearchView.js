@@ -54,6 +54,7 @@ var SearchView = React.createClass({
             >
             <View style={styles.contents}>
               <View style={styles.searchTypeHeading}><Text style={styles.text}>Hvor?</Text></View>
+
               <View style={styles.searchParameterContainer}>
                 <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
                 <InputField type='fylke'
@@ -77,6 +78,7 @@ var SearchView = React.createClass({
 
               <View style={styles.searchParameterContainer}>
                 <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
+
               </View>
               <View style={styles.parameterPadding}><Text></Text></View>
             </View>
@@ -84,8 +86,8 @@ var SearchView = React.createClass({
 
             <View style={styles.hvaContents}>
               <View style={styles.hvaHeading}><Text style={styles.text}>Hva?</Text></View>
-            <View style={styles.vegobjekttypeArea}>
-              <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
+              <View style={styles.vegobjekttypeArea}>
+                <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
                 <InputField type='vegobjekttype'
                   list={this.props.vegobjekttyper_input}
                   textType={this.props.vegobjekttyper_text}
@@ -94,8 +96,8 @@ var SearchView = React.createClass({
                   inputFunction={this.props.inputVegobjekttyper}
                   chooserFunction={this.props.chooseVegobjekttyper}
                   />
-              <View style={styles.parameterRightPadding}><Text></Text></View>
-            </View>
+                <View style={styles.parameterRightPadding}><Text></Text></View>
+              </View>
               <View style={styles.parameterBottomPadding}><Text></Text></View>
             </View>
 
@@ -104,7 +106,7 @@ var SearchView = React.createClass({
         </View>
       </View>
       <View style={styles.parameterBottomPadding}><Text></Text></View>
-      {this.createNumerOfObjectsToBeFetcher()}
+
       <View style={styles.buttonArea}>
         <Button text="Søk" onPress={this.search} style={"small"} />
       </View>
@@ -124,40 +126,43 @@ var SearchView = React.createClass({
         onChangeText={(text) => this.props.inputVeg({text})}
         keyboardType = "default"
         returnKeyType = 'done'
-        onBlur={()=>{
-          console.log('asd');
-        }}
         />
     </View>
   },
 
+  /*
+  Need to handle case where vegtype er kommune, and vegobjekter er null
+  */
   search() {
-      if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
-        const objektID = this.props.vegobjekttyper_input[0].id;
-        const fylkeID = this.props.fylke_input[0].nummer;
-        const veg = this.props.veg_input.text;
-        var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-        var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
+      const objektID = this.props.vegobjekttyper_input[0].id;
+      const fylkeID = this.props.fylke_input[0].nummer;
+      const veg = this.props.veg_input.text;
+      var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
+      var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
 
-        fetchTotalNumberOfObjects(preurl).then(function(response) {
-          if(response.antall == undefined) {
-            Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
-          }
-          else {
-            this.props.setURL(url);
-            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.vegobjekttyper_input[0]);
+      fetchTotalNumberOfObjects(preurl).then(function(response) {
+        if(response.antall == undefined) {
+          Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
+        }
+        else {
+          this.props.setURL(url);
+          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+          Actions.LoadingView();
+        }
+      }.bind(this));
 
-            Actions.LoadingView();
-          }
-        }.bind(this));
-
-      }
-      else {
-        Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
-      }
-    },
+    }
+    else {
+      Alert.alert("Ugyldig data", "Sjekk felter for korrekt input");
+    }
+  },
 
   //TODO
+
+  //    !!!!!!!!!!!
+  //reomved from render(){this.createNumerOfObjectsToBeFetcher()}
+  //må også endres for å ta hensyn til vegtype
   //fungerer nå, men bør gjøre håndtering av manglende input bedre
   createNumerOfObjectsToBeFetcher(){
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
@@ -324,22 +329,22 @@ function mapStateToProps(state) {
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
   };}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    //input search variables, uses searchActions to set variables before creatingURL
-    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
-    chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
+  function mapDispatchToProps(dispatch) {
+    return {
+      //input search variables, uses searchActions to set variables before creatingURL
+      inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
+      chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
 
-    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
+      inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
 
-    inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
-    chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
+      inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
+      chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
 
-    setURL: bindActionCreators(searchActions.setURL, dispatch),
-    combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
-    setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
+      setURL: bindActionCreators(searchActions.setURL, dispatch),
+      combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
+      setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 
+    }
   }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps) (SearchView);
+  export default connect(mapStateToProps, mapDispatchToProps) (SearchView);

@@ -1,6 +1,13 @@
 
 // SHOULD USE A FLUX OR REDUX STORE TO HOLD THE DATA THAT IS COLLECTED FROM SERVER
 
+const vegkategorier = [
+      {navn: 'Europaveg', id: 5492},
+      {navn: 'Riksveg', id: 5493},
+      {navn: 'Fylkesveg', id: 5494},
+      {navn: 'Kommunal veg', id: 5495}];
+
+
 
   WORK LIST:
 
