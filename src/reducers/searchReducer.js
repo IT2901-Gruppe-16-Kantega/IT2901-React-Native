@@ -32,9 +32,6 @@ export default function reducer(state={
   url: '',
 
 
-  //inputfelter
-  objekttyper: [],
-
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
 
