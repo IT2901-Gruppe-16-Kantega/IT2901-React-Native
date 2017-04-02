@@ -136,35 +136,35 @@ var SearchView = React.createClass({
   createVegInput() {
     return  <View>
       <View style={styles.vegArea}>
-          <View style={styles.searchLabel}><Text style={styles.text}>Veg</Text></View>
-            <View style={{
-              flex: 4,
-              backgroundColor: templates.colors.white,
-              borderBottomWidth: 2,
-              borderBottomColor: this.props.veg_color,
-              }}>
-              <TextInput
-                autocorrect= {false}
-                style={{
-                  padding: 5,
-                  height: 40,
-                  color: templates.colors.darkGray,
-                  backgroundColor:templates.colors.lightGray
-                }}
-                placeholderColor={templates.colors.placeholderColor}
-                placeholder={'Skriv inn veg'}
-                onChangeText={(text) => {
-                  this.props.inputVeg({text});
-                  this.createDynamicData();
+        <View style={styles.searchLabel}><Text style={styles.text}>Veg</Text></View>
+        <View style={{
+            flex: 4,
+            backgroundColor: templates.colors.white,
+            borderBottomWidth: 2,
+            borderBottomColor: this.props.veg_color,
+          }}>
+          <TextInput
+            autocorrect= {false}
+            style={{
+              padding: 5,
+              height: 40,
+              color: templates.colors.darkGray,
+              backgroundColor:templates.colors.lightGray
+            }}
+            placeholderColor={templates.colors.placeholderColor}
+            placeholder={'Skriv inn veg'}
+            onChangeText={(text) => {
+              this.props.inputVeg({text});
+              this.createDynamicData();
 
-                }}
-                keyboardType = "default"
-                returnKeyType = 'done'
-                />
-            </View>
-          <View style={styles.parameterRightPadding}><Text></Text></View>
+            }}
+            keyboardType = "default"
+            returnKeyType = 'done'
+            />
         </View>
-        <View style={styles.parameterBottomPadding}><Text></Text></View>
+        <View style={styles.parameterRightPadding}><Text></Text></View>
+      </View>
+      <View style={styles.parameterBottomPadding}><Text></Text></View>
     </View>
   },
 
@@ -179,6 +179,7 @@ var SearchView = React.createClass({
     </View>
   },
 
+  //handle case where all fields are cleared->reset search
   //createDynamic fields, validity info, and URL
   createDynamicData() {
     this.forceUpdate(()=>{
@@ -191,26 +192,29 @@ var SearchView = React.createClass({
         var url = ''
         if(this.props.kommune_chosen){
           const kommuneID = this.props.kommune_input[0].nummer;
-          vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
-          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-          url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-
+          if(this.props.veg_valid){
+            vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
+            numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+            url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+          }
+          else{
+            vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
+            numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID;
+            url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&inkluder=alle&srid=4326&antall=8000';
+          }
         }
         else{
           vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
           if(this.props.veg_valid){
-            console.log('veg valid');
             numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
             url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
           }
           else{
-            console.log('veg not valid')
             numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID;
             url = baseURL+objektID+'?fylke='+fylkeID+'&inkluder=alle&srid=4326&antall=8000';
           }
         }
         fetchVeg(vegURL).then((response)=>{
-          console.log(response)
           if(response.antall == 0){
             this.props.setValidityOfVeg(false)
           }
@@ -219,7 +223,6 @@ var SearchView = React.createClass({
           }
           else if(response[0].code==4005){
             if(this.props.veg_valid){
-              console.log('reset')
               this.props.resetVegField()
               numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID;
               fetchTotalNumberOfObjects(numberURL).then((response)=>{
@@ -231,7 +234,6 @@ var SearchView = React.createClass({
           else{
           }
         })
-        console.log('numberURL: '+numberURL)
         fetchTotalNumberOfObjects(numberURL).then((response)=>{
           this.props.setURL(url);
           this.props.setNumberOfObjectsToBeFetched(response.antall);
@@ -249,7 +251,6 @@ var SearchView = React.createClass({
     });
   },
 
-  //TODO v2 stuff
   search(){
     this.forceUpdate(()=>{
       if(this.props.numberOfObjectsToBeFetched==0){
@@ -259,13 +260,26 @@ var SearchView = React.createClass({
         Alert.alert("Feil", "Ingen vegobjekttyper spesifisert")
       }
       else if (!this.props.fylke_chosen){
-        Alert.alert("Feil", "Fylke ikke spesifisert");
-        //TODO kan gi bruker en mulighet til å hente data, men med advarsel om at det tar lang tid!
-
+        Alert.alert("Advarsel!", "Fylke ikke spesifisert! "+
+        'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
+        ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
+          {text: 'Utfør', onPress: () => {
+            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+            Actions.LoadingView();
+          }},
+          {text: 'Avbryt'},
+        ]);
       }
       else if(!this.props.veg_valid){
-        Alert.alert("Feil", "Ingen veg spesifisert")
-        //TODO gi bruker mulighet til å gå videre allikevel
+        Alert.alert("Advarsel!", "Veg ikke spesifisert! "+
+        'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
+        ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
+          {text: 'Utfør', onPress: () => {
+            this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+            Actions.LoadingView();
+          }},
+          {text: 'Avbryt'},
+        ]);
       }
       else{
         var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
