@@ -12,7 +12,7 @@ function filterFylke(f) {
   }
 
 
-function searchForFylke(fylke_navn){
+function searchForFylke(fylke_navn) {
     return new Promise(function(resolve, reject){
       var fylkerArray = fylker.filter(compareInput, fylke_navn);
       if(fylkerArray.length > 0 && fylkerArray.length != 19) {
@@ -57,11 +57,8 @@ function compareInput(input){
   }
 
 function filterKommuneList(input){
-  return input.fylke==this;
-  }
-
-
-
+  return input.fylke == this;
+}
 
 //Not used now, but kept in case we need them
 var veger = [];
@@ -82,10 +79,36 @@ function fetchVegerFromAPI(fylke, vegtype){
 }
 
 function vegerContains(value) {
-  if(value==this){
+  if(value == this){
     return true;
   }
 }
 
+function parseGeometry(string) {
+  const wkt = string.slice(string.lastIndexOf("(") + 1, -1);
+  const wktArray = wkt.split(",")
 
-export {searchForKommune, searchForFylke, searchForVegobjekttyper};
+  objectCoords = [];
+  for(var i = 0; i < wktArray.length; i++) {
+    const parts = wktArray[i].trim().split(' ');
+    const latitude = parseFloat(parts[0]);
+    const longitude = parseFloat(parts[1]);
+
+    objectCoords.push({latitude: latitude, longitude: longitude});
+  }
+  return objectCoords;
+}
+
+function randomColor(alpha) {
+  var color = 'rgba(';
+  for (var i = 0; i < 3; i++) {
+    color += Math.random() * 255 + ', ';
+  }
+  if(alpha) { color += alpha }
+  else { color += 1 }
+  color += ')'
+
+  return color;
+}
+
+export {searchForKommune, searchForFylke, searchForVegobjekttyper, parseGeometry, randomColor};

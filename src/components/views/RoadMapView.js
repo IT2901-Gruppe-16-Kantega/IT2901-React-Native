@@ -14,6 +14,8 @@ import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 
+import {comparators, datatype} from '../../utilities/values';
+import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions';
 
@@ -25,23 +27,15 @@ var coordinates = [];
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentWillMount() {
-    this.updateMarkers();
-  },
-
   render() {
-    const padding = { edgePadding: { top: 40, right: 40, bottom: 40, left: 40 }};
-
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
         <MapView
           ref={(ref) => {mapRef = ref}}
-          onLayout = {() => mapRef.fitToCoordinates(coordinates, { padding, animated: true })}
           style={styles.map}
-          zoomEnabled={true}
           >
-          {this.updateMarkers()}
+          {this.mapObjects()}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
@@ -49,63 +43,120 @@ var RoadMapView = React.createClass({
     </View>
   },
 
-  parseGeometry(string) {
-    const wkt = string.slice(string.indexOf("(") + 1, -1);
-    const wktArray = wkt.split(",")
-
-    objectCoords = [];
-    for(var i = 0; i < wktArray.length; i++) {
-      const parts = wktArray[i].trim().split(' ');
-      const latitude = parseFloat(parts[0]);
-      const longitude = parseFloat(parts[1]);
-
-      objectCoords.push({latitude: latitude, longitude: longitude});
-    }
-    return objectCoords;
-  },
-
-  updateMarkers() {
-    coordinates = [];
+  mapObjects() {
+    coordinates = []
 
     // Goes through each fetched object, and creates a marker for the map.
-    return this.props.allObjects.map(function(roadObject) {
-      const objectCoordinates = this.parseGeometry(roadObject.geometri.wkt);
+    var markers = this.props.allObjects.map(function(roadObject) {
+
+      /*var filter = {
+        egenskap: this.props.selectedFilter,
+        funksjon: this.props.selectedFunction,
+        verdi: verdi,
+      }*/
+      // Filtering
+      if(this.shouldSkipObject(roadObject)) {
+        return;
+      }
+
+      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
       coordinates.push(objectCoordinates[0]);
 
-      var roadObjectEgenskap;
-      // Some objects don't have any properties
-      if(roadObject.egenskaper) {
-        roadObjectEgenskap = roadObject.egenskaper.find(egenskap => {
-          return (egenskap.id == this.props.selectedFilter.id);
-        });
-      }
-
+      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
+      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
       if(objectCoordinates.length == 1) {
-        return <MapView.Marker
-          coordinate={objectCoordinates[0]}
-          key={roadObject.id}
-          pinColor={templates.colors.blue}
-          >
-          <MapView.Callout style={{flex: 1, position: 'relative'}}>
-            <MarkerCallout
-              roadObject={roadObject}
-              selectedFilter={this.props.selectedFilter}
-              roadObjectEgenskap={roadObjectEgenskap}
-            />
-          </MapView.Callout>
-        </MapView.Marker>
+        return marker;
       } else {
-        return <MapView.Polyline
-          key={roadObject.id}
-          ref={roadObject.id}
+
+        return [<MapView.Polyline
+          key={roadObject.id + 'poly'}
           coordinates={objectCoordinates}
           strokeWidth={3}
-          strokeColor={templates.colors.blue}
-          onPress={this.tapPolyline.bind(this, roadObject)}/>
+          strokeColor={color} />, marker]
       }
+
     }.bind(this));
 
-    this.props.updateMapMarkers(markers);
+    return markers;
+  },
+
+  shouldSkipObject(roadObject) {
+    if(this.props.allSelectedFilters) {
+      for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
+        const filter = this.props.allSelectedFilters[i];
+
+        if(roadObject.egenskaper) {
+          const markerProperty = roadObject.egenskaper.find(e => {
+            return e.id === filter.egenskap.id;
+          })
+
+          // If the marker has the selected property
+          if(markerProperty) {
+            // Skip the marker if the selected filter is HAS_NOT_VALUE
+            if(filter.funksjon === comparators.HAS_NOT_VALUE) {
+              return true;
+            }
+
+            if(filter.egenskap.tillatte_verdier) {
+              const isEqual = markerProperty.enum_id === filter.verdi.id;
+              if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
+                return true;
+              }
+            } else {
+              if(filter.egenskap.datatype === datatype.dato) {
+
+              }
+              const isEqual = markerProperty.verdi === filter.verdi;
+              console.log(markerProperty.verdi + ', ' + filter.verdi);
+              if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
+                return true;
+              }
+            }
+          }
+          else {
+            // Skip the marker if the property doesn't exist
+            if(filter.funksjon === comparators.HAS_VALUE || 
+               filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+               filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
+          }
+        }
+        else {
+          if(filter.funksjon === comparators.HAS_VALUE || 
+             filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+             filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
+        }
+      }
+    }
+
+    // Check larger/smaller
+    // Parse dates, numbers
+    //
+    return false;
+  },
+
+  componentDidUpdate() {
+    if(mapRef) {
+      mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 50, right: 20, bottom: 50, left: 50 }, animated: true })
+    }
+  },
+
+  createMarker(obj, coords, color) {
+    var ref;
+
+    return <MapView.Marker
+      coordinate={coords}
+      key={obj.id}
+      ref={(r) => {ref = r}}
+      onPress={this.props.selectMarker.bind(this, ref)}
+      onSelect={this.props.selectMarker.bind(this, ref)}
+      pinColor={color}
+      >
+      <MapView.Callout style={{flex: 1, position: 'relative'}}>
+        <MarkerCallout
+          roadObject={obj}
+        />
+      </MapView.Callout>
+    </MapView.Marker>
   },
 
   tapPolyline(object) {
@@ -143,23 +194,27 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     allObjects: state.dataReducer.currentRoadSearch.roadObjects,
-    filteredObjects: state.mapReducer.filteredObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
     region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     markers: state.mapReducer.markers,
 
-    selectedFilter: state.mapReducer.selectedFilter,
-    selectedFilterValue: state.mapReducer.selectedFilterValue,
+    selectedFilter: state.filterReducer.selectedFilter,
+    selectedFilterValue: state.filterReducer.selectedFilterValue,
 
     selectedObject: state.mapReducer.selectedObject,
+
+    allSelectedFilters: state.filterReducer.allSelectedFilters,
+
+    selectedMarker: state.mapReducer.selectedMarker,
   };}
 
 function mapDispatchToProps(dispatch) {
   return {
     updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
   }
 };
 

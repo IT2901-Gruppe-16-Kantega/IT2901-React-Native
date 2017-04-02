@@ -58,9 +58,9 @@ var InputField = React.createClass({
           placeholder={'Skriv inn '+this.props.type}
           onChangeText={(text) => {
             if(this.props.type=='kommune'){
-              this.props.inputFunction({text}, this.props.extData)
+              this.props.inputFunction(text, this.props.extData)
             }else{
-              this.props.inputFunction({text})
+              this.props.inputFunction(text)
             }
           }}
           onBlur={this.props.updateFunction}

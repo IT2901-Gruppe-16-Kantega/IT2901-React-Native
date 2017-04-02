@@ -19,6 +19,7 @@ import LoadingView from './components/views/LoadingView'
 import ObjectInfoView from './components/views/ObjectInfoView'
 import ReportView from './components/views/ReportView'
 import RoadMapView from './components/views/RoadMapView'
+import RoadSelectView from './components/views/RoadSelectView'
 import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
@@ -42,48 +43,43 @@ class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-
-            />
+            initial={true} />
           <Scene
             key="SearchView"
             component={SearchView}
             title={<Text style={{color:"orange"}}></Text>}
             hideNavBar={false}
-            initial={true}
-            navigationBarStyle={styles.navigatorStyle}
-            />
+            navigationBarStyle={styles.navigatorStyle} />
+          <Scene
+            key="RoadSelectView"
+            component={RoadSelectView}
+            title="Velg veg" />
           <Scene
             key="StoredDataView"
             component={StoredDataView}
             title="Lagrede søk"
-            hideNavBar={false}
-
-            />
+            hideNavBar={false} />
           <Scene
             key="SettingsView"
             component={SettingsView}
             title="Innstillinger"
-            hideNavBar={false}
-            />
+            hideNavBar={false} />
           <Scene
             key="LoadingView"
             component={LoadingView}
             title=""
-            hideNavBar={true}
-            />
+            hideNavBar={true} />
           <Scene
             key="CurrentSearchView"
             component={CurrentSearchView}
             title=""
             hideNavBar={true}
-            type = 'reset'
-            />
+            type = 'reset' />
           <Scene
             key="ReportView"
             component={ReportView}
             title="Rapport"
-            hideNavBar={false}
-            />
+            hideNavBar={false} />
           <Scene
             key="RoadMapView"
             component={RoadMapView}
@@ -91,8 +87,7 @@ class App extends Component {
             hideNavBar={false}
             onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
-            navigationBarStyle={styles.navigatorStyle}
-            />
+            navigationBarStyle={styles.navigatorStyle} />
           <Scene
             key="ObjectInfoView"
             component={ObjectInfoView}
@@ -100,8 +95,7 @@ class App extends Component {
             title=""
             hideNavBar={false}
             rightTitle="Rediger"
-            onRight={ () => console.log('hei') }
-            />
+            onRight={ () => console.log('hei') } />
         </Scene>
       </Router>
     )
@@ -110,7 +104,7 @@ class App extends Component {
   toggleSidebar() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
-    var width = ScreenWidth / 1.5;
+    var width = ScreenWidth / 2.2;
     var xPos = ScreenWidth - width;
     var frame = {width: width};
 

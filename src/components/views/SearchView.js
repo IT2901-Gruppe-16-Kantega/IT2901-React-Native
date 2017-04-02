@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -21,7 +21,7 @@ import Button from '../misc/Button'
 import InputField from '../misc/InputField'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
-import {fetchTotalNumberOfObjects, fetchVeg} from '../../utilities/wrapper'
+import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
@@ -39,9 +39,6 @@ const vegobjekttyperMedPunkt = [];
 View used when user specifies what data to be fetched from NVDB
 */
 var SearchView = React.createClass({
-  componentDidMount() {
-  },
-
   render() {
     return <View style = {templates.container}>
       <View style={templates.top}/>
@@ -55,6 +52,10 @@ var SearchView = React.createClass({
           scrollEnabled={false}
           keyboardShouldPersistTaps='always'
           >
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end', padding: 12}}>
+            <Button text={"🗺 Kart"} style={"small"} onPress={Actions.RoadSelectView} />
+            <Button text={"📍 Nærmeste"} style={"small"} onPress={this.getUserPosition} />
+          </View>
           {this.createTypeInput()}
           {this.createFylkeInput()}
           {this.createKommuneInput()}
@@ -65,7 +66,23 @@ var SearchView = React.createClass({
       {this.createButton()}
       <View style={styles.parameterBottomPadding}><Text></Text></View>
     </View>
+  },
 
+  getUserPosition() {
+    navigator.geolocation.getCurrentPosition((initialPosition) => {
+      fetchCloseby(initialPosition.coords, function(closest) {
+        if(closest.code) {
+          alert(closest.message);
+        } else {
+          const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
+
+          this.props.inputVeg(veg);
+          this.props.chooseFylke([closest.fylke]);
+        }
+
+      }.bind(this));
+      }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   },
 
   createFylkeInput(){
@@ -86,11 +103,8 @@ var SearchView = React.createClass({
       </View>
       <View style={styles.parameterBottomPadding}><Text></Text></View>
     </View>
-
-
-
-
   },
+
   createKommuneInput(){
     if(this.props.kommune_enabled){
       return <View>
@@ -112,9 +126,8 @@ var SearchView = React.createClass({
         <View style={styles.parameterBottomPadding}><Text></Text></View>
       </View>
     }
-
-
   },
+
   createTypeInput(){
     return <View>
       <View style={styles.typeArea}>
@@ -133,8 +146,8 @@ var SearchView = React.createClass({
       </View>
       <View style={styles.parameterBottomPadding}><Text></Text></View>
     </View>
-
   },
+
   createVegInput() {
     return  <View>
       <View style={styles.vegArea}>
@@ -156,11 +169,12 @@ var SearchView = React.createClass({
                 placeholderColor={templates.colors.placeholderColor}
                 placeholder={'Skriv inn veg'}
                 onChangeText={(text) => {
-                  this.props.inputVeg({text});
+                  this.props.inputVeg(text);
                 }}
                 onBlur={this.createDynamicData}
                 keyboardType = "default"
                 returnKeyType = 'done'
+                value={this.props.veg_input}
                 />
             </View>
           <View style={styles.parameterRightPadding}><Text></Text></View>
@@ -174,9 +188,10 @@ var SearchView = React.createClass({
       <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
     </View>
   },
+
   createButton(){
     return <View style={styles.buttonArea}>
-      <Button text="Søk" onPress={this.search} style={"small"} />
+      <Button text="Søk" onPress={this.searchOld} style={"small"} />
     </View>
   },
 
@@ -185,7 +200,7 @@ var SearchView = React.createClass({
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
+      const veg = this.props.veg_input;
       var vegURL= ''
       var numberURL=''
       if(this.props.kommune_chosen){
@@ -193,7 +208,7 @@ var SearchView = React.createClass({
         var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
         var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
       }
-      else{
+      else {
         var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
         var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
       }
@@ -241,14 +256,13 @@ var SearchView = React.createClass({
       else if (!this.props.fylke_chosen){
         Alert.alert("Feil", "Fylke ikke spesifisert");
         //TODO kan gi bruker en mulighet til å hente data, men med advarsel om at det tar lang tid!
-
       }
       else if(!this.props.veg_valid){
         Alert.alert("Feil", "Ingen veg spesifisert")
         //TODO gi bruker mulighet til å gå videre allikevel
       }
       else{
-        var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
+        var vegType = this.props.veg_input.substring(0,1).toLowerCase();
         if(vegType=='k'){
           if(this.kommune_chosen){
             this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
@@ -264,15 +278,13 @@ var SearchView = React.createClass({
         }
       }
     }, 1000)
-
-
   },
 
   searchOld() {
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
+      const veg = this.props.veg_input;
       var vegType = veg.substring(0,1).toLowerCase();
       if(vegType=='k'){
         console.log('kommune mandatory')
@@ -335,9 +347,6 @@ var SearchView = React.createClass({
       Alert.alert("Ikke nok informasjon", "Fyll inn obligatoriske felter");
     }
   },
-  //fungerer nå, men bør gjøre håndtering av manglende input bedre
-  //bør samle denne og checkRoadValid i en metode som heter create dynamic data
-
 });
 
 var styles = StyleSheet.create({
