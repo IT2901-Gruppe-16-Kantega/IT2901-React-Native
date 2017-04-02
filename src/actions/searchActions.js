@@ -1,14 +1,9 @@
 //
-import {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, searchForVegobjekttyper} from '../utilities/utils';
-createBST();
+import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
+
+
 
 //functions for handling input in all searchfields
-export function setURL(url){
-  return {
-    type: "SET_URL",
-    payload: url,
-  }
-}
 
 export function inputFylke(input){
   return function(dispatch) {
@@ -28,7 +23,7 @@ export function inputFylke(input){
       }
     })
     .catch((err) => {
-      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input.text})
     })
   }
 }
@@ -39,9 +34,53 @@ export function chooseFylke(input){
   }
 }
 
-export function newInputVeg(input){
+export function inputVeg(input){
   return {
-    type: "NEW_INPUT_VEG",
+    type: "INPUT_VEG",
+    payload: input,
+  }
+}
+
+export function setValidityOfVeg(input){
+  return function(dispatch) {
+    if(input){
+      dispatch({
+        type: "INPUT_VEG_VALID"
+      })
+    }
+    else {
+      dispatch({
+        type: "INPUT_VEG_NOT_VALID"
+      })
+    }
+  }
+}
+
+export function inputKommune(input, fylke){
+  return function(dispatch) {
+    searchForKommune(input.text, fylke)
+    .then((result) => {
+      if(result.length==1){
+        dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
+          result: result,
+          kommune_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
+          result: result,
+          kommune_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input.text})
+    })
+  }
+}
+export function chooseKommune(input){
+  return{
+    type: "CHOOSE_KOMMUNE",
     payload: input,
   }
 }
@@ -65,7 +104,7 @@ export function inputVegobjekttyper(input){
       }
     })
     .catch((err) => {
-      dispatch({type: "VEGOBJEKTTYPER_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "INPUT_VEGOBJEKTTYPER_NOT_VALID", payload: input.text})
     })
   }
 }
@@ -76,89 +115,8 @@ export function chooseVegobjekttyper(input){
   }
 }
 
-
-
-//TO be DEPRECATED
-export function inputVegkategori(input){
-  return function(dispatch) {
-    searchForVegkategori(input.text)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_VEGKATEGORI_SINGLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_VEGKATEGORI_MULTIPLE", payload: {
-          result: result,
-          vegkategori_text: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "VEGKATEGORI_INPUT_NOT_VALID", payload: input.text})
-    })
-  }
-}
-export function chooseVegkategori(input){
-  return{
-    type: "CHOOSE_VEGKATEGORI",
-    payload: input,
-  }
-}
-
-export function inputVeg(input){
-  return function(dispatch) {
-    searchForVeg(input.text)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_VEG_SINGLE", payload: {
-          result: result,
-          veg_text: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_VEG_MULTIPLE", payload: {
-          result: result,
-          veg_text: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "VEG_INPUT_NOT_VALID", payload: input.text})
-    })
-  }
-}
-export function chooseVeg(input) {
-  return{
-    type: "CHOOSE_VEG",
-    payload: input,
-  }
-}
-export function setFetchingVeger(input) {
-  return{
-    type: "FETCHING_VEGER",
-    payload: input,
-  }
-}
-
-
-export function inputKommune(input){
-  return function(dispatch) {
-    searchForKommune(input.text)
-    .then((result) => {
-      dispatch({type: "INPUT_KOMMUNE", payload: result})
-    })
-    .catch((err) => {
-      dispatch({type: "KOMMUNE_INPUT_NOT_VALID", payload: err})
-    })
-  }
-}
-
-
-export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
-  var combinedSearchParameters = [fylke_input, veg_input, vegobjekttype];
+export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype){
+  var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",
     payload: combinedSearchParameters,
@@ -168,5 +126,12 @@ export function combineSearchParameters(fylke_input, veg_input, vegobjekttype){
 export function resetSearchParameters(){
   return {
     type: "RESET_SEARCH_PARAMETERS"
+  }
+}
+
+export function setURL(url){
+  return {
+    type: "SET_URL",
+    payload: url,
   }
 }

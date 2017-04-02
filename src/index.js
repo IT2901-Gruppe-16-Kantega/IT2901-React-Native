@@ -42,15 +42,15 @@ class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-            initial={true}
 
             />
           <Scene
             key="SearchView"
             component={SearchView}
-            title="Søk"
+            title={<Text style={{color:"orange"}}></Text>}
             hideNavBar={false}
-
+            initial={true}
+            navigationBarStyle={styles.navigatorStyle}
             />
           <Scene
             key="StoredDataView"
