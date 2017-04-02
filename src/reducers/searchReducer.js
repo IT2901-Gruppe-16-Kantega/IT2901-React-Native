@@ -41,6 +41,13 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
+    case "RESET_VEGFIELD": {
+      return {
+        ...state,
+        veg_color: templates.colors.orange,
+        veg_valid: false,
+      }
+    }
     case "SET_URL": {
       return {
         ...state,
