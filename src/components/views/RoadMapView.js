@@ -49,12 +49,6 @@ var RoadMapView = React.createClass({
     // Goes through each fetched object, and creates a marker for the map.
     var markers = this.props.allObjects.map(function(roadObject) {
 
-      /*var filter = {
-        egenskap: this.props.selectedFilter,
-        funksjon: this.props.selectedFunction,
-        verdi: verdi,
-      }*/
-      // Filtering
       if(this.shouldSkipObject(roadObject)) {
         return;
       }
@@ -102,14 +96,21 @@ var RoadMapView = React.createClass({
               if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
                 return true;
               }
-            } else {
-              if(filter.egenskap.datatype === datatype.dato) {
-
-              }
+            }
+            else {
               const isEqual = markerProperty.verdi === filter.verdi;
-              console.log(markerProperty.verdi + ', ' + filter.verdi);
               if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
                 return true;
+              }
+
+              // If LARGER_OR_EQUAL, and the property value is less, skip it
+              if(filter.funksjon === comparators.LARGER_OR_EQUAL) {
+                if(markerProperty.verdi < filter.verdi) { return true }
+              }
+
+              // If SMALLER_OR_EQUAL, and the property is larger, skip it
+              if(filter.funksjon === comparators.SMALLER_OR_EQUAL) {
+                if(markerProperty.verdi > filter.verdi) { return true }
               }
             }
           }
@@ -128,15 +129,12 @@ var RoadMapView = React.createClass({
       }
     }
 
-    // Check larger/smaller
-    // Parse dates, numbers
-    //
     return false;
   },
 
   componentDidUpdate() {
     if(mapRef) {
-      mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 50, right: 20, bottom: 50, left: 50 }, animated: true })
+      //mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 50, right: 20, bottom: 50, left: 50 }, animated: true })
     }
   },
 
@@ -158,11 +156,6 @@ var RoadMapView = React.createClass({
       </MapView.Callout>
     </MapView.Marker>
   },
-
-  tapPolyline(object) {
-    this.props.selectObject(object);
-    Actions.ObjectInfoView();
-  }
 });
 
 var styles = StyleSheet.create({
