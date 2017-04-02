@@ -15,13 +15,16 @@ import PropertyValue from './PropertyValue';
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
 
+/*
+The callout shown when the user taps a pin on the map view.
+*/
 var MarkerCallout = React.createClass({
   render() {
-    var {roadObject, roadObjectEgenskap} = this.props;
+    var {roadObject} = this.props;
 
     return <View>
       <TouchableHighlight
-        onPress={this.openSomething}>
+        onPress={this.openObjectInformation}>
         <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       </TouchableHighlight>
       <PropertyValue property={"ID"} value={roadObject.id} />
@@ -29,32 +32,52 @@ var MarkerCallout = React.createClass({
     </View>
   },
 
-  openSomething() {
+  // Called when the user taps the title of the callout
+  // Opens the object info view.
+  openObjectInformation() {
     this.props.selectObject(this.props.roadObject);
     Actions.ObjectInfoView();
   },
 
+  // Cycles through all the selected filters, and adds information
+  // about each of them to the callout bubble.
   getEgenskapInfo() {
-    if(Object.keys(this.props.selectedFilter).length === 0) {
-      return <Text>Velg et filter for å få mer informasjon.</Text>
-    }
-    var {roadObjectEgenskap} = this.props;
-    var egenskapNavn = this.props.selectedFilter.navn;
+    var textComponents = [<Text key={"spacer"}> </Text>];
+    var propertiesAdded = [];
 
-    if(roadObjectEgenskap == null) {
-      return <Text>"Ingen info om " + egenskapNavn.toLowerCase()</Text>
-    } else {
-      return <PropertyValue
-        property={egenskapNavn}
-        value={roadObjectEgenskap.verdi.toString() + this.getPostfix()} />
+    if(this.props.allSelectedFilters) {
+      for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
+        const filter = this.props.allSelectedFilters[i];
+
+        // Only add one of each property to the callout
+        if(propertiesAdded.includes(filter.egenskap.id)) {
+          continue;
+        }
+
+        // Finds the information about the selected property of this object
+        const egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
+          return e.id == filter.egenskap.id;
+        })
+
+        var tekst = "-";
+        if(egenskapsInfo) { tekst = egenskapsInfo.verdi }
+
+        textComponents.push(
+          <PropertyValue key={filter.egenskap.id + i} property={filter.egenskap.navn} value={tekst} />
+        );
+        propertiesAdded.push(filter.egenskap.id);
+      }
+
+      return textComponents;
     }
   },
 
+  // Returns eventual postfixes, for example 'mm' for measurements
   getPostfix() {
     var {selectedFilter} = this.props;
 
     if(selectedFilter.datatype_tekst == "Tall" || selectedFilter.datatype_tekst == "Flerverdiattributt, Tall") {
-      if(selectedFilter.enhet != null) {
+      if(selectedFilter.enhet && this.props.selectedEgenskap && this.props.selectedEgenskap.enhet) {
         return " " + this.props.selectedEgenskap.enhet.kortnavn;
       }
     }
@@ -72,8 +95,9 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    selectedFilters: state.mapReducer.selectedFilter,
-    selectedFilterValue: state.mapReducer.selectedFilterValue,
+    selectedFilter: state.filterReducer.selectedFilter,
+    selectedFilterValue: state.filterReducer.selectedFilterValue,
+    allSelectedFilters: state.filterReducer.allSelectedFilters,
   };
 }
 

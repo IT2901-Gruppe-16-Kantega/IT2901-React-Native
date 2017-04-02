@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {fetchFylker} from '../utilities/wrapper';
 
 /*
   Actions associated with searches
@@ -40,7 +41,7 @@ export function setNumberOfObjectsToBeFetched(number){
 }
 
 //Function that sets fetching=true
-export function fetchDataStart(){
+export function fetchDataStart() {
   return {
     type: "FETCH_DATA_START"
   }
@@ -99,5 +100,28 @@ export function setObjekttypeInfo(objekttypeInfo) {
   return {
     type: "SET_OBJEKTTYPE_INFO",
     payload: objekttypeInfo,
+  }
+}
+
+export function inputFylke(input){
+  return function(dispatch) {
+    searchForFylke(input.text)
+    .then((result) => {
+      if(result.length == 1){
+        dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
+          result: result,
+          fylke_text: input.text,
+        }})
+      }
+      else {
+        dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
+          result: result,
+          fylke_text: input.text,
+        }})
+      }
+    })
+    .catch((err) => {
+      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
+    })
   }
 }

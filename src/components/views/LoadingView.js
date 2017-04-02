@@ -26,8 +26,6 @@ view shown when fetching/loading data
 var LoadingView = React.createClass({
   //create URL happens here here
   componentWillMount() {
-    console.log('loadingView')
-
     //prefetches total number of objects to be fetched
     const preFetchURL = 'vegobjekter/96/statistikk';
     /*const preURL = baseURL + preFetchURL + '?kommune=' + this.props.kommune.nummer;
@@ -43,7 +41,6 @@ var LoadingView = React.createClass({
       // SELECT THE FIRST FILTER AS DEFAULT FOR THE MAPVIEW
       this.props.selectedFilter = data.egenskapstyper[0];
 
-      console.log(this.props.url);
       fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
@@ -129,7 +126,7 @@ var LoadingView = React.createClass({
 
       objekttypeInfo: state.dataReducer.objekttypeInfo,
       allSearches: state.dataReducer.allSearches,
-      selectedFilter: state.mapReducer.selectedFilter,
+      selectedFilter: state.filterReducer.selectedFilter,
     };}
 
     function mapDispatchToProps(dispatch) {

@@ -2,19 +2,26 @@ import React from 'react'
 import {
   Text,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  View
 } from 'react-native';
 
 import * as templates from '../../utilities/templates'
 
 var Button = React.createClass({
   render() {
+    var subText = this.props.subText ? <Text style={this.subTextStyle()}>{this.props.subText}</Text> : null;
+
     return <TouchableHighlight
+      key={this.props.k}
       style={this.buttonStyle()}
       onPress={this.props.onPress}
       underlayColor={templates.colors.orange}
       >
-      <Text style={this.textStyle()}>{this.props.text}</Text>
+      <View>
+        <Text style={this.textStyle()}>{this.props.text}</Text>
+        {subText}
+      </View>
     </TouchableHighlight>
   },
 
@@ -29,6 +36,14 @@ var Button = React.createClass({
     if(!this.props.style) {
       return styles.text;
     }
+    const style = this.props.style + "Text";
+    if(styles[style]) {
+      return styles[style]
+    }
+  },
+
+  subTextStyle() {
+
   }
 })
 
@@ -43,10 +58,12 @@ var styles = StyleSheet.create({
   small: {
     height: 30,
     width: 100,
+    margin: 5,
   },
   large: {
     height: 50,
-    width: 150
+    width: 150,
+    backgroundColor: templates.colors.orange,
   },
   list: {
     borderWidth: 0.5,
@@ -56,6 +73,9 @@ var styles = StyleSheet.create({
   },
   text: {
     fontWeight: 'bold',
+  },
+  subText: {
+    fontSize: 10,
   }
 })
 

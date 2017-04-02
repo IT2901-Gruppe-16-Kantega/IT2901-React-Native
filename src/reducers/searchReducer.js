@@ -39,6 +39,10 @@ export default function reducer(state={
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
 
+  searchCoordinate: null,
+
+  fylkeCoordinates: null,
+
 }, action) {
   switch (action.type) {
     case "RESET_VEGFIELD": {
@@ -251,8 +255,47 @@ export default function reducer(state={
         combinedSearchParameters: [],
       }
     }
+    case "INPUT_VEGKATEGORI_SINGLE": {
+      return{
+        ...state,
+        vegkategori_input: action.payload.result,
+        vegkategori_navn: action.payload.result[0].navn,
+        vegkategori_chosen: false,
+        vegkategori_text: action.payload.vegkategori_text,
 
+        veg_enabled: true,
+      }
+    }
+    case "VEGKATEGORI_INPUT_NOT_VALID": {
+      return{
+        ...state,
+        vegkategori_input: [],
+        vegkategori_navn: '',
+        vegkategori_text: action.payload,
+        vegkategori_chosen: false,
 
+        veg_enabled: false,
+
+      }
+    }
+    case "CHOOSE_VEGKATEGORI": {
+      return {
+        ...state,
+        vegkategori_input: action.payload,
+        vegkategori_navn: action.payload[0].navn,
+        vegkategori_text: action.payload[0].navn,
+        vegkategori_chosen: true,
+
+        veg_enabled: true,
+      }
+    }
+    case "SELECT_SEARCH_COORDINATE": {
+      return {...state, searchCoordinate: action.payload}
+    }
+
+    case "SET_FYLKE_COORDINATES": {
+      return {...state, fylkeCoordinates: action.payload}
+    }
   }
   return state
 }

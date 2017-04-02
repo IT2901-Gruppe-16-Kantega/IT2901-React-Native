@@ -7,16 +7,13 @@ var width = ScreenWidth / 1.5;
 export default function reducer(state={
   sidebarFrame: {width: ScreenWidth / 1.5, left: ScreenWidth},
 
-  filteredObjects: [],
   markers: [],
 
   showSecondSidebar: false,
 
-  selectedFilter: {},
-  selectedFilterValue: {},
-
-  filterValueSearch: '',
   selectedObject: null,
+
+  selectedMarker: null,
 
 }, action) {
   //simple switch statement based on type of action
@@ -30,21 +27,11 @@ export default function reducer(state={
     case "UPDATE_MAP_MARKERS": {
       return {...state, markers: action.payload}
     }
-    case "SELECT_FILTER": {
-      console.log(action.payload);
-      return {...state, selectedFilter: action.payload, showSecondSidebar: true}
-    }
-    case "SELECT_FILTER_VALUE": {
-      return {...state, selectedFilterValue: action.payload}
-    }
-    case "INPUT_FILTER_VALUE_TEXT": {
-      return {...state, filterValueSearch: action.payload}
-    }
-    case "SET_FILTERED_OBJECTS": {
-      return {...state, filteredObjects: action.payload}
-    }
     case "SELECT_OBJECT": {
       return {...state, selectedObject: action.payload}
+    }
+    case "SELECT_MARKER": {
+      return {...state, selectedMarker: action.payload}
     }
   }
   return state
