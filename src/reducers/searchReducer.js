@@ -36,7 +36,6 @@ export default function reducer(state={
   //
   url: '',
 
-
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
 

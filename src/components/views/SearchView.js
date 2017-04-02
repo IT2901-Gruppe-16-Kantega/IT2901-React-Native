@@ -57,8 +57,8 @@ var SearchView = React.createClass({
           >
           {this.createTypeInput()}
           {this.createFylkeInput()}
-          {this.createKommuneInput()}
           {this.createVegInput()}
+          {this.createKommuneInput()}
         </ScrollView>
       </View>
       {this.createStatistics()}
@@ -157,8 +157,9 @@ var SearchView = React.createClass({
                 placeholder={'Skriv inn veg'}
                 onChangeText={(text) => {
                   this.props.inputVeg({text});
+                  this.createDynamicData();
+
                 }}
-                onBlur={this.createDynamicData}
                 keyboardType = "default"
                 returnKeyType = 'done'
                 />
@@ -180,58 +181,58 @@ var SearchView = React.createClass({
     </View>
   },
 
-  //createDynamic fields and validity info
+  //createDynamic fields, validity info, and URL
   createDynamicData() {
-    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
-      const objektID = this.props.vegobjekttyper_input[0].id;
-      const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
-      var vegURL= ''
-      var numberURL=''
-      if(this.props.kommune_chosen){
-        const kommuneID = this.props.kommune_input[0].nummer;
-        var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
-        var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-      }
-      else{
-        var vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
-        var numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-      }
-      fetchVeg(vegURL).then((response)=>{
-        console.log(response);
-        if(response.antall == 0){
-          this.props.setValidityOfVeg(false)
-        }
-        else if(response.antall>0){
-          this.props.setValidityOfVeg(true)
+    this.forceUpdate(()=>{
+      if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
+        const objektID = this.props.vegobjekttyper_input[0].id;
+        const fylkeID = this.props.fylke_input[0].nummer;
+        const veg = this.props.veg_input.text;
+        var vegURL = ''
+        var numberURL = ''
+        var url = ''
+        if(this.props.kommune_chosen){
+          const kommuneID = this.props.kommune_input[0].nummer;
+          vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
+          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
+          url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
+
         }
         else{
-          this.props.setValidityOfVeg(false)
+          vegURL = minBaseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
+          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
+          url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
         }
-      })
-      fetchTotalNumberOfObjects(numberURL).then((response)=>{
-        this.props.setNumberOfObjectsToBeFetched(response.antall);
-      });
-    }
-    else if (this.props.vegobjekttyper_chosen&&!this.props.fylke_chosen){
-      const objektID = this.props.vegobjekttyper_input[0].id;
-      var numberURL = baseURL+objektID+'/statistikk';
-      fetchTotalNumberOfObjects(numberURL).then((response)=>{
-
-        this.props.setNumberOfObjectsToBeFetched(response.antall);
-      });
-    }
+        fetchVeg(vegURL).then((response)=>{
+          if(response.antall == 0){
+            this.props.setValidityOfVeg(false)
+          }
+          else if(response.antall>0){
+            this.props.setValidityOfVeg(true)
+          }
+          else{
+            this.props.setValidityOfVeg(false)
+          }
+        })
+        fetchTotalNumberOfObjects(numberURL).then((response)=>{
+          this.props.setURL(url);
+          this.props.setNumberOfObjectsToBeFetched(response.antall);
+        });
+      }
+      else if (this.props.vegobjekttyper_chosen&&!this.props.fylke_chosen){
+        const objektID = this.props.vegobjekttyper_input[0].id;
+        var numberURL = baseURL+objektID+'/statistikk';
+        fetchTotalNumberOfObjects(numberURL).then((response)=>{
+          this.props.setURL(url);
+          this.props.setNumberOfObjectsToBeFetched(response.antall);
+        });
+      }
+    });
   },
-  //this function need to be optimized
-  //can now handle validity of search much better:
-  //search yes if all is valid
 
-  //TODO sjekk TODO i metode
-
-    //fiks en bedre metode slik at ting blir oppdatert i veg obj
-    //evt legg til en loading overlay, checking...
+  //TODO v2 stuff
   search(){
-    setTimeout(()=>{
+    this.forceUpdate(()=>{
       if(this.props.numberOfObjectsToBeFetched==0){
         Alert.alert("Feil", "Dette søket generer ingen objekter");
       }
@@ -250,7 +251,7 @@ var SearchView = React.createClass({
       else{
         var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
         if(vegType=='k'){
-          if(this.kommune_chosen){
+          if(this.props.kommune_chosen){
             this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
             Actions.LoadingView();
           }
@@ -263,81 +264,8 @@ var SearchView = React.createClass({
           Actions.LoadingView();
         }
       }
-    }, 1000)
-
-
+    })
   },
-
-  searchOld() {
-    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
-      const objektID = this.props.vegobjekttyper_input[0].id;
-      const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
-      var vegType = veg.substring(0,1).toLowerCase();
-      if(vegType=='k'){
-        console.log('kommune mandatory')
-        if(this.props.kommune_chosen){
-          const kommuneID = this.props.kommune_input[0].nummer;
-          var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-          var url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-
-          fetchTotalNumberOfObjects(preurl).then(function(response) {
-            if(response.antall == undefined) {
-              Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
-            }
-            else {
-              this.props.setURL(url);
-              if(this.props.kommune_chosen==true){
-                this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-              }
-              else{
-                this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input,'Kommune ikke valgt', this.props.vegobjekttyper_input[0]);
-              }
-              Actions.LoadingView();
-            }
-          }.bind(this));
-        }
-        else{
-          Alert.alert("Mangler kommune", "Kommune må fylles ut når veg er av type k");
-        }
-      }
-
-      else{
-        console.log('komune not mandatory')
-        if(this.props.kommune_chosen){
-          const kommuneID = this.props.kommune_input[0].nummer;
-          var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-          var url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-        }
-        else{
-          var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-          var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-        }
-
-        fetchTotalNumberOfObjects(preurl).then(function(response) {
-          if(response.antall == undefined) {
-            Alert.alert("Ugyldig veg", "Sjekk at vegen du har skrevet inn eksisterer og at format er vegkategori+vegnummer (E6 f.eks)");
-          }
-          else {
-            this.props.setURL(url);
-            if(this.props.kommune_chosen==true){
-              this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-            }
-            else{
-              this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input,'Kommune ikke valgt', this.props.vegobjekttyper_input[0]);
-            }
-            Actions.LoadingView();
-          }
-        }.bind(this));
-      }
-    }
-    else {
-      Alert.alert("Ikke nok informasjon", "Fyll inn obligatoriske felter");
-    }
-  },
-  //fungerer nå, men bør gjøre håndtering av manglende input bedre
-  //bør samle denne og checkRoadValid i en metode som heter create dynamic data
-
 });
 
 var styles = StyleSheet.create({
@@ -460,6 +388,7 @@ function mapStateToProps(state) {
 
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
+
   };}
 
   function mapDispatchToProps(dispatch) {
