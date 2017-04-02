@@ -47,124 +47,133 @@ var SearchView = React.createClass({
       <View style={styles.header}>
         <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
       </View>
-      <View style={styles.contentsFrame}>
-        <View style={styles.contentsArea}>
-
+      <View style={styles.inputArea}>
           <ScrollView
-            style={styles.scrollContainer}
+            style={{backgroundColor: templates.colors.white}}
             scrollEnabled={false}
             keyboardShouldPersistTaps='always'
             >
-            <View style={styles.contents}>
-              <View style={styles.searchTypeHeading}><Text style={styles.text}>Hvor?</Text></View>
-
-                <View style={styles.searchParameterContainer}>
-                  <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
-                  <InputField type='fylke'
-                    list={this.props.fylke_input}
-                    textType={this.props.fylke_text}
-                    choosenBool={this.props.fylke_chosen}
-                    editable={true}
-                    inputFunction={this.props.inputFylke}
-                    chooserFunction={this.props.chooseFylke}
-                    colorController={this.props.fylke_color}
-                    updateFunction={this.createDynamicData}
-                    />
-                  <View style={styles.parameterRightPadding}><Text></Text></View>
-                </View>
-              <View style={styles.parameterBottomPadding}><Text></Text></View>
-
-
-              <View style={styles.searchParameterContainer}>
-                <View style={styles.searchLabel}><Text style={styles.text}>Veg</Text></View>
-                {this.createVegInput()}
-                <View style={styles.parameterRightPadding}><Text></Text></View>
-              </View>
-              <View style={styles.parameterBottomPadding}><Text></Text></View>
-
-
-              <View style={styles.kommuneArea}>
-                <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
-                <InputField type='kommune'
-                  list={this.props.kommune_input}
-                  textType={this.props.kommune_text}
-                  choosenBool={this.props.kommune_chosen}
-                  editable={this.props.kommune_enabled}
-                  inputFunction={this.props.inputKommune}
-                  chooserFunction={this.props.chooseKommune}
-                  colorController={this.props.kommune_color}
-                  updateFunction={this.createDynamicData}
-                  extData={this.props.fylke_input}
-                  />
-                <View style={styles.parameterRightPadding}><Text></Text></View>
-              </View>
-              <View style={styles.parameterBottomPadding}><Text></Text></View>
-            </View>
-
-
-            <View style={styles.hvaContents}>
-              <View style={styles.hvaHeading}><Text style={styles.text}>Hva?</Text></View>
-              <View style={styles.vegobjekttypeArea}>
-                <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
-                <InputField type='vegobjekttype'
-                  list={this.props.vegobjekttyper_input}
-                  textType={this.props.vegobjekttyper_text}
-                  choosenBool={this.props.vegobjekttyper_chosen}
-                  editable={true}
-                  inputFunction={this.props.inputVegobjekttyper}
-                  chooserFunction={this.props.chooseVegobjekttyper}
-                  colorController={this.props.vegobjekttyper_color}
-                  updateFunction={this.createDynamicData}
-                  />
-                <View style={styles.parameterRightPadding}><Text></Text></View>
-              </View>
-              <View style={styles.parameterBottomPadding}><Text></Text></View>
-            </View>
-
-          </ScrollView>
-
-        </View>
+              {this.createTypeInput()}
+              {this.createFylkeInput()}
+              {this.createKommuneInput()}
+              {this.createVegInput()}
+        </ScrollView>
       </View>
+      {this.createStatistics()}
+      {this.createButton()}
       <View style={styles.parameterBottomPadding}><Text></Text></View>
-        <View style={styles.numberOfObjectsToBeFetched}>
-          <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
-        </View>
-      <View style={styles.buttonArea}>
-        <Button text="Søk" onPress={this.search} style={"small"} />
-      </View>
-      <View style={templates.footer}>
-        <Text style={{color: templates.colors.darkGray}}>Gruppe 16 NTNU</Text>
-      </View>
     </View>
   },
 
-  //TODO
-  //legg til noe som sjekker at input veg faktisk inneholder noe som kan brukes slik at vi får gitt feedback
-  //if k veg seg kommune = rød
+  createFylkeInput(){
+    return <View>
+      <View style={styles.fylkeArea}>
+        <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
+        <InputField type='fylke'
+          list={this.props.fylke_input}
+          textType={this.props.fylke_text}
+          choosenBool={this.props.fylke_chosen}
+          editable={true}
+          inputFunction={this.props.inputFylke}
+          chooserFunction={this.props.chooseFylke}
+          colorController={this.props.fylke_color}
+          updateFunction={this.createDynamicData}
+          />
+        <View style={styles.parameterRightPadding}><Text></Text></View>
+      </View>
+      <View style={styles.parameterBottomPadding}><Text></Text></View>
+    </View>
+
+
+
+
+  },
+  createKommuneInput(){
+    if(this.props.kommune_enabled){
+      return <View>
+        <View style={styles.kommuneArea}>
+          <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
+          <InputField type='kommune'
+            list={this.props.kommune_input}
+            textType={this.props.kommune_text}
+            choosenBool={this.props.kommune_chosen}
+            editable={this.props.kommune_enabled}
+            inputFunction={this.props.inputKommune}
+            chooserFunction={this.props.chooseKommune}
+            colorController={this.props.kommune_color}
+            updateFunction={this.createDynamicData}
+            extData={this.props.fylke_input}
+            />
+          <View style={styles.parameterRightPadding}><Text></Text></View>
+        </View>
+        <View style={styles.parameterBottomPadding}><Text></Text></View>
+      </View>
+    }
+
+
+  },
+  createTypeInput(){
+    return <View>
+      <View style={styles.typeArea}>
+        <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
+        <InputField type='vegobjekttype'
+          list={this.props.vegobjekttyper_input}
+          textType={this.props.vegobjekttyper_text}
+          choosenBool={this.props.vegobjekttyper_chosen}
+          editable={true}
+          inputFunction={this.props.inputVegobjekttyper}
+          chooserFunction={this.props.chooseVegobjekttyper}
+          colorController={this.props.vegobjekttyper_color}
+          updateFunction={this.createDynamicData}
+          />
+        <View style={styles.parameterRightPadding}><Text></Text></View>
+      </View>
+      <View style={styles.parameterBottomPadding}><Text></Text></View>
+    </View>
+
+  },
   createVegInput() {
-    return <View style={{
-      flex: 4,
-      backgroundColor: templates.colors.white,
-      borderBottomWidth: 2,
-      borderBottomColor: this.props.veg_color,
-      }}>
-      <TextInput
-        autocorrect= {false}
-        style={{
-          padding: 5,
-          height: 40,
-          color: templates.colors.darkGray,
-          backgroundColor:templates.colors.lightGray
-        }}
-        placeholderColor={templates.colors.placeholderColor}
-        placeholder={'Skriv inn veg'}
-        onChangeText={(text) => {
-          this.props.inputVeg({text});
-        }}
-        onBlur={this.createDynamicData}
-        keyboardType = "default"
-        returnKeyType = 'done'
-        />
+    return  <View>
+      <View style={styles.vegArea}>
+          <View style={styles.searchLabel}><Text style={styles.text}>Veg</Text></View>
+            <View style={{
+              flex: 4,
+              backgroundColor: templates.colors.white,
+              borderBottomWidth: 2,
+              borderBottomColor: this.props.veg_color,
+              }}>
+              <TextInput
+                autocorrect= {false}
+                style={{
+                  padding: 5,
+                  height: 40,
+                  color: templates.colors.darkGray,
+                  backgroundColor:templates.colors.lightGray
+                }}
+                placeholderColor={templates.colors.placeholderColor}
+                placeholder={'Skriv inn veg'}
+                onChangeText={(text) => {
+                  this.props.inputVeg({text});
+                }}
+                onBlur={this.createDynamicData}
+                keyboardType = "default"
+                returnKeyType = 'done'
+                />
+            </View>
+          <View style={styles.parameterRightPadding}><Text></Text></View>
+        </View>
+        <View style={styles.parameterBottomPadding}><Text></Text></View>
+    </View>
+  },
+
+  createStatistics(){
+    return <View style={styles.statisticsArea}>
+      <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
+    </View>
+  },
+  createButton(){
+    return <View style={styles.buttonArea}>
+      <Button text="Søk" onPress={this.search} style={"small"} />
     </View>
   },
 
@@ -217,7 +226,7 @@ var SearchView = React.createClass({
   //TODO sjekk TODO i metode
 
     //fiks en bedre metode slik at ting blir oppdatert i veg obj
-    //evt legg til en loading overlay
+    //evt legg til en loading overlay, checking...
   search(){
     setTimeout(()=>{
       if(this.props.numberOfObjectsToBeFetched==0){
@@ -331,47 +340,26 @@ var SearchView = React.createClass({
 var styles = StyleSheet.create({
 
   //Top-leve containers
+
   navigatorSpace: {
     flex:1.3,
     backgroundColor: templates.colors.white,
   },
   header: {
-    flex: 1.5,
-    justifyContent: 'flex-end',
+    flex: 3.5,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: templates.colors.white
   },
-  contentsFrame: {
-    flex: 15.2,
+  inputArea: {
+    flex: 13.2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'stretch',
   },
 
-  //Containers in contentsFrame
-  contentsArea: {
-    flex: 10,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  scrollContainer: {
-    backgroundColor: templates.colors.white,
-  },
-  contents: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomWidth: 2,
-    borderBottomColor: 'darkgray',
-    backgroundColor: templates.colors.white,
-  },
-  searchTypeHeading: {
-    flex: 2,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
+
+  //Big components
   kommuneArea: {
     flex: 1,
     flexDirection: 'row',
@@ -381,35 +369,42 @@ var styles = StyleSheet.create({
     minHeight:0,
     maxHeight:130,
   },
-  hvaContents: {
+  fylkeArea: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  typeArea: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: templates.colors.white,
-    minHeight:220,
-    maxHeight:250,
+    minHeight:0,
+    maxHeight:162,
   },
-  hvaHeading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  vegobjekttypeArea: {
+  vegobjekttypeArea2: {
     flex: 4,
     flexDirection: 'row',
     backgroundColor: templates.colors.white
   },
-
-  listViewStyle: {
-    flex:1,
-  },
-
-
-  searchParameterContainer: {
+  vegArea: {
     flex: 1,
     flexDirection: 'row',
   },
+  statisticsArea: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: templates.colors.white,
+  },
+  buttonArea: {
+    flex: 2,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: templates.colors.white
+  },
+  //small components
   searchLabel: {
     flex: 1,
     padding: 11,
@@ -425,26 +420,6 @@ var styles = StyleSheet.create({
     flex: 0.25
   },
 
-  numberOfObjectsToBeFetched: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-  },
-
-  //components
-  textInput: {
-    padding: 5,
-    height: 40,
-    color: templates.colors.darkGray,
-    backgroundColor: templates.colors.lightGray,
-  },
-
-  buttonArea: {
-    flex: 2,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
 
   text: {
     color: templates.colors.darkGray,
