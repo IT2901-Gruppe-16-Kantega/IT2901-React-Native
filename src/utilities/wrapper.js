@@ -82,7 +82,7 @@ async function fetchVeg(url){
     const data = await response.json();
     return data;
   } catch(error) {
-    console.log('ERROR: wrapper.fetchVeg');
+    return error;
   }
 }
 

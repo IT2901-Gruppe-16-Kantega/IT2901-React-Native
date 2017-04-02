@@ -35,7 +35,6 @@ export default function reducer(state={
 
   //
   url: '',
-  veg_enabled: false,
 
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
@@ -46,6 +45,13 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
+    case "RESET_VEGFIELD": {
+      return {
+        ...state,
+        veg_color: templates.colors.orange,
+        veg_valid: false,
+      }
+    }
     case "SET_URL": {
       return {
         ...state,
