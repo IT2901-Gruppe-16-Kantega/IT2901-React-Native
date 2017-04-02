@@ -151,10 +151,38 @@ function searchForVeg(input, ) {
   })
 }
 
+function parseGeometry(string) {
+  const wkt = string.slice(string.lastIndexOf("(") + 1, -1);
+  const wktArray = wkt.split(",")
 
+  objectCoords = [];
+  for(var i = 0; i < wktArray.length; i++) {
+    const parts = wktArray[i].trim().split(' ');
+    const latitude = parseFloat(parts[0]);
+    const longitude = parseFloat(parts[1]);
 
+    objectCoords.push({latitude: latitude, longitude: longitude});
+  }
+  return objectCoords;
+}
 
+function randomColor(alpha) {
+  /*'rgba(255, 255, 255, 0.1)'
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
+      color += letters[Math.floor(Math.random() * 16)];
+  }*/
 
+  var color = 'rgba(';
+  for (var i = 0; i < 3; i++) {
+    color += Math.random() * 255 + ', ';
+  }
+  if(alpha) { color += alpha }
+  else { color += 1 }
+  color += ')'
 
+  return color;
+}
 
-export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVegerFromAPI, searchForVegobjekttyper};
+export {createBST, searchForKommune, searchForFylke, searchForVegkategori, searchForVeg, fetchVegerFromAPI, searchForVegobjekttyper, parseGeometry, randomColor};

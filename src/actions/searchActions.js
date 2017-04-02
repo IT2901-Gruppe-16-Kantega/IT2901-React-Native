@@ -10,29 +10,30 @@ export function setURL(url){
   }
 }
 
-export function inputFylke(input){
+export function inputFylke(input) {
   return function(dispatch) {
-    searchForFylke(input.text)
+    searchForFylke(input)
     .then((result) => {
       if(result.length == 1){
         dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
           result: result,
-          fylke_text: input.text,
+          fylke_text: input,
         }})
       }
       else {
         dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
           result: result,
-          fylke_text: input.text,
+          fylke_text: input,
         }})
       }
     })
     .catch((err) => {
-      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input})
     })
   }
 }
-export function chooseFylke(input){
+
+export function chooseFylke(input) {
   return{
     type: "CHOOSE_FYLKE",
     payload: input,
@@ -46,26 +47,26 @@ export function newInputVeg(input){
   }
 }
 
-export function inputVegobjekttyper(input){
+export function inputVegobjekttyper(input) {
   return function(dispatch) {
     //TODO
-    searchForVegobjekttyper(input.text)
+    searchForVegobjekttyper(input)
     .then((result) => {
-      if(result.length==1){
+      if(result.length == 1){
         dispatch({type: "INPUT_VEGOBJEKTTYPER_SINGLE", payload: {
           result: result,
-          vegobjekttyper_text: input.text,
+          vegobjekttyper_text: input,
         }})
       }
       else {
         dispatch({type: "INPUT_VEGOBJEKTTYPER_MULTIPLE", payload: {
           result: result,
-          vegobjekttyper_text: input.text,
+          vegobjekttyper_text: input,
         }})
       }
     })
     .catch((err) => {
-      dispatch({type: "VEGOBJEKTTYPER_INPUT_NOT_VALID", payload: input.text})
+      dispatch({type: "VEGOBJEKTTYPER_INPUT_NOT_VALID", payload: input})
     })
   }
 }
@@ -175,5 +176,13 @@ export function selectSearchCoordinate(coordinate) {
   return {
     type: "SELECT_SEARCH_COORDINATE",
     payload: coordinate,
+  }
+}
+
+export function setFylkeCoordinates(coordinates) {
+  console.log("setFylkeCoordinates")
+  return {
+    type: "SET_FYLKE_COORDINATES",
+    payload: coordinates,
   }
 }

@@ -49,13 +49,15 @@ var SidebarMain = React.createClass({
   },
 
   allSelectedFiltersList() {
-    var style = {padding: 10, marginRight: 15, color: templates.colors.white}
+    var style = {padding: 5, marginRight: 15, color: templates.colors.white}
     var views = [];
     for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
       const filter = this.props.allSelectedFilters[i];
       const verdi = filter.egenskap.tillatte_verdier ? filter.verdi.navn : (filter.verdi ? filter.verdi.toString() : null);
 
       const key = filter.egenskap.id + filter.funksjon + verdi;
+      const linebreak = verdi ? " " : "\n";
+      const linebreak2 = verdi ? "\n" : null;
       views.push(
         <View key={key} style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: templates.colors.black, alignItems: 'center'}}>
           <TouchableHighlight
@@ -65,8 +67,8 @@ var SidebarMain = React.createClass({
           </TouchableHighlight>
           <Text style={style}>
             <Text style={{fontWeight: 'bold'}}>{filter.egenskap.navn}</Text>
-            <Text> {filter.funksjon.toLowerCase()} </Text>
-            <Text style={{fontWeight: 'bold'}}>{verdi}</Text>
+            <Text>{linebreak}{filter.funksjon.toLowerCase()}{linebreak2}</Text>
+            <Text>{verdi}</Text>
           </Text>
         </View>
       );

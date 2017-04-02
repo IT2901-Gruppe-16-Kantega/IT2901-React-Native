@@ -15,6 +15,7 @@ import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 
 import {comparators, datatype} from '../../utilities/values';
+import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions';
 
@@ -42,21 +43,6 @@ var RoadMapView = React.createClass({
     </View>
   },
 
-  parseGeometry(string) {
-    const wkt = string.slice(string.indexOf("(") + 1, -1);
-    const wktArray = wkt.split(",")
-
-    objectCoords = [];
-    for(var i = 0; i < wktArray.length; i++) {
-      const parts = wktArray[i].trim().split(' ');
-      const latitude = parseFloat(parts[0]);
-      const longitude = parseFloat(parts[1]);
-
-      objectCoords.push({latitude: latitude, longitude: longitude});
-    }
-    return objectCoords;
-  },
-
   mapObjects() {
     coordinates = []
 
@@ -73,10 +59,10 @@ var RoadMapView = React.createClass({
         return;
       }
 
-      const objectCoordinates = this.parseGeometry(roadObject.geometri.wkt);
+      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
       coordinates.push(objectCoordinates[0]);
 
-      const color = objectCoordinates.length == 1 ? templates.colors.blue : this.getRandomColor();
+      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
       const marker = this.createMarker(roadObject, objectCoordinates[0], color);
       if(objectCoordinates.length == 1) {
         return marker;
@@ -141,18 +127,28 @@ var RoadMapView = React.createClass({
         }
       }
     }
+
+    // Check larger/smaller
+    // Parse dates, numbers
+    //
+    return false;
   },
 
   componentDidUpdate() {
     if(mapRef) {
-      mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 300, right: 200, bottom: 300, left: 50 }, animated: true })
+      mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 50, right: 20, bottom: 50, left: 50 }, animated: true })
     }
   },
 
   createMarker(obj, coords, color) {
+    var ref;
+
     return <MapView.Marker
       coordinate={coords}
       key={obj.id}
+      ref={(r) => {ref = r}}
+      onPress={this.props.selectMarker.bind(this, ref)}
+      onSelect={this.props.selectMarker.bind(this, ref)}
       pinColor={color}
       >
       <MapView.Callout style={{flex: 1, position: 'relative'}}>
@@ -161,15 +157,6 @@ var RoadMapView = React.createClass({
         />
       </MapView.Callout>
     </MapView.Marker>
-  },
-
-  getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
   },
 
   tapPolyline(object) {
@@ -219,12 +206,15 @@ function mapStateToProps(state) {
     selectedObject: state.mapReducer.selectedObject,
 
     allSelectedFilters: state.filterReducer.allSelectedFilters,
+
+    selectedMarker: state.mapReducer.selectedMarker,
   };}
 
 function mapDispatchToProps(dispatch) {
   return {
     updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
   }
 };
 

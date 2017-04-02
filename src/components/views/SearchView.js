@@ -32,10 +32,9 @@ const vegobjekttyperMedPunkt = [];
 View used when user specifies what data to be fetched from NVDB
 */
 var SearchView = React.createClass({
-  componentDidMount() {
-  },
-
   render() {
+    console.log('fylke_chosen' + this.props.fylke_chosen)
+
     return <View style = {templates.container}>
       <View style={templates.top}/>
       <View style={styles.navigatorSpace}/>
@@ -135,15 +134,15 @@ var SearchView = React.createClass({
   createInputField(type, list, textType, choosenBool ,editable, inputFunction, chooserFunction, multiInputEnabled){
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2});
     var dataSource = ds.cloneWithRows(list);
-
+    console.log('choosenBool' + choosenBool)
     return <View style={styles.inputContainer}>
       <TextInput
         autocorrect={false}
         autofocus={editable}
         editable={editable}
         style={styles.textInput}
-        placeholder={'Skriv inn '+type}
-        onChangeText={(text) => inputFunction({text})}
+        placeholder={'Skriv inn ' + type}
+        onChangeText={(text) => inputFunction(text)}
         keyboardType="default"
         returnKeyType='done'
         value={textType}
@@ -169,12 +168,13 @@ var SearchView = React.createClass({
   createVegInput() {
     return <View style={styles.inputContainer}>
       <TextInput
-        autocorrect= {false}
+        autocorrect={false}
         style={styles.textInput}
         placeholder={'Skriv inn veg. Type+nummer(R136)'}
-        onChangeText={(text) => this.props.newInputVeg({text})}
+        onChangeText={(text) => this.props.newInputVeg(text)}
         keyboardType = "default"
         returnKeyType = 'done'
+        value={this.props.new_veg_input}
         />
     </View>
   },
@@ -183,7 +183,7 @@ var SearchView = React.createClass({
       if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen) {
         const objektID = this.props.vegobjekttyper_input[0].id;
         const fylkeID = this.props.fylke_input[0].nummer;
-        const veg = this.props.new_veg_input.text;
+        const veg = this.props.new_veg_input;
         var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
         var url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
 
@@ -211,7 +211,7 @@ var SearchView = React.createClass({
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.new_veg_input.text;
+      const veg = this.props.new_veg_input;
       var preurl = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
       var numberOfObjectsToBeFetched = 0;
       fetchTotalNumberOfObjects(preurl).then(function(response){

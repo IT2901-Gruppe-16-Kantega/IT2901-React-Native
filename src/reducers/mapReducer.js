@@ -13,6 +13,8 @@ export default function reducer(state={
 
   selectedObject: null,
 
+  selectedMarker: null,
+
 }, action) {
   //simple switch statement based on type of action
   switch (action.type) {
@@ -27,6 +29,9 @@ export default function reducer(state={
     }
     case "SELECT_OBJECT": {
       return {...state, selectedObject: action.payload}
+    }
+    case "SELECT_MARKER": {
+      return {...state, selectedMarker: action.payload}
     }
   }
   return state

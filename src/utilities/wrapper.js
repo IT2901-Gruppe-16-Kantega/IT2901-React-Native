@@ -1,9 +1,12 @@
+import {fylker} from '../data/fylker';
+
 /*
   wrapper.js: file wich contains methods used in fetching data from server
 */
 var fetch_finished = false; //bool used to keep information about fetching state
 const url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
 const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
+const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
@@ -84,9 +87,18 @@ function fetch_Kommuner(callback){
 }
 
 function fetchCloseby(coordinate, callback) {
-  const url = "https://www.vegvesen.no/nvdb/api/v2/posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100";
+  const url = baseURL + "posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100";
   fetchData(url).then(function(data) {
-    callback(data, true);
+    const firstElement = data[0];
+    if(firstElement.code) {
+      callback(firstElement, true);
+    }
+    else {
+      firstElement.fylke = fylker.find(f => {
+        return f.nummer === firstElement.vegreferanse.fylke;
+      })
+      callback(firstElement, true);
+    }
   })
 }
 
@@ -98,7 +110,7 @@ function fetchObjekttypeInfo(objekttypeID, callback) {
 
 async function fetchVeger(fylke, vegkategori){
   //egenskap="4591=8AND4566=5492"
-  var url = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap=4591='+fylke[0].nummer+'AND4566='+vegkategori[0].id+'"&inkluder=egenskaper&antall=8000';
+  var url = baseURL + "vegobjekter/532?egenskap=4591=" + fylke[0].nummer + "AND4566=" + vegkategori[0].id + "&inkluder=egenskaper&antall=8000";
   try {
     const response = await fetch(url);
     const data = await response.json();

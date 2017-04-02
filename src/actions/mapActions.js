@@ -25,3 +25,11 @@ export function selectObject(roadObject) {
     payload: roadObject,
   }
 }
+
+export function selectMarker(marker) {
+  console.log(marker)
+  return {
+    type: "SELECT_MARKER",
+    payload: marker,
+  }
+}

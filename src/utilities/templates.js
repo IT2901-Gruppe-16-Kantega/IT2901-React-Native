@@ -9,6 +9,7 @@ export var colors = {
   middleGray: '#dadada',
   darkGray: '#444f55',
   red: 'red',
+  orangeTransparent: 'rgba(237, 147, 0, 0.1)'
 }
 
 export var container = {

@@ -59,6 +59,8 @@ export default function reducer(state={
 
   searchCoordinate: null,
 
+  fylkeCoordinates: null,
+
 }, action) {
   switch (action.type) {
     case "SET_URL": {
@@ -304,6 +306,11 @@ export default function reducer(state={
     }
     case "SELECT_SEARCH_COORDINATE": {
       return {...state, searchCoordinate: action.payload}
+    }
+
+    case "SET_FYLKE_COORDINATES": {
+      console.log("SET_FYLKE_COORDINATES")
+      return {...state, fylkeCoordinates: action.payload}
     }
   }
   return state
