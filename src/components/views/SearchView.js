@@ -189,7 +189,7 @@ var SearchView = React.createClass({
 
   createButton(){
     return <View style={styles.buttonArea}>
-      <Button text="Søk" onPress={this.searchOld} style={"small"} />
+      <Button text="Søk" onPress={this.search} style={"small"} />
     </View>
   },
 
@@ -297,7 +297,7 @@ var SearchView = React.createClass({
         ]);
       }
       else{
-        var vegType = this.props.veg_input.substring(0,1).toLowerCase();
+        var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
         if(vegType=='k'){
           if(this.props.kommune_chosen){
             this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
