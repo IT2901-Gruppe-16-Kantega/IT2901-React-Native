@@ -1,5 +1,28 @@
 
 // SHOULD USE A FLUX OR REDUX STORE TO HOLD THE DATA THAT IS COLLECTED FROM SERVER
+<Modal
+  animationType={"slide"}
+  transparent={true}
+  visible={true}
+
+  >
+  <View style={{
+      flex:1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(52, 52, 52, 0.5)'
+    }}>
+    <ActivityIndicator
+      animating={true}
+      color= {templates.colors.orange}
+
+      size="large"
+    />
+  </View>
+
+</Modal>
+
+
 
 const vegkategorier = [
       {navn: 'Europaveg', id: 5492},

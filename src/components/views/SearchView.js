@@ -9,6 +9,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Animated,
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -48,21 +50,22 @@ var SearchView = React.createClass({
         <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
       </View>
       <View style={styles.inputArea}>
-          <ScrollView
-            style={{backgroundColor: templates.colors.white}}
-            scrollEnabled={false}
-            keyboardShouldPersistTaps='always'
-            >
-              {this.createTypeInput()}
-              {this.createFylkeInput()}
-              {this.createKommuneInput()}
-              {this.createVegInput()}
+        <ScrollView
+          style={{backgroundColor: templates.colors.white}}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.createTypeInput()}
+          {this.createFylkeInput()}
+          {this.createKommuneInput()}
+          {this.createVegInput()}
         </ScrollView>
       </View>
       {this.createStatistics()}
       {this.createButton()}
       <View style={styles.parameterBottomPadding}><Text></Text></View>
     </View>
+
   },
 
   createFylkeInput(){
