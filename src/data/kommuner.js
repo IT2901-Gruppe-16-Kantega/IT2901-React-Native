@@ -1,4 +1,4 @@
-var kommuner_allinfo = [ {
+var kommuner = [ {
     "navn" : "Halden",
     "nummer" : 101,
     "region" : 1,
@@ -5963,4 +5963,4 @@ var kommuner_allinfo = [ {
         "srid" : 4326
     }
 } ]
-export {kommuner_allinfo};
+export {kommuner};

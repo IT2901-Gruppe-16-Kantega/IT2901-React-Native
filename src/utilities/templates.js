@@ -9,7 +9,8 @@ export var colors = {
   middleGray: '#dadada',
   darkGray: '#444f55',
   red: 'red',
-  orangeTransparent: 'rgba(237, 147, 0, 0.1)'
+  orangeTransparent: 'rgba(237, 147, 0, 0.1)',
+  placeholderColor: '#c4c4c4',
 }
 
 export var container = {

@@ -76,6 +76,16 @@ async function fetchTotalNumberOfObjects(url) {
   }
 }
 
+async function fetchVeg(url){
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.log('ERROR: wrapper.fetchVeg');
+  }
+}
+
 /*
   The following methods fetches data from NVDB to be used in specifying offline data
   Kan hende generell fetchFromAPI burde håndtere alt, gjøres etterhver
@@ -120,4 +130,4 @@ async function fetchVeger(fylke, vegkategori){
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchCloseby};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchVeg, fetchCloseby};

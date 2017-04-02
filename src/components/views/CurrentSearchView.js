@@ -4,14 +4,15 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
-  Linking
-
+  Linking,
+  Platform
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import RNFS from 'react-native-fs'
 import userDefaults from 'react-native-user-defaults'
 
 import Button from '../misc/Button'
@@ -81,9 +82,24 @@ var CurrentSearchView = React.createClass({
   openAR() {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
-    userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-      if(!err) Linking.openURL("com.nvdb.ar:");
-    });
+	if(Platform.OS === "ios") {
+		userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
+	      if(!err) Linking.openURL("nvdbAr:");
+	    });
+	} else if (Platform.OS === "android"){
+		// Save data.json
+		let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+		console.log(dataPath);
+		var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
+		RNFS.writeFile(dataPath, data, "utf8")
+			.then((success) => console.log("data.json saved successfully"))
+			.catch((err) => console.error("An error occurred when saving data.json", err));
+		Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
+		// TODO Save roads.json here
+		//let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
+	} else {
+		console.log("Not ios or android")
+	}
   },
 
   exit() {

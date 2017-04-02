@@ -47,8 +47,9 @@ class App extends Component {
           <Scene
             key="SearchView"
             component={SearchView}
-            title="Søk"
-            hideNavBar={false} />
+            title={<Text style={{color:"orange"}}></Text>}
+            hideNavBar={false}
+            navigationBarStyle={styles.navigatorStyle} />
           <Scene
             key="RoadSelectView"
             component={RoadSelectView}

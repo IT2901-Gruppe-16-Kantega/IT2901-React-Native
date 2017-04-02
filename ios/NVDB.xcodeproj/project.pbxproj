@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -28,6 +27,7 @@
 		D6435CD8B97B4DE8982DE312 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CA37F9E2F0B46ABB4CDEE54 /* libAirMaps.a */; };
 		F738AEAA1E869FA500DCDF6B /* libRCTUserDefaults.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F738AEA91E869F8A00DCDF6B /* libRCTUserDefaults.a */; };
 		F78262021E7FD1D5004FB6CC /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F78261E71E7FD1B4004FB6CC /* libART.a */; };
+		C9891A5FB37047A587E43A38 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E44BB8F0B9354151ACAB589A /* libRNFS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,6 +273,8 @@
 		F738AEA41E869F8A00DCDF6B /* RCTUserDefaults.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTUserDefaults.xcodeproj; path = "../node_modules/react-native-user-defaults/RCTUserDefaults.xcodeproj"; sourceTree = "<group>"; };
 		F78261E11E7FD1B4004FB6CC /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		FB2DE4E4776F451D8B63A1D0 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
+		E91AD575273D415EA7ABC043 /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		E44BB8F0B9354151ACAB589A /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +305,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				43D0B19D6A0746DE88870650 /* libRCTCamera.a in Frameworks */,
 				D6435CD8B97B4DE8982DE312 /* libAirMaps.a in Frameworks */,
+				C9891A5FB37047A587E43A38 /* libRNFS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +455,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				00EB47CA55B141D5B74C4B5A /* RCTCamera.xcodeproj */,
 				3BF94AD0B6064A239EA2AF0F /* AirMaps.xcodeproj */,
+				E91AD575273D415EA7ABC043 /* RNFS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -966,6 +970,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -984,6 +989,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
