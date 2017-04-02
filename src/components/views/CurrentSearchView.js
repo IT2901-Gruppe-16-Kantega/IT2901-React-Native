@@ -73,7 +73,7 @@ var CurrentSearchView = React.createClass({
       <View style={styles.buttonArea2}>
         <Button text="Rapport" onPress={Actions.ReportView} />
         <View style={styles.buttonPadding}/>
-        <Button text="Tilbake" onPress={this.exit} />
+        <Button text="Tilbake" onPress={Actions.StartingView} />
       </View>
 
     </View>
@@ -100,10 +100,6 @@ var CurrentSearchView = React.createClass({
 	} else {
 		console.log("Not ios or android")
 	}
-  },
-
-  exit() {
-    Actions.StartingView();
   },
 });
 

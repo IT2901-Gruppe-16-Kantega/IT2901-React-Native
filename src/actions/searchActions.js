@@ -2,7 +2,6 @@
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
 
 
-
 //functions for handling input in all searchfields
 
 export function inputFylke(input) {
@@ -35,7 +34,7 @@ export function chooseFylke(input) {
   }
 }
 
-export function inputVeg(input){
+export function inputVeg(input) {
   return {
     type: "INPUT_VEG",
     payload: input,
@@ -65,14 +64,15 @@ export function inputVegobjekttyper(input) {
     })
   }
 }
-export function chooseVegobjekttyper(input){
+
+export function chooseVegobjekttyper(input) {
   return{
     type: "CHOOSE_VEGOBJEKTTYPER",
     payload: input,
   }
 }
 
-export function setValidityOfVeg(input){
+export function setValidityOfVeg(input) {
   return function(dispatch) {
     if(input){
       dispatch({
@@ -87,7 +87,7 @@ export function setValidityOfVeg(input){
   }
 }
 
-export function inputKommune(input, fylke){
+export function inputKommune(input, fylke) {
   return function(dispatch) {
     searchForKommune(input, fylke)
     .then((result) => {
@@ -109,14 +109,15 @@ export function inputKommune(input, fylke){
     })
   }
 }
-export function chooseKommune(input){
-  return{
+
+export function chooseKommune(input) {
+  return {
     type: "CHOOSE_KOMMUNE",
     payload: input,
   }
 }
 
-export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype){
+export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype) {
   var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",
@@ -124,7 +125,7 @@ export function combineSearchParameters(fylke_input, veg_input, kommune_input, v
   }
 }
 
-export function resetSearchParameters(){
+export function resetSearchParameters() {
   return {
     type: "RESET_SEARCH_PARAMETERS"
   }
@@ -138,14 +139,13 @@ export function selectSearchCoordinate(coordinate) {
 }
 
 export function setFylkeCoordinates(coordinates) {
-  console.log("setFylkeCoordinates")
   return {
     type: "SET_FYLKE_COORDINATES",
     payload: coordinates,
   }
 }
 
-export function setURL(url){
+export function setURL(url) {
   return {
     type: "SET_URL",
     payload: url,

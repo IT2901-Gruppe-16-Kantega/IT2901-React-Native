@@ -53,8 +53,7 @@ class App extends Component {
           <Scene
             key="RoadSelectView"
             component={RoadSelectView}
-            title="Velg veg"
-            initial={false} />
+            title="Velg veg" />
           <Scene
             key="StoredDataView"
             component={StoredDataView}

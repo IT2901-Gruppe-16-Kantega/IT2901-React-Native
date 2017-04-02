@@ -288,7 +288,6 @@ export default function reducer(state={
     }
 
     case "SET_FYLKE_COORDINATES": {
-      console.log("SET_FYLKE_COORDINATES")
       return {...state, fylkeCoordinates: action.payload}
     }
   }

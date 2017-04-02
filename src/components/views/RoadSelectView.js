@@ -76,7 +76,7 @@ var RoadSelectView = React.createClass({
         const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
         message = closest.vegreferanse.kortform;
 
-        this.props.newInputVeg(veg);
+        this.props.inputVeg(veg);
         this.props.setFylkeCoordinates(parseGeometry(closest.fylke.kartutsnitt.wkt))
         this.props.chooseFylke([closest.fylke]);
         this.props.selectSearchCoordinate(coordinate);
@@ -114,7 +114,7 @@ function mapDispatchToProps(dispatch) {
   return {
     chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
     inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
-    newInputVeg: bindActionCreators(searchActions.newInputVeg, dispatch),
+    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
     selectSearchCoordinate: bindActionCreators(searchActions.selectSearchCoordinate, dispatch),
     setFylkeCoordinates: bindActionCreators(searchActions.setFylkeCoordinates, dispatch),
   }
