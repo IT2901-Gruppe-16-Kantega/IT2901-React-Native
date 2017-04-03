@@ -63,7 +63,7 @@ var SearchView = React.createClass({
       <TabBar
         elements={[{title: 'Manuell', onPress: this.tabPress, chosen: true},
           {title: "🗺 Kart", onPress: Actions.RoadSelectView, chosen: false},
-          {title: "📍 Nærmeste", onPress: this.getUserPositio, chosen: false},
+          {title: "📍 Nærmeste", onPress: this.getUserPosition, chosen: false},
         ]
         }
         />
