@@ -5,6 +5,7 @@ import App from './src/index'
 import store from './src/store'
 
 var STORAGE_KEY = '@AsyncStorageExample:key';
+var STORAGE_KEY2 = '@AsyncStorageExample:store';
 
 class NVDB extends Component {
 
@@ -24,7 +25,7 @@ class NVDB extends Component {
 
   _loadInitialState = async () => {
     try {
-      var value = await AsyncStorage.getItem(STORAGE_KEY);
+      var value = await AsyncStorage.getItem(STORAGE_KEY2);
       if (value !== null){
         console.log('value is: '+value)
       } else {
@@ -63,7 +64,7 @@ class NVDB extends Component {
   saveStore() {
     console.log('saving store...')
     try {
-      AsyncStorage.setItem(STORAGE_KEY, 'asd');
+      AsyncStorage.setItem(STORAGE_KEY2, JSON.stringify(store));
     } catch (error) {
       console.log('Saving error')
       console.log(erro)
