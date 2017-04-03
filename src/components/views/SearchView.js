@@ -171,7 +171,7 @@ createVegInput() {
           placeholderColor={templates.colors.placeholderColor}
           placeholder={'Skriv inn veg'}
           onChangeText={(text) => {
-            this.props.inputVeg({text});
+            this.props.inputVeg(text);
             this.createDynamicData();
 
           }}
@@ -205,7 +205,7 @@ createDynamicData() {
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
       const objektID = this.props.vegobjekttyper_input[0].id;
       const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input.text;
+      const veg = this.props.veg_input;
       var vegURL = ''
       var numberURL = ''
       var url = ''
@@ -262,7 +262,7 @@ createDynamicData() {
     else if (this.props.vegobjekttyper_chosen&&!this.props.fylke_chosen){
       if(this.props.veg_valid){
         const objektID = this.props.vegobjekttyper_input[0].id;
-        const veg = this.props.veg_input.text;
+        const veg = this.props.veg_input;
         var numberURL = baseURL+objektID+'/statistikk?'+'vegreferanse='+veg;
         var url = baseURL+objektID+'?vegreferanse='+'&inkluder=alle&srid=4326&antall=8000';
         fetchTotalNumberOfObjects(numberURL).then((response)=>{
@@ -314,7 +314,7 @@ search(){
       ]);
     }
     else{
-      var vegType = this.props.veg_input.text.substring(0,1).toLowerCase();
+      var vegType = this.props.veg_input.substring(0,1).toLowerCase();
       if(vegType=='k'){
         if(this.props.kommune_chosen){
           this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
