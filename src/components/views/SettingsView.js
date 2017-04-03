@@ -11,6 +11,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SettingSwitch from '../misc/SettingSwitch';
+import Button from '../misc/Button'
+import {purgeStore} from '../../store'
+
+
 
 import * as templates from '../../utilities/templates';
 import * as settingsActions from '../../actions/settingsActions';
@@ -37,6 +41,9 @@ var SettingsView = React.createClass({
             value={false}
             text={"Autolagring"}
             description={"IMPLEMENTER: Lagre søk automatisk."} />
+          <Button text="Purge Store" onPress={purgeStore} style={"big"} />
+
+
         </View>
         <View style={templates.footer}>
           <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
