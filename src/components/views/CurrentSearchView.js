@@ -50,6 +50,8 @@ var CurrentSearchView = React.createClass({
     </View>
   },
 
+  //TODO
+  //dette må kunne håndtere flere typer objekter
   createInformationView() {
     return <View style={styles.informationView}>
       <View style={styles.informationPadding}/>

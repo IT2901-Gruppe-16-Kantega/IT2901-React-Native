@@ -4,7 +4,12 @@ import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../util
 
 //functions for handling input in all searchfields
 
-export function inputFylke(input) {
+export function resetVegField(){
+  return{
+    type: "RESET_VEGFIELD"
+  }
+}
+export function inputFylke(input){
   return function(dispatch) {
     searchForFylke(input)
     .then((result) => {

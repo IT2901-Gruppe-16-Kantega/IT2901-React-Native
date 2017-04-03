@@ -72,6 +72,7 @@ var styles = StyleSheet.create({
     height: 30,
   },
   text: {
+    color: 'white',
     fontWeight: 'bold',
   },
   subText: {

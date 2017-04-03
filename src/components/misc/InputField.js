@@ -84,7 +84,9 @@ var InputField = React.createClass({
                     return data;
                   }
                 }))
-                this.props.chooserFunction(chosenData)}}
+                this.props.chooserFunction(chosenData)
+                this.props.updateFunction()
+              }}
               text={rowData.navn}
             />
           }
