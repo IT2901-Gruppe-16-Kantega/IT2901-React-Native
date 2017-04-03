@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
+  Text
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -9,10 +10,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import MapView from 'react-native-maps';
+import supercluster from 'supercluster';
 
 import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
+import MapMarker from '../misc/MapMarker'
 
 import {comparators, datatype} from '../../utilities/values';
 import {parseGeometry, randomColor} from '../../utilities/utils'
@@ -20,22 +23,33 @@ import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions';
 
 // Create a reference to the map, to change it's region
-var mapRef = null;
-var coordinates = [];
+var map = null;
 
 /*
 View that holds the map
 */
 var RoadMapView = React.createClass({
+  componentDidMount() {
+    this.getClusters();
+  },
+
   render() {
+    var markers;
+    if(this.props.clusteringOn) {
+      markers = this.createClusterMarkers();
+    } else {
+      markers = this.createMarkers();
+    }
+
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
         <MapView
-          ref={(ref) => {mapRef = ref}}
+          ref={(ref) => {map = ref} }
           style={styles.map}
-          >
-          {this.mapObjects()}
+          region={this.props.region}
+          onRegionChange={this.changeRegion} >
+          {markers}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
@@ -43,35 +57,46 @@ var RoadMapView = React.createClass({
     </View>
   },
 
-  mapObjects() {
-    coordinates = []
+  getClusters() {
+    const cluster = supercluster({
+      radius: 50,
+      maxZoom: 16,
+    });
 
-    // Goes through each fetched object, and creates a marker for the map.
-    var markers = this.props.allObjects.map(function(roadObject) {
+    try {
+      var features = [];
+      for(var i = 0; i < this.props.allObjects.length; i++) {
+        const roadObject = this.props.allObjects[i]
 
-      if(this.shouldSkipObject(roadObject)) {
-        return;
+        if(this.shouldSkipObject(roadObject)) {
+          continue;
+        }
+
+        const geo = parseGeometry(roadObject.geometri.wkt);
+
+        const feature = { properties: { id: roadObject.id, roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
+        features.push(feature);
       }
+      cluster.load(features);
+      const padding = 0;
+      const markers = cluster.getClusters([
+        this.props.region.latitude - (this.props.region.latitudeDelta * (0.5 + padding)),
+        this.props.region.longitude - (this.props.region.longitudeDelta * (0.5 + padding)),
+        this.props.region.latitude + (this.props.region.latitudeDelta * (0.5 + padding)),
+        this.props.region.longitude + (this.props.region.longitudeDelta * (0.5 + padding)),
+      ], this.getZoomLevel())
 
-      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
-      coordinates.push(objectCoordinates[0]);
+      this.props.setCluster(cluster);
+      this.props.setMarkers(markers);
 
-      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
-      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
-      if(objectCoordinates.length == 1) {
-        return marker;
-      } else {
+    } catch(e) {
+      alert(e);
+    }
+  },
 
-        return [<MapView.Polyline
-          key={roadObject.id + 'poly'}
-          coordinates={objectCoordinates}
-          strokeWidth={3}
-          strokeColor={color} />, marker]
-      }
-
-    }.bind(this));
-
-    return markers;
+  getZoomLevel() {
+    const angle = this.props.region.longitudeDelta;
+    return Math.round(Math.log(360 / angle) / Math.LN2);
   },
 
   shouldSkipObject(roadObject) {
@@ -132,10 +157,31 @@ var RoadMapView = React.createClass({
     return false;
   },
 
-  componentDidUpdate() {
-    if(mapRef) {
-      //mapRef.fitToCoordinates(coordinates, { edgePadding: { top: 50, right: 20, bottom: 50, left: 50 }, animated: true })
-    }
+  createMarkers() {
+    var markers = this.props.allObjects.map(function(roadObject) {
+
+      if(this.shouldSkipObject(roadObject)) {
+        return;
+      }
+
+      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
+
+      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
+      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
+      if(objectCoordinates.length == 1) {
+        return marker;
+      } else {
+
+        return [<MapView.Polyline
+          key={roadObject.id + 'poly'}
+          coordinates={objectCoordinates}
+          strokeWidth={3}
+          strokeColor={color} />, marker]
+      }
+
+    }.bind(this));
+
+    return markers;
   },
 
   createMarker(obj, coords, color) {
@@ -156,6 +202,70 @@ var RoadMapView = React.createClass({
       </MapView.Callout>
     </MapView.Marker>
   },
+
+  createClusterMarkers() {
+    return this.props.markers.map((marker, index) => {
+      var view;
+
+      if(marker.properties.cluster) {
+        view = <View style={styles.cluster}>
+          <Text style={styles.clusterText}>{marker.properties.point_count_abbreviated}</Text>
+        </View>
+      }
+      else {
+        const objectCoordinates = parseGeometry(marker.properties.roadObject.geometri.wkt);
+
+        if(objectCoordinates.length > 1) {
+          return <MapView.Polyline
+            key={marker.properties.roadObject.id + 'poly'}
+            coordinates={objectCoordinates}
+            strokeWidth={3}
+            strokeColor={templates.colors.blue} />
+        } else {
+          view = <MapView.Callout style={{flex: 1, position: 'relative'}}>
+            <MarkerCallout
+              roadObject={marker.properties.roadObject}
+            />
+          </MapView.Callout>
+        }
+      }
+
+      return <MapView.Marker
+        coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
+        key={index}
+        onPress={this.markerPressed.bind(this, marker)}
+        onSelect={this.markerPressed.bind(this, marker)}
+        pinColor={templates.colors.blue} >
+        {view}
+      </MapView.Marker>
+    })
+  },
+
+  changeRegion(region) {
+    this.props.setMarkers([]);
+    this.props.setCluster(null);
+
+    this.props.setRegion(region);
+    this.getClusters();
+  },
+
+  markerPressed(marker) {
+    let isCluster = marker.properties && marker.properties.cluster;
+
+    if(!isCluster) {
+      return;
+    }
+
+    let region = this.props.region;
+
+    const newRegion = {
+      latitude: marker.geometry.coordinates[0],
+      longitude: marker.geometry.coordinates[1],
+      longitudeDelta: isCluster ? region.longitudeDelta / 5 : region.longitudeDelta,
+      latitudeDelta: isCluster ? region.latitudeDelta / 5 : region.latitudeDelta,
+    }
+    map.animateToRegion(newRegion, 200);
+  },
 });
 
 var styles = StyleSheet.create({
@@ -169,7 +279,6 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    //justifyContent: 'center',
     alignItems: 'stretch',
   },
   contentView: {
@@ -182,6 +291,17 @@ var styles = StyleSheet.create({
     left: 0,
     bottom: 0,
   },
+  cluster: {
+    backgroundColor: templates.colors.blue,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 100,
+  },
+  clusterText: {
+    color: templates.colors.white,
+    fontWeight: 'bold',
+  }
 })
 
 function mapStateToProps(state) {
@@ -189,9 +309,7 @@ function mapStateToProps(state) {
     allObjects: state.dataReducer.currentRoadSearch.roadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
-    region: state.dataReducer.currentRoadSearch.searchParameters[0].senterpunkt.wkt,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
-    markers: state.mapReducer.markers,
 
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
@@ -201,13 +319,21 @@ function mapStateToProps(state) {
     allSelectedFilters: state.filterReducer.allSelectedFilters,
 
     selectedMarker: state.mapReducer.selectedMarker,
+
+    region: state.mapReducer.region,
+    markers: state.mapReducer.markers,
+    cluster: state.mapReducer.cluster,
+    clusteringOn: state.settingsReducer.clusteringOn,
   };}
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateMapMarkers: bindActionCreators(mapActions.updateMapMarkers, dispatch),
     selectObject: bindActionCreators(mapActions.selectObject, dispatch),
     selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
+
+    setRegion: bindActionCreators(mapActions.setRegion, dispatch),
+    setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
+    setCluster: bindActionCreators(mapActions.setCluster, dispatch),
   }
 };
 
