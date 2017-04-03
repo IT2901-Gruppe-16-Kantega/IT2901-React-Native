@@ -13,7 +13,7 @@ import MarkerCallout from '../misc/MarkerCallout'
 
 import * as searchActions from '../../actions/searchActions';
 import {fetchCloseby} from '../../utilities/wrapper'
-import {fylker} from '../../data/fylker';
+import {kommuner} from '../../data/kommuner';
 import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates'
 
@@ -28,15 +28,16 @@ var RoadSelectView = React.createClass({
     const coords = this.props.searchCoordinate;
 
     var polygons = [];
-    /*for(var i = 0; i < fylker.length; i++) {
+    for(var i = 0; i < kommuner.length; i++) {
+      const kommune = kommuner[i]
       const color = randomColor(0.25)
       polygons.push(<MapView.Polygon
         key={i}
-        coordinates={parseGeometry(fylker[i].kartutsnitt.wkt)}
+        coordinates={parseGeometry(kommune.kartutsnitt.wkt)}
         strokeColor={color}
         fillColor={color}
         ></MapView.Polygon>)
-    }*/
+    }
 
     if(this.props.searchCoordinate) {
       marker = <MapView.Marker

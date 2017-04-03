@@ -5,13 +5,6 @@ export function setSidebarFrame(frame) {
   }
 }
 
-export function updateMapMarkers(markers) {
-  return {
-    type: "UPDATE_MAP_MARKERS",
-    payload: markers,
-  }
-}
-
 export function toggleSecondSidebar(open) {
   return {
     type: "TOGGLE_SECOND_SIDEBAR",
@@ -31,5 +24,26 @@ export function selectMarker(marker) {
   return {
     type: "SELECT_MARKER",
     payload: marker,
+  }
+}
+
+export function setRegion(region) {
+  return {
+    type: "SET_REGION",
+    payload: region,
+  }
+}
+
+export function setMarkers(markers) {
+  return {
+    type: "SET_MARKERS",
+    payload: markers,
+  }
+}
+
+export function setCluster(cluster) {
+  return {
+    type: "SET_CLUSTER",
+    payload: cluster,
   }
 }

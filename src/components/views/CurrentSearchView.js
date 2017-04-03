@@ -17,8 +17,10 @@ import userDefaults from 'react-native-user-defaults'
 
 import Button from '../misc/Button'
 
+import {parseGeometry} from '../../utilities/utils'
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
+import * as mapActions from '../../actions/mapActions'
 
 /*
 Shows information about current search, buttons for viewing map and opening AR
@@ -26,6 +28,8 @@ Shows information about current search, buttons for viewing map and opening AR
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
+    var coords = parseGeometry(this.props.currentRoadSearch.searchParameters[0].senterpunkt.wkt)[0];
+    this.props.setRegion({latitude: coords.latitude, longitude: coords.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3})
   },
 
   render() {
@@ -181,6 +185,7 @@ function mapStateToProps(state) {
     return {
       //dataActions
       resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+      setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     }
   }
   //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}

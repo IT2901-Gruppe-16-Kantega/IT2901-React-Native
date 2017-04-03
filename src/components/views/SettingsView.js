@@ -3,14 +3,17 @@ import {
   View,
   Text,
   StyleSheet,
- } from 'react-native';
+  Switch,
+} from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as templates from '../../utilities/templates'
-import * as settingsActions from '../../actions/settingsActions'
+import SettingSwitch from '../misc/SettingSwitch';
+
+import * as templates from '../../utilities/templates';
+import * as settingsActions from '../../actions/settingsActions';
 
 /*
 currently not used, but may be used to specify username, autoloading on/off etc
@@ -23,13 +26,17 @@ var SettingsView = React.createClass({
           <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
         </View>
         <View style={styles.contents}>
-          <Text style={styles.text}>
-            Her vil det komme settings slik at bruker kan definiere div instillinger
-            slik som f.eks skru av/på autolagring av søk.
-            Samt spesifisering av forhåndsutfylte søkeparametre:
-            kommune, veg, skilt e.l kommer opp standard ved nytt søk.
-            Her kan du også hente nye oppdateringer på vegobjektyper eller kommuner dersom det blir endret
-          </Text>
+          <SettingSwitch
+            onChange={this.props.setClustering}
+            value={this.props.clusteringOn}
+            text={"Markørgruppering"}
+            description={"BETA: Grupper nære martmarkører."} />
+          <SettingSwitch
+            disabled={true}
+            onChange={null}
+            value={false}
+            text={"Autolagring"}
+            description={"IMPLEMENTER: Lagre søk automatisk."} />
         </View>
         <View style={templates.footer}>
           <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
@@ -47,9 +54,9 @@ var styles = StyleSheet.create({
     backgroundColor: templates.colors.white
   },
   contents: {
-    flex: 10.5,
+    flex: 20,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: templates.colors.white
   },
@@ -59,6 +66,16 @@ var styles = StyleSheet.create({
 })
 
 
-function mapStateToProps(state) {return {user: state.dataReducer.fetching};}
-function mapDispatchToProps(dispatch) {return bindActionCreators(settingsActions, dispatch);}
+function mapStateToProps(state) {
+  return {
+    clusteringOn: state.settingsReducer.clusteringOn,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setClustering: bindActionCreators(settingsActions.setClustering, dispatch),
+  }
+}
+
 export default connect(mapStateToProps, mapDispatchToProps) (SettingsView);
