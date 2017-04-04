@@ -1,7 +1,8 @@
 // The store that handles all data associated with application
-
+import {AsyncStorage} from 'react-native'
 //importing redux stuff
-import { applyMiddleware, createStore} from 'redux'
+import { compose, applyMiddleware, createStore} from 'redux'
+import { persistStore, autoRehydrate} from 'redux-persist'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
@@ -10,9 +11,26 @@ import promise from 'redux-promise-middleware'
 import reducer from './reducers'
 
 //debug
-//const middleware = applyMiddleware(promise(), thunk, /*logger()*/)
+const middleware = applyMiddleware(promise(), thunk, /*logger()*/)
 
 //kjøring
-const middleware = applyMiddleware(promise(), thunk)
+//const middleware = applyMiddleware(promise(), thunk)
 
-export default createStore(reducer, middleware)
+const store = createStore(
+  reducer,
+  undefined,
+  compose(
+    middleware,
+    autoRehydrate()
+  )
+)
+
+const persistor = persistStore(store, {storage: AsyncStorage},() => {
+  console.log('rehydration complete')})
+
+function purgeStore(){
+  console.log('Purge store');
+  persistor.purge();
+}
+
+export {store, purgeStore}

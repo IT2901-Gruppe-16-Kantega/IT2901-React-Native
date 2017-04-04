@@ -95,7 +95,6 @@ export default function reducer(state={
         }
       }
     }
-
     //used by filewriter
     case "WRITING_FILE": {
       return {
@@ -103,9 +102,13 @@ export default function reducer(state={
         writing_file: true,
       }
     }
-
     case "SET_OBJEKTTYPE_INFO": {
       return{...state, objekttypeInfo: action.payload}
+    }
+    case "ADD_ROAD_OBJECT": {
+      var newRoadSearch = state.currentRoadSearch;
+      newRoadSearch.roadObjects.push(action.payload);
+      return {...state, currentRoadSearch: newRoadSearch}
     }
   }
   return state

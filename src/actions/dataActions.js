@@ -125,3 +125,10 @@ export function inputFylke(input){
     })
   }
 }
+
+export function addRoadObject(object) {
+  return {
+    type: "ADD_ROAD_OBJECT",
+    payload: object,
+  }
+}

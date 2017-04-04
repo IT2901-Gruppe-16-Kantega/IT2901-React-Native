@@ -13,6 +13,10 @@ import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
 
 import SettingSwitch from '../misc/SettingSwitch';
+import Button from '../misc/Button'
+import {purgeStore} from '../../store'
+
+
 
 import * as templates from '../../utilities/templates';
 import * as reportActions from '../../actions/reportActions';
@@ -46,6 +50,7 @@ var SettingsView = React.createClass({
             value={false}
             text={"Gjør endring"}
             description={this.props.changeCount} />
+          <Button text="Purge Store" onPress={purgeStore} style={"big"} />
         </View>
         <View style={templates.footer}>
           <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
