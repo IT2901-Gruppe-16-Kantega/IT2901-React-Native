@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 
 import SettingSwitch from '../misc/SettingSwitch';
 import Button from '../misc/Button'
-import {purgeStore} from '../../store'
+import storageEngine from '../../utilities/storageEngine'
 
 
 
@@ -41,7 +41,7 @@ var SettingsView = React.createClass({
             value={false}
             text={"Autolagring"}
             description={"IMPLEMENTER: Lagre søk automatisk."} />
-          <Button text="Purge Store" onPress={purgeStore} style={"big"} />
+          <Button text="Purge Store" onPress={storageEngine.clear} style={"big"} />
 
 
         </View>

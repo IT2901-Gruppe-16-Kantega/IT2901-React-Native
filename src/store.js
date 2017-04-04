@@ -5,20 +5,54 @@ import { compose, applyMiddleware, createStore} from 'redux'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
-//storage imports
+/*storage imports
 import * as storage from 'redux-storage'
 import createEngine from 'redux-storage-engine-reactnativeasyncstorage';
-import storageEngine from './utilities/storageEngine'
-import filter from 'redux-storage-decorator-filter'
-//import actions and reducers
+import filter from 'redux-storage-decorator-filter'*/
+//import storage, actions and reducers
 import * as searchActions from './actions/searchActions'
 import reducers from './reducers'
 
+
+//Debug
+//const middleware = applyMiddleware(promise(), thunk, logger())
+
+//kjøring
+const middleware = applyMiddleware(promise(), thunk)
+
+const store = createStore(reducers, middleware)
+
+
+
+
+
+
+/*
+
+const temp1 = {key:'asd'};
+const temp2 = {key:'asd2'};
+
+storage.saveSearch(temp1)
+storage.saveSearch(temp2)
+
+storage.load();
+storage.read()
+*/
+
+export {store}
+
+
+
+/*
+  unused at this point:
+
 //creating the list of actions that should issue a save
 const savingActions = ['ADD_NEW_SEARCH_OBJECT'];
+//const savingActions = ['ASD'];
 //wrapping the reducer and create the storage enginge
 const reducer = storage.reducer(reducers);
 const engine = storageEngine('NVDB-store');
+engine.initialize();
 //filter out the only parts of state that should be loaded
 engine = filter(engine,
   [
@@ -36,10 +70,10 @@ const promiseMiddleware = promise();
 middleWare.push(promiseMiddleware)
 
 //Remove if not debugging
-/*
+
 const loggerMiddleware = logger();
 middleWare.push(loggerMiddleware);
-*/
+
 //Creating the store
 const createStoreWithMiddleware = applyMiddleware(...middleWare)(createStore);
 const store = createStoreWithMiddleware(reducer);
@@ -51,7 +85,7 @@ load(store)
 
 //function used to completely erase the saved store
 function purgeStore() {
+  //engine.save();
   engine.clear();
 }
-
-export {store, purgeStore}
+*/
