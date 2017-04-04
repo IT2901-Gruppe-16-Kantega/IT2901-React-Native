@@ -18,7 +18,7 @@ import reducers from './reducers'
 const savingActions = ['ADD_NEW_SEARCH_OBJECT'];
 //wrapping the reducer and create the storage enginge
 const reducer = storage.reducer(reducers);
-const engine = storageEngine('NVDB');
+const engine = storageEngine('NVDB-store');
 //filter out the only parts of state that should be loaded
 engine = filter(engine,
   [
