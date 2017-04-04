@@ -36,9 +36,10 @@ const promiseMiddleware = promise();
 middleWare.push(promiseMiddleware)
 
 //Remove if not debugging
+/*
 const loggerMiddleware = logger();
 middleWare.push(loggerMiddleware);
-
+*/
 //Creating the store
 const createStoreWithMiddleware = applyMiddleware(...middleWare)(createStore);
 const store = createStoreWithMiddleware(reducer);
