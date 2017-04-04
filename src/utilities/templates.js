@@ -2,6 +2,7 @@
 export var colors = {
   black: 'black',
   blue: '#008ec2',
+  blueTransparent: 'rgba(0, 142, 194, 0.5)',
   orange: '#ed9300',
   green: '#58b02c',
   white: 'white',

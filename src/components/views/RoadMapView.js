@@ -29,18 +29,42 @@ var map = null;
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentDidMount() {
-    this.getClusters();
+  componentWillMount() {
+    this.createCluster();
+  },
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
+      this.createCluster();
+    }
+  },
+
+  createCluster() {
+    const cluster = supercluster({
+      maxZoom: 13,
+      radius: 75,
+    });
+
+    var features = [];
+    for(var i = 0; i < this.props.allObjects.length; i++) {
+      const roadObject = this.props.allObjects[i]
+
+      if(this.shouldSkipObject(roadObject)) {
+        continue;
+      }
+
+      const geo = parseGeometry(roadObject.geometri.wkt);
+
+      const feature = { properties: { id: roadObject.id, roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
+      features.push(feature);
+    }
+    cluster.load(features);
+    this.props.setCluster(cluster);
+
+    this.getMarkersAtRegion();
   },
 
   render() {
-    var markers;
-    if(this.props.clusteringOn) {
-      markers = this.createClusterMarkers();
-    } else {
-      markers = this.createMarkers();
-    }
-
     return <View style={styles.container}>
       <View style={styles.top}/>
       <View style={styles.contentView}>
@@ -49,7 +73,7 @@ var RoadMapView = React.createClass({
           style={styles.map}
           region={this.props.region}
           onRegionChange={this.changeRegion} >
-          {markers}
+          {this.props.markers}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
@@ -57,40 +81,17 @@ var RoadMapView = React.createClass({
     </View>
   },
 
-  getClusters() {
-    const cluster = supercluster({
-      radius: 50,
-      maxZoom: 16,
-    });
-
-    try {
-      var features = [];
-      for(var i = 0; i < this.props.allObjects.length; i++) {
-        const roadObject = this.props.allObjects[i]
-
-        if(this.shouldSkipObject(roadObject)) {
-          continue;
-        }
-
-        const geo = parseGeometry(roadObject.geometri.wkt);
-
-        const feature = { properties: { id: roadObject.id, roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
-        features.push(feature);
-      }
-      cluster.load(features);
-      const padding = 0;
-      const markers = cluster.getClusters([
+  getMarkersAtRegion() {
+    if(this.props.cluster) {
+      const padding = 0.25;
+      const markers = this.props.cluster.getClusters([
         this.props.region.latitude - (this.props.region.latitudeDelta * (0.5 + padding)),
         this.props.region.longitude - (this.props.region.longitudeDelta * (0.5 + padding)),
         this.props.region.latitude + (this.props.region.latitudeDelta * (0.5 + padding)),
         this.props.region.longitude + (this.props.region.longitudeDelta * (0.5 + padding)),
       ], this.getZoomLevel())
 
-      this.props.setCluster(cluster);
-      this.props.setMarkers(markers);
-
-    } catch(e) {
-      alert(e);
+      this.props.setMarkers(this.createMapFeatures(markers));
     }
   },
 
@@ -157,61 +158,22 @@ var RoadMapView = React.createClass({
     return false;
   },
 
-  createMarkers() {
-    var markers = this.props.allObjects.map(function(roadObject) {
-
-      if(this.shouldSkipObject(roadObject)) {
-        return;
-      }
-
-      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
-
-      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
-      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
-      if(objectCoordinates.length == 1) {
-        return marker;
-      } else {
-
-        return [<MapView.Polyline
-          key={roadObject.id + 'poly'}
-          coordinates={objectCoordinates}
-          strokeWidth={3}
-          strokeColor={color} />, marker]
-      }
-
-    }.bind(this));
-
-    return markers;
-  },
-
-  createMarker(obj, coords, color) {
-    var ref;
-
-    return <MapView.Marker
-      coordinate={coords}
-      key={obj.id}
-      ref={(r) => {ref = r}}
-      onPress={this.props.selectMarker.bind(this, ref)}
-      onSelect={this.props.selectMarker.bind(this, ref)}
-      pinColor={color}
-      >
-      <MapView.Callout style={{flex: 1, position: 'relative'}}>
-        <MarkerCallout
-          roadObject={obj}
-        />
-      </MapView.Callout>
-    </MapView.Marker>
-  },
-
-  createClusterMarkers() {
-    return this.props.markers.map((marker, index) => {
-      var view;
-
+  createMapFeatures(markers) {
+    return markers.map((marker, index) => {
       if(marker.properties.cluster) {
-        view = <View style={styles.cluster}>
-          <Text style={styles.clusterText}>{marker.properties.point_count_abbreviated}</Text>
-        </View>
+        return <MapView.Marker
+          coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
+          key={index}
+          onPress={this.markerPressed.bind(this, marker)}
+          onSelect={this.markerPressed.bind(this, marker)} >
+          <View style={styles.cluster}>
+            <View style={styles.clusterInner}>
+              <Text style={styles.clusterText}>{marker.properties.point_count_abbreviated}</Text>
+            </View>
+          </View>
+        </MapView.Marker>
       }
+
       else {
         const objectCoordinates = parseGeometry(marker.properties.roadObject.geometri.wkt);
 
@@ -222,34 +184,36 @@ var RoadMapView = React.createClass({
             strokeWidth={3}
             strokeColor={templates.colors.blue} />
         } else {
-          view = <MapView.Callout style={{flex: 1, position: 'relative'}}>
-            <MarkerCallout
-              roadObject={marker.properties.roadObject}
-            />
-          </MapView.Callout>
+          return <MapView.Marker
+            coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
+            key={index}
+            onPress={this.markerPressed.bind(this, marker)}
+            onSelect={this.markerPressed.bind(this, marker)}
+            pinColor={templates.colors.blue} >
+            <MapView.Callout style={{flex: 1, position: 'relative'}}>
+              <MarkerCallout
+                roadObject={marker.properties.roadObject}
+              />
+            </MapView.Callout>
+          </MapView.Marker>
         }
       }
-
-      return <MapView.Marker
-        coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
-        key={index}
-        onPress={this.markerPressed.bind(this, marker)}
-        onSelect={this.markerPressed.bind(this, marker)}
-        pinColor={templates.colors.blue} >
-        {view}
-      </MapView.Marker>
     })
   },
 
   changeRegion(region) {
-    this.props.setMarkers([]);
-    this.props.setCluster(null);
-
     this.props.setRegion(region);
-    this.getClusters();
+    this.getMarkersAtRegion()
   },
 
   markerPressed(marker) {
+    //const children = this.props.cluster.getChildren(marker.properties.cluster_id, this.getZoomLevel());
+
+    // Check if children are road objects
+    /*if(children[0].properties.roadObject) {
+      for(var i = 0)
+    }*/
+
     let isCluster = marker.properties && marker.properties.cluster;
 
     if(!isCluster) {
@@ -292,8 +256,18 @@ var styles = StyleSheet.create({
     bottom: 0,
   },
   cluster: {
+    backgroundColor: templates.colors.blueTransparent,
+    height: 70,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 100,
+  },
+  clusterInner: {
     backgroundColor: templates.colors.blue,
     padding: 10,
+    height: 50,
+    width: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,
