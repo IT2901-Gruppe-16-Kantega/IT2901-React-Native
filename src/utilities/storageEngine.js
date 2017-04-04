@@ -1,31 +1,36 @@
 import { AsyncStorage, Platform } from 'react-native';
 import RNFS from 'react-native-fs'
 
-const rootPath = RNFS.DocumentDirectoryPath + "/NVDB-storage";
-const searchesPath = RNFS.DocumentDirectoryPath + "/NVDB-storage/searches";
+// RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+
+
+const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
+const searchesPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage/searches";
+
+const rootPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/NVDB-storage";
+const searchesPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb//NVDB-storage/searches";
 
 export default (key) => ({
 
-  initialize() {    // bruk RNFS.exists(filepath: string): Promise<boolean>
-    //if os=== etc
-    //handle folder allready existing
+  initialize() {
     console.log('initializing storage');
-    RNFS.mkdir(rootPath)
-    RNFS.mkdir(searchesPath)
-
-    //create files etc.
+    if (Platform.OS === "ios") {
+      RNFS.mkdir(rootPathIOS)
+      RNFS.mkdir(searchesPathIOS)
+    }
+    else if (Platform.OS === "android") {
+      RNFS.mkdir(rootPathAndroid)
+      RNFS.mkdir(searchesPathAndroid)
+    }
   },
   load() {
     console.log('loading...')
     if(Platform.OS === "ios"){
-      //create ios path
-      return this.loadFiles(searchesPath)
-
+      return this.loadFiles(searchesPathIOS)
     }
     else if (Platform.OS == "android"){
-
+      return this.loadFiles(searchesPathAndroid)
     }
-
   },
   loadFiles(path) {
     console.log('loadFiles')
@@ -45,13 +50,14 @@ export default (key) => ({
     return storedSearches;
   },
 
+  //clean, move body into own function
   saveSearch(roadSearch) {
     console.log('saving...')
     console.log(roadSearch.roadObjects.length)
     const jsonSearch = JSON.stringify(roadSearch);
     console.log(jsonSearch.length)
     if(Platform.OS === "ios"){
-      let dataPath = searchesPath+"/"+roadSearch.key+".json";
+      let dataPath = searchesPathIOS+"/"+roadSearch.key+".json";
       console.log(dataPath)
       return RNFS.writeFile(dataPath, jsonSearch)
       .then((success) => {
@@ -62,7 +68,15 @@ export default (key) => ({
       })
     }
     else if (Platform.OS === "android"){
-
+      let dataPath = searchesPathAndroid+"/"+roadSearch.key+".json";
+      console.log(dataPath)
+      return RNFS.writeFile(dataPath, jsonSearch)
+      .then((success) => {
+        console.log("data saved successfully")
+      })
+      .catch((err) => {
+        console.error("An error occurred when saving data.json", err)
+      })
     }
 
   },
@@ -76,44 +90,4 @@ export default (key) => ({
 
   },
 
-
-  /* Methods based on AsyncStorage: */
-  loadAS() {
-    if(Platform.OS === "ios"){
-      console.log("Operating System is ios")
-      console.log('loading...')
-      return AsyncStorage.getItem(key)
-      .then((jsonState) => JSON.parse(jsonState) || {});
-    }
-    else if (Platform.OS == "android"){
-
-    }
-
-  },
-  //jsonState is the entire state
-  //could split parts of state into separate files
-  //logikk for inndeling av state i separate filer skal skje her
-  saveAS() {
-    if(Platform.OS === "ios"){
-      console.log('saving...')
-      const jsonState = JSON.stringify(state);
-      return AsyncStorage.setItem(key, jsonState, (error)=>{
-        console.log('saved. Error: '+error)
-      });
-    }else if (Platform.OS === "android"){
-
-    }
-
-  },
-  clearAS() {
-    if(Platform.OS === "ios"){
-      console.log('clearing store')
-      AsyncStorage.clear((error)=>{
-        console.log('clearing. Error:'+error)
-      });
-    }else if (Platform.OS === "android"){
-
-    }
-
-  }
 });
