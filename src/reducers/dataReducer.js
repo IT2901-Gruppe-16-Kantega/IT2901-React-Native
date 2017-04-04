@@ -75,6 +75,8 @@ export default function reducer(state={
         fetching: false,
         fetched: false,
         error: null,
+        numberOfObjectsToBeFetched: 0,
+        numberOfObjectsFetchedSoFar: 0,
       }
     }
     case "CLEAR_DATA": {
