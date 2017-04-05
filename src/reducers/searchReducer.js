@@ -5,25 +5,32 @@ import * as templates from '../utilities/templates'
 export default function reducer(state={
   //legg inn react.proptypes
 
-  //FYLKESHIT
+  // Fylke variables
+  // List used to hold all the returned possible choises based on user input
   fylke_input: [],
+  // String used to set the text of inputfield when the user has chosen a value
+  fylke_text: '',
+  // Boolean used to specify if the user has chosen a value
   fylke_chosen: false,
+  // Color of the underline in textinput field, used to give feedback on validity of input
   fylke_color: templates.colors.orange,
 
-  //Vegshit
+  //Veg variables
   veg_input: '',
   veg_color: templates.colors.orange,
   veg_valid: false,
 
-  //kommune fields
+  //Kommune variables
   kommune_input: [],
+  kommune_text: '',
   kommune_chosen: false,
-  kommune_color: templates.colors.middleGray,
+  kommune_color: templates.colors.orange,
 
-  //vegobjekttyper fields
+  //Vegobjekttyper varibales
   vegobjekttyper_input: [],
+  vegobjekttyper_text: '',
   vegobjekttyper_chosen: false,
-  vegobjekttyper_color: templates.colors.orange,
+  vegobjekttyper_color: templates.colors.red,
 
   //
   url: '',
@@ -36,10 +43,6 @@ export default function reducer(state={
   fylkeCoordinates: null,
 
   //To be removed:
-  vegobjekttyper_text: '',
-  kommune_text: '',
-  fylke_text: '',
-
   fylke_navn: '',
   kommune_navn: '',
   vegobjekttyper_navn: '',

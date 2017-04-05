@@ -96,6 +96,7 @@ createFylkeInput(){
       <InputField type='fylke'
         list={this.props.fylke_input}
         choosenBool={this.props.fylke_chosen}
+        textType={this.props.fylke_text}
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
         colorController={this.props.fylke_color}
@@ -419,6 +420,7 @@ function mapStateToProps(state) {
   return {
     //fylke fields
     fylke_input: state.searchReducer.fylke_input,
+    fylke_text: state.searchReducer.fylke_text,
     fylke_chosen: state.searchReducer.fylke_chosen,
     fylke_color: state.searchReducer.fylke_color,
 
@@ -429,11 +431,13 @@ function mapStateToProps(state) {
 
     //kommune
     kommune_input: state.searchReducer.kommune_input,
+    kommune_text: state.searchReducer.kommune_text,
     kommune_chosen: state.searchReducer.kommune_chosen,
     kommune_color: state.searchReducer.kommune_color,
 
     //vegobjekttyper fields
     vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
+    vegobjekttyper_text: state.searchReducer.vegobjekttyper_text,
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
 

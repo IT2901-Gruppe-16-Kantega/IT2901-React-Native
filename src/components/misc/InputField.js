@@ -55,6 +55,7 @@ var InputField = React.createClass({
               this.props.inputFunction(text)
             }
           }}
+          value={this.props.textType}
           onBlur={this.props.updateFunction}
           keyboardType="default"
           returnKeyType='done'
