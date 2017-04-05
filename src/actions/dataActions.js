@@ -1,9 +1,20 @@
 import moment from 'moment';
 import {fetchFylker} from '../utilities/wrapper';
 
+//Creating storage, should move to own file to handel storing settings etc
+import storageEngine from '../utilities/storageEngine'
+const storage = storageEngine('NVDB-storage')
 /*
   Actions associated with searches
 */
+
+export function loadSearches(searches){
+  return {
+    type: "LOAD_SEARCHES",
+    payload: searches,
+  }
+
+}
 
 export function setCurrentRoadSearch(roadSearch){
   return {
@@ -23,11 +34,17 @@ export function createSearchObject(description, objects, report, combParams, obj
     searchParameters: combParams,
     objekttypeInfo: objekttypeInfo,
   }
-
+  searchSaved(roadSearch)
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
     payload: roadSearch,
   }
+}
+
+export function searchSaved(roadSearch) {
+  storage.saveSearch(roadSearch)
+  return {type: "SEARCH_SAVED"}
+
 }
 
 /*
@@ -102,6 +119,8 @@ export function setObjekttypeInfo(objekttypeInfo) {
     payload: objekttypeInfo,
   }
 }
+
+//TODO blir denne brukt????
 
 export function inputFylke(input){
   return function(dispatch) {

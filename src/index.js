@@ -32,7 +32,17 @@ import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
 
+import storageEngine from './utilities/storageEngine'
+
+
 class App extends Component {
+  componentWillMount() {
+    const storage = storageEngine('NVDB-storage')
+    storage.initialize();
+    var stored = storage.load();
+    console.log(stored)
+    this.props.loadSearches(stored)
+  }
   render() {
     return (
       <Router>
@@ -43,7 +53,7 @@ class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-            initial={true} 
+            initial={true}
             />
           <Scene
             key="SearchView"
@@ -137,6 +147,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
   }

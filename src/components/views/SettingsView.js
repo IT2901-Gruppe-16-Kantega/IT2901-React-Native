@@ -14,7 +14,7 @@ import * as Progress from 'react-native-progress';
 
 import SettingSwitch from '../misc/SettingSwitch';
 import Button from '../misc/Button'
-import {purgeStore} from '../../store'
+import storageEngine from '../../utilities/storageEngine'
 
 
 
@@ -22,6 +22,7 @@ import * as templates from '../../utilities/templates';
 import * as reportActions from '../../actions/reportActions';
 import * as settingsActions from '../../actions/settingsActions';
 
+const storage = storageEngine('NVDB-storage')
 /*
 currently not used, but may be used to specify username, autoloading on/off etc
 */
@@ -50,7 +51,7 @@ var SettingsView = React.createClass({
             value={false}
             text={"Gjør endring"}
             description={this.props.changeCount} />
-          <Button text="Purge Store" onPress={purgeStore} style={"big"} />
+          <Button text="Purge Store" onPress={storage.clear} style={"big"} />
         </View>
         <View style={templates.footer}>
           <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
