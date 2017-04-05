@@ -8,7 +8,7 @@ const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
 const searchesPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage/searches";
 
 const rootPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/NVDB-storage";
-const searchesPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb//NVDB-storage/searches";
+const searchesPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/NVDB-storage/searches";
 
 export default (key) => ({
 
