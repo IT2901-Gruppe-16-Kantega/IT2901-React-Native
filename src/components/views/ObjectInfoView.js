@@ -33,7 +33,8 @@ var ObjectInfoView = React.createClass({
     const {selectedObject, objekttypeInfo} = this.props;
     const {metadata} = selectedObject;
 
-    console.log(this.props.keyboardPadding)
+    console.log("hei");
+    console.log(selectedObject.egenskaper);
 
     return <View style={templates.container}>
         <View style={styles.mainInfo}>
@@ -65,6 +66,8 @@ var ObjectInfoView = React.createClass({
   },
 
   renderRow(rowData, sectionID, rowID, highlightRow) {
+    console.log(rowData);
+
     var enum_id = "";
     if(rowData.enum_id) {
       enum_id = " (" + rowData.enum_id + ")";
