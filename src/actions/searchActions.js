@@ -48,7 +48,6 @@ export function inputVeg(input) {
 
 export function inputVegobjekttyper(input) {
   return function(dispatch) {
-    //TODO
     searchForVegobjekttyper(input)
     .then((result) => {
       if(result.length == 1){
