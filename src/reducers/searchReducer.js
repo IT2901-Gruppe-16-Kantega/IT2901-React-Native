@@ -84,6 +84,7 @@ export default function reducer(state={
 
         kommune_color: templates.colors.middleGray,
         kommune_input: [],
+        kommune_chosen: false,
 
       }
     }
@@ -97,6 +98,7 @@ export default function reducer(state={
         fylke_color: templates.colors.orange,
         kommune_color: templates.colors.middleGray,
         kommune_input: [],
+        kommune_chosen: false,
 
       }
     }

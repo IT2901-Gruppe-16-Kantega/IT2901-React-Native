@@ -219,7 +219,8 @@ validate() {
 },
 
 check(url, shouldFetchNumber, isValidatingVeg) {
-  const fetchingURL = url.replace("/statistikk", "")
+  var fetchingURL = url.replace("/statistikk", "")
+  var fetchingURL = fetchingURL+'inkluder=alle&srid=4326&antall=8000'
   this.props.setURL(fetchingURL)
   fetchData(url).then((response)=>{
     if(response.antall == 0){
@@ -237,7 +238,7 @@ check(url, shouldFetchNumber, isValidatingVeg) {
   })
 },
 
-//if we want to give fetching number information we must wrap in if(vegobjekttyper_chosen)
+//TODO remove once it works 100%
 validate2() {
   console.log('validate')
   this.forceUpdate(() => {
