@@ -27,6 +27,17 @@ export default function reducer(state={
 }, action) {
   switch (action.type) {
     // cases associated with searches
+    case "LOAD_SEARCHES": {
+      return {
+        ...state,
+        allSearches: action.payload,
+      }
+    }
+    case "SEARCH_SAVED": {
+      return {
+        ...state,
+      }
+    }
     case "ADD_NEW_SEARCH_OBJECT": {
       return {
         ...state,

@@ -12,13 +12,14 @@ import { connect } from 'react-redux';
 
 import SettingSwitch from '../misc/SettingSwitch';
 import Button from '../misc/Button'
-import {purgeStore} from '../../store'
+import storageEngine from '../../utilities/storageEngine'
 
 
 
 import * as templates from '../../utilities/templates';
 import * as settingsActions from '../../actions/settingsActions';
 
+const storage = storageEngine('NVDB-storage')
 /*
 currently not used, but may be used to specify username, autoloading on/off etc
 */
@@ -41,7 +42,7 @@ var SettingsView = React.createClass({
             value={false}
             text={"Autolagring"}
             description={"IMPLEMENTER: Lagre søk automatisk."} />
-          <Button text="Purge Store" onPress={purgeStore} style={"big"} />
+          <Button text="Purge Store" onPress={storage.clear} style={"big"} />
 
 
         </View>
