@@ -204,13 +204,13 @@ validate() {
     else {fylkeStr = ''}
     if(this.props.kommune_chosen) {kommuneStr = 'kommune='+this.props.kommune_input[0].nummer+'&'}
     else {kommuneStr = ''}
-    if(this.props.veg_input.length != 0){
+    if(this.props.veg_input != ""){
       isValidatingVeg = true
       vegString = '&vegreferanse='+this.props.veg_input+'&'}
     else {
       vegString = ''
       isVegValidation = false
-      if(this.props.veg_valid){this.props.setValidityOfVeg('NOT_CHOSEN')}
+      this.props.setValidityOfVeg('NOT_CHOSEN')
     }
     var url = baseURL+vegobjektStr+'/statistikk?'+fylkeStr+kommuneStr+vegString
     console.log(url)
@@ -406,7 +406,7 @@ search() {
 },
 initiateSearch(numObjects) {
   if(numObjects>7999) {
-    Alert.alert("Advarsel!", "Fylke ikke spesifisert! "+
+    Alert.alert("Advarsel!",
     'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
     ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
       {text: 'Utfør', onPress: () => {

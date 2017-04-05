@@ -11,24 +11,29 @@ export function resetVegField(){
 }
 export function inputFylke(input){
   return function(dispatch) {
-    searchForFylke(input)
-    .then((result) => {
-      if(result.length == 1){
-        dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
-          result: result,
-          fylke_text: input,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
-          result: result,
-          fylke_text: input,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input})
-    })
+    if(input == ""){
+      dispatch({type: "INPUT_FYLKE_RESET"})
+    }
+    else{
+      searchForFylke(input)
+      .then((result) => {
+        if(result.length == 1){
+          dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
+            result: result,
+            fylke_text: input,
+          }})
+        }
+        else {
+          dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
+            result: result,
+            fylke_text: input,
+          }})
+        }
+      })
+      .catch((err) => {
+        dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input})
+      })
+    }
   }
 }
 
@@ -98,24 +103,29 @@ export function setValidityOfVeg(input) {
 
 export function inputKommune(input, fylke) {
   return function(dispatch) {
-    searchForKommune(input, fylke)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
-          result: result,
-          kommune_text: input,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
-          result: result,
-          kommune_text: input,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input})
-    })
+    if(input == ""){
+      dispatch({type: "INPUT_KOMMUNE_RESET"})
+    }
+    else{
+      searchForKommune(input, fylke)
+      .then((result) => {
+        if(result.length==1){
+          dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
+            result: result,
+            kommune_text: input,
+          }})
+        }
+        else {
+          dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
+            result: result,
+            kommune_text: input,
+          }})
+        }
+      })
+      .catch((err) => {
+        dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input})
+      })
+    }
   }
 }
 

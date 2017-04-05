@@ -53,6 +53,24 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
+    case "INPUT_KOMMUNE_RESET": {
+      return {
+        ...state,
+        kommune_input: [],
+        kommune_text: '',
+        kommune_chosen: false,
+        kommune_color: templates.colors.orange,
+      }
+    }
+    case "INPUT_FYLKE_RESET": {
+      return {
+        ...state,
+        fylke_input: [],
+        fylke_text: '',
+        fylke_chosen: false,
+        fylke_color: templates.colors.orange,
+      }
+    }
     case "RESET_VEGFIELD": {
       return {
         ...state,
@@ -82,7 +100,7 @@ export default function reducer(state={
         fylke_text: action.payload.fylke_text,
         fylke_color: templates.colors.orange,
 
-        kommune_color: templates.colors.middleGray,
+        kommune_color: templates.colors.orange,
         kommune_input: [],
         kommune_chosen: false,
 
@@ -96,7 +114,7 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
         fylke_color: templates.colors.orange,
-        kommune_color: templates.colors.middleGray,
+        kommune_color: templates.colors.orange,
         kommune_input: [],
         kommune_chosen: false,
 
@@ -111,7 +129,7 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_color: 'red',
 
-        kommune_color: templates.colors.middleGray,
+        kommune_color: templates.colors.orange,
         kommune_input: [],
 
       }
