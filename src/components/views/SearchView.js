@@ -95,8 +95,8 @@ createFylkeInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
       <InputField type='fylke'
         list={this.props.fylke_input}
-        choosenBool={this.props.fylke_chosen}
         textType={this.props.fylke_text}
+        choosenBool={this.props.fylke_chosen}
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
         colorController={this.props.fylke_color}
@@ -113,6 +113,7 @@ createKommuneInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
       <InputField type='kommune'
         list={this.props.kommune_input}
+        textType={this.props.kommune_text}
         choosenBool={this.props.kommune_chosen}
         inputFunction={this.props.inputKommune}
         chooserFunction={this.props.chooseKommune}
@@ -131,6 +132,7 @@ createTypeInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
       <InputField type='vegobjekttype'
         list={this.props.vegobjekttyper_input}
+        textType={this.props.vegobjekttyper_text}
         choosenBool={this.props.vegobjekttyper_chosen}
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
@@ -275,57 +277,54 @@ createDynamicData() {
   });
 },
 
-//change to only give a warning if objects to be fetched is > 8.000
-//make it possible to only choose kommune
-search(){
+
+search() {
   this.forceUpdate(()=>{
-    if(this.props.numberOfObjectsToBeFetched==0){
+    var numObjects = this.props.numberOfObjectsToBeFetched
+    if(numObjects==0){
       Alert.alert("Feil", "Dette søket generer ingen objekter");
     }
     else if (!this.props.vegobjekttyper_chosen){
       Alert.alert("Feil", "Ingen vegobjekttyper spesifisert")
     }
-    else if (!this.props.fylke_chosen){
-      Alert.alert("Advarsel!", "Fylke ikke spesifisert! "+
-      'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
-      ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
-        {text: 'Utfør', onPress: () => {
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
-        }},
-        {text: 'Avbryt'},
-      ]);
-    }
-    else if(!this.props.veg_valid){
-      Alert.alert("Advarsel!", "Veg ikke spesifisert! "+
-      'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
-      ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
-        {text: 'Utfør', onPress: () => {
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
-        }},
-        {text: 'Avbryt'},
-      ]);
-    }
     else{
       var vegType = this.props.veg_input.substring(0,1).toLowerCase();
       if(vegType=='k'){
         if(this.props.kommune_chosen){
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
+          this.initiateSearch(numObjects);
         }
         else{
           Alert.alert("Feil", "Kommune må spesifiseres når vegtype er kommunalveg")
         }
       }
       else{
-        this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-        Actions.LoadingView();
+        this.initiateSearch(numObjects);
       }
     }
   })
 },
+initiateSearch(numObjects) {
+  if(numObjects>7999) {
+    Alert.alert("Advarsel!", "Fylke ikke spesifisert! "+
+    'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
+    ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
+      {text: 'Utfør', onPress: () => {
+        this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+        Actions.LoadingView();
+      }},
+      {text: 'Avbryt'},
+    ]);
+  }
+  else {
+    this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+    Actions.LoadingView();
+  }
+},
 });
+
+
+
+
 
 var styles = StyleSheet.create({
 
