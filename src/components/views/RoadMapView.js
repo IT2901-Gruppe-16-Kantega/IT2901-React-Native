@@ -111,14 +111,14 @@ var RoadMapView = React.createClass({
         sist_modifisert: now.format("YYYY-MM-DD HH:mm:ss"),
         startdato: now.format("YYYY-MM-DD"),
       },
-      egenskaper: {
+      egenskaper: [{
         id: 5530,
         navn: "Skiltnummer",
         datatype: 30,
         datatype_tekst: "FlerverdiAttributt, Tekst",
         verdi: "378.2 - Slutt på parkeringssone",
         enum_id: 7682,
-      },
+      }],
       geometri: {
         wkt: "POINT (" + coords.latitude + " " + coords.longitude + ")",
         egengeometri: false,
