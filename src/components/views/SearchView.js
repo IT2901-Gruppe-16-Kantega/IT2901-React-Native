@@ -22,7 +22,7 @@ import InputField from '../misc/InputField'
 import TabBar from '../misc/TabBar'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
-import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby} from '../../utilities/wrapper'
+import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
@@ -51,11 +51,10 @@ var SearchView = React.createClass({
           scrollEnabled={false}
           keyboardShouldPersistTaps='always'
           >
-
           {this.createTypeInput()}
           {this.createFylkeInput()}
-          {this.createVegInput()}
           {this.createKommuneInput()}
+          {this.createVegInput()}
         </ScrollView>
       </View>
       {this.createStatistics()}
@@ -98,11 +97,10 @@ createFylkeInput(){
         list={this.props.fylke_input}
         textType={this.props.fylke_text}
         choosenBool={this.props.fylke_chosen}
-        editable={true}
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
         colorController={this.props.fylke_color}
-        updateFunction={this.createDynamicData}
+        updateFunction={this.validate}
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
@@ -110,26 +108,23 @@ createFylkeInput(){
   </View>
 },
 createKommuneInput(){
-  if(this.props.kommune_enabled){
-    return <View>
-      <View style={styles.kommuneArea}>
-        <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
-        <InputField type='kommune'
-          list={this.props.kommune_input}
-          textType={this.props.kommune_text}
-          choosenBool={this.props.kommune_chosen}
-          editable={this.props.kommune_enabled}
-          inputFunction={this.props.inputKommune}
-          chooserFunction={this.props.chooseKommune}
-          colorController={this.props.kommune_color}
-          updateFunction={this.createDynamicData}
-          extData={this.props.fylke_input}
-          />
-        <View style={styles.parameterRightPadding}><Text></Text></View>
-      </View>
-      <View style={styles.parameterBottomPadding}><Text></Text></View>
+  return <View>
+    <View style={styles.kommuneArea}>
+      <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
+      <InputField type='kommune'
+        list={this.props.kommune_input}
+        textType={this.props.kommune_text}
+        choosenBool={this.props.kommune_chosen}
+        inputFunction={this.props.inputKommune}
+        chooserFunction={this.props.chooseKommune}
+        colorController={this.props.kommune_color}
+        updateFunction={this.validate}
+        extData={this.props.fylke_input}
+        />
+      <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-  }
+    <View style={styles.parameterBottomPadding}><Text></Text></View>
+  </View>
 },
 createTypeInput(){
   return <View>
@@ -139,11 +134,10 @@ createTypeInput(){
         list={this.props.vegobjekttyper_input}
         textType={this.props.vegobjekttyper_text}
         choosenBool={this.props.vegobjekttyper_chosen}
-        editable={true}
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
         colorController={this.props.vegobjekttyper_color}
-        updateFunction={this.createDynamicData}
+        updateFunction={this.validate}
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
@@ -172,7 +166,7 @@ createVegInput() {
           placeholder={'Skriv inn veg'}
           onChangeText={(text) => {
             this.props.inputVeg(text);
-            this.createDynamicData();
+            this.validate();
 
           }}
           keyboardType = "default"
@@ -197,141 +191,99 @@ createButton(){
   </View>
 },
 
-//handle case where all fields are cleared->reset search
-//createDynamic fields, validity info, and URL
-//TODO clean, and make it possible to chose combination type and veg
-createDynamicData() {
-  this.forceUpdate(()=>{
-    if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){
-      const objektID = this.props.vegobjekttyper_input[0].id;
-      const fylkeID = this.props.fylke_input[0].nummer;
-      const veg = this.props.veg_input;
-      var vegURL = ''
-      var numberURL = ''
-      var url = ''
-      if(this.props.kommune_chosen){
-        const kommuneID = this.props.kommune_input[0].nummer;
-        if(this.props.veg_valid){
-          vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
-          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg;
-          url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-        }
-        else{
-          vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
-          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&kommune='+kommuneID;
-          url = baseURL+objektID+'?fylke='+fylkeID+'&kommune='+kommuneID+'&inkluder=alle&srid=4326&antall=8000';
-        }
-
-      }
-      else{
-        vegURL = baseURL+'532/statistikk?fylke='+fylkeID+'&vegreferanse='+veg
-        if(this.props.veg_valid){
-          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID+'&vegreferanse='+veg;
-          url = baseURL+objektID+'?fylke='+fylkeID+'&vegreferanse='+veg+'&inkluder=alle&srid=4326&antall=8000';
-        }
-        else{
-          numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID;
-          url = baseURL+objektID+'?fylke='+fylkeID+'&inkluder=alle&srid=4326&antall=8000';
-        }
-      }
-      fetchVeg(vegURL).then((response)=>{
-        if(response.antall == 0){
-          this.props.setValidityOfVeg(false)
-        }
-        else if(response.antall>0){
-          this.props.setValidityOfVeg(true)
-        }
-        else if(response[0].code==4005){
-          if(this.props.veg_valid){
-            this.props.resetVegField()
-            numberURL = baseURL+objektID+'/statistikk?fylke='+fylkeID;
-            fetchTotalNumberOfObjects(numberURL).then((response)=>{
-              this.props.setURL(url);
-              this.props.setNumberOfObjectsToBeFetched(response.antall);
-            });
-          }
-        }
-        else{
-        }
-      })
-      fetchTotalNumberOfObjects(numberURL).then((response)=>{
-        this.props.setURL(url);
-        this.props.setNumberOfObjectsToBeFetched(response.antall);
-      });
+validate() {
+  this.forceUpdate(() => {
+    var vegobjektStr = '532'
+    var fylkeStr = ''
+    var kommuneStr = ''
+    var vegString = ''
+    var isValidatingVeg = false
+    if(this.props.vegobjekttyper_chosen) {vegobjektStr = this.props.vegobjekttyper_input[0].id}
+    else {vegobjektStr = '532'}
+    if(this.props.fylke_chosen) {fylkeStr = 'fylke='+this.props.fylke_input[0].nummer+'&'}
+    else {fylkeStr = ''}
+    if(this.props.kommune_chosen) {kommuneStr = 'kommune='+this.props.kommune_input[0].nummer+'&'}
+    else {kommuneStr = ''}
+    if(this.props.veg_input != ""){
+      isValidatingVeg = true
+      vegString = '&vegreferanse='+this.props.veg_input+'&'}
+    else {
+      vegString = ''
+      isVegValidation = false
+      this.props.setValidityOfVeg('NOT_CHOSEN')
     }
-    else if (this.props.vegobjekttyper_chosen&&!this.props.fylke_chosen){
-      if(this.props.veg_valid){
-        const objektID = this.props.vegobjekttyper_input[0].id;
-        const veg = this.props.veg_input;
-        var numberURL = baseURL+objektID+'/statistikk?'+'vegreferanse='+veg;
-        var url = baseURL+objektID+'?vegreferanse='+'&inkluder=alle&srid=4326&antall=8000';
-        fetchTotalNumberOfObjects(numberURL).then((response)=>{
-          this.props.setURL(url);
-          this.props.setNumberOfObjectsToBeFetched(response.antall);
-        });
-      }
-      else {
-        const objektID = this.props.vegobjekttyper_input[0].id;
-        var numberURL = baseURL+objektID+'/statistikk';
-        var url = baseURL+objektID+'?inkluder=alle&srid=4326&antall=8000';
-        fetchTotalNumberOfObjects(numberURL).then((response)=>{
-          this.props.setURL(url);
-          this.props.setNumberOfObjectsToBeFetched(response.antall);
-        });
-      }
-    }
-  });
+    var url = baseURL+vegobjektStr+'/statistikk?'+fylkeStr+kommuneStr+vegString
+    this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
+  })
 },
 
-search(){
+check(url, shouldFetchNumber, isValidatingVeg) {
+  var fetchingURL = url.replace("/statistikk", "")
+  var fetchingURL = fetchingURL+'inkluder=alle&srid=4326&antall=8000'
+  this.props.setURL(fetchingURL)
+  fetchData(url).then((response)=>{
+    if(response.antall == 0){
+      this.props.setValidityOfVeg('NOT_VALID')
+    }
+    else if(response.antall>0){
+      if(isValidatingVeg) {this.props.setValidityOfVeg('VALID')}
+      if(shouldFetchNumber) {this.props.setNumberOfObjectsToBeFetched(response.antall)}
+    }
+    else if(response[0].code==4005){
+      if(isValidatingVeg) {this.props.setValidityOfVeg('NOT_VALID')}
+    }
+    else{
+    }
+  })
+},
+
+search() {
   this.forceUpdate(()=>{
-    if(this.props.numberOfObjectsToBeFetched==0){
+    var numObjects = this.props.numberOfObjectsToBeFetched
+    if(numObjects==0){
       Alert.alert("Feil", "Dette søket generer ingen objekter");
     }
     else if (!this.props.vegobjekttyper_chosen){
       Alert.alert("Feil", "Ingen vegobjekttyper spesifisert")
     }
-    else if (!this.props.fylke_chosen){
-      Alert.alert("Advarsel!", "Fylke ikke spesifisert! "+
-      'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
-      ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
-        {text: 'Utfør', onPress: () => {
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
-        }},
-        {text: 'Avbryt'},
-      ]);
-    }
-    else if(!this.props.veg_valid){
-      Alert.alert("Advarsel!", "Veg ikke spesifisert! "+
-      'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
-      ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
-        {text: 'Utfør', onPress: () => {
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
-        }},
-        {text: 'Avbryt'},
-      ]);
-    }
     else{
       var vegType = this.props.veg_input.substring(0,1).toLowerCase();
       if(vegType=='k'){
         if(this.props.kommune_chosen){
-          this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-          Actions.LoadingView();
+          this.initiateSearch(numObjects);
         }
         else{
           Alert.alert("Feil", "Kommune må spesifiseres når vegtype er kommunalveg")
         }
       }
       else{
-        this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-        Actions.LoadingView();
+        this.initiateSearch(numObjects);
       }
     }
   })
 },
+initiateSearch(numObjects) {
+  if(numObjects>7999) {
+    Alert.alert("Advarsel!",
+    'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
+    ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
+      {text: 'Utfør', onPress: () => {
+        this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+        Actions.LoadingView();
+      }},
+      {text: 'Avbryt'},
+    ]);
+  }
+  else {
+    this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+    Actions.LoadingView();
+  }
+},
 });
+
+
+
+
 
 var styles = StyleSheet.create({
 
@@ -426,7 +378,6 @@ function mapStateToProps(state) {
   return {
     //fylke fields
     fylke_input: state.searchReducer.fylke_input,
-    fylke_navn: state.searchReducer.fylke_navn,
     fylke_text: state.searchReducer.fylke_text,
     fylke_chosen: state.searchReducer.fylke_chosen,
     fylke_color: state.searchReducer.fylke_color,
@@ -438,15 +389,12 @@ function mapStateToProps(state) {
 
     //kommune
     kommune_input: state.searchReducer.kommune_input,
-    kommune_navn: state.searchReducer.kommune_navn,
     kommune_text: state.searchReducer.kommune_text,
     kommune_chosen: state.searchReducer.kommune_chosen,
-    kommune_enabled: state.searchReducer.kommune_enabled,
     kommune_color: state.searchReducer.kommune_color,
 
     //vegobjekttyper fields
     vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
-    vegobjekttyper_navn: state.searchReducer.vegobjekttyper_navn,
     vegobjekttyper_text: state.searchReducer.vegobjekttyper_text,
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
