@@ -22,7 +22,7 @@ import InputField from '../misc/InputField'
 import TabBar from '../misc/TabBar'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
-import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby} from '../../utilities/wrapper'
+import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
@@ -100,7 +100,7 @@ createFylkeInput(){
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
         colorController={this.props.fylke_color}
-        updateFunction={this.createDynamicData}
+        updateFunction={this.validate}
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
@@ -118,7 +118,7 @@ createKommuneInput(){
         inputFunction={this.props.inputKommune}
         chooserFunction={this.props.chooseKommune}
         colorController={this.props.kommune_color}
-        updateFunction={this.createDynamicData}
+        updateFunction={this.validate}
         extData={this.props.fylke_input}
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
@@ -137,7 +137,7 @@ createTypeInput(){
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
         colorController={this.props.vegobjekttyper_color}
-        updateFunction={this.createDynamicData}
+        updateFunction={this.validate}
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
@@ -166,7 +166,7 @@ createVegInput() {
           placeholder={'Skriv inn veg'}
           onChangeText={(text) => {
             this.props.inputVeg(text);
-            this.createDynamicData();
+            this.validate();
 
           }}
           keyboardType = "default"
@@ -191,9 +191,109 @@ createButton(){
   </View>
 },
 
-//handle case where all fields are cleared->reset search
-//createDynamic fields, validity info, and URL
-//TODO clean, and make it possible to chose combination type and veg
+validate() {
+  this.forceUpdate(() => {
+    var vegobjektStr = '532'
+    var fylkeStr = ''
+    var kommuneStr = ''
+    var vegString = ''
+    var isValidatingVeg = false
+    if(this.props.vegobjekttyper_chosen) {vegobjektStr = this.props.vegobjekttyper_input[0].id}
+    else {vegobjektStr = '532'}
+    if(this.props.fylke_chosen) {fylkeStr = 'fylke='+this.props.fylke_input[0].nummer+'&'}
+    else {fylkeStr = ''}
+    if(this.props.kommune_chosen) {kommuneStr = 'kommune='+this.props.kommune_input[0].nummer+'&'}
+    else {kommuneStr = ''}
+    if(this.props.veg_input.length != 0){
+      isValidatingVeg = true
+      vegString = '&vegreferanse='+this.props.veg_input+'&'}
+    else {
+      vegString = ''
+      isVegValidation = false
+      if(this.props.veg_valid){this.props.setValidityOfVeg('NOT_CHOSEN')}
+    }
+    var url = baseURL+vegobjektStr+'/statistikk?'+fylkeStr+kommuneStr+vegString
+    console.log(url)
+    this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
+  })
+},
+
+check(url, shouldFetchNumber, isValidatingVeg) {
+  const fetchingURL = url.replace("/statistikk", "")
+  this.props.setURL(fetchingURL)
+  fetchData(url).then((response)=>{
+    if(response.antall == 0){
+      this.props.setValidityOfVeg('NOT_VALID')
+    }
+    else if(response.antall>0){
+      if(isValidatingVeg) {this.props.setValidityOfVeg('VALID')}
+      if(shouldFetchNumber) {this.props.setNumberOfObjectsToBeFetched(response.antall)}
+    }
+    else if(response[0].code==4005){
+      if(isValidatingVeg) {this.props.setValidityOfVeg('NOT_VALID')}
+    }
+    else{
+    }
+  })
+},
+
+//if we want to give fetching number information we must wrap in if(vegobjekttyper_chosen)
+validate2() {
+  console.log('validate')
+  this.forceUpdate(() => {
+    const veg = this.props.veg_input
+    var url = ''
+    var shouldFetchNumber = false
+    if(this.props.vegobjekttyper_chosen) {
+      url = baseURL+this.props.vegobjekttyper_input[0].id+'/statistikk'
+      shouldFetchNumber = true
+    }
+    else {
+      url = baseURL+'532/statistikk'
+    }
+    if(this.props.fylke_chosen&&this.props.kommune_chosen) {
+      const fylkeID = this.props.fylke_input[0].nummer;
+      const kommuneID = this.props.kommune_input[0].nummer;
+      url = url+'?fylke='+fylkeID+'&kommune='+kommuneID+'&vegreferanse='+veg
+      this.check(url, shouldFetchNumber, true)
+    }
+    else if(this.props.fylke_chosen&&!this.props.kommune_chosen) {
+      const fylkeID = this.props.fylke_input[0].nummer;
+      url = url+'?fylke='+fylkeID+'&vegreferanse='+veg
+      this.check(url, shouldFetchNumber, true)
+    }
+    else if(!this.props.fylke_chosen&&this.props.kommune_chosen){
+      const kommuneID = this.props.kommune_input[0].nummer;
+      url = url+'?kommune='+kommuneID+'&vegreferanse='+veg
+      this.check(url, shouldFetchNumber, true)
+    }
+    else{
+      if(this.props.vegobjekttyper_chosen){this.check(url, shouldFetchNumber, false)}
+    }
+  })
+},
+
+check2(url, shouldFetchNumber, isRoadCheck) {
+  console.log(url)
+  const fetchingURL = url.replace("/statistikk", "")
+  console.log(fetchingURL)
+  this.props.setURL(fetchingURL)
+  fetchData(url).then((response)=>{
+    if(response.antall == 0){
+      this.props.setValidityOfVeg(false)
+    }
+    else if(response.antall>0){
+      if(isRoadCheck) {this.props.setValidityOfVeg(true)}
+      if(shouldFetchNumber) {this.props.setNumberOfObjectsToBeFetched(response.antall)}
+    }
+    else if(response[0].code==4005){
+      this.props.setValidityOfVeg(false)
+    }
+    else{
+    }
+  })
+},
+
 createDynamicData() {
   this.forceUpdate(()=>{
     if(this.props.fylke_chosen&&this.props.vegobjekttyper_chosen){

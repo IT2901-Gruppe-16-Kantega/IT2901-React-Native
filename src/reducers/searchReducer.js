@@ -60,6 +60,13 @@ export default function reducer(state={
         veg_valid: false,
       }
     }
+    case "INPUT_VEG_NOT_CHOSEN": {
+      return {
+        ...state,
+        veg_color: templates.colors.orange,
+        veg_valid: false,
+      }
+    }
     case "SET_URL": {
       return {
         ...state,
@@ -117,6 +124,8 @@ export default function reducer(state={
         fylke_color: templates.colors.green,
 
         kommune_input: [],
+        kommune_text: '',
+
 
         kommune_color: templates.colors.orange,
       }

@@ -130,4 +130,4 @@ async function fetchVeger(fylke, vegkategori){
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchVeg, fetchCloseby};
+export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchVeg, fetchCloseby, fetchData};

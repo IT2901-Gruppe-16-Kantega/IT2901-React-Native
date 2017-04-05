@@ -78,14 +78,19 @@ export function chooseVegobjekttyper(input) {
 
 export function setValidityOfVeg(input) {
   return function(dispatch) {
-    if(input){
+    if(input == 'VALID'){
       dispatch({
         type: "INPUT_VEG_VALID"
       })
     }
-    else {
+    else if (input == 'NOT_VALID') {
       dispatch({
         type: "INPUT_VEG_NOT_VALID"
+      })
+    }
+    else {
+      dispatch({
+        type: "INPUT_VEG_NOT_CHOSEN"
       })
     }
   }
