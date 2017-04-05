@@ -95,7 +95,6 @@ createFylkeInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
       <InputField type='fylke'
         list={this.props.fylke_input}
-        textType={this.props.fylke_text}
         choosenBool={this.props.fylke_chosen}
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
@@ -113,7 +112,6 @@ createKommuneInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
       <InputField type='kommune'
         list={this.props.kommune_input}
-        textType={this.props.kommune_text}
         choosenBool={this.props.kommune_chosen}
         inputFunction={this.props.inputKommune}
         chooserFunction={this.props.chooseKommune}
@@ -132,7 +130,6 @@ createTypeInput(){
       <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
       <InputField type='vegobjekttype'
         list={this.props.vegobjekttyper_input}
-        textType={this.props.vegobjekttyper_text}
         choosenBool={this.props.vegobjekttyper_chosen}
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
@@ -422,8 +419,6 @@ function mapStateToProps(state) {
   return {
     //fylke fields
     fylke_input: state.searchReducer.fylke_input,
-    fylke_navn: state.searchReducer.fylke_navn,
-    fylke_text: state.searchReducer.fylke_text,
     fylke_chosen: state.searchReducer.fylke_chosen,
     fylke_color: state.searchReducer.fylke_color,
 
@@ -434,15 +429,11 @@ function mapStateToProps(state) {
 
     //kommune
     kommune_input: state.searchReducer.kommune_input,
-    kommune_navn: state.searchReducer.kommune_navn,
-    kommune_text: state.searchReducer.kommune_text,
     kommune_chosen: state.searchReducer.kommune_chosen,
     kommune_color: state.searchReducer.kommune_color,
 
     //vegobjekttyper fields
     vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
-    vegobjekttyper_navn: state.searchReducer.vegobjekttyper_navn,
-    vegobjekttyper_text: state.searchReducer.vegobjekttyper_text,
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
 

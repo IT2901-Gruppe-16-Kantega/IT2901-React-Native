@@ -58,7 +58,6 @@ var InputField = React.createClass({
           onBlur={this.props.updateFunction}
           keyboardType="default"
           returnKeyType='done'
-          value={this.props.textType}
           />
       </View>
       <ListView

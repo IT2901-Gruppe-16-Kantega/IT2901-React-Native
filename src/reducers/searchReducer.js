@@ -7,8 +7,6 @@ export default function reducer(state={
 
   //FYLKESHIT
   fylke_input: [],
-  fylke_navn: '',
-  fylke_text: '',
   fylke_chosen: false,
   fylke_color: templates.colors.orange,
 
@@ -19,15 +17,11 @@ export default function reducer(state={
 
   //kommune fields
   kommune_input: [],
-  kommune_navn: '',
-  kommune_text: '',
   kommune_chosen: false,
   kommune_color: templates.colors.middleGray,
 
   //vegobjekttyper fields
   vegobjekttyper_input: [],
-  vegobjekttyper_navn: '',
-  vegobjekttyper_text: '',
   vegobjekttyper_chosen: false,
   vegobjekttyper_color: templates.colors.orange,
 
@@ -40,6 +34,19 @@ export default function reducer(state={
   searchCoordinate: null,
 
   fylkeCoordinates: null,
+
+  //To be removed:
+  vegobjekttyper_text: '',
+  kommune_text: '',
+  fylke_text: '',
+
+  fylke_navn: '',
+  kommune_navn: '',
+  vegobjekttyper_navn: '',
+
+
+
+
 
 }, action) {
   switch (action.type) {
