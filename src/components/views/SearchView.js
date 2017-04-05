@@ -213,7 +213,6 @@ validate() {
       this.props.setValidityOfVeg('NOT_CHOSEN')
     }
     var url = baseURL+vegobjektStr+'/statistikk?'+fylkeStr+kommuneStr+vegString
-    console.log(url)
     this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
   })
 },
