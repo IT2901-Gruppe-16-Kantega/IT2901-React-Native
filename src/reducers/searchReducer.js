@@ -24,8 +24,6 @@ export default function reducer(state={
   kommune_chosen: false,
   kommune_color: templates.colors.middleGray,
 
-  kommune_enabled: false,
-
   //vegobjekttyper fields
   vegobjekttyper_input: [],
   vegobjekttyper_navn: '',
@@ -67,7 +65,6 @@ export default function reducer(state={
         fylke_text: action.payload.fylke_text,
         fylke_color: templates.colors.orange,
 
-        kommune_enabled: false,
         kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
@@ -81,7 +78,6 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_text: action.payload.fylke_text,
         fylke_color: templates.colors.orange,
-        kommune_enabled: false,
         kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
@@ -96,7 +92,6 @@ export default function reducer(state={
         fylke_chosen: false,
         fylke_color: 'red',
 
-        kommune_enabled: false,
         kommune_color: templates.colors.middleGray,
         kommune_input: [],
 
@@ -111,7 +106,6 @@ export default function reducer(state={
         fylke_chosen: true,
         fylke_color: templates.colors.green,
 
-        kommune_enabled: true,
         kommune_color: templates.colors.orange,
       }
     }
@@ -243,7 +237,6 @@ export default function reducer(state={
         kommune_navn: '',
         kommune_text: '',
         kommune_chosen: false,
-        kommune_enabled: false,
         kommune_color: templates.colors.middleGray,
 
         vegobjekttyper_input: [],
@@ -257,41 +250,7 @@ export default function reducer(state={
         combinedSearchParameters: [],
       }
     }
-    case "INPUT_VEGKATEGORI_SINGLE": {
-      return{
-        ...state,
-        vegkategori_input: action.payload.result,
-        vegkategori_navn: action.payload.result[0].navn,
-        vegkategori_chosen: false,
-        vegkategori_text: action.payload.vegkategori_text,
-
-        veg_enabled: true,
-      }
-    }
-    case "VEGKATEGORI_INPUT_NOT_VALID": {
-      return{
-        ...state,
-        vegkategori_input: [],
-        vegkategori_navn: '',
-        vegkategori_text: action.payload,
-        vegkategori_chosen: false,
-
-        veg_enabled: false,
-
-      }
-    }
-    case "CHOOSE_VEGKATEGORI": {
-      return {
-        ...state,
-        vegkategori_input: action.payload,
-        vegkategori_navn: action.payload[0].navn,
-        vegkategori_text: action.payload[0].navn,
-        vegkategori_chosen: true,
-
-        veg_enabled: true,
-      }
-    }
-    case "SELECT_SEARCH_COORDINATE": {
+        case "SELECT_SEARCH_COORDINATE": {
       return {...state, searchCoordinate: action.payload}
     }
 

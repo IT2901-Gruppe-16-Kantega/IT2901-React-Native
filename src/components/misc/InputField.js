@@ -16,7 +16,6 @@ type,
 list,
 textType,
 choosenBool ,
-editable,
 inputFunction,
 chooserFunction,
 colorController,
@@ -32,16 +31,8 @@ var InputField = React.createClass({
   render() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.list)
-    var colorBackground =''
-    var placeholderColorVar =''
-    if(this.props.editable){
-      colorBackground = templates.colors.lightGray
-      placeholderColorVar=templates.colors.placeholderColor
-    }
-    else{
-      colorBackground = templates.colors.middleGray
-      placeholderColorVar = templates.colors.middleGray
-    }
+    var colorBackground = templates.colors.lightGray
+    var placeholderColorVar = templates.colors.placeholderColor
     return <View style={styles.inputContainer}>
       <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
         <TextInput

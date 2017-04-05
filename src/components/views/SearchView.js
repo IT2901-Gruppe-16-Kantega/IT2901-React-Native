@@ -51,11 +51,10 @@ var SearchView = React.createClass({
           scrollEnabled={false}
           keyboardShouldPersistTaps='always'
           >
-
           {this.createTypeInput()}
           {this.createFylkeInput()}
-          {this.createVegInput()}
           {this.createKommuneInput()}
+          {this.createVegInput()}
         </ScrollView>
       </View>
       {this.createStatistics()}
@@ -98,7 +97,6 @@ createFylkeInput(){
         list={this.props.fylke_input}
         textType={this.props.fylke_text}
         choosenBool={this.props.fylke_chosen}
-        editable={true}
         inputFunction={this.props.inputFylke}
         chooserFunction={this.props.chooseFylke}
         colorController={this.props.fylke_color}
@@ -110,26 +108,23 @@ createFylkeInput(){
   </View>
 },
 createKommuneInput(){
-  if(this.props.kommune_enabled){
-    return <View>
-      <View style={styles.kommuneArea}>
-        <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
-        <InputField type='kommune'
-          list={this.props.kommune_input}
-          textType={this.props.kommune_text}
-          choosenBool={this.props.kommune_chosen}
-          editable={this.props.kommune_enabled}
-          inputFunction={this.props.inputKommune}
-          chooserFunction={this.props.chooseKommune}
-          colorController={this.props.kommune_color}
-          updateFunction={this.createDynamicData}
-          extData={this.props.fylke_input}
-          />
-        <View style={styles.parameterRightPadding}><Text></Text></View>
-      </View>
-      <View style={styles.parameterBottomPadding}><Text></Text></View>
+  return <View>
+    <View style={styles.kommuneArea}>
+      <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
+      <InputField type='kommune'
+        list={this.props.kommune_input}
+        textType={this.props.kommune_text}
+        choosenBool={this.props.kommune_chosen}
+        inputFunction={this.props.inputKommune}
+        chooserFunction={this.props.chooseKommune}
+        colorController={this.props.kommune_color}
+        updateFunction={this.createDynamicData}
+        extData={this.props.fylke_input}
+        />
+      <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-  }
+    <View style={styles.parameterBottomPadding}><Text></Text></View>
+  </View>
 },
 createTypeInput(){
   return <View>
@@ -139,7 +134,6 @@ createTypeInput(){
         list={this.props.vegobjekttyper_input}
         textType={this.props.vegobjekttyper_text}
         choosenBool={this.props.vegobjekttyper_chosen}
-        editable={true}
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
         colorController={this.props.vegobjekttyper_color}
@@ -283,6 +277,8 @@ createDynamicData() {
   });
 },
 
+//change to only give a warning if objects to be fetched is > 8.000
+//make it possible to only choose kommune
 search(){
   this.forceUpdate(()=>{
     if(this.props.numberOfObjectsToBeFetched==0){
@@ -441,7 +437,6 @@ function mapStateToProps(state) {
     kommune_navn: state.searchReducer.kommune_navn,
     kommune_text: state.searchReducer.kommune_text,
     kommune_chosen: state.searchReducer.kommune_chosen,
-    kommune_enabled: state.searchReducer.kommune_enabled,
     kommune_color: state.searchReducer.kommune_color,
 
     //vegobjekttyper fields
