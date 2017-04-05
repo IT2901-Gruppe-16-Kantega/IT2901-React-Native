@@ -53,32 +53,26 @@ export default (key) => ({
   //clean, move body into own function
   saveSearch(roadSearch) {
     console.log('saving...')
-    console.log(roadSearch.roadObjects.length)
     const jsonSearch = JSON.stringify(roadSearch);
-    console.log(jsonSearch.length)
     if(Platform.OS === "ios"){
       let dataPath = searchesPathIOS+"/"+roadSearch.key+".json";
-      console.log(dataPath)
-      return RNFS.writeFile(dataPath, jsonSearch)
-      .then((success) => {
-        console.log("data saved successfully")
-      })
-      .catch((err) => {
-        console.error("An error occurred when saving data.json", err)
-      })
+      return this.writeFile(dataPath, jsonSearch)
     }
     else if (Platform.OS === "android"){
       let dataPath = searchesPathAndroid+"/"+roadSearch.key+".json";
       console.log(dataPath)
-      return RNFS.writeFile(dataPath, jsonSearch)
-      .then((success) => {
-        console.log("data saved successfully")
-      })
-      .catch((err) => {
-        console.error("An error occurred when saving data.json", err)
-      })
+      return this.writeFile(dataPath, jsonSearch)
     }
 
+  },
+  writeFile(dataPath, jsonSearch) {
+    return RNFS.writeFile(dataPath, jsonSearch)
+    .then((success) => {
+      console.log("data saved successfully")
+    })
+    .catch((err) => {
+      console.error("An error occurred when saving data. Path: "+dataPath, err)
+    })
   },
   clear() {
     if(Platform.OS === "ios"){

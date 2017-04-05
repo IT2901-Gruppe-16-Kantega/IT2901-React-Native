@@ -45,6 +45,7 @@ var InputField = React.createClass({
     return <View style={styles.inputContainer}>
       <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
         <TextInput
+          underlineColorAndroid={templates.colors.lightGray}
           autocorrect={false}
           autofocus={this.props.editable}
           editable={this.props.editable}
