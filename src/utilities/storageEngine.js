@@ -82,10 +82,10 @@ export default (key) => ({
   },
   clear() {
     if(Platform.OS === "ios"){
-      RNFS.unlink(searchesPath)
+      RNFS.unlink(searchesPathIOS)
 
     }else if (Platform.OS === "android"){
-
+      RNFS.unlink(searchesPathAndroid)
     }
 
   },
