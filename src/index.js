@@ -53,7 +53,6 @@ class App extends Component {
             title=""
             hideNavBar={true}
             type='reset'
-            initial={true}
             />
           <Scene
             key="SearchView"
@@ -61,6 +60,7 @@ class App extends Component {
             title={<Text style={{color:"orange"}}></Text>}
             hideNavBar={false}
             navigationBarStyle={styles.navigatorStyle}
+            initial={true}
             />
           <Scene
             key="RoadSelectView"

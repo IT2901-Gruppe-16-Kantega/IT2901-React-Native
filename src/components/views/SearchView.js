@@ -20,6 +20,7 @@ import { connect } from 'react-redux'
 import Button from '../misc/Button'
 import InputField from '../misc/InputField'
 import TabBar from '../misc/TabBar'
+import RoadSelectView from './RoadSelectView'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
@@ -27,6 +28,8 @@ import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as searchActions from '../../actions/searchActions'
+import * as uiActions from '../../actions/uiActions'
+
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
@@ -45,23 +48,12 @@ var SearchView = React.createClass({
       <View style={styles.header}>
         <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
       </View>
-      <View style={styles.inputArea}>
-        <ScrollView
-          style={{backgroundColor: templates.colors.white}}
-          scrollEnabled={false}
-          keyboardShouldPersistTaps='always'
-          >
-          {this.createTypeInput()}
-          {this.createFylkeInput()}
-          {this.createKommuneInput()}
-          {this.createVegInput()}
-        </ScrollView>
-      </View>
+      {this.createViewArea()}
       {this.createStatistics()}
       {this.createButton()}
       <TabBar
-        elements={[{title: 'Manuell', onPress: this.tabPress, chosen: true},
-          {title: "🗺 Kart", onPress: Actions.RoadSelectView, chosen: false},
+        elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("SØK")}, chosen: true},
+          {title: "🗺 Kart", onPress: ()=>{this.props.setChosenSearchTab("KART")}, chosen: false},
           {title: "📍 Nærmeste", onPress: this.getUserPosition, chosen: false},
         ]
         }
@@ -71,6 +63,39 @@ var SearchView = React.createClass({
   tabPress() {
     console.log("asd")
   },
+
+  createViewArea() {
+    if (this.props.chosenSearchTab == "SØK"){
+      return <View style={styles.inputArea}>
+        <ScrollView
+          style={{backgroundColor: templates.colors.white}}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.createTypeInput(styles.typeArea)}
+          {this.createFylkeInput()}
+          {this.createKommuneInput()}
+          {this.createVegInput()}
+        </ScrollView>
+      </View>
+    }
+    else if (this.props.chosenSearchTab == "KART") {
+      return <View style={styles.mapArea}>
+
+          {this.createTypeInput(styles.mapType)}
+          <RoadSelectView/>
+
+
+      </View>
+
+    }
+    else if (this.props.chosenSearchTab == "NÆRMESTE") {
+      return <View></View>
+    }
+
+
+  },
+
 
   getUserPosition() {
     navigator.geolocation.getCurrentPosition((initialPosition) => {
@@ -126,9 +151,9 @@ createKommuneInput(){
     <View style={styles.parameterBottomPadding}><Text></Text></View>
   </View>
 },
-createTypeInput(){
-  return <View>
-    <View style={styles.typeArea}>
+createTypeInput(styleType){
+  return <View style= {{flex: 1}}>
+    <View style={styleType}>
       <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
       <InputField type='vegobjekttype'
         list={this.props.vegobjekttyper_input}
@@ -287,6 +312,15 @@ initiateSearch(numObjects) {
 
 
 var styles = StyleSheet.create({
+  mapType: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.colors.green,
+    minHeight:0,
+    maxHeight:140,
+  },
 
   //Top-leve containers
 
@@ -307,6 +341,13 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
   },
 
+  mapArea: {
+    flex: 13.2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+
+  },
 
   //Big components
   kommuneArea: {
@@ -333,6 +374,7 @@ var styles = StyleSheet.create({
     minHeight:0,
     maxHeight:162,
   },
+
   vegobjekttypeArea2: {
     flex: 4,
     flexDirection: 'row',
@@ -400,9 +442,12 @@ function mapStateToProps(state) {
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
 
+    //misc
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
 
+    //UI
+    chosenSearchTab: state.uiReducer.chosenSearchTab,
   };}
 
   function mapDispatchToProps(dispatch) {
@@ -425,6 +470,7 @@ function mapStateToProps(state) {
       combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
       setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 
+      setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
     }
   }
 
