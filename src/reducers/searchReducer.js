@@ -47,10 +47,6 @@ export default function reducer(state={
   kommune_navn: '',
   vegobjekttyper_navn: '',
 
-
-
-
-
 }, action) {
   switch (action.type) {
     case "INPUT_KOMMUNE_RESET": {
@@ -69,6 +65,10 @@ export default function reducer(state={
         fylke_text: '',
         fylke_chosen: false,
         fylke_color: templates.colors.orange,
+        kommune_input: [],
+        kommune_text: '',
+        kommune_chosen: false,
+        kommune_color: templates.colors.orange,
       }
     }
     case "RESET_VEGFIELD": {
@@ -148,6 +148,16 @@ export default function reducer(state={
 
 
         kommune_color: templates.colors.orange,
+      }
+    }
+    case "CHOOSE_FYLKE_FROM_KOMMUNE": {
+      return {
+        ...state,
+        fylke_input: action.payload,
+        fylke_navn: action.payload[0].navn,
+        fylke_text: action.payload[0].navn,
+        fylke_chosen: true,
+        fylke_color: templates.colors.green,
       }
     }
 
