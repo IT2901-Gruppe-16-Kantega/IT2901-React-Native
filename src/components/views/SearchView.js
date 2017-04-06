@@ -79,14 +79,14 @@ var SearchView = React.createClass({
           alert(closest.message);
         } else {
           const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
-
           this.props.inputVeg(veg);
           this.props.chooseFylke([closest.fylke]);
+          this.validate()
         }
 
       }.bind(this));
     }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  );
+    );
 },
 
 createFylkeInput(){
@@ -171,6 +171,7 @@ createVegInput() {
           }}
           keyboardType = "default"
           returnKeyType = 'done'
+          value = {this.props.veg_input}
           />
       </View>
       <View style={styles.parameterRightPadding}><Text></Text></View>
