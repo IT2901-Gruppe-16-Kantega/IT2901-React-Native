@@ -1,11 +1,26 @@
 //
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
+import {fylker} from '../data/fylker';
 
 
 //functions for handling input in all searchfields
+export function chooseKommune(input) {
+  return function(dispatch) {
+    dispatch({
+        type: "CHOOSE_KOMMUNE",
+        payload: input,
+      })
+    var f = []
+    f.push(fylker.find((fylke)=>{return fylke.nummer == input[0].fylke}))
+    dispatch({
+      type: "CHOOSE_FYLKE_FROM_KOMMUNE",
+      payload: f,
+    })
+  }
+}
 
 export function resetVegField(){
-  return{
+  return {
     type: "RESET_VEGFIELD"
   }
 }
@@ -129,12 +144,7 @@ export function inputKommune(input, fylke) {
   }
 }
 
-export function chooseKommune(input) {
-  return {
-    type: "CHOOSE_KOMMUNE",
-    payload: input,
-  }
-}
+
 
 export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype) {
   var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
