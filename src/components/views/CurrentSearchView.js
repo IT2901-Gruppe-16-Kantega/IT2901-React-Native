@@ -28,9 +28,6 @@ Shows information about current search, buttons for viewing map and opening AR
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
-    //TODO this does not work when fylke is not specified
-    var coords = parseGeometry(this.props.currentRoadSearch.searchParameters[0].senterpunkt.wkt)[0];
-    this.props.setRegion({latitude: coords.latitude, longitude: coords.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3})
   },
 
   render() {

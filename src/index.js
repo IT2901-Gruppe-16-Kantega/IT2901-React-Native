@@ -6,6 +6,7 @@ import {
   View,
   LayoutAnimation,
   Dimensions,
+  Navigator
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -44,7 +45,7 @@ class App extends Component {
   }
   render() {
     return (
-      <Router>
+      <Router sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
         <Scene key="root">
           <Scene
             key="StartingView"
@@ -57,7 +58,6 @@ class App extends Component {
           <Scene
             key="SearchView"
             component={SearchView}
-            title={<Text style={{color:"orange"}}></Text>}
             hideNavBar={false}
             navigationBarStyle={styles.navigatorStyle}
             />

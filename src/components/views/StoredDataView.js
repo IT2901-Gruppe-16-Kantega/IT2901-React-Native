@@ -4,14 +4,14 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
-  AsyncStorage
+  ListView,
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Accordion from 'react-native-collapsible/Accordion';
+import moment from 'moment';
 
 import Button from '../misc/Button'
 import PropertyValue from '../misc/PropertyValue'
@@ -19,117 +19,61 @@ import PropertyValue from '../misc/PropertyValue'
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 /*
 View that shows all stored data
+*/
+
+/*
+var roadSearch = {
+  key: Date.now(),
+  date: moment().format('MMMM Do YYYY, h:mm:ss a'),
+  description: description,
+  roadObjects: objects,
+  report: report,
+  searchParameters: combParams,
+  objekttypeInfo: objekttypeInfo,
+}
 */
 var StoredDataView = React.createClass({
   render() {
     return <View style={templates.container}>
-      <View style={templates.top}/>
-      <View style={styles.header}>
-        <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
-      </View>
-      <View style={styles.contents}>
-        <Accordion
-          sections={this.props.allSearches}
-          renderHeader={this._renderHeader}
-          renderContent={this._renderContent}
-          />
-      </View>
-      <View style={templates.footer}>
-        <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
-      </View>
+      <ListView
+        dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
+        renderRow={this.renderRow}
+        enableEmptySections={true}
+      />
     </View>
   },
 
-  buttonPress(section){
+  renderRow(roadSearch, sectionID, rowID, highlightRow) {
+    const fylkeNavn = roadSearch.searchParameters[0];
+    const kommuneNavn = roadSearch.searchParameters[1];
+    const vegobjekttype = roadSearch.objekttypeInfo;
+
+    return <View
+      key={rowID}
+      style={styles.row}>
+      <Text>{moment(roadSearch.key).format("DD. MMM YYYY (HH:mm)")}</Text>
+      <Text>{roadSearch.roadObjects.length}</Text>
+      <Button style={"small"} onPress={this.openSearch.bind(this, roadSearch)} text={"Åpne"} />
+    </View>
+  },
+
+  openSearch(section) {
     this.props.setCurrentRoadSearch(section);
     Actions.CurrentSearchView();
   },
-
-  _renderHeader(section) {
-    return (
-      <View style={styles.accordionHeader}>
-        <PropertyValue property={"Fylke"} value={section.searchParameters[0].navn} />
-      </View>
-    );
-  },
-
-  //must do padding better than empty textcomponents
-  _renderContent(section) {
-    return (
-      <View style={styles.accordionFrame}>
-        <View style={styles.accordionContents}>
-
-          <PropertyValue property={"Antall vegobjekter"} value={section.roadObjects.length} />
-          <PropertyValue property={"Beskrivelse"} value={section.description} />
-          <PropertyValue property={"Dato"} value={section.date} />
-
-          <Button
-            style={"small"}
-            onPress={this.buttonPress.bind(this, section)}
-            text={"Åpne"}
-          />
-        </View>
-      </View>
-
-    );
-  }
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  //Top-leve containers
-  top: {
-    flex: 0.7
-  },
-  header: {
-    flex: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  contents: {
-    flex: 14,
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    backgroundColor: templates.colors.white
-  },
-  accordionHeader: {
-    //flex:1,
-    borderColor: "white",
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.orange,
-    padding: 10
-
-  },
-  accordionFrame: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-  },
-  accordionContentsPadding: {
-    flex: 0.1,
-  },
-  accordionContentsFrame: {
-
-  },
-  accordionContents: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+  row: {
+    padding: 10,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
     backgroundColor: templates.colors.middleGray,
-
-  },
-  accordionContentsPadding: {
-    flex: 0.1,
   },
 })
 
