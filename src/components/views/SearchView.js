@@ -29,7 +29,8 @@ import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as searchActions from '../../actions/searchActions'
 import * as uiActions from '../../actions/uiActions'
-
+import {fylker} from '../../data/fylker';
+import {kommuner} from '../../data/kommuner';
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
@@ -54,7 +55,10 @@ var SearchView = React.createClass({
       <TabBar
         elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("Søk")}, chosen: this.props.chosenSearchTab},
           {title: "Finn", onPress: ()=>{this.props.setChosenSearchTab("Finn")}, chosen: this.props.chosenSearchTab},
-          {title: "Nærmeste", onPress: ()=>{this.props.setChosenSearchTab("Nærmeste")}, chosen: this.props.chosenSearchTab},
+          {title: "Nærmeste", onPress: ()=>{
+            this.props.setChosenSearchTab("Nærmeste")
+            this.getUserPosition()
+          }, chosen: this.props.chosenSearchTab},
         ]
         }
         />
@@ -94,7 +98,6 @@ var SearchView = React.createClass({
 
     }
     else if (this.props.chosenSearchTab == "Nærmeste") {
-      this.getUserPosition()
       return <View style={styles.inputArea}>
         <ScrollView
           style={{backgroundColor: templates.colors.white}}
@@ -103,9 +106,8 @@ var SearchView = React.createClass({
           >
           {this.createTypeInput(styles.typeArea)}
           <View style={styles.parameterBottomPadding}><Text></Text></View>
-          {this.createFylkeInput()}
-          {this.createKommuneInput()}
-          {this.createVegInput()}
+
+          {this.createClosestRoadsList()}
 
         </ScrollView>
       </View>
@@ -113,11 +115,61 @@ var SearchView = React.createClass({
 
 
   },
+  createClosestRoadsList() {
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
+    var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
+    return <View>
+      <ListView
+        keyboardShouldPersistTaps='always'
+        dataSource={dataSource}
+        enableEmptySections= {true}
+        renderRow={(rowData) => {
+          //TODO button need to give feedback when chosen
+            return <Button
+              style={"list"}
+              onPress={()=>{
+                var chosenData = [];
+                chosenData.push(this.props.closestRoadsList.find((data) => {
+                  if(data.vegreferanse.kortform == rowData.vegreferanse.kortform){
+                    return data;
+                  }
+                }))
+                this.chooseClosestRoad(chosenData[0])
+              }}
+              text={rowData.vegreferanse.kortform}
+            />
+          }
+          }/>
+    </View>
+  },
+
+  chooseClosestRoad(road) {
+    const vegref = road.vegreferanse
+    console.log(vegref)
+    const f = vegref.fylke
+    const k = vegref.kommune
+    const kat = vegref.kategori
+    const status = vegref.status
+    const nr = vegref.nummer
+    if(kat == "K"){
+      this.props.inputVeg(kat+status+nr)
+      this.props.chooseFylke([fylker.find((fylke)=>fylke.nummer==f)])
+      this.props.chooseKommune([kommuner.find((kommune)=>kommune.nummer==k)])
+      this.validate()
+    }
+    else {
+      this.props.inputVeg(kat+status+nr)
+      this.props.chooseFylke(fylker.find((fylke)=>fylke.nummer==f))
+      this.validate()
+    }
+  },
 
 
   getUserPosition() {
     navigator.geolocation.getCurrentPosition((initialPosition) => {
-      fetchCloseby(initialPosition.coords, function(closest) {
+      fetchCloseby(initialPosition.coords, function(closestList) {
+        this.props.inputClosestRoads(closestList)
+        /*
         if(closest.code) {
           alert(closest.message);
         } else {
@@ -126,7 +178,7 @@ var SearchView = React.createClass({
           this.props.chooseFylke([closest.fylke]);
           this.validate()
         }
-
+        */
       }.bind(this));
     }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
@@ -460,6 +512,7 @@ function mapStateToProps(state) {
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
 
     //misc
+    closestRoadsList: state.searchReducer.closestRoadsList,
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
 
@@ -482,6 +535,8 @@ function mapStateToProps(state) {
 
       inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
       chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
+
+      inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
 
       setURL: bindActionCreators(searchActions.setURL, dispatch),
       combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
