@@ -52,20 +52,18 @@ var SearchView = React.createClass({
       {this.createStatistics()}
       {this.createButton()}
       <TabBar
-        elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("SØK")}, chosen: true},
-          {title: "🗺 Kart", onPress: ()=>{this.props.setChosenSearchTab("KART")}, chosen: false},
-          {title: "📍 Nærmeste", onPress: this.getUserPosition, chosen: false},
+        elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("Søk")}, chosen: this.props.chosenSearchTab},
+          {title: "Finn", onPress: ()=>{this.props.setChosenSearchTab("Finn")}, chosen: this.props.chosenSearchTab},
+          {title: "Nærmeste", onPress: ()=>{this.props.setChosenSearchTab("Nærmeste")}, chosen: this.props.chosenSearchTab},
         ]
         }
         />
     </View>
   },
-  tabPress() {
-    console.log("asd")
-  },
+
 
   createViewArea() {
-    if (this.props.chosenSearchTab == "SØK"){
+    if (this.props.chosenSearchTab == "Søk"){
       return <View style={styles.inputArea}>
         <ScrollView
           style={{backgroundColor: templates.colors.white}}
@@ -73,24 +71,44 @@ var SearchView = React.createClass({
           keyboardShouldPersistTaps='always'
           >
           {this.createTypeInput(styles.typeArea)}
+          <View style={styles.parameterBottomPadding}><Text></Text></View>
           {this.createFylkeInput()}
           {this.createKommuneInput()}
           {this.createVegInput()}
+
         </ScrollView>
       </View>
     }
-    else if (this.props.chosenSearchTab == "KART") {
+    else if (this.props.chosenSearchTab == "Finn") {
       return <View style={styles.mapArea}>
-
+        <ScrollView
+          scrollEnabled = {false}
+          zoomEnabled = {false}
+          keyboardShouldPersistTaps='always'>
           {this.createTypeInput(styles.mapType)}
-          <RoadSelectView/>
-
+          <RoadSelectView
+            updaterFunction = {this.validate}/>
+        </ScrollView>
 
       </View>
 
     }
-    else if (this.props.chosenSearchTab == "NÆRMESTE") {
-      return <View></View>
+    else if (this.props.chosenSearchTab == "Nærmeste") {
+      this.getUserPosition()
+      return <View style={styles.inputArea}>
+        <ScrollView
+          style={{backgroundColor: templates.colors.white}}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.createTypeInput(styles.typeArea)}
+          <View style={styles.parameterBottomPadding}><Text></Text></View>
+          {this.createFylkeInput()}
+          {this.createKommuneInput()}
+          {this.createVegInput()}
+
+        </ScrollView>
+      </View>
     }
 
 
@@ -166,7 +184,6 @@ createTypeInput(styleType){
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-    <View style={styles.parameterBottomPadding}><Text></Text></View>
   </View>
 },
 createVegInput() {
@@ -312,14 +329,20 @@ initiateSearch(numObjects) {
 
 
 var styles = StyleSheet.create({
+  mapArea: {
+    flex: 13.2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  },
   mapType: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: templates.colors.green,
+    backgroundColor: templates.colors.white,
     minHeight:0,
-    maxHeight:140,
+    maxHeight:130,
   },
 
   //Top-leve containers
@@ -341,13 +364,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
   },
 
-  mapArea: {
-    flex: 13.2,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
 
-  },
 
   //Big components
   kommuneArea: {

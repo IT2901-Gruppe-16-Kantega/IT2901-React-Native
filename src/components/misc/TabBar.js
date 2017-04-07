@@ -32,10 +32,14 @@ var TabBar = React.createClass({
     return tabs;
   },
   createTab(element) {
+    var chosenElement = false
+    if (element.chosen == element.title){
+      chosenElement = true
+    }
     var color = ''
     var textColor = ''
     var fontWeight = 'bold'
-    if(element.chosen) {
+    if(chosenElement) {
       color = templates.colors.white
       textColor = templates.colors.darkGray
       weight = 'bold'

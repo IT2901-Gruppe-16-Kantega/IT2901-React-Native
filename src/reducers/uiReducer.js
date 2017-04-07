@@ -1,7 +1,7 @@
 export default function reducer(state={
   keyboardPadding: 0,
 
-  chosenSearchTab: "KART",
+  chosenSearchTab: "Finn",
 
 }, action) {
   //simple switch statement based on type of action
