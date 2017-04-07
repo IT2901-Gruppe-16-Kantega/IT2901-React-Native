@@ -20,8 +20,8 @@ var SettingSwitch = React.createClass({
           value={this.props.value} />
       </View>
       <View style={styles.textContainer}>
-        <Text style={{color: this.props.style.primaryTextColor}}>{this.props.title}</Text>
-        <Text style={styles.description}>{this.props.description}</Text>
+        <Text style={this.props.theme.subtitle}>{this.props.title}</Text>
+        <Text style={this.props.theme.text}>{this.props.description}</Text>
       </View>
     </View>
   },
@@ -38,18 +38,10 @@ var styles = StyleSheet.create({
   textContainer: {
     flex: 0.8,
   },
-  title: {
-    fontSize: 20,
-  },
-  description: {
-    color: templates.colors.darkGray,
-    fontSize: 12,
-    marginTop: 0,
-  }
 });
 
 function mapStateToProps(state) {
-  return { style: state.settingsReducer.themeStyle };
+  return { theme: state.settingsReducer.themeStyle };
 }
 
 export default connect(mapStateToProps, null) (SettingSwitch);

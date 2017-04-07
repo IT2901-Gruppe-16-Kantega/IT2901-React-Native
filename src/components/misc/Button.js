@@ -61,9 +61,14 @@ var styles = StyleSheet.create({
     backgroundColor: templates.colors.white,
   },
   large: {
+    margin: 5,
     height: 50,
     width: 150,
     backgroundColor: templates.colors.orange,
+    shadowColor: 'black',
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   list: {
     borderWidth: 0.5,

@@ -1,4 +1,6 @@
 import {getTheme} from '../utilities/theme/theme';
+import { Actions } from 'react-native-router-flux';
+
 /*
 Reducer for different app settings
 */
@@ -17,6 +19,7 @@ export default function reducer(state={
       var style;
       if(action.payload) { style = 'dark'; }
       else { style = 'light'; }
+
       return {...state, darkModeOn: action.payload, themeStyle: getTheme(style)}
     }
   }

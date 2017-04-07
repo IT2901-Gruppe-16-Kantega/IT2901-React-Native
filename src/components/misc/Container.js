@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 var Container = React.createClass({
   render() {
-    return <View style={this.props.style.container}>{this.props.children}</View>
+    return <View style={this.props.style.mainContainer}>{this.props.children}</View>
   },
 });
 

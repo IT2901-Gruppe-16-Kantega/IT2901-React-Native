@@ -1,3 +1,4 @@
+
 //some actions for changing settings
 export function setClustering(on) {
   return {

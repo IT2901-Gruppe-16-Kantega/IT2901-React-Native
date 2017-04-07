@@ -56,13 +56,13 @@ var StoredDataView = React.createClass({
     return <TouchableHighlight
       onPress={this.openSearch.bind(this, roadSearch)}
       key={rowID}
-      style={styles.row}>
+      style={[styles.row, this.props.theme.container]}>
       <View>
-        <Text style={styles.text}>{moment(roadSearch.key).format("DD. MMM YYYY (HH:mm)")}</Text>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.text}>{roadSearch.roadObjects.length} objekter</Text>
+        <Text style={this.props.theme.text}>{moment(roadSearch.key).format("DD. MMM YYYY (HH:mm)")}</Text>
+        <Text style={this.props.theme.title}>{title}</Text>
+        <Text style={this.props.theme.text}>{roadSearch.roadObjects.length} objekter</Text>
         <View style={{alignItems: 'flex-end'}}>
-        <Text style={[styles.text, {color: templates.colors.orange, fontWeight: 'bold'}]}>Åpne</Text>
+        <Text style={[this.props.theme.subtitle, {color: templates.colors.orange, fontWeight: 'bold'}]}>Åpne</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -87,16 +87,6 @@ var styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: templates.colors.lightGray,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: templates.colors.black,
-  },
-  text: {
-    color: templates.colors.black,
-    fontSize: 17,
   },
   buttonContainer: {
     marginTop: 10,
@@ -111,6 +101,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     allSearches: state.dataReducer.allSearches,
+    theme: state.settingsReducer.themeStyle,
   };
 }
 

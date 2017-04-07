@@ -28,6 +28,8 @@ import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
 
+import NavigationBar from './components/misc/NavigationBar'
+
 // misc imports
 import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
@@ -51,16 +53,16 @@ class App extends Component {
           <Scene
             key="StartingView"
             component={StartingView}
+            navBar={NavigationBar}
             title=""
-            hideNavBar={true}
             type='reset'
+            hideNavBar={true}
             initial={true}
             />
           <Scene
             key="SearchView"
             component={SearchView}
             hideNavBar={false}
-            navigationBarStyle={styles.navigatorStyle}
             />
           <Scene
             key="RoadSelectView"
@@ -69,6 +71,7 @@ class App extends Component {
           <Scene
             key="StoredDataView"
             component={StoredDataView}
+            navBar={NavigationBar}
             title="Lagrede søk"
             hideNavBar={false} />
           <Scene
@@ -99,7 +102,7 @@ class App extends Component {
             hideNavBar={false}
             onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
-            navigationBarStyle={styles.navigatorStyle} />
+            navigationBarStyle={this.props.navigationBarStyle} />
           <Scene
             key="ObjectInfoView"
             component={ObjectInfoView}
@@ -112,7 +115,7 @@ class App extends Component {
       </Router>
     )
   }
-//this.props.setIsEditingRoadObject.bind(this, !this.props.isEditingRoadObject)
+
   getObjectInfoViewRightTitle() {
     if(this.props.isEditingRoadObject) {
       return "Lagre";
@@ -138,16 +141,8 @@ class App extends Component {
   }
 }
 
-var styles = StyleSheet.create({
-  navigatorStyle: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderBottomWidth: 0,
-  }
-})
-
 function mapStateToProps(state) {
   return {
-    //Status information about search
     sidebarFrame: state.mapReducer.sidebarFrame,
     isEditingRoadObject: state.dataReducer.isEditingRoadObject,
   };
