@@ -118,7 +118,8 @@ var SearchView = React.createClass({
   createClosestRoadsList() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
-    return <View>
+    return <View style={{flexDirection: "row"}}>
+      <View style={{flex: 0.88}}><Text></Text></View>
       <ListView
         keyboardShouldPersistTaps='always'
         dataSource={dataSource}
@@ -140,6 +141,8 @@ var SearchView = React.createClass({
             />
           }
           }/>
+        <View style={{flex: 0.17}}><Text></Text></View>
+
     </View>
   },
 
