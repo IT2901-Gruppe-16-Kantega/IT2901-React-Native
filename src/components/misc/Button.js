@@ -38,7 +38,7 @@ var Button = React.createClass({
     }
     const style = this.props.style + "Text";
     if(styles[style]) {
-      return styles[style]
+      return [styles.text, styles[style]]
     }
   },
 
@@ -60,15 +60,21 @@ var styles = StyleSheet.create({
     width: 100,
     backgroundColor: templates.colors.white,
   },
+  title: {
+    shadowColor: 'black',
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    backgroundColor: templates.colors.orange,
+    margin: 5,
+    height: 75,
+    width: 250,
+  },
   large: {
     margin: 5,
     height: 50,
     width: 150,
     backgroundColor: templates.colors.orange,
-    shadowColor: 'black',
-    shadowOffset: {width: 5, height: 5},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
   },
   list: {
     borderWidth: 0.5,
@@ -77,8 +83,11 @@ var styles = StyleSheet.create({
     height: 30,
   },
   text: {
-    color: 'white',
+    color: templates.colors.white,
     fontWeight: 'bold',
+  },
+  titleText: {
+    fontSize: 22,
   },
   subText: {
     fontSize: 10,
