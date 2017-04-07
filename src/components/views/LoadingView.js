@@ -29,9 +29,6 @@ var LoadingView = React.createClass({
     fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
       this.props.setObjekttypeInfo(data);
 
-      // SELECT THE FIRST FILTER AS DEFAULT FOR THE MAPVIEW
-      this.props.selectedFilter = data.egenskapstyper[0];
-
       fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
@@ -42,7 +39,7 @@ var LoadingView = React.createClass({
     return <Container>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Progress.CircleSnail
-          animated={true}
+          animated={this.props.fetching}
           size={200}
           thickness={10}
           color={[templates.colors.orange, templates.colors.blue, templates.colors.green]} />
