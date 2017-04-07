@@ -66,7 +66,9 @@ var RoadMapView = React.createClass({
     cluster.load(features);
     this.props.setCluster(cluster);
 
-    this.setMarkersAtRegion();
+    setTimeout(() => {
+      this.setMarkersAtRegion();
+    }, 50)
   },
 
   render() {
@@ -158,18 +160,15 @@ var RoadMapView = React.createClass({
     if(this.props.cluster && this.props.cluster.getClusters) {
       const padding = 0;
       const markers = this.props.cluster.getClusters([
-        this.props.region.latitude - (this.props.region.latitudeDelta * (0.5 + padding)),
-        this.props.region.longitude - (this.props.region.longitudeDelta * (0.5 + padding)),
-        this.props.region.latitude + (this.props.region.latitudeDelta * (0.5 + padding)),
-        this.props.region.longitude + (this.props.region.longitudeDelta * (0.5 + padding)),
+        this.props.region.latitude - (this.props.region.latitudeDelta),
+        this.props.region.longitude - (this.props.region.longitudeDelta),
+        this.props.region.latitude + (this.props.region.latitudeDelta),
+        this.props.region.longitude + (this.props.region.longitudeDelta),
       ], this.getZoomLevel());
 
       if(markers) {
-        console.log(markers)
-        const h = this.createMapFeatures(markers);
-        this.props.setMarkers(h);
-      } else {
-        console.log("hallais")
+        const m = this.createMapFeatures(markers);
+        this.props.setMarkers(m);
       }
     }
   },
@@ -266,8 +265,6 @@ var RoadMapView = React.createClass({
           return <MapView.Marker
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={index}
-            onPress={this.markerPressed.bind(this, marker)}
-            onSelect={this.markerPressed.bind(this, marker)}
             pinColor={templates.colors.blue} >
             <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
               <MarkerCallout

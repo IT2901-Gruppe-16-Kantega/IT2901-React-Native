@@ -228,10 +228,6 @@ var SidebarSecondary = React.createClass({
     this.props.deselectFilterValue();
     this.props.deselectFunction();
     this.props.clearFilterValueText();
-
-    if(this.props.selectedMarker) {
-      this.props.selectedMarker.showCallout();
-    }
   },
 
   createTextInput(placeholder, type) {
