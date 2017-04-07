@@ -14,12 +14,6 @@ export var colors = {
   placeholderColor: '#c4c4c4',
 }
 
-export var container = {
-  flex: 1,
-  backgroundColor: colors.white,
-  alignItems: 'stretch',
-}
-
 export var top = {
   flex: 0.7,
 }

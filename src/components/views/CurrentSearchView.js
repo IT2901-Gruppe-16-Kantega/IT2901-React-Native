@@ -16,6 +16,7 @@ import RNFS from 'react-native-fs'
 import userDefaults from 'react-native-user-defaults'
 
 import Button from '../misc/Button'
+import Container from '../misc/Container'
 
 import {parseGeometry} from '../../utilities/utils'
 import * as templates from '../../utilities/templates'
@@ -31,7 +32,7 @@ var CurrentSearchView = React.createClass({
   },
 
   render() {
-    return <View style={templates.container}>
+    return <Container>
       <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
@@ -45,7 +46,7 @@ var CurrentSearchView = React.createClass({
       <View style={templates.footer}>
         <Text style={{color: templates.darkGray}}>Gruppe 16 NTNU</Text>
       </View>
-    </View>
+    </Container>
   },
 
   //TODO

@@ -1,3 +1,4 @@
+import {getTheme} from '../utilities/theme/theme';
 /*
 Reducer for different app settings
 */
@@ -5,14 +6,18 @@ Reducer for different app settings
 export default function reducer(state={
   clusteringOn: false,
   darkModeOn: false,
-  
+  themeStyle: getTheme('light'),
+
 }, action) {
   switch (action.type) {
     case "SET_CLUSTERING": {
       return {...state, clusteringOn: action.payload}
     }
     case "SET_DARK_MODE": {
-      return {...state, darkModeOn: action.payload}
+      var style;
+      if(action.payload) { style = 'dark'; }
+      else { style = 'light'; }
+      return {...state, darkModeOn: action.payload, themeStyle: getTheme(style)}
     }
   }
   return state

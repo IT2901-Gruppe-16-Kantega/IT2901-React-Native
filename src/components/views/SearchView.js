@@ -18,6 +18,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Button from '../misc/Button'
+import Container from '../misc/Container'
 import InputField from '../misc/InputField'
 import TabBar from '../misc/TabBar'
 
@@ -39,7 +40,7 @@ View used when user specifies what data to be fetched from NVDB
 */
 var SearchView = React.createClass({
   render() {
-    return <View style = {templates.container}>
+    return <Container>
       <View style={templates.top}/>
       <View style={styles.navigatorSpace}/>
       <View style={styles.header}>
@@ -66,7 +67,7 @@ var SearchView = React.createClass({
         ]
         }
         />
-    </View>
+    </Container>
   },
   tabPress() {
     console.log("asd")

@@ -8,17 +8,20 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import moment from 'moment';
 
-import Button from '../misc/Button'
-import PropertyValue from '../misc/PropertyValue'
+import Button from '../misc/Button';
+import Container from '../misc/Container'
+import PropertyValue from '../misc/PropertyValue';
 
-import * as templates from '../../utilities/templates'
-import * as dataActions from '../../actions/dataActions'
+import storageEngine from '../../utilities/storageEngine';
+import * as templates from '../../utilities/templates';
+import * as dataActions from '../../actions/dataActions';
 
+const storage = storageEngine('NVDB-storage');
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 /*
@@ -26,14 +29,15 @@ View that shows all stored data
 */
 var StoredDataView = React.createClass({
   render() {
-    return <View style={templates.container}>
+    return <Container>
       <ListView
         // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
         renderRow={this.renderRow}
+        renderFooter={this.renderFooter}
         enableEmptySections={true}
       />
-    </View>
+    </Container>
   },
 
   // Render each saved road search row
@@ -64,6 +68,12 @@ var StoredDataView = React.createClass({
     </TouchableHighlight>
   },
 
+  renderFooter() {
+    return <View style={styles.footerStyle}>
+      <Button text={"Slett alt"} onPress={storage.clear} style={"small"} />
+    </View>
+  },
+
   // Open the selected roadSearch item
   openSearch(search) {
     this.props.setCurrentRoadSearch(search);
@@ -91,6 +101,10 @@ var styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
     alignItems: 'flex-end',
+  },
+  footerStyle: {
+    padding: 10,
+    alignItems: 'center',
   }
 })
 

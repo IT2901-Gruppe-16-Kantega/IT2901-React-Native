@@ -14,6 +14,8 @@ import { Router, Scene } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import moment from 'moment';
+
 // application view imports
 import CurrentSearchView from './components/views/CurrentSearchView'
 import LoadingView from './components/views/LoadingView'
@@ -27,13 +29,12 @@ import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
 
 // misc imports
+import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
 import * as dataActions from './actions/dataActions'
 import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
-
-import storageEngine from './utilities/storageEngine'
 
 class App extends Component {
   componentWillMount() {

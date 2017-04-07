@@ -13,6 +13,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue';
 import InputField from '../misc/InputField';
 
@@ -35,7 +36,7 @@ var ObjectInfoView = React.createClass({
     const {selectedObject, objekttypeInfo} = this.props;
     const {metadata} = selectedObject;
 
-    return <View style={templates.container}>
+    return <Container>
         <View style={styles.mainInfo}>
           <Text style={styles.title}>{objekttypeInfo.navn}</Text>
           <PropertyValue property={"ID"} value={selectedObject.id} />
@@ -50,7 +51,7 @@ var ObjectInfoView = React.createClass({
           renderRow={this.renderRow}
           enableEmptySections={true}
         />
-    </View>
+    </Container>
   },
 
   inputFocused(refName) {

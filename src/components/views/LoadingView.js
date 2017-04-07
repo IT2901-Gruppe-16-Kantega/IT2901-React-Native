@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
 import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
@@ -48,7 +49,7 @@ var LoadingView = React.createClass({
   },
 
   render() {
-    return <View style={templates.container}>
+    return <Container>
       <View style={templates.top}/>
       <View style={styles.header}>
         <Text style={{color: templates.colors.white}}>NVDB-app</Text>
@@ -71,7 +72,7 @@ var LoadingView = React.createClass({
       <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
-    </View>
+    </Container>
   },
 
   //this may be really bad as componentDidUpdate may be called a lot of times

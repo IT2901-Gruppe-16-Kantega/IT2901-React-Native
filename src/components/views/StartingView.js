@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Button from '../misc/Button'
+import Container from '../misc/Container'
 
 import * as templates from '../../utilities/templates'
 
@@ -19,7 +20,7 @@ starting page of application
 */
 var StartingView = React.createClass({
   render() {
-    return <View style={templates.container}>
+    return <Container>
       <View style={templates.top}></View>
       <View style={styles.header}>
         <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
@@ -36,7 +37,7 @@ var StartingView = React.createClass({
       <View style={templates.footer}>
         <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
       </View>
-    </View>
+    </Container>
   }
 });
 
