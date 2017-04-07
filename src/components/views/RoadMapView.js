@@ -76,6 +76,7 @@ var RoadMapView = React.createClass({
         <MapView
           ref={(ref) => {map = ref} }
           style={styles.map}
+          showsUserLocation={true}
           region={this.props.region}
           onRegionChange={this.changeRegion}
           onLongPress={this.addMarker} >
