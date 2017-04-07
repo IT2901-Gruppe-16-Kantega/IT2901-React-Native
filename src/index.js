@@ -39,7 +39,7 @@ class App extends Component {
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
     var stored = storage.load();
-    console.log(stored)
+    //console.log(stored)
     this.props.loadSearches(stored)
   }
   render() {

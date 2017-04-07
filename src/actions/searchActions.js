@@ -1,34 +1,54 @@
 //
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
+import {fylker} from '../data/fylker';
 
 
 //functions for handling input in all searchfields
+export function chooseKommune(input) {
+  return function(dispatch) {
+    dispatch({
+        type: "CHOOSE_KOMMUNE",
+        payload: input,
+      })
+    var f = []
+    f.push(fylker.find((fylke)=>{return fylke.nummer == input[0].fylke}))
+    dispatch({
+      type: "CHOOSE_FYLKE_FROM_KOMMUNE",
+      payload: f,
+    })
+  }
+}
 
 export function resetVegField(){
-  return{
+  return {
     type: "RESET_VEGFIELD"
   }
 }
 export function inputFylke(input){
   return function(dispatch) {
-    searchForFylke(input)
-    .then((result) => {
-      if(result.length == 1){
-        dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
-          result: result,
-          fylke_text: input,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
-          result: result,
-          fylke_text: input,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input})
-    })
+    if(input == ""){
+      dispatch({type: "INPUT_FYLKE_RESET"})
+    }
+    else{
+      searchForFylke(input)
+      .then((result) => {
+        if(result.length == 1){
+          dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
+            result: result,
+            fylke_text: input,
+          }})
+        }
+        else {
+          dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
+            result: result,
+            fylke_text: input,
+          }})
+        }
+      })
+      .catch((err) => {
+        dispatch({type: "INPUT_FYLKE_NOT_VALID", payload: input})
+      })
+    }
   }
 }
 
@@ -48,7 +68,6 @@ export function inputVeg(input) {
 
 export function inputVegobjekttyper(input) {
   return function(dispatch) {
-    //TODO
     searchForVegobjekttyper(input)
     .then((result) => {
       if(result.length == 1){
@@ -79,14 +98,19 @@ export function chooseVegobjekttyper(input) {
 
 export function setValidityOfVeg(input) {
   return function(dispatch) {
-    if(input){
+    if(input == 'VALID'){
       dispatch({
         type: "INPUT_VEG_VALID"
       })
     }
-    else {
+    else if (input == 'NOT_VALID') {
       dispatch({
         type: "INPUT_VEG_NOT_VALID"
+      })
+    }
+    else {
+      dispatch({
+        type: "INPUT_VEG_NOT_CHOSEN"
       })
     }
   }
@@ -94,33 +118,33 @@ export function setValidityOfVeg(input) {
 
 export function inputKommune(input, fylke) {
   return function(dispatch) {
-    searchForKommune(input, fylke)
-    .then((result) => {
-      if(result.length==1){
-        dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
-          result: result,
-          kommune_text: input,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
-          result: result,
-          kommune_text: input,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input})
-    })
+    if(input == ""){
+      dispatch({type: "INPUT_KOMMUNE_RESET"})
+    }
+    else{
+      searchForKommune(input, fylke)
+      .then((result) => {
+        if(result.length==1){
+          dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
+            result: result,
+            kommune_text: input,
+          }})
+        }
+        else {
+          dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
+            result: result,
+            kommune_text: input,
+          }})
+        }
+      })
+      .catch((err) => {
+        dispatch({type: "INPUT_KOMMUNE_NOT_VALID", payload: input})
+      })
+    }
   }
 }
 
-export function chooseKommune(input) {
-  return {
-    type: "CHOOSE_KOMMUNE",
-    payload: input,
-  }
-}
+
 
 export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype) {
   var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];

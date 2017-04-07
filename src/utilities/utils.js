@@ -38,7 +38,12 @@ function searchForVegobjekttyper(input){
 
 //handle chosen fylke
 function searchForKommune(input, fylke){
-  var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
+  if(fylke.length == 0) {
+    var filteredKommuneList = kommuner;
+  }
+  else {
+    var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
+  }
   return new Promise(function(resolve, reject){
     var kommunerArray = filteredKommuneList.filter(compareInput, input);
     if(kommunerArray.length > 0 && kommunerArray.length != filteredKommuneList.length) {
