@@ -13,6 +13,7 @@ import MapView from 'react-native-maps';
 import moment from 'moment';
 import supercluster from 'supercluster';
 
+import Container from '../misc/Container'
 import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
@@ -32,7 +33,6 @@ View that holds the map
 */
 var RoadMapView = React.createClass({
   componentWillMount() {
-    this.props.setMarkers(null);
     this.createCluster();
   },
 
@@ -62,6 +62,10 @@ var RoadMapView = React.createClass({
       const geo = parseGeometry(roadObject.geometri.wkt);
       const feature = { properties: { roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
       features.push(feature);
+
+      if(!this.props.region) {
+        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.1, longitudeDelta: 0.1 })
+      }
     }
     cluster.load(features);
     this.props.setCluster(cluster);
@@ -72,12 +76,11 @@ var RoadMapView = React.createClass({
   },
 
   render() {
-    return <View style={styles.container}>
-      <View style={styles.top}/>
-      <View style={styles.contentView}>
+    return <Container>
+      <View style={{ flex: 1 }}>
         <MapView
           ref={(ref) => {map = ref} }
-          style={styles.map}
+          style={{ flex: 1 }}
           showsUserLocation={true}
           region={this.props.region}
           onRegionChange={this.changeRegion}
@@ -87,7 +90,7 @@ var RoadMapView = React.createClass({
         <SidebarMain />
         <SidebarSecondary />
       </View>
-    </View>
+    </Container>
   },
 
   addMarker(e) {
@@ -302,28 +305,6 @@ var RoadMapView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  top: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    height: 20,
-    right: 0,
-    left: 0,
-    top: 0,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-  },
-  contentView: {
-    flex: 1,
-  },
-  map: {
-    position: 'absolute',
-    right: 0,
-    top: 20,
-    left: 0,
-    bottom: 0,
-  },
   cluster: {
     zIndex: 2,
     backgroundColor: templates.colors.blueTransparent,
