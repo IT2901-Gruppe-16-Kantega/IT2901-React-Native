@@ -82,6 +82,7 @@ var SearchView = React.createClass({
           const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
           this.props.inputVeg(veg);
           this.props.chooseFylke([closest.fylke]);
+          this.props.chooseKommune([closest.kommune]);
           this.validate()
         }
 

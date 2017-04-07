@@ -28,7 +28,7 @@ var RoadSelectView = React.createClass({
     const coords = this.props.searchCoordinate;
 
     var polygons = [];
-    for(var i = 0; i < kommuner.length; i++) {
+    /*for(var i = 0; i < kommuner.length; i++) {
       const kommune = kommuner[i]
       const color = randomColor(0.25)
       polygons.push(<MapView.Polygon
@@ -37,7 +37,7 @@ var RoadSelectView = React.createClass({
         strokeColor={color}
         fillColor={color}
         ></MapView.Polygon>)
-    }
+    }*/
 
     if(this.props.searchCoordinate) {
       marker = <MapView.Marker
