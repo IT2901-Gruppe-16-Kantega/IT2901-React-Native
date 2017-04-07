@@ -2,6 +2,12 @@
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
 import {fylker} from '../data/fylker';
 
+export function inputClosestRoads(input) {
+  return {
+    type: "INPUT_CLOSEST_ROADS",
+    payload: input,
+  }
+}
 
 //functions for handling input in all searchfields
 export function chooseKommune(input) {

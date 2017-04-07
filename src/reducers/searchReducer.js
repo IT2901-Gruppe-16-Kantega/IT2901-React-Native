@@ -42,6 +42,8 @@ export default function reducer(state={
 
   fylkeCoordinates: null,
 
+  closestRoadsList: [],
+
   //To be removed:
   fylke_navn: '',
   kommune_navn: '',
@@ -49,6 +51,12 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
+    case "INPUT_CLOSEST_ROADS": {
+      return {
+        ...state,
+        closestRoadsList: action.payload,
+      }
+    }
     case "INPUT_KOMMUNE_RESET": {
       return {
         ...state,

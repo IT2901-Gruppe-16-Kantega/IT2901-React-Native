@@ -97,8 +97,12 @@ function fetch_Kommuner(callback){
 }
 
 function fetchCloseby(coordinate, callback) {
-  const url = baseURL + "posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100";
+
+  //TODO set maks_avstand til 30
+  const url = baseURL + "posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100&maks_antall=10";
   fetchData(url).then(function(data) {
+    callback(data, true)
+    /*
     const firstElement = data[0];
     if(firstElement.code) {
       callback(firstElement, true);
@@ -109,6 +113,7 @@ function fetchCloseby(coordinate, callback) {
       })
       callback(firstElement, true);
     }
+    */
   })
 }
 

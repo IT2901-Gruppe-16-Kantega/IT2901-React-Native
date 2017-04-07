@@ -54,6 +54,7 @@ class App extends Component {
             hideNavBar={true}
             type='reset'
             initial={true}
+
             />
           <Scene
             key="SearchView"

@@ -20,6 +20,7 @@ import { connect } from 'react-redux'
 import Button from '../misc/Button'
 import InputField from '../misc/InputField'
 import TabBar from '../misc/TabBar'
+import RoadSelectView from './RoadSelectView'
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
@@ -27,6 +28,9 @@ import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as searchActions from '../../actions/searchActions'
+import * as uiActions from '../../actions/uiActions'
+import {fylker} from '../../data/fylker';
+import {kommuner} from '../../data/kommuner';
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
@@ -45,36 +49,130 @@ var SearchView = React.createClass({
       <View style={styles.header}>
         <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
       </View>
-      <View style={styles.inputArea}>
-        <ScrollView
-          style={{backgroundColor: templates.colors.white}}
-          scrollEnabled={false}
-          keyboardShouldPersistTaps='always'
-          >
-          {this.createTypeInput()}
-          {this.createFylkeInput()}
-          {this.createKommuneInput()}
-          {this.createVegInput()}
-        </ScrollView>
-      </View>
+      {this.createViewArea()}
       {this.createStatistics()}
       {this.createButton()}
       <TabBar
-        elements={[{title: 'Manuell', onPress: this.tabPress, chosen: true},
-          {title: "🗺 Kart", onPress: Actions.RoadSelectView, chosen: false},
-          {title: "📍 Nærmeste", onPress: this.getUserPosition, chosen: false},
+        elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("Søk")}, chosen: this.props.chosenSearchTab},
+          {title: "Finn", onPress: ()=>{this.props.setChosenSearchTab("Finn")}, chosen: this.props.chosenSearchTab},
+          {title: "Nærmeste", onPress: ()=>{
+            this.props.setChosenSearchTab("Nærmeste")
+            this.getUserPosition()
+          }, chosen: this.props.chosenSearchTab},
         ]
         }
         />
     </View>
   },
-  tabPress() {
-    console.log("asd")
+
+
+  createViewArea() {
+    if (this.props.chosenSearchTab == "Søk"){
+      return <View style={styles.inputArea}>
+        <ScrollView
+          style={{backgroundColor: templates.colors.white}}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.createTypeInput(styles.typeArea)}
+          <View style={styles.parameterBottomPadding}><Text></Text></View>
+          {this.createFylkeInput()}
+          {this.createKommuneInput()}
+          {this.createVegInput()}
+
+        </ScrollView>
+      </View>
+    }
+    else if (this.props.chosenSearchTab == "Finn") {
+      return <View style={styles.mapArea}>
+        <ScrollView
+          scrollEnabled = {false}
+          zoomEnabled = {false}
+          keyboardShouldPersistTaps='always'>
+          {this.createTypeInput(styles.mapType)}
+          <RoadSelectView
+            updaterFunction = {this.validate}/>
+        </ScrollView>
+
+      </View>
+
+    }
+    else if (this.props.chosenSearchTab == "Nærmeste") {
+      return <View style={styles.inputArea}>
+        <ScrollView
+          style={{backgroundColor: templates.colors.white}}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.createTypeInput(styles.typeArea)}
+          <View style={styles.parameterBottomPadding}><Text></Text></View>
+
+          {this.createClosestRoadsList()}
+
+        </ScrollView>
+      </View>
+    }
+
+
   },
+  createClosestRoadsList() {
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
+    var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
+    return <View style={{flexDirection: "row"}}>
+      <View style={{flex: 0.88}}><Text></Text></View>
+      <ListView
+        keyboardShouldPersistTaps='always'
+        dataSource={dataSource}
+        enableEmptySections= {true}
+        renderRow={(rowData) => {
+          //TODO button need to give feedback when chosen
+            return <Button
+              style={"list"}
+              onPress={()=>{
+                var chosenData = [];
+                chosenData.push(this.props.closestRoadsList.find((data) => {
+                  if(data.vegreferanse.kortform == rowData.vegreferanse.kortform){
+                    return data;
+                  }
+                }))
+                this.chooseClosestRoad(chosenData[0])
+              }}
+              text={rowData.vegreferanse.kortform}
+            />
+          }
+          }/>
+        <View style={{flex: 0.17}}><Text></Text></View>
+
+    </View>
+  },
+
+  chooseClosestRoad(road) {
+    const vegref = road.vegreferanse
+    console.log(vegref)
+    const f = vegref.fylke
+    const k = vegref.kommune
+    const kat = vegref.kategori
+    const status = vegref.status
+    const nr = vegref.nummer
+    if(kat == "K"){
+      this.props.inputVeg(kat+status+nr)
+      this.props.chooseFylke([fylker.find((fylke)=>fylke.nummer==f)])
+      this.props.chooseKommune([kommuner.find((kommune)=>kommune.nummer==k)])
+      this.validate()
+    }
+    else {
+      this.props.inputVeg(kat+status+nr)
+      this.props.chooseFylke(fylker.find((fylke)=>fylke.nummer==f))
+      this.validate()
+    }
+  },
+
 
   getUserPosition() {
     navigator.geolocation.getCurrentPosition((initialPosition) => {
-      fetchCloseby(initialPosition.coords, function(closest) {
+      fetchCloseby(initialPosition.coords, function(closestList) {
+        this.props.inputClosestRoads(closestList)
+        /*
         if(closest.code) {
           alert(closest.message);
         } else {
@@ -83,7 +181,7 @@ var SearchView = React.createClass({
           this.props.chooseFylke([closest.fylke]);
           this.validate()
         }
-
+        */
       }.bind(this));
     }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
@@ -126,9 +224,9 @@ createKommuneInput(){
     <View style={styles.parameterBottomPadding}><Text></Text></View>
   </View>
 },
-createTypeInput(){
-  return <View>
-    <View style={styles.typeArea}>
+createTypeInput(styleType){
+  return <View style= {{flex: 1}}>
+    <View style={styleType}>
       <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
       <InputField type='vegobjekttype'
         list={this.props.vegobjekttyper_input}
@@ -141,7 +239,6 @@ createTypeInput(){
         />
       <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-    <View style={styles.parameterBottomPadding}><Text></Text></View>
   </View>
 },
 createVegInput() {
@@ -287,6 +384,21 @@ initiateSearch(numObjects) {
 
 
 var styles = StyleSheet.create({
+  mapArea: {
+    flex: 13.2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  },
+  mapType: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: templates.colors.white,
+    minHeight:0,
+    maxHeight:130,
+  },
 
   //Top-leve containers
 
@@ -306,6 +418,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
   },
+
 
 
   //Big components
@@ -333,6 +446,7 @@ var styles = StyleSheet.create({
     minHeight:0,
     maxHeight:162,
   },
+
   vegobjekttypeArea2: {
     flex: 4,
     flexDirection: 'row',
@@ -400,9 +514,13 @@ function mapStateToProps(state) {
     vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
     vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
 
+    //misc
+    closestRoadsList: state.searchReducer.closestRoadsList,
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
 
+    //UI
+    chosenSearchTab: state.uiReducer.chosenSearchTab,
   };}
 
   function mapDispatchToProps(dispatch) {
@@ -421,10 +539,13 @@ function mapStateToProps(state) {
       inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
       chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
 
+      inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
+
       setURL: bindActionCreators(searchActions.setURL, dispatch),
       combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
       setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 
+      setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
     }
   }
 
