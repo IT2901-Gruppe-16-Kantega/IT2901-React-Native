@@ -151,3 +151,23 @@ export function addRoadObject(object) {
     payload: object,
   }
 }
+
+export function setIsEditingRoadObject(editing) {
+  return {
+    type: "SET_IS_EDITING_ROAD_OBJECT",
+    payload: editing,
+  }
+}
+
+export function inputPropertyValue(value, property) {
+  return {
+    type: "INPUT_PROPERTY_VALUE",
+    payload: {value, property},
+  }
+}
+
+export function resetNewPropertyValue() {
+  return {
+    type: "RESET_NEW_PROPERTY_VALUE",
+  }
+}

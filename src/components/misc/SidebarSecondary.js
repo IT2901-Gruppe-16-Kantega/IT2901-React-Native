@@ -230,7 +230,6 @@ var SidebarSecondary = React.createClass({
     this.props.clearFilterValueText();
 
     if(this.props.selectedMarker) {
-      console.log(this.props.selectedMarker)
       this.props.selectedMarker.showCallout();
     }
   },

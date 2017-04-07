@@ -18,7 +18,7 @@ import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 import MapMarker from '../misc/MapMarker'
 
-import {comparators, datatype} from '../../utilities/values';
+import {comparators, datatype, importance} from '../../utilities/values';
 import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
 import * as dataActions from '../../actions/dataActions';
@@ -99,9 +99,32 @@ var RoadMapView = React.createClass({
     }
     const now = moment();
 
+    var wkt;
+    var requiredProperties = [];
+    for(var i = 0; i < this.props.objekttypeInfo.egenskapstyper.length; i++) {
+      const egenskapstype = this.props.objekttypeInfo.egenskapstyper[i];
+      if(egenskapstype.viktighet === importance.PAKREVD_ABSOLUTT || egenskapstype.viktighet === importance.PAKREVD) {
+        var egenskap = {
+          id: egenskapstype.id,
+          navn: egenskapstype.navn,
+          datatype: egenskapstype.datatype,
+          datatype_tekst: egenskapstype.datatype_tekst,
+          verdi: null,
+        }
+
+        if(egenskapstype.datatype == datatype.geomPunkt) {
+          wkt = "POINT (" + coords.latitude + " " + coords.longitude + ")";
+          egenskap.verdi = wkt;
+        }
+
+        requiredProperties.push(egenskap);
+      }
+    }
+
     const object = {
       id: now.unix(),
       href: null,
+      ny: true, // Add flag to show this is a newly created object
       metadata: {
         type: {
           id: this.props.objekttypeInfo.id,
@@ -111,25 +134,23 @@ var RoadMapView = React.createClass({
         sist_modifisert: now.format("YYYY-MM-DD HH:mm:ss"),
         startdato: now.format("YYYY-MM-DD"),
       },
-      egenskaper: [{
-        id: 5530,
-        navn: "Skiltnummer",
-        datatype: 30,
-        datatype_tekst: "FlerverdiAttributt, Tekst",
-        verdi: "378.2 - Slutt på parkeringssone",
-        enum_id: 7682,
-      }],
+      egenskaper: requiredProperties,
       geometri: {
-        wkt: "POINT (" + coords.latitude + " " + coords.longitude + ")",
+        wkt: wkt,
         egengeometri: false,
       },
       lokasjon: null,
     }
     this.props.addRoadObject(object);
+    this.props.selectObject(object);
 
     setTimeout(() => {
       this.createCluster();
     }, 10)
+
+    setTimeout(() => {
+      Actions.ObjectInfoView({rightTitle: "Lagre"});
+    }, 500)
   },
 
   setMarkersAtRegion() {

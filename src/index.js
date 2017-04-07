@@ -34,7 +34,6 @@ let ScreenWidth = Dimensions.get("window").width;
 
 import storageEngine from './utilities/storageEngine'
 
-
 class App extends Component {
   componentWillMount() {
     const storage = storageEngine('NVDB-storage')
@@ -106,11 +105,18 @@ class App extends Component {
             sceneStyle={{paddingTop: 64}}
             title=""
             hideNavBar={false}
-            rightTitle="Rediger"
-            onRight={ () => console.log('hei') } />
+            //rightTitle={this.getObjectInfoViewRightTitle}
+            onRight={ () => console.log("Hei") } />
         </Scene>
       </Router>
     )
+  }
+//this.props.setIsEditingRoadObject.bind(this, !this.props.isEditingRoadObject)
+  getObjectInfoViewRightTitle() {
+    if(this.props.isEditingRoadObject) {
+      return "Lagre";
+    }
+    return "Rediger";
   }
 
   toggleSidebar() {
@@ -142,6 +148,7 @@ function mapStateToProps(state) {
   return {
     //Status information about search
     sidebarFrame: state.mapReducer.sidebarFrame,
+    isEditingRoadObject: state.dataReducer.isEditingRoadObject,
   };
 }
 
@@ -150,6 +157,7 @@ function mapDispatchToProps(dispatch) {
     loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
+    setIsEditingRoadObject: bindActionCreators(dataActions.setIsEditingRoadObject, dispatch),
   }
 }
 
