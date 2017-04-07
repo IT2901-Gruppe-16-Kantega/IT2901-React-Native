@@ -26,7 +26,6 @@ view shown when fetching/loading data
 */
 var LoadingView = React.createClass({
   componentWillMount() {
-    /*
     fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
       this.props.setObjekttypeInfo(data);
 
@@ -36,7 +35,7 @@ var LoadingView = React.createClass({
       fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
-    this.props.fetchDataStart();*/
+    this.props.fetchDataStart();
   },
 
   render() {
