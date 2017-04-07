@@ -14,18 +14,16 @@ import * as Progress from 'react-native-progress';
 
 import SettingSwitch from '../misc/SettingSwitch';
 import Button from '../misc/Button'
-import storageEngine from '../../utilities/storageEngine'
-
-
 
 import * as templates from '../../utilities/templates';
 import * as reportActions from '../../actions/reportActions';
 import * as settingsActions from '../../actions/settingsActions';
+import storageEngine from '../../utilities/storageEngine'
 
 const storage = storageEngine('NVDB-storage')
-/*
-currently not used, but may be used to specify username, autoloading on/off etc
-*/
+
+//<Progress.Circle progress={this.props.changeCount / 100} showsText={true} size={50} />
+
 var SettingsView = React.createClass({
   render() {
     return <View style={templates.container}>
@@ -34,7 +32,6 @@ var SettingsView = React.createClass({
           <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
         </View>
         <View style={styles.contents}>
-          <Progress.Circle progress={this.props.changeCount / 100} showsText={true} size={50} />
           <SettingSwitch
             onChange={this.props.setClustering}
             value={this.props.clusteringOn}
@@ -51,6 +48,11 @@ var SettingsView = React.createClass({
             value={false}
             text={"Gjør endring"}
             description={this.props.changeCount} />
+          <SettingSwitch
+            onChange={this.props.setDarkMode}
+            value={this.props.darkModeOn}
+            text={"Nattmodus"}
+            description={"Mørk bakgrunn og lys tekst."} />
           <Button text="Purge Store" onPress={storage.clear} style={"big"} />
         </View>
         <View style={templates.footer}>
@@ -61,7 +63,6 @@ var SettingsView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  //Top-leve containers
   header: {
     flex: 7.5,
     justifyContent: 'center',
@@ -80,10 +81,10 @@ var styles = StyleSheet.create({
   },
 })
 
-
 function mapStateToProps(state) {
   return {
     clusteringOn: state.settingsReducer.clusteringOn,
+    darkModeOn: state.settingsReducer.darkModeOn,
     changeCount: state.reportReducer.changeCount,
   };
 }
@@ -91,6 +92,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setClustering: bindActionCreators(settingsActions.setClustering, dispatch),
+    setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
     incrementChangeCount: bindActionCreators(reportActions.incrementChangeCount, dispatch),
   }
 }

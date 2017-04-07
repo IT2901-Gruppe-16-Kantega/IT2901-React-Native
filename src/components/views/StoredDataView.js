@@ -24,22 +24,11 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 /*
 View that shows all stored data
 */
-
-/*
-var roadSearch = {
-  key: Date.now(),
-  date: moment().format('MMMM Do YYYY, h:mm:ss a'),
-  description: description,
-  roadObjects: objects,
-  report: report,
-  searchParameters: combParams,
-  objekttypeInfo: objekttypeInfo,
-}
-*/
 var StoredDataView = React.createClass({
   render() {
     return <View style={templates.container}>
       <ListView
+        // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
         renderRow={this.renderRow}
         enableEmptySections={true}
@@ -47,22 +36,37 @@ var StoredDataView = React.createClass({
     </View>
   },
 
+  // Render each saved road search row
   renderRow(roadSearch, sectionID, rowID, highlightRow) {
-    const fylkeNavn = roadSearch.searchParameters[0];
-    const kommuneNavn = roadSearch.searchParameters[1];
+    // If the search parameters exists, set the names
+    const fylkeNavn = roadSearch.searchParameters[0] == null ? null : roadSearch.searchParameters[0].navn;
+    const kommuneNavn = roadSearch.searchParameters[2] == null ? null : roadSearch.searchParameters[2].navn;
+
     const vegobjekttype = roadSearch.objekttypeInfo;
 
-    return <View
+    // Create the title of the row
+    var title = vegobjekttype.navn;
+    if(kommuneNavn && fylkeNavn) { title += ", " + fylkeNavn + " (" + kommuneNavn + ")"; }
+    else if(fylkeNavn) { title += ", " + fylkeNavn; }
+
+    return <TouchableHighlight
+      onPress={this.openSearch.bind(this, roadSearch)}
       key={rowID}
       style={styles.row}>
-      <Text>{moment(roadSearch.key).format("DD. MMM YYYY (HH:mm)")}</Text>
-      <Text>{roadSearch.roadObjects.length}</Text>
-      <Button style={"small"} onPress={this.openSearch.bind(this, roadSearch)} text={"Åpne"} />
-    </View>
+      <View>
+        <Text style={styles.text}>{moment(roadSearch.key).format("DD. MMM YYYY (HH:mm)")}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.text}>{roadSearch.roadObjects.length} objekter</Text>
+        <View style={{alignItems: 'flex-end'}}>
+        <Text style={[styles.text, {color: templates.colors.orange, fontWeight: 'bold'}]}>Åpne</Text>
+        </View>
+      </View>
+    </TouchableHighlight>
   },
 
-  openSearch(section) {
-    this.props.setCurrentRoadSearch(section);
+  // Open the selected roadSearch item
+  openSearch(search) {
+    this.props.setCurrentRoadSearch(search);
     Actions.CurrentSearchView();
   },
 });
@@ -73,8 +77,21 @@ var styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: templates.colors.middleGray,
+    backgroundColor: templates.colors.lightGray,
   },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: templates.colors.black,
+  },
+  text: {
+    color: templates.colors.black,
+    fontSize: 17,
+  },
+  buttonContainer: {
+    marginTop: 10,
+    alignItems: 'flex-end',
+  }
 })
 
 function mapStateToProps(state) {
@@ -85,7 +102,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //dataActions
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
   }
 }

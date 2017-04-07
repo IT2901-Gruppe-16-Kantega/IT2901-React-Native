@@ -16,6 +16,7 @@ export var colors = {
 
 export var container = {
   flex: 1,
+  backgroundColor: colors.white,
   alignItems: 'stretch',
 }
 
