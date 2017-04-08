@@ -4,3 +4,10 @@ export function setKeyboardPadding(padding) {
     payload: padding,
   }
 }
+
+export function setChosenSearchTab(input) {
+  return {
+    type: "SET_CHOSEN_SEARCH_TAB",
+    payload: input,
+  }
+}

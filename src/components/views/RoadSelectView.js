@@ -63,7 +63,6 @@ var RoadSelectView = React.createClass({
       style={styles.map}>
       {marker}
       {polygon}
-      {polygons}
     </MapView>
   },
 
@@ -74,13 +73,14 @@ var RoadSelectView = React.createClass({
       if(closest.code) {
         message = closest.message;
       } else {
-        const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
+        const veg = closest.vegreferanse.kategori + closest.vegreferanse.status+ closest.vegreferanse.nummer;
         message = closest.vegreferanse.kortform;
 
         this.props.inputVeg(veg);
         this.props.setFylkeCoordinates(parseGeometry(closest.fylke.kartutsnitt.wkt))
         this.props.chooseFylke([closest.fylke]);
         this.props.selectSearchCoordinate(coordinate);
+        this.props.updaterFunction()
 
         console.log(this.props.fylke_chosen)
       }
@@ -99,7 +99,7 @@ var RoadSelectView = React.createClass({
 
 var styles = StyleSheet.create({
   map: {
-    flex: 1,
+    height: 400
   }
 })
 

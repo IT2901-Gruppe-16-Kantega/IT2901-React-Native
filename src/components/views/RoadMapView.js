@@ -161,12 +161,12 @@ var RoadMapView = React.createClass({
 
   setMarkersAtRegion() {
     if(this.props.cluster && this.props.cluster.getClusters) {
-      const padding = 0;
+      const m = 2;
       const markers = this.props.cluster.getClusters([
-        this.props.region.latitude - (this.props.region.latitudeDelta),
-        this.props.region.longitude - (this.props.region.longitudeDelta),
-        this.props.region.latitude + (this.props.region.latitudeDelta),
-        this.props.region.longitude + (this.props.region.longitudeDelta),
+        this.props.region.latitude - (this.props.region.latitudeDelta * m),
+        this.props.region.longitude - (this.props.region.longitudeDelta * m),
+        this.props.region.latitude + (this.props.region.latitudeDelta * m),
+        this.props.region.longitude + (this.props.region.longitudeDelta * m),
       ], this.getZoomLevel());
 
       if(markers) {
