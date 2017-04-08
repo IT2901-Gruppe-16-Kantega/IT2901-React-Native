@@ -10,7 +10,10 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import * as Progress from 'react-native-progress';
+
 import Button from '../misc/Button'
+import Container from '../misc/Container'
 
 import * as templates from '../../utilities/templates'
 
@@ -19,57 +22,71 @@ starting page of application
 */
 var StartingView = React.createClass({
   render() {
-    return <View style={templates.container}>
-      <View style={templates.top}></View>
-      <View style={styles.header}>
-        <Text style={{color: templates.colors.darkGray}}>NVDB-app</Text>
-      </View>
-
+    return <Container>
+      {this.renderLoadingView()}
       <View style={styles.contents}>
-        <Button text={"Nytt søk"} onPress={Actions.SearchView} />
-        <Button text={"Lagrede søk"} onPress={Actions.StoredDataView} />
-        <Button text={"Innstillinger"} onPress={Actions.SettingsView} />
+        <Button style={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
+        <Button style={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
+        <Button style={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
       </View>
+    </Container>
+  },
 
-      <View style={styles.bottomPadding}></View>
-
-      <View style={templates.footer}>
-        <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
+  renderLoadingView() {
+    if(this.props.loadingProgress < 1) {
+      return <View style={styles.loadingProgress}>
+        <View style={styles.part}>
+          <Progress.Circle
+            progress={this.props.loadingProgress}
+            color={templates.colors.orange}
+            showsText={true}
+            thickness={10}
+            size={200} />
+        </View>
+        <View style={[styles.part, styles.bottomPart]}>
+          <Text style={this.props.theme.subtitle}>Laster inn lagrede søk. Vennligst vent...</Text>
+        </View>
       </View>
-    </View>
+    }
   }
 });
 
-//move some of this to templates
 var styles = StyleSheet.create({
-  //Top-leve containers
-  header: {
-    flex: 7.5,
-    justifyContent: 'center',
+  loadingProgress: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    zIndex: 10,
+  },
+  part: {
+    flex: 1,
+    padding: 10,
     alignItems: 'center',
-    backgroundColor: templates.colors.white
+    justifyContent: 'flex-end',
+  },
+  bottomPart: {
+    justifyContent: 'flex-start',
   },
   contents: {
-    flex: 6,
-    justifyContent: 'space-between',
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  bottomPadding: {
-    flex: 6.5,
-    backgroundColor: templates.colors.white
+    justifyContent: 'center',
   },
 })
 
-/*                        REDUX STUFF
+/* REDUX STUFF
 The return of mapStateToProps is what this comoponent may see from the store
 these are set as props and automatically updated when store is changed
 The return of mapDispatchToProps is which actions this component has access to
 */
-
 function mapStateToProps(state) {
   return {
-    fetching: state.dataReducer.fetching
+    loadingProgress: state.dataReducer.loadingProgress,
+    fetching: state.dataReducer.fetching,
+    theme: state.settingsReducer.themeStyle,
   };
 }
 

@@ -1,4 +1,5 @@
 import {fylker} from '../data/fylker';
+import {kommuner} from '../data/kommuner';
 
 /*
   wrapper.js: file wich contains methods used in fetching data from server
@@ -96,25 +97,27 @@ function fetch_Kommuner(callback){
   })
 }
 
-function fetchCloseby(coordinate, callback) {
-
-  //TODO set maks_avstand til 30
-  const url = baseURL + "posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100&maks_antall=10";
+function fetchCloseby(count, coordinate, callback) {
+  const url = baseURL + "posisjon?lat=" + coordinate.latitude + "&lon=" + coordinate.longitude + "&maks_avstand=100&maks_antall=" + count;
   fetchData(url).then(function(data) {
-    callback(data, true)
-    /*
-    const firstElement = data[0];
-    if(firstElement.code) {
-      callback(firstElement, true);
-    }
-    else {
-      firstElement.fylke = fylker.find(f => {
-        return f.nummer === firstElement.vegreferanse.fylke;
+    if(count === 1) {
+      var firstObject = data[0];
+      if(firstObject.code) {
+        callback(firstObject, true);
+        return;
+      }
+
+      firstObject.fylke = fylker.find(f => {
+        return f.nummer === firstObject.vegreferanse.fylke;
       })
-      callback(firstElement, true);
+      firstObject.kommune = kommuner.find(k => {
+        return k.nummer === firstObject.vegreferanse.kommune;
+      })
+      callback(firstObject, true);
+    } else {
+      callback(data, true);
     }
-    */
-  })
+  });
 }
 
 function fetchObjekttypeInfo(objekttypeID, callback) {
