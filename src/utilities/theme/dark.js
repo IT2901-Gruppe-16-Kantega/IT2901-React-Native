@@ -6,5 +6,8 @@ module.exports = {
   navigationBackground: templates.colors.middleGray,
 
   primaryTextColor: templates.colors.white,
-  secondaryTextColor: templates.colors.lightGray,
+  secondaryTextColor: templates.colors.middleGray,
+  placeholderTextColor: '#a4a4a4',
+
+  tabChosen: { textColor: templates.colors.white }
 }

@@ -161,9 +161,9 @@ export default function reducer(state={
     case "CHOOSE_FYLKE_FROM_KOMMUNE": {
       return {
         ...state,
-        fylke_input: action.payload,
-        fylke_navn: action.payload[0].navn,
-        fylke_text: action.payload[0].navn,
+        fylke_input: [action.payload],
+        fylke_navn: action.payload.navn,
+        fylke_text: action.payload.navn,
         fylke_chosen: true,
         fylke_color: templates.colors.green,
       }
@@ -280,7 +280,7 @@ export default function reducer(state={
         }
     }
     case "RESET_SEARCH_PARAMETERS": {
-      return{
+      return {
         ...state,
         fylke_input: [],
         fylke_navn: '',
@@ -309,7 +309,31 @@ export default function reducer(state={
         combinedSearchParameters: [],
       }
     }
-        case "SELECT_SEARCH_COORDINATE": {
+    case "RESET_POSITION_SEARCH_PARAMETERS": {
+      return {
+        ...state,
+        fylke_input: [],
+        fylke_navn: '',
+        fylke_text: '',
+        fylke_chosen: false,
+        fylke_color: templates.colors.orange,
+
+        veg_input: '',
+        veg_color: templates.colors.orange,
+        veg_valid: false,
+
+        kommune_input: [],
+        kommune_navn: '',
+        kommune_text: '',
+        kommune_chosen: false,
+        kommune_color: templates.colors.middleGray,
+
+        url: '',
+
+        combinedSearchParameters: [],
+      }
+    }
+    case "SELECT_SEARCH_COORDINATE": {
       return {...state, searchCoordinate: action.payload}
     }
 

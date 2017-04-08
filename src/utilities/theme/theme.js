@@ -1,42 +1,58 @@
 import * as light from './light.js'
 import * as dark from './dark.js';
+import * as templates from '../templates';
 
 export function getTheme(name) {
-  const colors = name === 'light' ? light : dark;
+  const themeColors = name === 'light' ? light : dark;
   return {
+    primaryTextColor: themeColors.primaryTextColor,
+    secondaryTextColor: themeColors.secondaryTextColor,
+    placeholderTextColor: themeColors.placeholderTextColor,
     title: {
       fontWeight: 'bold',
-      color: colors.primaryTextColor,
+      color: themeColors.primaryTextColor,
       fontSize: 20,
     },
     subtitle: {
-      color: colors.primaryTextColor,
+      color: themeColors.primaryTextColor,
       fontSize: 17,
     },
     text: {
-      color: colors.secondaryTextColor,
+      color: themeColors.secondaryTextColor,
       fontSize: 15,
     },
     property: {
       fontSize: 15,
       fontWeight: 'bold',
-      color: colors.primaryTextColor,
+      color: themeColors.primaryTextColor,
     },
     value: {
       fontSize: 15,
-      color: colors.secondaryTextColor,
+      color: themeColors.secondaryTextColor,
     },
     mainContainer: {
       flex: 1,
-      backgroundColor: colors.backgroundColor,
+      backgroundColor: themeColors.backgroundColor,
       alignItems: 'stretch',
     },
     container: {
-      backgroundColor: colors.containerColor,
+      backgroundColor: themeColors.containerColor,
     },
     navigationBarStyle: {
-      backgroundColor: colors.navigationBackground,
+      backgroundColor: themeColors.navigationBackground,
       borderBottomWidth: 0,
-    }
+    },
+    tabChosen: {
+      backgroundColor: 'rgba(255,255,255,0)',
+      fontWeight: 'bold',
+      textColor: themeColors.tabChosen.textColor,
+      borderTopWidth: 0,
+    },
+    tabNotChosen: {
+      backgroundColor: templates.colors.orange,
+      fontWeight: 'normal',
+      textColor: templates.colors.white,
+      borderTopWidth: 0.5,
+    },
   }
 }

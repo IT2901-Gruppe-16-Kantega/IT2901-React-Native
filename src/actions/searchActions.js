@@ -16,11 +16,10 @@ export function chooseKommune(input) {
         type: "CHOOSE_KOMMUNE",
         payload: input,
       })
-    var f = []
-    f.push(fylker.find((fylke)=>{return fylke.nummer == input[0].fylke}))
+    const fylke = fylker.find(f => {return f.nummer === input[0].fylke})
     dispatch({
       type: "CHOOSE_FYLKE_FROM_KOMMUNE",
-      payload: f,
+      payload: fylke,
     })
   }
 }
@@ -158,6 +157,10 @@ export function combineSearchParameters(fylke_input, veg_input, kommune_input, v
     type: "COMBINE_PARAMETERS",
     payload: combinedSearchParameters,
   }
+}
+
+export function resetPositionSearchParameters() {
+  return { type: "RESET_POSITION_SEARCH_PARAMETERS" }
 }
 
 export function resetSearchParameters() {

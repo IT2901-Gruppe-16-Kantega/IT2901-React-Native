@@ -28,19 +28,19 @@ export default function reducer(state={
   editedPropertyValue: "",
   editedPropertyValueName: null,
 
+  loadingProgress: 1,
+
 }, action) {
   switch (action.type) {
     // cases associated with searches
     case "LOAD_SEARCHES": {
-      return {
-        ...state,
-        allSearches: action.payload,
-      }
+      return {...state, allSearches: action.payload}
+    }
+    case "SET_LOADING_PROGRESS": {
+      return {loadingProgress: action.payload}
     }
     case "SEARCH_SAVED": {
-      return {
-        ...state,
-      }
+      return {...state}
     }
     case "ADD_NEW_SEARCH_OBJECT": {
       return {

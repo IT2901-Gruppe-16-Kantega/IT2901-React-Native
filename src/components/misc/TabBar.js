@@ -4,9 +4,11 @@ import {
   View,
   TouchableHighlight,
   StyleSheet
- } from 'react-native';
+} from 'react-native';
 
- import * as templates from '../../utilities/templates'
+import { connect } from 'react-redux'
+
+import * as templates from '../../utilities/templates'
 
 /*props
   elements: [{title: "", onPress: {}, image: {}}]
@@ -15,11 +17,7 @@ import {
 var TabBar = React.createClass({
 
   render() {
-    return <View style={{
-        flexDirection: 'row',
-        flex:0,
-        height: 50
-      }}>
+    return <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0, height: 50, flexDirection: 'row' }}>
       {this.createTabs()}
     </View>
   },
@@ -27,56 +25,42 @@ var TabBar = React.createClass({
   createTabs() {
     var tabs = [];
     for(var i = 0; i < this.props.elements.length; i++) {
-      tabs.push(this.createTab(this.props.elements[i]));
+      const tab = this.createTab(this.props.elements[i]);
+      tabs.push(tab);
     }
     return tabs;
   },
+
   createTab(element) {
-    var chosenElement = false
-    if (element.chosen == element.title){
-      chosenElement = true
-    }
-    var color = ''
-    var textColor = ''
-    var fontWeight = 'bold'
-    if(chosenElement) {
-      color = templates.colors.white
-      textColor = templates.colors.darkGray
-      weight = 'bold'
-    }
-    else {
-      color = templates.colors.orange
-      textColor = templates.colors.white
-      weight = 'normal'
-    }
+    var style;
+    if (element.chosen == element.title) { style = this.props.theme.tabChosen; }
+    else { style = this.props.theme.tabNotChosen; }
+
     return <TouchableHighlight
       key={element.title}
       style={{
         flex: 1,
-        borderWidth: 0.5,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color,
-        borderColor: templates.colors.white,
+        backgroundColor: style.backgroundColor,
+        borderWidth: 0.5,
+        borderTopWidth: style.borderTopWidth,
+        borderColor: this.props.theme.mainContainer.backgroundColor,
       }}
       onPress={element.onPress}
       underlayColor={templates.colors.middleGray}
       >
         <Text style={{
-            color: textColor,
-            fontWeight: weight
+            color: style.textColor,
+            fontWeight: style.fontWeight,
+            fontSize: this.props.theme.subtitle.fontSize,
           }}>{element.title}</Text>
     </TouchableHighlight>
   }
 })
 
-var styles = StyleSheet.create({
-  button: {
+function mapStateToProps(state) {
+  return { theme: state.settingsReducer.themeStyle };
+}
 
-  },
-  text: {
-    color: templates.colors.white,
-  },
-})
-
-export default TabBar;
+export default connect(mapStateToProps, null) (TabBar);

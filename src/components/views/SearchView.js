@@ -17,11 +17,15 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Button from '../misc/Button'
-import Container from '../misc/Container'
-import InputField from '../misc/InputField'
-import TabBar from '../misc/TabBar'
-import RoadSelectView from './RoadSelectView'
+var Color = require('color');
+
+import Button from '../misc/Button';
+import Container from '../misc/Container';
+import InputField from '../misc/InputField';
+import PropertyValue from '../misc/PropertyValue';
+import TabBar from '../misc/TabBar';
+
+import SearchMap from './search/SearchMap';
 
 import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
@@ -35,8 +39,18 @@ import {kommuner} from '../../data/kommuner';
 
 const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
-var valid = true;
-const vegobjekttyperMedPunkt = [];
+const tabs = {
+  SEARCH: "Søk",
+  MAP: "Finn",
+  CLOSEST: "Nærmeste",
+}
+
+const alertType = {
+  ERROR: "Feil",
+  WARNING: "Advarsel",
+}
+
+var selectedVegreferanse;
 
 /*
 View used when user specifies what data to be fetched from NVDB
@@ -44,20 +58,15 @@ View used when user specifies what data to be fetched from NVDB
 var SearchView = React.createClass({
   render() {
     return <Container>
-      <View style={templates.top}/>
-      <View style={styles.navigatorSpace}/>
-      <View style={styles.header}>
-        <Text style={{color: templates.colors.orange, padding: 10}}>NVDB-app</Text>
-      </View>
       {this.createViewArea()}
-      {this.createStatistics()}
       {this.createButton()}
       <TabBar
-        elements={[{title: 'Søk', onPress: ()=>{this.props.setChosenSearchTab("Søk")}, chosen: this.props.chosenSearchTab},
-          {title: "Finn", onPress: ()=>{this.props.setChosenSearchTab("Finn")}, chosen: this.props.chosenSearchTab},
-          {title: "Nærmeste", onPress: ()=>{
-            this.props.setChosenSearchTab("Nærmeste")
-            this.getUserPosition()
+        elements={[
+          {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}, chosen: this.props.chosenSearchTab},
+          {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}, chosen: this.props.chosenSearchTab},
+          {title: tabs.CLOSEST, onPress: ()=>{
+            this.props.setChosenSearchTab(tabs.CLOSEST)
+            this.getUserPosition() // Should be done somewhere else
           }, chosen: this.props.chosenSearchTab},
         ]}
         />
@@ -65,74 +74,78 @@ var SearchView = React.createClass({
   },
 
   createViewArea() {
-    if (this.props.chosenSearchTab == "Søk"){
-      return <View style={styles.inputArea}>
-        <ScrollView
-          style={{backgroundColor: templates.colors.white}}
-          scrollEnabled={false}
-          keyboardShouldPersistTaps='always'
-          >
-          {this.createTypeInput(styles.typeArea)}
-          <View style={styles.parameterBottomPadding}><Text></Text></View>
-          {this.createFylkeInput()}
-          {this.createKommuneInput()}
-          {this.createVegInput()}
-
-        </ScrollView>
+    if (this.props.chosenSearchTab === tabs.SEARCH) {
+      return <ScrollView
+        style={styles.content}
+        scrollEnabled={false}
+        keyboardShouldPersistTaps='always'>
+        {this.createTypeInput()}
+        {this.createFylkeInput()}
+        {this.createKommuneInput()}
+        {this.createVegInput()}
+      </ScrollView>
+    }
+    else if (this.props.chosenSearchTab === tabs.MAP) {
+      return <View style={{ flex: 1 }}>
+        <SearchMap validate={this.validate} />
+        {this.createTypeInput(this.typeInputStyleForMap())}
       </View>
     }
-    else if (this.props.chosenSearchTab == "Finn") {
-      return <View style={styles.mapArea}>
-        <ScrollView
-          scrollEnabled = {false}
-          zoomEnabled = {false}
-          keyboardShouldPersistTaps='always'>
-          {this.createTypeInput(styles.mapType)}
-          <RoadSelectView
-            updaterFunction = {this.validate}/>
-        </ScrollView>
-      </View>
+    else if (this.props.chosenSearchTab === tabs.CLOSEST) {
+      return <ScrollView
+        style={styles.content}
+        scrollEnabled={false}
+        keyboardShouldPersistTaps='always'
+        >
+        {this.createTypeInput()}
+        {this.createClosestRoadsList()}
+      </ScrollView>
     }
-    else if (this.props.chosenSearchTab == "Nærmeste") {
-      return <View style={styles.inputArea}>
-        <ScrollView
-          style={{backgroundColor: templates.colors.white}}
-          scrollEnabled={false}
-          keyboardShouldPersistTaps='always'
-          >
-          {this.createTypeInput(styles.typeArea)}
-          <View style={styles.parameterBottomPadding}><Text></Text></View>
+  },
 
-          {this.createClosestRoadsList()}
-
-        </ScrollView>
-      </View>
+  typeInputStyleForMap() {
+    var height;
+    if(this.props.vegobjekttyper_chosen) { height = 75 }
+    else {
+      const MaxHeight = 150;
+      const NumberOfTypes = this.props.vegobjekttyper_input.length;
+      height = Math.min(NumberOfTypes * 50 + 75, 200)
+    }
+    return {
+      position: 'absolute',
+      top: 10,
+      left: 10,
+      right: 10,
+      backgroundColor: Color(this.props.theme.backgroundColor).alpha(0.4),
+      borderRadius: 10,
+      height: height,
     }
   },
 
   createClosestRoadsList() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
-    return <View style={{flexDirection: "row"}}>
-      <View style={{flex: 0.88}}><Text></Text></View>
+
+    return <View style={styles.content}>
+      <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
       <ListView
         keyboardShouldPersistTaps='always'
         dataSource={dataSource}
-        enableEmptySections= {true}
+        enableEmptySections={true}
         renderRow={(rowData) => {
-          //TODO button need to give feedback when chosen
             return <Button
-              style={"list"}
-              onPress={()=>{
-                var chosenData = [];
-                chosenData.push(this.props.closestRoadsList.find((data) => {
-                  if(data.vegreferanse.kortform == rowData.vegreferanse.kortform){
+              style={this.closestRoadListItemStyle(rowData.vegreferanse.kortform)}
+              onPress={() => {
+                selectedVegreferanse = rowData.vegreferanse.kortform;
+                const chosenRoad = this.props.closestRoadsList.find((data) => {
+                  if(data.vegreferanse.kortform === rowData.vegreferanse.kortform) {
                     return data;
                   }
-                }))
-                this.chooseClosestRoad(chosenData[0])
+                });
+
+                this.chooseClosestRoad(chosenRoad)
               }}
-              text={rowData.vegreferanse.kortform}
+              text={rowData.vegreferanse.kortform + " (" + rowData.avstand + "m)"}
             />
           }
           }/>
@@ -140,91 +153,77 @@ var SearchView = React.createClass({
     </View>
   },
 
+  closestRoadListItemStyle(ref) {
+    if(ref === selectedVegreferanse) {
+      return "listSelected";
+    } else {
+      return "list";
+    }
+  },
+
   chooseClosestRoad(road) {
-    const vegref = road.vegreferanse
-    console.log(vegref)
-    const f = vegref.fylke
-    const k = vegref.kommune
-    const kat = vegref.kategori
-    const status = vegref.status
-    const nr = vegref.nummer
-    if(kat == "K"){
-      this.props.inputVeg(kat+status+nr)
-      this.props.chooseFylke([fylker.find((fylke)=>fylke.nummer==f)])
-      this.props.chooseKommune([kommuner.find((kommune)=>kommune.nummer==k)])
-      this.validate()
-    }
-    else {
-      this.props.inputVeg(kat+status+nr)
-      this.props.chooseFylke(fylker.find((fylke)=>fylke.nummer==f))
-      this.validate()
-    }
+    this.props.resetPositionSearchParameters();
+
+    const vegreferanse = road.vegreferanse;
+    const fylke = vegreferanse.fylke;
+    const kommune = vegreferanse.kommune;
+    const kategori = vegreferanse.kategori;
+    const status = vegreferanse.status;
+    const nummer = vegreferanse.nummer;
+    console.log(kategori + "." + status + "." + nummer)
+    console.log(road)
+    this.props.inputVeg(kategori + status + nummer)
+    this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
+    this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])
+    this.validate()
   },
 
 
   getUserPosition() {
     navigator.geolocation.getCurrentPosition((initialPosition) => {
-      fetchCloseby(initialPosition.coords, function(closestList) {
-        this.props.inputClosestRoads(closestList)
-        /*
-        if(closest.code) {
-          alert(closest.message);
-        } else {
-          const veg = closest.vegreferanse.kategori + closest.vegreferanse.nummer;
-          this.props.inputVeg(veg);
-          this.props.chooseFylke([closest.fylke]);
-          this.props.chooseKommune([closest.kommune]);
-          this.validate()
-        }
-        */
+      fetchCloseby(10, initialPosition.coords, function(closestList) {
+        this.props.inputClosestRoads(closestList);
+
       }.bind(this));
     }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-},
+  },
 
-createFylkeInput(){
-  return <View>
-    <View style={styles.fylkeArea}>
-      <View style={styles.searchLabel}><Text style={styles.text}>Fylke</Text></View>
-      <InputField type='fylke'
-        list={this.props.fylke_input}
-        textType={this.props.fylke_text}
-        choosenBool={this.props.fylke_chosen}
-        inputFunction={this.props.inputFylke}
-        chooserFunction={this.props.chooseFylke}
-        colorController={this.props.fylke_color}
-        updateFunction={this.validate}
-        />
-      <View style={styles.parameterRightPadding}><Text></Text></View>
+  createFylkeInput() {
+    return <View>
+      <View style={styles.inputArea}>
+        <InputField type='fylke'
+          list={this.props.fylke_input}
+          textType={this.props.fylke_text}
+          choosenBool={this.props.fylke_chosen}
+          inputFunction={this.props.inputFylke}
+          chooserFunction={this.props.chooseFylke}
+          colorController={this.props.fylke_color}
+          updateFunction={this.validate}
+          />
+      </View>
     </View>
-    <View style={styles.parameterBottomPadding}><Text></Text></View>
-  </View>
-},
+  },
 
-createKommuneInput(){
-  return <View>
-    <View style={styles.kommuneArea}>
-      <View style={styles.searchLabel}><Text style={styles.text}>Kommune</Text></View>
-      <InputField type='kommune'
-        list={this.props.kommune_input}
-        textType={this.props.kommune_text}
-        choosenBool={this.props.kommune_chosen}
-        inputFunction={this.props.inputKommune}
-        chooserFunction={this.props.chooseKommune}
-        colorController={this.props.kommune_color}
-        updateFunction={this.validate}
-        extData={this.props.fylke_input}
-        />
-      <View style={styles.parameterRightPadding}><Text></Text></View>
+  createKommuneInput() {
+    return <View>
+      <View style={styles.inputArea}>
+        <InputField type='kommune'
+          list={this.props.kommune_input}
+          textType={this.props.kommune_text}
+          choosenBool={this.props.kommune_chosen}
+          inputFunction={this.props.inputKommune}
+          chooserFunction={this.props.chooseKommune}
+          colorController={this.props.kommune_color}
+          updateFunction={this.validate}
+          extData={this.props.fylke_input}
+          />
+      </View>
     </View>
-    <View style={styles.parameterBottomPadding}><Text></Text></View>
-  </View>
-},
+  },
 
-createTypeInput(styleType){
-  return <View style= {{flex: 1}}>
-    <View style={styleType}>
-      <View style={styles.searchLabel}><Text style={styles.text}>Type</Text></View>
+  createTypeInput(style) {
+    return <View style={[styles.inputArea, style]}>
       <InputField type='vegobjekttype'
         list={this.props.vegobjekttyper_input}
         textType={this.props.vegobjekttyper_text}
@@ -234,17 +233,12 @@ createTypeInput(styleType){
         colorController={this.props.vegobjekttyper_color}
         updateFunction={this.validate}
         />
-      <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-  </View>
-},
-createVegInput() {
-  return  <View>
-    <View style={styles.vegArea}>
-      <View style={styles.searchLabel}><Text style={styles.text}>Veg</Text></View>
+  },
+
+  createVegInput() {
+    return <View style={styles.inputArea}>
       <View style={{
-          flex: 4,
-          backgroundColor: templates.colors.white,
           borderBottomWidth: 2,
           borderBottomColor: this.props.veg_color,
         }}>
@@ -253,236 +247,133 @@ createVegInput() {
           style={{
             padding: 5,
             height: 40,
-            color: templates.colors.darkGray,
-            backgroundColor:templates.colors.lightGray
+            color: this.props.theme.primaryTextColor,
           }}
-          placeholderColor={templates.colors.placeholderColor}
+          placeholderTextColor={this.props.theme.placeholderTextColor}
           placeholder={'Skriv inn veg'}
           onChangeText={(text) => {
             this.props.inputVeg(text);
             this.validate();
-
           }}
-          keyboardType = "default"
-          returnKeyType = 'done'
-          value = {this.props.veg_input}
+          returnKeyType='done'
+          value={this.props.veg_input}
           />
       </View>
-      <View style={styles.parameterRightPadding}><Text></Text></View>
     </View>
-    <View style={styles.parameterBottomPadding}><Text></Text></View>
-  </View>
-},
+  },
 
-createStatistics(){
-  return <View style={styles.statisticsArea}>
-    <Text style={styles.text}>Antall objekter som blir hentet: {this.props.numberOfObjectsToBeFetched}</Text>
-  </View>
-},
+  createButton() {
+    var count = this.props.numberOfObjectsToBeFetched || 0;
+    return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
+      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed} style={"search"} />
+    </View>
+  },
 
-createButton(){
-  return <View style={styles.buttonArea}>
-    <Button text="Søk" onPress={this.search} style={"small"} />
-  </View>
-},
+  validate() {
+    // Reset count before finding new number
+    this.props.setNumberOfObjectsToBeFetched(0);
 
-validate() {
-  this.forceUpdate(() => {
-    var vegobjektStr = '532'
-    var fylkeStr = ''
-    var kommuneStr = ''
-    var vegString = ''
-    var isValidatingVeg = false
-    if(this.props.vegobjekttyper_chosen) {vegobjektStr = this.props.vegobjekttyper_input[0].id}
-    else {vegobjektStr = '532'}
-    if(this.props.fylke_chosen) {fylkeStr = 'fylke='+this.props.fylke_input[0].nummer+'&'}
-    else {fylkeStr = ''}
-    if(this.props.kommune_chosen) {kommuneStr = 'kommune='+this.props.kommune_input[0].nummer+'&'}
-    else {kommuneStr = ''}
-    if(this.props.veg_input != ""){
-      isValidatingVeg = true
-      vegString = '&vegreferanse='+this.props.veg_input+'&'}
-    else {
-      vegString = ''
-      isVegValidation = false
-      this.props.setValidityOfVeg('NOT_CHOSEN')
-    }
-    var url = baseURL+vegobjektStr+'/statistikk?'+fylkeStr+kommuneStr+vegString
-    this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
-  })
-},
+    this.forceUpdate(() => {
+      var vegobjektStr = '532'
+      var fylkeStr = ''
+      var kommuneStr = ''
+      var vegString = ''
+      var isValidatingVeg = false
+      if(this.props.vegobjekttyper_chosen) { vegobjektStr = this.props.vegobjekttyper_input[0].id }
+      //else { vegobjektStr = '532' }
+      if(this.props.fylke_chosen) { fylkeStr = 'fylke=' + this.props.fylke_input[0].nummer + '&' }
+      //else { fylkeStr = '' }
+      if(this.props.kommune_chosen) { kommuneStr = 'kommune=' + this.props.kommune_input[0].nummer + '&' }
+      //else { kommuneStr = '' }
+      if(this.props.veg_input != "") {
+        isValidatingVeg = true
+        vegString = '&vegreferanse=' + this.props.veg_input + '&'}
+      else {
+        //vegString = ''
+        //isVegValidation = false
+        this.props.setValidityOfVeg('NOT_CHOSEN')
+      }
+      var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
+      console.log(url)
+      this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
+    })
+  },
 
-check(url, shouldFetchNumber, isValidatingVeg) {
-  var fetchingURL = url.replace("/statistikk", "")
-  var fetchingURL = fetchingURL+'inkluder=alle&srid=4326&antall=8000'
-  this.props.setURL(fetchingURL)
-  fetchData(url).then((response)=>{
-    if(response.antall == 0){
-      this.props.setValidityOfVeg('NOT_VALID')
-    }
-    else if(response.antall>0){
-      if(isValidatingVeg) {this.props.setValidityOfVeg('VALID')}
-      if(shouldFetchNumber) {this.props.setNumberOfObjectsToBeFetched(response.antall)}
-    }
-    else if(response[0].code==4005){
-      if(isValidatingVeg) {this.props.setValidityOfVeg('NOT_VALID')}
-    }
-    else{
-    }
-  })
-},
+  check(url, shouldFetchNumber, isValidatingVeg) {
+    // Create a new fetching url from getting the number of objects to
+    // the actual objects.
+    var fetchingURL = url.replace("/statistikk", "")
+    fetchingURL += 'inkluder=alle&srid=4326&antall=8000'
 
-search() {
-  this.forceUpdate(()=>{
-    var numObjects = this.props.numberOfObjectsToBeFetched
-    if(numObjects==0){
-      Alert.alert("Feil", "Dette søket generer ingen objekter");
-    }
-    else if (!this.props.vegobjekttyper_chosen){
-      Alert.alert("Feil", "Ingen vegobjekttyper spesifisert")
-    }
-    else{
-      var vegType = this.props.veg_input.substring(0,1).toLowerCase();
-      if(vegType=='k'){
-        if(this.props.kommune_chosen){
-          this.initiateSearch(numObjects);
+    this.props.setURL(fetchingURL)
+    fetchData(url).then((response) => {
+      if(response.antall === 0) {
+        this.props.setValidityOfVeg('NOT_VALID')
+      }
+      else if(response.antall > 0) {
+        if(isValidatingVeg) { this.props.setValidityOfVeg('VALID') }
+        if(shouldFetchNumber) { this.props.setNumberOfObjectsToBeFetched(response.antall) }
+      }
+      else if(response[0].code === 4005) {
+        if(isValidatingVeg) { this.props.setValidityOfVeg('NOT_VALID') }
+      }
+      else {
+      }
+    })
+  },
+
+  searchButtonPressed() {
+    this.forceUpdate(() => {
+      var numObjects = this.props.numberOfObjectsToBeFetched;
+      if(numObjects === 0) {
+        Alert.alert(alertType.ERROR, "Dette søket genererer ingen objekter " +
+          "(eller så må du vente på at søket fullføres). Det kan også hende at du " +
+          "må trykke på et felt på nytt for å oppdatere telleren.");
+      }
+      else if (!this.props.vegobjekttyper_chosen) {
+        Alert.alert(alertType.ERROR, "Ingen vegobjekttyper spesifisert");
+      }
+      else {
+        var vegType = this.props.veg_input.substring(0, 1).toUpperCase();
+        if(vegType === 'K') {
+          if(this.props.kommune_chosen) {
+            this.initiateSearch(numObjects);
+          }
+          else {
+            Alert.alert(alertType.ERROR, "Kommune må spesifiseres når vegtype er kommunalveg")
+          }
         }
-        else{
-          Alert.alert("Feil", "Kommune må spesifiseres når vegtype er kommunalveg")
+        else {
+          this.initiateSearch();
         }
       }
-      else{
-        this.initiateSearch(numObjects);
-      }
+    })
+  },
+
+  initiateSearch() {
+    if(this.props.numberOfObjectsToBeFetched >= 8000) {
+      Alert.alert(alertType.WARNING,
+      'Dette søket vil hente ' + this.props.numberOfObjectsToBeFetched +
+      ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',
+        [{text: 'Utfør', onPress: this.search}, {text: 'Avbryt'}]
+      );
     }
-  })
-},
-initiateSearch(numObjects) {
-  if(numObjects>7999) {
-    Alert.alert("Advarsel!",
-    'Dette søket vil hente '+this.props.numberOfObjectsToBeFetched+
-    ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',[
-      {text: 'Utfør', onPress: () => {
-        this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
-        Actions.LoadingView();
-      }},
-      {text: 'Avbryt'},
-    ]);
-  }
-  else {
+    else { this.search(); }
+  },
+
+  search() {
     this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
     Actions.LoadingView();
   }
-},
 });
 
-
-
-
-
 var styles = StyleSheet.create({
-  mapArea: {
-    flex: 13.2,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  mapType: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-    minHeight:0,
-    maxHeight:130,
+  content: {
+    padding: 10,
   },
 
-  //Top-leve containers
-
-  navigatorSpace: {
-    flex:1.3,
-    backgroundColor: templates.colors.white,
-  },
-  header: {
-    flex: 3.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
   inputArea: {
-    flex: 13.2,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-
-
-
-  //Big components
-  kommuneArea: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-    minHeight:0,
-    maxHeight:130,
-  },
-  fylkeArea: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  typeArea: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-    minHeight:0,
-    maxHeight:162,
-  },
-
-  vegobjekttypeArea2: {
-    flex: 4,
-    flexDirection: 'row',
-    backgroundColor: templates.colors.white
-  },
-  vegArea: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  statisticsArea: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-  },
-  buttonArea: {
-    flex: 2,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  //small components
-  searchLabel: {
-    flex: 1,
-    padding: 11,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white,
-  },
-  parameterBottomPadding: {
-    flex: 0.5,
-    backgroundColor: templates.colors.white,
-  },
-  parameterRightPadding: {
-    flex: 0.25
-  },
-
-
-  text: {
-    color: templates.colors.darkGray,
+    padding: 10,
   },
 })
 
@@ -518,6 +409,8 @@ function mapStateToProps(state) {
 
     //UI
     chosenSearchTab: state.uiReducer.chosenSearchTab,
+
+    theme: state.settingsReducer.themeStyle,
   };}
 
   function mapDispatchToProps(dispatch) {
@@ -543,6 +436,8 @@ function mapStateToProps(state) {
       setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 
       setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
+
+      resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
     }
   }
 

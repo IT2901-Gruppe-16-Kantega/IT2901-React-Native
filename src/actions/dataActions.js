@@ -13,7 +13,13 @@ export function loadSearches(searches){
     type: "LOAD_SEARCHES",
     payload: searches,
   }
+}
 
+export function setLoadingProgress(progress) {
+  return {
+    type: "SET_LOADING_PROGRESS",
+    payload: progress,
+  }
 }
 
 export function setCurrentRoadSearch(roadSearch){

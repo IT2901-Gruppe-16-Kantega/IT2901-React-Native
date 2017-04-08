@@ -7,4 +7,7 @@ module.exports = {
 
   primaryTextColor: templates.colors.black,
   secondaryTextColor: templates.colors.darkGray,
+  placeholderTextColor: templates.colors.middleGray,
+
+  tabChosen: { textColor: templates.colors.black }
 }

@@ -3,10 +3,13 @@ import {
   Text,
   TouchableHighlight,
   StyleSheet,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 
 import * as templates from '../../utilities/templates'
+
+let ScreenWidth = Dimensions.get("window").width;
 
 var Button = React.createClass({
   render() {
@@ -49,11 +52,10 @@ var Button = React.createClass({
 
 var styles = StyleSheet.create({
   button: {
-    borderWidth: 2,
+    borderRadius: 2,
     padding: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: templates.colors.orange,
   },
   small: {
     height: 30,
@@ -76,11 +78,35 @@ var styles = StyleSheet.create({
     width: 150,
     backgroundColor: templates.colors.orange,
   },
-  list: {
-    borderWidth: 0.5,
+  search: {
+    width: ScreenWidth * 0.95,
+    height: 50,
     backgroundColor: templates.colors.orange,
-    borderColor: templates.colors.white,
-    height: 30,
+    shadowColor: 'black',
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    zIndex: 20,
+  },
+  searchText: {
+    fontSize: 20,
+  },
+  list: {
+    backgroundColor: templates.colors.orange,
+    marginBottom: 2,
+    height: 40,
+  },
+  listSelected: {
+    backgroundColor: templates.colors.blue,
+    marginBottom: 2,
+    height: 50,
+  },
+  listText: {
+    color: templates.colors.white,
+  },
+  listSelectedText: {
+    color: templates.colors.white,
+    fontSize: 22,
   },
   text: {
     color: templates.colors.white,

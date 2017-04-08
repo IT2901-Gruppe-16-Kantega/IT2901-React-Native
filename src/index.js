@@ -22,7 +22,6 @@ import LoadingView from './components/views/LoadingView'
 import ObjectInfoView from './components/views/ObjectInfoView'
 import ReportView from './components/views/ReportView'
 import RoadMapView from './components/views/RoadMapView'
-import RoadSelectView from './components/views/RoadSelectView'
 import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
@@ -42,8 +41,9 @@ class App extends Component {
   componentWillMount() {
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
-    var stored = storage.load();
-    //console.log(stored)
+    var stored = storage.load(function(progress) {
+      this.props.setLoadingProgress(progress);
+    }.bind(this));
     this.props.loadSearches(stored)
   }
   render() {
@@ -65,10 +65,6 @@ class App extends Component {
             component={SearchView}
             hideNavBar={false}
             />
-          <Scene
-            key="RoadSelectView"
-            component={RoadSelectView}
-            title="Velg veg" />
           <Scene
             key="StoredDataView"
             component={StoredDataView}
@@ -144,6 +140,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
+    loadingProgress: state.dataReducer.loadingProgress,
     sidebarFrame: state.mapReducer.sidebarFrame,
     isEditingRoadObject: state.dataReducer.isEditingRoadObject,
   };
@@ -152,6 +149,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
+    setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
     setIsEditingRoadObject: bindActionCreators(dataActions.setIsEditingRoadObject, dispatch),
