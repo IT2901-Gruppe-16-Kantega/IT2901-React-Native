@@ -30,14 +30,25 @@ View that shows all stored data
 var StoredDataView = React.createClass({
   render() {
     return <Container>
-      <ListView
+      {this.renderSearches()}
+    </Container>
+  },
+
+  renderSearches() {
+    if(this.props.allSearches) {
+      return <ListView
         // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
         renderRow={this.renderRow}
         renderFooter={this.renderFooter}
         enableEmptySections={true}
       />
-    </Container>
+    } else {
+      return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+        <Text>Ingen søk...</Text>
+        <Button text={"Gjør et søk"} onPress={Actions.SearchView} />
+      </View>
+    }
   },
 
   // Render each saved road search row
