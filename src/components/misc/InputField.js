@@ -54,6 +54,7 @@ var InputField = React.createClass({
           placeholderTextColor={this.props.theme.placeholderTextColor}
           placeholder={'Skriv inn ' + this.props.type}
           onChangeText={(text) => {
+            this.props.updateFunction()
             if(this.props.type === 'kommune'){
               this.props.inputFunction(text, this.props.extData)
             }else{
@@ -77,7 +78,7 @@ var InputField = React.createClass({
               style={"list"}
               onPress={()=>{
                 Keyboard.dismiss();
-                
+
                 var chosenData = [];
                 chosenData.push(this.props.list.find((data) => {
                   if(data.navn == rowData.navn){
