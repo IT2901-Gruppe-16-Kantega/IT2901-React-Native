@@ -8,6 +8,23 @@ const storage = storageEngine('NVDB-storage')
   Actions associated with searches
 */
 
+//TODO
+export function deleteSearch(allSearches, search) {
+  allSearches.splice(allSearches.indexOf(search), 1)
+  return {
+    type: "DELETE_SEARCH",
+    payload: allSearches,
+  }
+
+}
+//TODO
+export function clearAllSearches() {
+  return {
+    type: "CLEAR_SEARCHES"
+  }
+
+}
+
 export function loadSearches(searches){
   return {
     type: "LOAD_SEARCHES",

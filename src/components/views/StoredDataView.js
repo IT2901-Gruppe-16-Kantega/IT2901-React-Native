@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   ListView,
+  Alert,
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -66,6 +67,7 @@ var StoredDataView = React.createClass({
 
     return <TouchableHighlight
       onPress={this.openSearch.bind(this, roadSearch)}
+      onLongPress={this.issueDeleteSearch.bind(this, roadSearch)}
       key={rowID}
       style={[styles.row, this.props.theme.container]}>
       <View>
@@ -81,8 +83,26 @@ var StoredDataView = React.createClass({
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-      <Button text={"Slett alt"} onPress={storage.clear} style={"small"} />
+      <Button text={"Slett alt"} onPress={() => {
+          storage.clear()
+          this.props.clearAllSearches()
+
+        }} style={"small"} />
     </View>
+  },
+
+  issueDeleteSearch(search) {
+    console.log(search)
+    Alert.alert('Slette søk',
+    'Klikk bekreft for å slette søk utført: '+search.date,
+      [{text: 'Bekreft', onPress: () => {
+        storage.deleteFile(search)
+
+        this.props.deleteSearch(this.props.allSearches, search)
+        this.forceUpdate()
+      }
+        }, {text: 'Avbryt'}]
+    );
   },
 
   // Open the selected roadSearch item
@@ -119,6 +139,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+    clearAllSearches: bindActionCreators(dataActions.clearAllSearches, dispatch),
+    deleteSearch: bindActionCreators(dataActions.deleteSearch, dispatch),
   }
 }
 

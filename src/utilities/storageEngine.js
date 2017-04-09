@@ -82,9 +82,17 @@ export default (key) => ({
   clear() {
     if(Platform.OS === "ios"){
       RNFS.unlink(searchesPathIOS)
-
     }else if (Platform.OS === "android"){
       RNFS.unlink(searchesPathAndroid)
     }
+    this.initialize()
   },
+  //TODO
+  deleteFile(search) {
+    console.log(search)
+    RNFS.unlink(searchesPathIOS+'/'+search.key+'.json')
+    .then(() => console.log("file deleted"))
+    .catch((err) => console.error("An error occured when deleting: "+err))
+
+  }
 });
