@@ -77,7 +77,7 @@ var SearchView = React.createClass({
     if (this.props.chosenSearchTab === tabs.SEARCH) {
       return <ScrollView
         style={styles.content}
-        scrollEnabled={false}
+        scrollEnabled={true}
         keyboardShouldPersistTaps='always'>
         {this.createTypeInput()}
         {this.createFylkeInput()}
