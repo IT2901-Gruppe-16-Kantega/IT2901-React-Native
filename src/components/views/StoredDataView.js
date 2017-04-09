@@ -97,7 +97,9 @@ var StoredDataView = React.createClass({
     'Klikk bekreft for å slette søk utført: '+search.date,
       [{text: 'Bekreft', onPress: () => {
         storage.deleteFile(search)
-        this.props.deleteSearch(search)
+
+        this.props.deleteSearch(this.props.allSearches, search)
+        this.forceUpdate()
       }
         }, {text: 'Avbryt'}]
     );

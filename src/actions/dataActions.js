@@ -9,7 +9,12 @@ const storage = storageEngine('NVDB-storage')
 */
 
 //TODO
-export function deleteSearch(search) {
+export function deleteSearch(allSearches, search) {
+  allSearches.splice(allSearches.indexOf(search), 1)
+  return {
+    type: "DELETE_SEARCH",
+    payload: allSearches,
+  }
 
 }
 //TODO
