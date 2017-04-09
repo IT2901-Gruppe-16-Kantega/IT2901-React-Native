@@ -171,10 +171,10 @@ var SearchView = React.createClass({
     const nummer = vegreferanse.nummer;
     console.log(kategori + "." + status + "." + nummer)
     console.log(road)
-    if(kategori == 'K') {
+    if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
       this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
-      this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])   
+      this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])
      }
     else {
       this.props.inputVeg(kategori + status + nummer)
