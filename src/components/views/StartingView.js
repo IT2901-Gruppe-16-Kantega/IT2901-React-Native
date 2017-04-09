@@ -48,6 +48,9 @@ var StartingView = React.createClass({
         </View>
       </View>
     }
+    else {
+      return <View/>
+    }
   }
 });
 
