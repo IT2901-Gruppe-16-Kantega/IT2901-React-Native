@@ -14,6 +14,7 @@ export default (key) => ({
 
   initialize() {
     console.log('initializing storage');
+    console.log(rootPathIOS)
     if (Platform.OS === "ios") {
       RNFS.mkdir(rootPathIOS)
       RNFS.mkdir(searchesPathIOS)

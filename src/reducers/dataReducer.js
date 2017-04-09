@@ -37,7 +37,7 @@ export default function reducer(state={
       return {...state, allSearches: action.payload}
     }
     case "SET_LOADING_PROGRESS": {
-      return {loadingProgress: action.payload}
+      return {...state, loadingProgress: action.payload}
     }
     case "SEARCH_SAVED": {
       return {...state}
