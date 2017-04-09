@@ -13,9 +13,12 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue';
+import InputField from '../misc/InputField';
 
 import * as templates from '../../utilities/templates';
+import * as dataActions from '../../actions/dataActions';
 import * as uiActions from '../../actions/uiActions';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -33,9 +36,7 @@ var ObjectInfoView = React.createClass({
     const {selectedObject, objekttypeInfo} = this.props;
     const {metadata} = selectedObject;
 
-    console.log(this.props.keyboardPadding)
-
-    return <View style={templates.container}>
+    return <Container>
         <View style={styles.mainInfo}>
           <Text style={styles.title}>{objekttypeInfo.navn}</Text>
           <PropertyValue property={"ID"} value={selectedObject.id} />
@@ -50,10 +51,12 @@ var ObjectInfoView = React.createClass({
           renderRow={this.renderRow}
           enableEmptySections={true}
         />
-    </View>
+    </Container>
   },
 
-  inputFocused (refName) {
+  inputFocused(refName) {
+    this.props.resetNewPropertyValue();
+
     setTimeout(() => {
       let scrollResponder = this.refs.scrollView.getScrollResponder();
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -73,25 +76,59 @@ var ObjectInfoView = React.createClass({
 
     var h = rowData.id + 'input'
 
-    return (
+    var verdi;
+    // This is a new object, where the value is not filled in yet
+    if(this.props.selectedObject.ny && !rowData.verdi) {
+      verdi = "";
+    } else {
+      verdi = rowData.verdi.toString();
+    }
 
+    var input;
+    if(egenskapstype.tillatte_verdier) {
+      var enumValues = [];
+      var enumValues = egenskapstype.tillatte_verdier.filter(e => {
+        if(this.props.editedPropertyValue === "") { return false }
+        return e.navn.toLowerCase().indexOf(this.props.editedPropertyValue.toLowerCase()) !== -1;
+      }).slice(0, 10);
+
+      input = <InputField
+        type={rowData.navn}
+        list={enumValues}
+        textType={this.props.editedPropertyValue}
+        choosenBool={false}
+        editable={true}
+        inputFunction={(text) => this.props.inputPropertyValue.bind(this, text, egenskapstype.navn)}
+        chooserFunction={this.chooseEnumValueForProperty}
+        colorController={'red'}
+        updateFunction={this.update} />
+    } else {
+      input = <TextInput
+        ref={h}
+        style={styles.value}
+        placeholder={"Legg inn verdi"}
+        value={verdi}
+        onFocus={this.inputFocused.bind(this, h)}
+      />
+    }
+
+    return (
       <TouchableHighlight
         onPress={this.doSomething(rowData.id)}
         key={rowData.id}
         >
         <View style={styles.item}>
           <Text style={styles.itemTitle}>{rowData.navn} ({rowData.id})</Text>
-          <TextInput
-            ref={h}
-            style={styles.value}
-            value={rowData.verdi.toString()}
-            onFocus={this.inputFocused.bind(this, h)}
-          />
-          <Text>Datatype: {rowData.datatype_tekst} ({rowData.datatype})</Text>
-          <Text>Viktighet: {egenskapstype.viktighet_tekst}</Text>
+          {input}
+          <PropertyValue property={"Datatype"} value={rowData.datatype_tekst + " (" + rowData.datatype + ")"} />
+          <PropertyValue property={"Viktighet"} value={egenskapstype.viktighet_tekst} />
         </View>
       </TouchableHighlight>
     )
+  },
+
+  update() {
+    console.log("update")
   },
 
   keyboardDidShow(e) {
@@ -112,7 +149,7 @@ var ObjectInfoView = React.createClass({
 
   getEgenskapstype(id) {
     return this.props.objekttypeInfo.egenskapstyper.find(e => e.id == id);
-  }
+  },
 });
 
 var styles = StyleSheet.create({
@@ -145,6 +182,8 @@ var styles = StyleSheet.create({
 function mapDispatchToProps(dispatch) {
   return {
     setKeyboardPadding: bindActionCreators(uiActions.setKeyboardPadding, dispatch),
+    inputPropertyValue: bindActionCreators(dataActions.inputPropertyValue, dispatch),
+    resetNewPropertyValue: bindActionCreators(dataActions.resetNewPropertyValue, dispatch),
   }
 };
 
@@ -153,6 +192,8 @@ function mapStateToProps(state) {
     keyboardPadding: state.uiReducer.keyboardPadding,
     objekttypeInfo: state.dataReducer.objekttypeInfo,
     selectedObject: state.mapReducer.selectedObject,
+    editedPropertyValue: state.dataReducer.editedPropertyValue,
+    editedPropertyValueName: state.dataReducer.editedPropertyValueName,
   };
 }
 

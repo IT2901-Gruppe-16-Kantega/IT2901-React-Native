@@ -24,19 +24,23 @@ export default function reducer(state={
 
   objekttypeInfo: [],
 
+  isEditingRoadObject: false,
+  editedPropertyValue: "",
+  editedPropertyValueName: null,
+
+  loadingProgress: 1,
+
 }, action) {
   switch (action.type) {
     // cases associated with searches
     case "LOAD_SEARCHES": {
-      return {
-        ...state,
-        allSearches: action.payload,
-      }
+      return {...state, allSearches: action.payload}
+    }
+    case "SET_LOADING_PROGRESS": {
+      return {...state, loadingProgress: action.payload}
     }
     case "SEARCH_SAVED": {
-      return {
-        ...state,
-      }
+      return {...state}
     }
     case "ADD_NEW_SEARCH_OBJECT": {
       return {
@@ -108,7 +112,6 @@ export default function reducer(state={
         }
       }
     }
-
     //used by filewriter
     case "WRITING_FILE": {
       return {
@@ -116,9 +119,23 @@ export default function reducer(state={
         writing_file: true,
       }
     }
-
     case "SET_OBJEKTTYPE_INFO": {
       return{...state, objekttypeInfo: action.payload}
+    }
+    case "ADD_ROAD_OBJECT": {
+      var newRoadSearch = state.currentRoadSearch;
+      newRoadSearch.roadObjects.push(action.payload);
+      return {...state, currentRoadSearch: newRoadSearch}
+    }
+    case "SET_IS_EDITING_ROAD_OBJECT": {
+      return {...state, isEditingRoadObject: action.payload}
+    }
+    // When creating a new object or editing an existing one.
+    case "INPUT_PROPERTY_VALUE": {
+      return {...state, editedPropertyValue: action.payload.value, editedPropertyValueName: action.payload.property}
+    }
+    case "RESET_NEW_PROPERTY_VALUE": {
+      return {...state, editedPropertyValue: "", editedPropertyValueName: null}
     }
   }
   return state

@@ -106,7 +106,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     sidebarFrame: state.mapReducer.sidebarFrame,
-    objekttypeInfo: state.dataReducer.objekttypeInfo,
+    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
   };
 }

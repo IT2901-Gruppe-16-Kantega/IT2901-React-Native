@@ -2,6 +2,7 @@
 export var colors = {
   black: 'black',
   blue: '#008ec2',
+  blueTransparent: 'rgba(0, 142, 194, 0.5)',
   orange: '#ed9300',
   green: '#58b02c',
   white: 'white',
@@ -10,12 +11,6 @@ export var colors = {
   darkGray: '#444f55',
   red: 'red',
   orangeTransparent: 'rgba(237, 147, 0, 0.1)',
-  placeholderColor: '#c4c4c4',
-}
-
-export var container = {
-  flex: 1,
-  alignItems: 'stretch',
 }
 
 export var top = {

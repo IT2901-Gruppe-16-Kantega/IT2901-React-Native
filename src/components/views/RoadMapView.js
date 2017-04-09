@@ -10,16 +10,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import MapView from 'react-native-maps';
+import moment from 'moment';
 import supercluster from 'supercluster';
 
+import Container from '../misc/Container'
 import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 import MapMarker from '../misc/MapMarker'
 
-import {comparators, datatype} from '../../utilities/values';
+import {comparators, datatype, importance} from '../../utilities/values';
 import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
+import * as dataActions from '../../actions/dataActions';
 import * as mapActions from '../../actions/mapActions';
 
 // Create a reference to the map, to change it's region
@@ -29,68 +32,147 @@ var map = null;
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentDidMount() {
-    this.getClusters();
+  componentWillMount() {
+    this.createCluster();
+  },
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
+      setTimeout(() => {
+        this.createCluster();
+      }, 10)
+    }
+  },
+
+  createCluster() {
+    const cluster = supercluster({
+      maxZoom: 14,
+      radius: 70,
+      nodeSize: 128,
+    });
+
+    var features = [];
+    for(var i = 0; i < this.props.roadObjects.length; i++) {
+      const roadObject = this.props.roadObjects[i]
+
+      if(this.shouldSkipObject(roadObject)) {
+        continue;
+      }
+
+      const geo = parseGeometry(roadObject.geometri.wkt);
+      const feature = { properties: { roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
+      features.push(feature);
+
+      if(!this.props.region) {
+        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.1, longitudeDelta: 0.1 })
+      }
+    }
+    cluster.load(features);
+    this.props.setCluster(cluster);
+
+    setTimeout(() => {
+      this.setMarkersAtRegion();
+    }, 50)
   },
 
   render() {
-    var markers;
-    if(this.props.clusteringOn) {
-      markers = this.createClusterMarkers();
-    } else {
-      markers = this.createMarkers();
-    }
-
-    return <View style={styles.container}>
-      <View style={styles.top}/>
-      <View style={styles.contentView}>
+    return <Container>
+      <View style={{ flex: 1 }}>
         <MapView
           ref={(ref) => {map = ref} }
-          style={styles.map}
+          style={{ flex: 1 }}
+          showsUserLocation={true}
           region={this.props.region}
-          onRegionChange={this.changeRegion} >
-          {markers}
+          onRegionChange={this.changeRegion}
+          onLongPress={this.addMarker} >
+          {this.props.markers}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
       </View>
-    </View>
+    </Container>
   },
 
-  getClusters() {
-    const cluster = supercluster({
-      radius: 50,
-      maxZoom: 16,
-    });
+  addMarker(e) {
+    if(this.getZoomLevel() < 16) {
+      alert("Du må zoome inn nærmere for å legge til objekter.");
+      return;
+    }
 
-    try {
-      var features = [];
-      for(var i = 0; i < this.props.allObjects.length; i++) {
-        const roadObject = this.props.allObjects[i]
+    var coords;
+    if(e.nativeEvent && e.nativeEvent.coordinate) {
+      coords = e.nativeEvent.coordinate;
+    }
+    const now = moment();
 
-        if(this.shouldSkipObject(roadObject)) {
-          continue;
+    var wkt;
+    var requiredProperties = [];
+    for(var i = 0; i < this.props.objekttypeInfo.egenskapstyper.length; i++) {
+      const egenskapstype = this.props.objekttypeInfo.egenskapstyper[i];
+      if(egenskapstype.viktighet === importance.PAKREVD_ABSOLUTT || egenskapstype.viktighet === importance.PAKREVD) {
+        var egenskap = {
+          id: egenskapstype.id,
+          navn: egenskapstype.navn,
+          datatype: egenskapstype.datatype,
+          datatype_tekst: egenskapstype.datatype_tekst,
+          verdi: null,
         }
 
-        const geo = parseGeometry(roadObject.geometri.wkt);
+        if(egenskapstype.datatype == datatype.geomPunkt) {
+          wkt = "POINT (" + coords.latitude + " " + coords.longitude + ")";
+          egenskap.verdi = wkt;
+        }
 
-        const feature = { properties: { id: roadObject.id, roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
-        features.push(feature);
+        requiredProperties.push(egenskap);
       }
-      cluster.load(features);
-      const padding = 0;
-      const markers = cluster.getClusters([
-        this.props.region.latitude - (this.props.region.latitudeDelta * (0.5 + padding)),
-        this.props.region.longitude - (this.props.region.longitudeDelta * (0.5 + padding)),
-        this.props.region.latitude + (this.props.region.latitudeDelta * (0.5 + padding)),
-        this.props.region.longitude + (this.props.region.longitudeDelta * (0.5 + padding)),
-      ], this.getZoomLevel())
+    }
 
-      this.props.setCluster(cluster);
-      this.props.setMarkers(markers);
+    const object = {
+      id: now.unix(),
+      href: null,
+      ny: true, // Add flag to show this is a newly created object
+      metadata: {
+        type: {
+          id: this.props.objekttypeInfo.id,
+          navn: this.props.objekttypeInfo.navn
+        },
+        versjon: 1,
+        sist_modifisert: now.format("YYYY-MM-DD HH:mm:ss"),
+        startdato: now.format("YYYY-MM-DD"),
+      },
+      egenskaper: requiredProperties,
+      geometri: {
+        wkt: wkt,
+        egengeometri: false,
+      },
+      lokasjon: null,
+    }
+    this.props.addRoadObject(object);
+    this.props.selectObject(object);
 
-    } catch(e) {
-      alert(e);
+    setTimeout(() => {
+      this.createCluster();
+    }, 10)
+
+    setTimeout(() => {
+      Actions.ObjectInfoView({rightTitle: "Lagre"});
+    }, 500)
+  },
+
+  setMarkersAtRegion() {
+    if(this.props.cluster && this.props.cluster.getClusters) {
+      const m = 2;
+      const markers = this.props.cluster.getClusters([
+        this.props.region.latitude - (this.props.region.latitudeDelta * m),
+        this.props.region.longitude - (this.props.region.longitudeDelta * m),
+        this.props.region.latitude + (this.props.region.latitudeDelta * m),
+        this.props.region.longitude + (this.props.region.longitudeDelta * m),
+      ], this.getZoomLevel());
+
+      if(markers) {
+        const m = this.createMapFeatures(markers);
+        this.props.setMarkers(m);
+      }
     }
   },
 
@@ -157,61 +239,22 @@ var RoadMapView = React.createClass({
     return false;
   },
 
-  createMarkers() {
-    var markers = this.props.allObjects.map(function(roadObject) {
-
-      if(this.shouldSkipObject(roadObject)) {
-        return;
-      }
-
-      const objectCoordinates = parseGeometry(roadObject.geometri.wkt);
-
-      const color = objectCoordinates.length == 1 ? templates.colors.blue : randomColor();
-      const marker = this.createMarker(roadObject, objectCoordinates[0], color);
-      if(objectCoordinates.length == 1) {
-        return marker;
-      } else {
-
-        return [<MapView.Polyline
-          key={roadObject.id + 'poly'}
-          coordinates={objectCoordinates}
-          strokeWidth={3}
-          strokeColor={color} />, marker]
-      }
-
-    }.bind(this));
-
-    return markers;
-  },
-
-  createMarker(obj, coords, color) {
-    var ref;
-
-    return <MapView.Marker
-      coordinate={coords}
-      key={obj.id}
-      ref={(r) => {ref = r}}
-      onPress={this.props.selectMarker.bind(this, ref)}
-      onSelect={this.props.selectMarker.bind(this, ref)}
-      pinColor={color}
-      >
-      <MapView.Callout style={{flex: 1, position: 'relative'}}>
-        <MarkerCallout
-          roadObject={obj}
-        />
-      </MapView.Callout>
-    </MapView.Marker>
-  },
-
-  createClusterMarkers() {
-    return this.props.markers.map((marker, index) => {
-      var view;
-
+  createMapFeatures(markers) {
+    return markers.map((marker, index) => {
       if(marker.properties.cluster) {
-        view = <View style={styles.cluster}>
-          <Text style={styles.clusterText}>{marker.properties.point_count_abbreviated}</Text>
-        </View>
+        return <MapView.Marker
+          coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
+          onPress={this.markerPressed.bind(this, marker)}
+          onSelect={this.markerPressed.bind(this, marker)}
+          key={index} >
+          <View style={styles.cluster}>
+            <View style={styles.clusterInner}>
+              <Text style={styles.clusterText}>{marker.properties.point_count_abbreviated}</Text>
+            </View>
+          </View>
+        </MapView.Marker>
       }
+
       else {
         const objectCoordinates = parseGeometry(marker.properties.roadObject.geometri.wkt);
 
@@ -222,31 +265,24 @@ var RoadMapView = React.createClass({
             strokeWidth={3}
             strokeColor={templates.colors.blue} />
         } else {
-          view = <MapView.Callout style={{flex: 1, position: 'relative'}}>
-            <MarkerCallout
-              roadObject={marker.properties.roadObject}
-            />
-          </MapView.Callout>
+          return <MapView.Marker
+            coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
+            key={index}
+            pinColor={templates.colors.blue} >
+            <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
+              <MarkerCallout
+                roadObject={marker.properties.roadObject}
+              />
+            </MapView.Callout>
+          </MapView.Marker>
         }
       }
-
-      return <MapView.Marker
-        coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
-        key={index}
-        onPress={this.markerPressed.bind(this, marker)}
-        onSelect={this.markerPressed.bind(this, marker)}
-        pinColor={templates.colors.blue} >
-        {view}
-      </MapView.Marker>
     })
   },
 
   changeRegion(region) {
-    this.props.setMarkers([]);
-    this.props.setCluster(null);
-
     this.props.setRegion(region);
-    this.getClusters();
+    this.setMarkersAtRegion()
   },
 
   markerPressed(marker) {
@@ -269,31 +305,20 @@ var RoadMapView = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  top: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    height: 20,
-    right: 0,
-    left: 0,
-    top: 0,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-  },
-  contentView: {
-    flex: 1,
-  },
-  map: {
-    position: 'absolute',
-    right: 0,
-    top: 20,
-    left: 0,
-    bottom: 0,
-  },
   cluster: {
+    zIndex: 2,
+    backgroundColor: templates.colors.blueTransparent,
+    height: 70,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 100,
+  },
+  clusterInner: {
     backgroundColor: templates.colors.blue,
     padding: 10,
+    height: 50,
+    width: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,
@@ -306,7 +331,7 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    allObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
@@ -331,6 +356,7 @@ function mapDispatchToProps(dispatch) {
     selectObject: bindActionCreators(mapActions.selectObject, dispatch),
     selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
 
+    addRoadObject: bindActionCreators(dataActions.addRoadObject, dispatch),
     setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
     setCluster: bindActionCreators(mapActions.setCluster, dispatch),

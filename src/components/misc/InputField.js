@@ -6,10 +6,13 @@ import {
   TextInput,
   ListView,
   ScrollView,
- } from 'react-native';
+  Keyboard,
+} from 'react-native';
 
- import * as templates from '../../utilities/templates'
- import Button from './Button'
+import { connect } from 'react-redux'
+
+import * as templates from '../../utilities/templates'
+import Button from './Button'
 
 /* props:
 type,
@@ -23,6 +26,9 @@ updateFunction,
 extData
 */
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 var InputField = React.createClass({
   componentWillMount(){
@@ -31,9 +37,9 @@ var InputField = React.createClass({
   render() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.list)
-    var colorBackground = templates.colors.lightGray
-    var placeholderColorVar = templates.colors.placeholderColor
-    return <View style={styles.inputContainer}>
+
+    return <View>
+      {this.renderHeader()}
       <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
         <TextInput
           underlineColorAndroid={templates.colors.lightGray}
@@ -43,13 +49,13 @@ var InputField = React.createClass({
           style={{
             padding: 5,
             height: 40,
-            color: templates.colors.darkGray,
-            backgroundColor: colorBackground
+            color: this.props.theme.primaryTextColor,
           }}
-          placeholderTextColor={placeholderColorVar}
-          placeholder={'Skriv inn '+this.props.type}
+          placeholderTextColor={this.props.theme.placeholderTextColor}
+          placeholder={'Skriv inn ' + this.props.type}
           onChangeText={(text) => {
-            if(this.props.type=='kommune'){
+            this.props.updateFunction()
+            if(this.props.type === 'kommune'){
               this.props.inputFunction(text, this.props.extData)
             }else{
               this.props.inputFunction(text)
@@ -62,14 +68,17 @@ var InputField = React.createClass({
           />
       </View>
       <ListView
+        style={this.getListViewStyle()}
         keyboardShouldPersistTaps='always'
         dataSource={dataSource}
         enableEmptySections= {true}
         renderRow={(rowData) => {
-          if(!this.props.choosenBool){
+          if(!this.props.choosenBool) {
             return <Button
               style={"list"}
               onPress={()=>{
+                Keyboard.dismiss();
+
                 var chosenData = [];
                 chosenData.push(this.props.list.find((data) => {
                   if(data.navn == rowData.navn){
@@ -87,24 +96,26 @@ var InputField = React.createClass({
           }
           }}/>
     </View>
+  },
+
+  renderHeader() {
+    if(this.props.textType) {
+      return <Text style={[this.props.theme.text, {marginLeft: 5}]}>{this.props.type.capitalize()}</Text>
+    }
+  },
+
+  getListViewStyle() {
+    var height;
+    if(this.props.choosenBool) { height = 0 }
+    else { height = Math.min(this.props.list.length * 40, 150) }
+    return {
+      height: height,
+    }
   }
 })
 
-var styles = StyleSheet.create({
-  inputContainer: {
-    flex: 4,
-    backgroundColor: templates.colors.white,
+function mapStateToProps(state) {
+  return { theme: state.settingsReducer.themeStyle };
+}
 
-  },
-  textInput: {
-    padding: 5,
-    height: 40,
-    color: templates.colors.darkGray,
-    backgroundColor: templates.colors.lightGray,
-    borderTopWidth: 3,
-    borderTopColor: 'red',
-
-  },
-})
-
-export default InputField;
+export default connect(mapStateToProps, null) (InputField);

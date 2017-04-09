@@ -13,7 +13,13 @@ export function loadSearches(searches){
     type: "LOAD_SEARCHES",
     payload: searches,
   }
+}
 
+export function setLoadingProgress(progress) {
+  return {
+    type: "SET_LOADING_PROGRESS",
+    payload: progress,
+  }
 }
 
 export function setCurrentRoadSearch(roadSearch){
@@ -142,5 +148,32 @@ export function inputFylke(input){
     .catch((err) => {
       dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
     })
+  }
+}
+
+export function addRoadObject(object) {
+  return {
+    type: "ADD_ROAD_OBJECT",
+    payload: object,
+  }
+}
+
+export function setIsEditingRoadObject(editing) {
+  return {
+    type: "SET_IS_EDITING_ROAD_OBJECT",
+    payload: editing,
+  }
+}
+
+export function inputPropertyValue(value, property) {
+  return {
+    type: "INPUT_PROPERTY_VALUE",
+    payload: {value, property},
+  }
+}
+
+export function resetNewPropertyValue() {
+  return {
+    type: "RESET_NEW_PROPERTY_VALUE",
   }
 }

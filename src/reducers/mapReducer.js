@@ -15,7 +15,7 @@ export default function reducer(state={
   selectedMarker: null,
 
   region: null,
-  markers: [],
+  markers: null,
   cluster: null,
 
 }, action) {

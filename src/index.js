@@ -6,6 +6,7 @@ import {
   View,
   LayoutAnimation,
   Dimensions,
+  Navigator
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -13,63 +14,61 @@ import { Router, Scene } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import moment from 'moment';
+
 // application view imports
 import CurrentSearchView from './components/views/CurrentSearchView'
 import LoadingView from './components/views/LoadingView'
 import ObjectInfoView from './components/views/ObjectInfoView'
 import ReportView from './components/views/ReportView'
 import RoadMapView from './components/views/RoadMapView'
-import RoadSelectView from './components/views/RoadSelectView'
 import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
 
+import NavigationBar from './components/misc/NavigationBar'
+
 // misc imports
+import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
 import * as dataActions from './actions/dataActions'
 import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
 
-import storageEngine from './utilities/storageEngine'
-
-
 class App extends Component {
   componentWillMount() {
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
-    var stored = storage.load();
-    //console.log(stored)
+    var stored = storage.load(function(progress) {
+      this.props.setLoadingProgress(progress);
+    }.bind(this));
     this.props.loadSearches(stored)
   }
   render() {
     return (
-      <Router>
+      <Router sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
         <Scene key="root">
           <Scene
             key="StartingView"
             component={StartingView}
+            navBar={NavigationBar}
             title=""
-            hideNavBar={true}
             type='reset'
+            hideNavBar={true}
             initial={true}
 
             />
           <Scene
             key="SearchView"
             component={SearchView}
-            title={<Text style={{color:"orange"}}></Text>}
             hideNavBar={false}
-            navigationBarStyle={styles.navigatorStyle}
             />
-          <Scene
-            key="RoadSelectView"
-            component={RoadSelectView}
-            title="Velg veg" />
           <Scene
             key="StoredDataView"
             component={StoredDataView}
+            navBar={NavigationBar}
             title="Lagrede søk"
             hideNavBar={false} />
           <Scene
@@ -100,18 +99,25 @@ class App extends Component {
             hideNavBar={false}
             onRight={ this.toggleSidebar.bind(this) }
             rightTitle="Filtrer"
-            navigationBarStyle={styles.navigatorStyle} />
+            navigationBarStyle={this.props.navigationBarStyle} />
           <Scene
             key="ObjectInfoView"
             component={ObjectInfoView}
             sceneStyle={{paddingTop: 64}}
             title=""
             hideNavBar={false}
-            rightTitle="Rediger"
-            onRight={ () => console.log('hei') } />
+            //rightTitle={this.getObjectInfoViewRightTitle}
+            onRight={ () => console.log("Hei") } />
         </Scene>
       </Router>
     )
+  }
+
+  getObjectInfoViewRightTitle() {
+    if(this.props.isEditingRoadObject) {
+      return "Lagre";
+    }
+    return "Rediger";
   }
 
   toggleSidebar() {
@@ -132,25 +138,21 @@ class App extends Component {
   }
 }
 
-var styles = StyleSheet.create({
-  navigatorStyle: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderBottomWidth: 0,
-  }
-})
-
 function mapStateToProps(state) {
   return {
-    //Status information about search
+    loadingProgress: state.dataReducer.loadingProgress,
     sidebarFrame: state.mapReducer.sidebarFrame,
+    isEditingRoadObject: state.dataReducer.isEditingRoadObject,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
+    setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
+    setIsEditingRoadObject: bindActionCreators(dataActions.setIsEditingRoadObject, dispatch),
   }
 }
 

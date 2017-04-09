@@ -9,6 +9,8 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Container from '../misc/Container'
+
 import * as templates from '../../utilities/templates'
 import * as reportActions from '../../actions/reportActions'
 
@@ -17,7 +19,7 @@ View that shows information about a single report
 */
 var ReportView = React.createClass({
   render() {
-    return <View style={templates.container}>
+    return <Container>
       <View style={templates.top}/>
         <View style={styles.header}>
           <Text style={{color: templates.colors.white}}>NVDB-app</Text>
@@ -30,7 +32,7 @@ var ReportView = React.createClass({
         <View style={templates.footer}>
           <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
         </View>
-    </View>
+    </Container>
   }
 });
 

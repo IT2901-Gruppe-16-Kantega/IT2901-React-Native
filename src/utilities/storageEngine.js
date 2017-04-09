@@ -14,6 +14,7 @@ export default (key) => ({
 
   initialize() {
     console.log('initializing storage');
+    console.log(rootPathIOS)
     if (Platform.OS === "ios") {
       RNFS.mkdir(rootPathIOS)
       RNFS.mkdir(searchesPathIOS)
@@ -23,27 +24,30 @@ export default (key) => ({
       RNFS.mkdir(searchesPathAndroid)
     }
   },
-  load() {
+  load(progress) {
     console.log('loading...')
-    if(Platform.OS === "ios"){
-      return this.loadFiles(searchesPathIOS)
+    if(Platform.OS === "ios") {
+      return this.loadFiles(searchesPathIOS, progress)
     }
-    else if (Platform.OS == "android"){
-      return this.loadFiles(searchesPathAndroid)
+    else if (Platform.OS == "android") {
+      return this.loadFiles(searchesPathAndroid, progress)
     }
   },
-  loadFiles(path) {
+  loadFiles(path, progress) {
     console.log('loadFiles')
     var storedSearches = []
+    var successLength = 0;
     RNFS.readdir(path).then((response)=>{
-      for (var i = 0; i < response.length; i++){
-        var currentPath = path+'/'+response[i]
+      for (var i = 0; i < response.length; i++) {
+        var currentPath = path + '/' + response[i]
         RNFS.readFile(currentPath)
         .then((success) => {
-          storedSearches.push(JSON.parse(success) || {})
+          successLength += 1;
+          storedSearches.push(JSON.parse(success) || {});
+          progress(successLength / response.length)
         })
         .catch((err) => {
-          console.error("An error occurred when trying to load file. Path: "+currentPath, err)
+          console.error("An error occurred when trying to load file. Path: " + currentPath, err)
         })
       }
     })
@@ -63,8 +67,8 @@ export default (key) => ({
       console.log(dataPath)
       return this.writeFile(dataPath, jsonSearch)
     }
-
   },
+
   writeFile(dataPath, jsonSearch) {
     return RNFS.writeFile(dataPath, jsonSearch)
     .then((success) => {
@@ -74,6 +78,7 @@ export default (key) => ({
       console.error("An error occurred when saving data. Path: "+dataPath, err)
     })
   },
+
   clear() {
     if(Platform.OS === "ios"){
       RNFS.unlink(searchesPathIOS)
@@ -81,7 +86,5 @@ export default (key) => ({
     }else if (Platform.OS === "android"){
       RNFS.unlink(searchesPathAndroid)
     }
-
   },
-
 });
