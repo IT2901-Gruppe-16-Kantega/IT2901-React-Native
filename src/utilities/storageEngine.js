@@ -82,9 +82,15 @@ export default (key) => ({
   clear() {
     if(Platform.OS === "ios"){
       RNFS.unlink(searchesPathIOS)
+      this.initialize()
 
     }else if (Platform.OS === "android"){
       RNFS.unlink(searchesPathAndroid)
+      this.initialize()
     }
   },
+  //TODO
+  deleteFile(search) {
+
+  }
 });

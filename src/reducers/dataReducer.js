@@ -33,6 +33,9 @@ export default function reducer(state={
 }, action) {
   switch (action.type) {
     // cases associated with searches
+    case "CLEAR_SEARCHES": {
+      return {...state, allSearches: []}
+    }
     case "LOAD_SEARCHES": {
       return {...state, allSearches: action.payload}
     }

@@ -83,7 +83,11 @@ var StoredDataView = React.createClass({
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-      <Button text={"Slett alt"} onPress={storage.clear} style={"small"} />
+      <Button text={"Slett alt"} onPress={() => {
+          storage.clear()
+          this.props.clearAllSearches()
+
+        }} style={"small"} />
     </View>
   },
 
@@ -92,9 +96,8 @@ var StoredDataView = React.createClass({
     Alert.alert('Slette søk',
     'Klikk bekreft for å slette søk utført: '+search.date,
       [{text: 'Bekreft', onPress: () => {
-        //delete search locally
-        //delete search in memory
-        console.log('asd')
+        storage.deleteFile(search)
+        this.props.deleteSearch(search)
       }
         }, {text: 'Avbryt'}]
     );
@@ -134,6 +137,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+    clearAllSearches: bindActionCreators(dataActions.clearAllSearches, dispatch),
+    deleteSearch: bindActionCreators(dataActions.deleteSearch, dispatch),
   }
 }
 

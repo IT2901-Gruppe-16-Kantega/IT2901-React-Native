@@ -296,7 +296,7 @@ export default function reducer(state={
         kommune_navn: '',
         kommune_text: '',
         kommune_chosen: false,
-        kommune_color: templates.colors.middleGray,
+        kommune_color: templates.colors.orange,
 
         vegobjekttyper_input: [],
         vegobjekttyper_navn: '',
@@ -326,7 +326,7 @@ export default function reducer(state={
         kommune_navn: '',
         kommune_text: '',
         kommune_chosen: false,
-        kommune_color: templates.colors.middleGray,
+        kommune_color: templates.colors.orange,
 
         url: '',
 
