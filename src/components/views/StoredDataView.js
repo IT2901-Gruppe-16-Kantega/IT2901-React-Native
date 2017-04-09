@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   ListView,
+  Alert,
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -66,6 +67,7 @@ var StoredDataView = React.createClass({
 
     return <TouchableHighlight
       onPress={this.openSearch.bind(this, roadSearch)}
+      onLongPress={this.issueDeleteSearch.bind(this, roadSearch)}
       key={rowID}
       style={[styles.row, this.props.theme.container]}>
       <View>
@@ -83,6 +85,19 @@ var StoredDataView = React.createClass({
     return <View style={styles.footerStyle}>
       <Button text={"Slett alt"} onPress={storage.clear} style={"small"} />
     </View>
+  },
+
+  issueDeleteSearch(search) {
+    console.log(search)
+    Alert.alert('Slette søk',
+    'Klikk bekreft for å slette søk utført: '+search.date,
+      [{text: 'Bekreft', onPress: () => {
+        //delete search locally
+        //delete search in memory
+        console.log('asd')
+      }
+        }, {text: 'Avbryt'}]
+    );
   },
 
   // Open the selected roadSearch item
