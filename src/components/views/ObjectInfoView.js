@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   TextInput,
   Keyboard,
-  LayoutAnimation
+  LayoutAnimation,
+  Platform,
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -30,6 +31,9 @@ var ObjectInfoView = React.createClass({
   componentWillMount() {
     Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+	if(Platform.OS === "android") {
+		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+	}
   },
 
   render() {

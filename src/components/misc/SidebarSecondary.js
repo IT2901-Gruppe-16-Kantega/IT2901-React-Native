@@ -7,7 +7,9 @@ import {
   LayoutAnimation,
   TouchableHighlight,
   TextInput,
-  Text
+  Text,
+  Platform,
+  UIManager,
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -29,7 +31,12 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 This component is for selecting advanced filtering.
 */
 var SidebarSecondary = React.createClass({
-  render() {
+	componentWillMount() {
+		if(Platform.OS === "android") {
+			UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+		}
+	},
+  	render() {
     var listView;
     if(this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
       if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {

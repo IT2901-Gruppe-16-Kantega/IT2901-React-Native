@@ -7,6 +7,8 @@ import {
   LayoutAnimation,
   Dimensions,
   Navigator
+  Platform,
+  UIManager,
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -39,6 +41,10 @@ let ScreenWidth = Dimensions.get("window").width;
 
 class App extends Component {
   componentWillMount() {
+	if(Platform.OS === "android") {
+		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
+	}
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
     var stored = storage.load(function(progress) {
