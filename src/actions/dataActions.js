@@ -7,6 +7,13 @@ const storage = storageEngine('NVDB-storage')
 /*
   Actions associated with searches
 */
+export function setDescription(input) {
+  return {
+    type: "SET_DESCRIPTION",
+    payload: input,
+  }
+}
+
 
 export function deleteSearch(allSearches, search) {
   allSearches.splice(allSearches.indexOf(search), 1)
@@ -66,7 +73,6 @@ export function createSearchObject(description, objects, report, combParams, obj
 export function searchSaved(roadSearch) {
   storage.saveSearch(roadSearch)
   return {type: "SEARCH_SAVED"}
-
 }
 
 /*

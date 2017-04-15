@@ -173,7 +173,9 @@ var SearchView = React.createClass({
     console.log(road)
     if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
-      this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
+      const chosenFylke = []
+      chosenFylke.push(fylker.find(f => f.nummer === fylke))
+      this.props.chooseFylke(chosenFylke)
       this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])
      }
     else {
@@ -299,7 +301,6 @@ var SearchView = React.createClass({
         this.props.setValidityOfVeg('NOT_CHOSEN')
       }
       var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
-      console.log(url)
       this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
     })
   },

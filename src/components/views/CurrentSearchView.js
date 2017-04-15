@@ -5,7 +5,10 @@ import {
   StyleSheet,
   TouchableHighlight,
   Linking,
-  Platform
+  TextInput,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -30,20 +33,70 @@ Shows information about current search, buttons for viewing map and opening AR
 var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
+    this.props.setDescription(this.props.currentRoadSearch.description)
+    //this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   },
 
   render() {
     return <Container>
-      <View style={styles.informationArea}>{this.createInformationView()}</View>
+      <TouchableWithoutFeedback
+        onPress={()=>{
+          console.log("press outside")
+          Keyboard.dismiss()
+        }}
+        >
+        <View style={styles.informationArea}>{this.createInformationView()}</View>
+      </TouchableWithoutFeedback>
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
   },
 
   createInformationView() {
+    console.log(this.props.currentRoadSearch)
+    var kommuneValue = "Ikke spesifisert"
+    if (this.props.currentRoadSearch.searchParameters[2] != null) {
+      kommuneValue = this.props.currentRoadSearch.searchParameters[2].navn
+    }
     return <View style={styles.infoText}>
       <Text style={this.props.theme.title}>Informasjon om valgt vegsøk:</Text>
+      <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
       <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
+      <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+      <PropertyValue property={"Kommune"} value={kommuneValue} />
+      <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+      {this.createDescriptionArea()}
     </View>
+  },
+
+  createDescriptionArea() {
+    var placeholder = ""
+    if(this.props.description == "") {
+      placeholder = "Skriv inn en beskrivelse eller et notat"}
+    return  <TextInput
+        underlineColorAndroid={templates.colors.lightGray}
+        autocorrect={false}
+        style={{
+          padding: 5,
+          height: 40,
+          color: this.props.theme.primaryTextColor,
+        }}
+        onBlur={()=>{console.log("asd")}}
+        multiline={true}
+        placeholderTextColor={this.props.theme.placeholderTextColor}
+        placeholder={placeholder}
+        onChangeText={(text) => {
+          this.props.setDescription(text)
+        }}
+        keyboardType="default"
+        value={this.props.description}
+        onEndEditing={this.saveDescription}
+        />
+  },
+  //TODO this is now implemented using really bad redux-practise, should implement better
+  saveDescription() {
+    this.props.currentRoadSearch.description = this.props.description
+    this.props.searchSaved(this.props.currentRoadSearch)
+    //this.props.replaceSearch(this.props.allSearches, this.props.currentRoadSearch)
   },
 
   createButtons() {
@@ -113,6 +166,9 @@ function mapStateToProps(state) {
   return {
     theme: state.settingsReducer.themeStyle,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
+    allSearches: state.dataReducer.allSearches,
+    theme: state.settingsReducer.themeStyle,
+    description: state.dataReducer.description,
   };}
 
   function mapDispatchToProps(dispatch) {
@@ -120,6 +176,8 @@ function mapStateToProps(state) {
       //dataActions
       resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
       setRegion: bindActionCreators(mapActions.setRegion, dispatch),
+      searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+      setDescription: bindActionCreators(dataActions.setDescription, dispatch),
     }
   }
   //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
