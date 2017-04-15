@@ -6,7 +6,7 @@ import {
   View,
   LayoutAnimation,
   Dimensions,
-  Navigator
+  Navigator,
   Platform,
   UIManager,
 } from 'react-native';
