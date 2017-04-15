@@ -345,7 +345,7 @@ var SidebarSecondary = React.createClass({
     var style = {width: this.props.sidebarFrame.width};
 
     if(this.props.showSecondSidebar) {
-      style.left = ScreenWidth - style.width;
+      style.left = ScreenWidth - style.width + 3;
     } else {
       style.left = ScreenWidth;
     }

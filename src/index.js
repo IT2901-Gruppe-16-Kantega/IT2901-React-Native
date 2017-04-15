@@ -43,7 +43,6 @@ class App extends Component {
   componentWillMount() {
 	if(Platform.OS === "android") {
 		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-
 	}
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
@@ -130,7 +129,7 @@ class App extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
     var width = ScreenWidth / 2.2;
-    var xPos = ScreenWidth - width;
+    var xPos = ScreenWidth - width + 3;
     var frame = {width: width};
 
     if(this.props.sidebarFrame.left == xPos) {

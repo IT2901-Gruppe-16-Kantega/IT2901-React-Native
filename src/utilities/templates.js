@@ -26,13 +26,11 @@ export var footer = {
 export var sidebar = {
   position: 'absolute',
   top: 70,
-  bottom: 0,
+  bottom: -3,
 
-  borderTopWidth: 3,
-  borderTopColor: colors.blue,
-  borderLeftWidth: 3,
-  borderLeftColor: colors.blue,
   borderTopLeftRadius: 10,
+  borderWidth: 3,
+  borderColor: colors.blue,
 
   backgroundColor: colors.white,
 }
