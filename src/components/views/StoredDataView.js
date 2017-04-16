@@ -36,7 +36,7 @@ var StoredDataView = React.createClass({
   },
 
   renderSearches() {
-    if(this.props.allSearches) {
+    if(this.props.allSearches.length != 0) {
       return <ListView
         // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}

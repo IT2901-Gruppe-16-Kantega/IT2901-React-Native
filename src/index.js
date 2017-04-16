@@ -96,7 +96,7 @@ class App extends Component {
           key="ReportView"
           component={ReportView}
           title="Rapport"
-          hideNavBar={false} />
+          hideNavBar={false}/>
         <Scene
           key="RoadMapView"
           component={RoadMapView}
@@ -116,7 +116,7 @@ class App extends Component {
       </Scene>
     );
   }
-  
+
   render() {
     return (
       <Router

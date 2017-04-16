@@ -91,6 +91,8 @@ var MarkerCallout = React.createClass({
     return "";
   },
   reportObject() {
+    // In description the user must specify what kind of error this object has
+    // perhaps from a list
     const description = 'teste test'
     const date = moment().format('MMMM Do YYYY, h:mm:ss a')
     const reportObject = {
