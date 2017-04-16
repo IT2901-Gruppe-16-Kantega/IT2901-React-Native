@@ -6,14 +6,20 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
+import moment from 'moment';
+
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import PropertyValue from './PropertyValue';
+import Button from '../misc/Button'
 
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
+import * as dataActions from '../../actions/dataActions'
+
+
 
 /*
 The callout shown when the user taps a pin on the map view.
@@ -29,6 +35,7 @@ var MarkerCallout = React.createClass({
       </TouchableHighlight>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
+      <Button text="Create report" onPress={this.reportObject} />
     </View>
   },
 
@@ -82,7 +89,17 @@ var MarkerCallout = React.createClass({
       }
     }
     return "";
-  }
+  },
+  reportObject() {
+    const description = 'teste test'
+    const date = moment().format('MMMM Do YYYY, h:mm:ss a')
+    const reportObject = {
+      roadObject: this.props.roadObject,
+      description: description,
+      date: date,
+    }
+    this.props.reportRoadObject(reportObject, this.props.currentRoadSearch)
+  },
 });
 
 var styles = StyleSheet.create({
@@ -98,12 +115,15 @@ function mapStateToProps(state) {
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+    reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
   }
 };
 

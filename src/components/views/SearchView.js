@@ -169,8 +169,6 @@ var SearchView = React.createClass({
     const kategori = vegreferanse.kategori;
     const status = vegreferanse.status;
     const nummer = vegreferanse.nummer;
-    console.log(kategori + "." + status + "." + nummer)
-    console.log(road)
     if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
       const chosenFylke = []

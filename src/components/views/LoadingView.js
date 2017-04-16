@@ -61,7 +61,7 @@ var LoadingView = React.createClass({
       this.props.createSearchObject(
         '',
         this.props.objects,
-        'report',
+        [],
         this.props.combinedSearchParameters,
         this.props.objekttypeInfo
       );

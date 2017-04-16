@@ -18,6 +18,10 @@ import * as reportActions from '../../actions/reportActions'
 View that shows information about a single report
 */
 var ReportView = React.createClass({
+  componentDidMount() {
+    console.log(this.props.currentRoadSearch)
+  },
+
   render() {
     return <Container>
       <View style={templates.top}/>
@@ -59,8 +63,14 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    fetching: state.dataReducer.fetching,
-    fetched: state.dataReducer.fetched,
+    theme: state.settingsReducer.themeStyle,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
   };}
-  function mapDispatchToProps(dispatch) {return bindActionCreators(reportActions, dispatch);}
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      //dataActions
+    }
+  }
+
   export default connect(mapStateToProps, mapDispatchToProps) (ReportView);
