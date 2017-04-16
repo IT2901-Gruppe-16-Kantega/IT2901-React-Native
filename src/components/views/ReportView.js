@@ -27,12 +27,8 @@ var ReportView = React.createClass({
 
   render() {
     return <Container>
-      <View style={styles.frame}>
-        <View style={{flex: 1}}><Text/></View>
         {this.renderReportObjects()}
-        <View style={{flex: 1}}><Text/></View>
 
-      </View>
 
     </Container>
   },
@@ -49,7 +45,6 @@ var ReportView = React.createClass({
     } else {
       return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <Text>Ingen rapporter registrert...</Text>
-        <Button text={"Gjør et søk"} onPress={Actions.SearchView} />
       </View>
     }
   },
@@ -57,25 +52,33 @@ var ReportView = React.createClass({
   // Render each saved road search row
   renderRow(reportObject, sectionID, rowID, highlightRow) {
 
+    //TODO should open more info about roadObject when pressed
+
+    //TODO Feiltype, valgt på kart ikke tekst slik det er nå
 
     return <TouchableHighlight
-      onPress={()=>console.log('asd')}
       key={rowID}
       style={[styles.row, this.props.theme.container]}>
       <View>
-        <Text style={this.props.theme.text}>1</Text>
-        <Text style={this.props.theme.title}>2</Text>
-        <Text style={this.props.theme.text}>2</Text>
-        <View style={{alignItems: 'flex-end'}}>
-        <Text style={[this.props.theme.subtitle, {color: templates.colors.orange, fontWeight: 'bold'}]}>3</Text>
-        </View>
+        <Text style={this.props.theme.text}>{reportObject.date}</Text>
+        <Text style={this.props.theme.title}>VegobjektID: {reportObject.roadObject.id}</Text>
+        <Text style={this.props.theme.text}>Objekttype: {}
+          {reportObject.roadObject.metadata.type.navn}
+          ({reportObject.roadObject.metadata.type.id})
+        </Text>
+        <Text/>
+        <View style={{flexDirection: "row", alignItems: 'center'}}>
+        <Text style={[this.props.theme.subtitle, {color: templates.colors.orange, fontWeight: 'bold'}]}>
+          Feil: </Text>
+        <Text style={[this.props.theme.text, {color: templates.colors.orange}]}>
+          Mangler egengeometri</Text>
+      </View>
       </View>
     </TouchableHighlight>
   },
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-
     </View>
   },
 });
