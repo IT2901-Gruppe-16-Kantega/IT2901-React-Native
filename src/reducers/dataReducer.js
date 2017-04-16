@@ -13,7 +13,7 @@ export default function reducer(state={
 
   //this holds the currently chosen roadSearch to avoid calling the entire array all the time
   currentRoadSearch: null,
-
+  description: "",
 
   //currently not used
   currentRoadSearchIndex: null,
@@ -33,6 +33,9 @@ export default function reducer(state={
 }, action) {
   switch (action.type) {
     // cases associated with searches
+    case "SET_DESCRIPTION": {
+      return {...state, description: action.payload}
+    }
     case "DELETE_SEARCH": {
       return {...state, allSearches: action.payload}
     }

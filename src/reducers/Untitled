@@ -34,6 +34,7 @@ var CurrentSearchView = React.createClass({
   componentDidMount() {
     this.props.resetFetching();
     this.props.setDescription(this.props.currentRoadSearch.description)
+    //this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   },
 
   render() {
@@ -42,7 +43,6 @@ var CurrentSearchView = React.createClass({
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
   },
-
   createInfoView() {
     var kommuneValue = "Ikke spesifisert"
     if (this.props.currentRoadSearch.searchParameters[2] != null) {
@@ -52,23 +52,17 @@ var CurrentSearchView = React.createClass({
       <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
         <View style={styles.informationArea}>
           <View style={{flex: 1}}><Text/></View>
-          <View style={styles.info}>
-            <Text style={this.props.theme.title}>Informasjon om valgt vegsøk:</Text>
-            <Text></Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flex:0.5}}></View>
-              <View style={{flex:10}}>
-                <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
-                <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
-                <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
-                <PropertyValue property={"Kommune"} value={kommuneValue} />
-                <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
-              </View>
-              <View style={{flex:1}}></View>
+            <View style={styles.info}>
+              <Text style={this.props.theme.title}>Informasjon om valgt vegsøk:</Text>
+              <Text></Text>
+              <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
+              <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+              <PropertyValue property={"Kommune"} value={kommuneValue} />
+              <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+              <PropertyValue property={"Beskrivelse/Notater"}/>
+              {this.createDescriptionArea()}
             </View>
-            <Text></Text>
-            {this.createDescriptionArea()}
-          </View>
           <View style={{flex: 1}}><Text/></View>
         </View>
       </TouchableWithoutFeedback>
@@ -78,74 +72,75 @@ var CurrentSearchView = React.createClass({
   createDescriptionArea() {
     var placeholder = ""
     if(this.props.description == "") {
-      placeholder = "Skriv inn en beskrivelse eller et notat"
-    }
+      placeholder = "Skriv inn en beskrivelse eller et notat"}
     return  <View style={styles.descriptionArea}>
-      <PropertyValue property={"Beskrivelse/Notater"}/>
       <TextInput
-        underlineColorAndroid={templates.colors.lightGray}
-        autocorrect={false}
-        style={{
-          flex: 1,
-          padding: 5,
-          fontSize: 15,
-          color: this.props.theme.secondaryTextColor,
-          backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
-        }}
-        onBlur={()=>{console.log("asd")}}
-        multiline={true}
-        placeholderTextColor={this.props.theme.placeholderTextColor}
-        placeholder={placeholder}
-        onChangeText={(text) => {
-          this.props.setDescription(text)
-        }}
-        keyboardType="default"
-        value={this.props.description}
-        onEndEditing={this.saveDescription}
-        />
-    </View>
-  },
+          underlineColorAndroid={templates.colors.lightGray}
+          autocorrect={false}
+          style={{
+            flex: 1,
+            padding: 5,
+            color: this.props.theme.primaryTextColor,
+            backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
+          }}
+          onBlur={()=>{console.log("asd")}}
+          multiline={true}
+          placeholderTextColor={this.props.theme.placeholderTextColor}
+          placeholder={placeholder}
+          onChangeText={(text) => {
+            this.props.setDescription(text)
+          }}
+          keyboardType="default"
+          value={this.props.description}
+          onEndEditing={this.saveDescription}
+          />
+        </View>
+    },
 
   //TODO this is now implemented using really bad redux-practise, should implement better
   saveDescription() {
     this.props.currentRoadSearch.description = this.props.description
     this.props.searchSaved(this.props.currentRoadSearch)
+    //this.props.replaceSearch(this.props.allSearches, this.props.currentRoadSearch)
   },
 
   createButtons() {
     return <View>
+
       <View style={styles.topButtons}>
         <Button text="Kart" onPress={Actions.RoadMapView} />
         <Button text="AR" onPress={this.openAR} />
       </View>
+
       <View style={styles.bottomButtons}>
         <Button text="Rapport" onPress={Actions.ReportView} />
         <Button text="Tilbake" onPress={Actions.StartingView} />
       </View>
+
     </View>
   },
 
   openAR() {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
-    if(Platform.OS === "ios") {
-      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-        if(!err) Linking.openURL("nvdbAr:");
-      });
-    } else if (Platform.OS === "android"){
-      // Save data.json
-      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
-      console.log(dataPath);
-      var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
-      RNFS.writeFile(dataPath, data, "utf8")
-      .then((success) => console.log("data.json saved successfully"))
-      .catch((err) => console.error("An error occurred when saving data.json", err));
-      Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
-      // TODO Save roads.json here
-      //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
-    } else {
-      console.log("Not ios or android")
-    }
+  	if(Platform.OS === "ios") {
+  		userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
+  	      if(!err) Linking.openURL("nvdbAr:");
+  	    });
+  	} else if (Platform.OS === "android"){
+  		// Save data.json
+  		let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+  		console.log(dataPath);
+  		var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
+  		RNFS.writeFile(dataPath, data, "utf8")
+  			.then((success) => console.log("data.json saved successfully"))
+  			.catch((err) => console.error("An error occurred when saving data.json", err));
+  		Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
+  		// TODO Save roads.json here
+  		//let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
+  	} else {
+  		console.log("Not ios or android")
+  	}
   },
 });
 
@@ -156,6 +151,13 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
   },
+  infoArea: {
+    flex: 2,
+    flexDirection: 'row',
+    backgroundColor: "grey",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
   info: {
     flex: 10,
     alignItems: 'stretch',
@@ -163,8 +165,9 @@ var styles = StyleSheet.create({
   },
   descriptionArea: {
     flex: 1,
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: "lightblue",
 
   },
   buttonArea: {
