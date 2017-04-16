@@ -66,7 +66,7 @@ var CurrentSearchView = React.createClass({
               </View>
               <View style={{flex:1}}></View>
             </View>
-              <Text></Text>
+            <Text></Text>
             {this.createDescriptionArea()}
           </View>
           <View style={{flex: 1}}><Text/></View>
@@ -78,125 +78,126 @@ var CurrentSearchView = React.createClass({
   createDescriptionArea() {
     var placeholder = ""
     if(this.props.description == "") {
-      placeholder = "Skriv inn en beskrivelse eller et notat"}
-      return  <View style={styles.descriptionArea}>
-        <PropertyValue property={"Beskrivelse/Notater"}/>
-        <TextInput
-          underlineColorAndroid={templates.colors.lightGray}
-          autocorrect={false}
-          style={{
-            flex: 1,
-            padding: 5,
-            fontSize: 15,
-            color: this.props.theme.secondaryTextColor,
-            backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
-          }}
-          onBlur={()=>{console.log("asd")}}
-          multiline={true}
-          placeholderTextColor={this.props.theme.placeholderTextColor}
-          placeholder={placeholder}
-          onChangeText={(text) => {
-            this.props.setDescription(text)
-          }}
-          keyboardType="default"
-          value={this.props.description}
-          onEndEditing={this.saveDescription}
-          />
-      </View>
-    },
-
-    //TODO this is now implemented using really bad redux-practise, should implement better
-    saveDescription() {
-      this.props.currentRoadSearch.description = this.props.description
-      this.props.searchSaved(this.props.currentRoadSearch)
-    },
-
-    createButtons() {
-      return <View>
-        <View style={styles.topButtons}>
-          <Button text="Kart" onPress={Actions.RoadMapView} />
-          <Button text="AR" onPress={this.openAR} />
-        </View>
-        <View style={styles.bottomButtons}>
-          <Button text="Rapport" onPress={Actions.ReportView} />
-          <Button text="Tilbake" onPress={Actions.StartingView} />
-        </View>
-      </View>
-    },
-
-    openAR() {
-      //kan brukes ved mottak av data fra unity
-      //this.props.fetchDataReturned(objects, true);
-      if(Platform.OS === "ios") {
-        userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-          if(!err) Linking.openURL("nvdbAr:");
-        });
-      } else if (Platform.OS === "android"){
-        // Save data.json
-        let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
-        console.log(dataPath);
-        var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
-        RNFS.writeFile(dataPath, data, "utf8")
-        .then((success) => console.log("data.json saved successfully"))
-        .catch((err) => console.error("An error occurred when saving data.json", err));
-        Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
-        // TODO Save roads.json here
-        //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
-      } else {
-        console.log("Not ios or android")
-      }
-    },
-  });
-
-  var styles = StyleSheet.create({
-    informationArea: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'stretch',
-      justifyContent: 'center',
-    },
-    info: {
-      flex: 10,
-      alignItems: 'stretch',
-      justifyContent: 'center',
-    },
-    descriptionArea: {
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-
-    },
-    buttonArea: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-    },
-    topButtons: {
-      flexDirection: 'row',
-    },
-    bottomButtons: {
-      flexDirection: 'row',
-      marginBottom: 30,
-    },
-  })
-
-  function mapStateToProps(state) {
-    return {
-      theme: state.settingsReducer.themeStyle,
-      currentRoadSearch: state.dataReducer.currentRoadSearch,
-      allSearches: state.dataReducer.allSearches,
-      theme: state.settingsReducer.themeStyle,
-      description: state.dataReducer.description,
-    };}
-
-    function mapDispatchToProps(dispatch) {
-      return {
-        //dataActions
-        resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
-        setRegion: bindActionCreators(mapActions.setRegion, dispatch),
-        searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
-        setDescription: bindActionCreators(dataActions.setDescription, dispatch),
-      }
+      placeholder = "Skriv inn en beskrivelse eller et notat"
     }
-    //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
-    export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
+    return  <View style={styles.descriptionArea}>
+      <PropertyValue property={"Beskrivelse/Notater"}/>
+      <TextInput
+        underlineColorAndroid={templates.colors.lightGray}
+        autocorrect={false}
+        style={{
+          flex: 1,
+          padding: 5,
+          fontSize: 15,
+          color: this.props.theme.secondaryTextColor,
+          backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
+        }}
+        onBlur={()=>{console.log("asd")}}
+        multiline={true}
+        placeholderTextColor={this.props.theme.placeholderTextColor}
+        placeholder={placeholder}
+        onChangeText={(text) => {
+          this.props.setDescription(text)
+        }}
+        keyboardType="default"
+        value={this.props.description}
+        onEndEditing={this.saveDescription}
+        />
+    </View>
+  },
+
+  //TODO this is now implemented using really bad redux-practise, should implement better
+  saveDescription() {
+    this.props.currentRoadSearch.description = this.props.description
+    this.props.searchSaved(this.props.currentRoadSearch)
+  },
+
+  createButtons() {
+    return <View>
+      <View style={styles.topButtons}>
+        <Button text="Kart" onPress={Actions.RoadMapView} />
+        <Button text="AR" onPress={this.openAR} />
+      </View>
+      <View style={styles.bottomButtons}>
+        <Button text="Rapport" onPress={Actions.ReportView} />
+        <Button text="Tilbake" onPress={Actions.StartingView} />
+      </View>
+    </View>
+  },
+
+  openAR() {
+    //kan brukes ved mottak av data fra unity
+    //this.props.fetchDataReturned(objects, true);
+    if(Platform.OS === "ios") {
+      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
+        if(!err) Linking.openURL("nvdbAr:");
+      });
+    } else if (Platform.OS === "android"){
+      // Save data.json
+      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+      console.log(dataPath);
+      var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
+      RNFS.writeFile(dataPath, data, "utf8")
+      .then((success) => console.log("data.json saved successfully"))
+      .catch((err) => console.error("An error occurred when saving data.json", err));
+      Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
+      // TODO Save roads.json here
+      //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
+    } else {
+      console.log("Not ios or android")
+    }
+  },
+});
+
+var styles = StyleSheet.create({
+  informationArea: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  info: {
+    flex: 10,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  descriptionArea: {
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+
+  },
+  buttonArea: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  topButtons: {
+    flexDirection: 'row',
+  },
+  bottomButtons: {
+    flexDirection: 'row',
+    marginBottom: 30,
+  },
+})
+
+function mapStateToProps(state) {
+  return {
+    theme: state.settingsReducer.themeStyle,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    allSearches: state.dataReducer.allSearches,
+    theme: state.settingsReducer.themeStyle,
+    description: state.dataReducer.description,
+  };}
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      //dataActions
+      resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+      setRegion: bindActionCreators(mapActions.setRegion, dispatch),
+      searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+      setDescription: bindActionCreators(dataActions.setDescription, dispatch),
+    }
+  }
+  //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
+  export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
