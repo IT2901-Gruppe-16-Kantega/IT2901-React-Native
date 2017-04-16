@@ -10,7 +10,7 @@ import {
   Platform,
   UIManager,
 } from 'react-native';
-import { Router, Scene } from 'react-native-router-flux';
+import { Actions, Router, Scene } from 'react-native-router-flux';
 
 // redux imports
 import { bindActionCreators } from 'redux'
@@ -39,6 +39,9 @@ import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
 
+
+var scenes = null;
+
 class App extends Component {
   componentWillMount() {
 	if(Platform.OS === "android") {
@@ -50,70 +53,75 @@ class App extends Component {
       this.props.setLoadingProgress(progress);
     }.bind(this));
     this.props.loadSearches(stored)
+    scenes = Actions.create(
+      <Scene key="root">
+        <Scene
+          key="StartingView"
+          component={StartingView}
+          navBar={NavigationBar}
+          title=""
+          type='reset'
+          hideNavBar={true}
+          initial={true}
+
+          />
+        <Scene
+          key="SearchView"
+          component={SearchView}
+          hideNavBar={false}
+          />
+        <Scene
+          key="StoredDataView"
+          component={StoredDataView}
+          navBar={NavigationBar}
+          title="Lagrede søk"
+          hideNavBar={false} />
+        <Scene
+          key="SettingsView"
+          component={SettingsView}
+          title="Innstillinger"
+          hideNavBar={false} />
+        <Scene
+          key="LoadingView"
+          component={LoadingView}
+          title=""
+          hideNavBar={true} />
+        <Scene
+          key="CurrentSearchView"
+          component={CurrentSearchView}
+          title=""
+          hideNavBar={true}
+          type = 'reset' />
+        <Scene
+          key="ReportView"
+          component={ReportView}
+          title="Rapport"
+          hideNavBar={false} />
+        <Scene
+          key="RoadMapView"
+          component={RoadMapView}
+          title=""
+          hideNavBar={false}
+          onRight={ this.toggleSidebar.bind(this) }
+          rightTitle="Filtrer"
+          navigationBarStyle={this.props.navigationBarStyle} />
+        <Scene
+          key="ObjectInfoView"
+          component={ObjectInfoView}
+          sceneStyle={{paddingTop: 64}}
+          title=""
+          hideNavBar={false}
+          //rightTitle={this.getObjectInfoViewRightTitle}
+          onRight={ () => console.log("Hei") } />
+      </Scene>
+    );
   }
+  
   render() {
     return (
-      <Router sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
-        <Scene key="root">
-          <Scene
-            key="StartingView"
-            component={StartingView}
-            navBar={NavigationBar}
-            title=""
-            type='reset'
-            hideNavBar={true}
-            initial={true}
-
-            />
-          <Scene
-            key="SearchView"
-            component={SearchView}
-            hideNavBar={false}
-            />
-          <Scene
-            key="StoredDataView"
-            component={StoredDataView}
-            navBar={NavigationBar}
-            title="Lagrede søk"
-            hideNavBar={false} />
-          <Scene
-            key="SettingsView"
-            component={SettingsView}
-            title="Innstillinger"
-            hideNavBar={false} />
-          <Scene
-            key="LoadingView"
-            component={LoadingView}
-            title=""
-            hideNavBar={true} />
-          <Scene
-            key="CurrentSearchView"
-            component={CurrentSearchView}
-            title=""
-            hideNavBar={true}
-            type = 'reset' />
-          <Scene
-            key="ReportView"
-            component={ReportView}
-            title="Rapport"
-            hideNavBar={false} />
-          <Scene
-            key="RoadMapView"
-            component={RoadMapView}
-            title=""
-            hideNavBar={false}
-            onRight={ this.toggleSidebar.bind(this) }
-            rightTitle="Filtrer"
-            navigationBarStyle={this.props.navigationBarStyle} />
-          <Scene
-            key="ObjectInfoView"
-            component={ObjectInfoView}
-            sceneStyle={{paddingTop: 64}}
-            title=""
-            hideNavBar={false}
-            //rightTitle={this.getObjectInfoViewRightTitle}
-            onRight={ () => console.log("Hei") } />
-        </Scene>
+      <Router
+        scenes={scenes}
+        sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
       </Router>
     )
   }
