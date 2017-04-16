@@ -42,7 +42,7 @@ var CurrentSearchView = React.createClass({
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
   },
-  
+
   createInfoView() {
     var kommuneValue = "Ikke spesifisert"
     if (this.props.currentRoadSearch.searchParameters[2] != null) {
@@ -87,7 +87,8 @@ var CurrentSearchView = React.createClass({
           style={{
             flex: 1,
             padding: 5,
-            color: this.props.theme.primaryTextColor,
+            fontSize: 15,
+            color: this.props.theme.secondaryTextColor,
             backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
           }}
           onBlur={()=>{console.log("asd")}}
