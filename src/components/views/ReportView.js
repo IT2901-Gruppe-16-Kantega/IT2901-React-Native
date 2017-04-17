@@ -22,21 +22,17 @@ View that shows information about a single report
 */
 var ReportView = React.createClass({
   componentDidMount() {
-    console.log(this.props.currentRoadSearch)
   },
 
   render() {
     return <Container>
         {this.renderReportObjects()}
-
-
     </Container>
   },
 
   renderReportObjects() {
     if(this.props.currentRoadSearch.report) {
       return <ListView
-        // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.currentRoadSearch.report)}
         renderRow={this.renderRow}
         renderFooter={this.renderFooter}
@@ -52,12 +48,17 @@ var ReportView = React.createClass({
   // Render each saved road search row
   renderRow(reportObject, sectionID, rowID, highlightRow) {
 
-    //TODO should open more info about roadObject when pressed
 
     //TODO Feiltype, valgt på kart ikke tekst slik det er nå
 
     return <TouchableHighlight
       key={rowID}
+      onPress={() => {
+        this.props.setReportViewType("EDIT")
+        this.props.setReportObject(reportObject)
+        this.props.setRoadObject(reportObject.roadObject)
+        Actions.CustomizeReportView()
+      }}
       style={[styles.row, this.props.theme.container]}>
       <View>
         <Text style={this.props.theme.text}>{reportObject.date}</Text>
@@ -109,7 +110,10 @@ function mapStateToProps(state) {
 
   function mapDispatchToProps(dispatch) {
     return {
-      //dataActions
+      setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
+      setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
+      setReportObject: bindActionCreators(reportActions.setReportObject, dispatch),
+
     }
   }
 

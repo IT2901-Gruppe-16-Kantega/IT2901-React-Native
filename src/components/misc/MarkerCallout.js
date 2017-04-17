@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
+  Picker,
 } from 'react-native';
 
-import moment from 'moment';
 
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
@@ -18,6 +18,8 @@ import Button from '../misc/Button'
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
 import * as dataActions from '../../actions/dataActions'
+import * as reportActions from '../../actions/reportActions'
+
 
 
 
@@ -28,16 +30,22 @@ var MarkerCallout = React.createClass({
   render() {
     var {roadObject} = this.props;
 
-    return <View>
+    return <View style={{flex: 1}}>
       <TouchableHighlight
         onPress={this.openObjectInformation}>
         <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       </TouchableHighlight>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
-      <Button text="Create report" onPress={this.reportObject} />
+      <Button style = "list" text="Rapporter" onPress={() => {
+          this.props.setReportViewType("NEW")
+          this.props.setRoadObject(this.props.roadObject)
+          Actions.CustomizeReportView()
+        }
+          } />
     </View>
   },
+
 
   // Called when the user taps the title of the callout
   // Opens the object info view.
@@ -90,18 +98,7 @@ var MarkerCallout = React.createClass({
     }
     return "";
   },
-  reportObject() {
-    // In description the user must specify what kind of error this object has
-    // perhaps from a list
-    const description = 'teste test'
-    const date = moment().format('MMMM Do YYYY, h:mm:ss a')
-    const reportObject = {
-      roadObject: this.props.roadObject,
-      description: description,
-      date: date,
-    }
-    this.props.reportRoadObject(reportObject, this.props.currentRoadSearch)
-  },
+
 });
 
 var styles = StyleSheet.create({
@@ -118,6 +115,7 @@ function mapStateToProps(state) {
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
+
   };
 }
 
@@ -126,7 +124,10 @@ function mapDispatchToProps(dispatch) {
     selectObject: bindActionCreators(mapActions.selectObject, dispatch),
     searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
     reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
-  }
+    setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
+    setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
+
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (MarkerCallout);
