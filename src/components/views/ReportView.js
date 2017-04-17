@@ -18,7 +18,7 @@ import * as reportActions from '../../actions/reportActions'
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 /*
-View that shows information about a single report
+View that shows information about reports
 */
 var ReportView = React.createClass({
   componentDidMount() {
