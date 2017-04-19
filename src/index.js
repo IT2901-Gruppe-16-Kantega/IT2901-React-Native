@@ -35,7 +35,9 @@ import NavigationBar from './components/misc/NavigationBar'
 // misc imports
 import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
+
 import * as dataActions from './actions/dataActions'
+import * as filterActions from './actions/filterActions'
 import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
@@ -103,18 +105,16 @@ class App extends Component {
           component={RoadMapView}
           title=""
           hideNavBar={false}
-          onRight={ this.toggleSidebar.bind(this) }
+          onRight={ () => this.toggleSidebar() }
           rightTitle="Filtrer"
+          onBack={() => this.exitMap()}
           navigationBarStyle={this.props.navigationBarStyle} />
         <Scene
           key="ObjectInfoView"
           component={ObjectInfoView}
           sceneStyle={{paddingTop: 64}}
           title=""
-          hideNavBar={false}
-          //rightTitle={this.getObjectInfoViewRightTitle}
-          onRight={ () => console.log("Hei") } />
-
+          hideNavBar={false} />
         <Scene
           key="CustomizeReportView"
           component={CustomizeReportView}
@@ -125,7 +125,6 @@ class App extends Component {
           }}
           hideNavBar={false} />
     </Scene>
-
     );
   }
 
@@ -138,21 +137,14 @@ class App extends Component {
     )
   }
 
-  getObjectInfoViewRightTitle() {
-    if(this.props.isEditingRoadObject) {
-      return "Lagre";
-    }
-    return "Rediger";
-  }
-
-  toggleSidebar() {
+  toggleSidebar(close) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
     var width = ScreenWidth / 2.2;
     var xPos = ScreenWidth - width + 3;
     var frame = {width: width};
 
-    if(this.props.sidebarFrame.left == xPos) {
+    if((this.props.sidebarFrame.left == xPos) || close) {
       frame.left = ScreenWidth;
       this.props.toggleSecondSidebar(false);
     } else {
@@ -160,6 +152,12 @@ class App extends Component {
     }
 
     this.props.setSidebarFrame(frame);
+  }
+
+  exitMap() {
+    Actions.pop();
+    this.toggleSidebar(true);
+    this.props.removeAllFilters();
   }
 }
 
@@ -174,6 +172,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    removeAllFilters: bindActionCreators(filterActions.removeAllFilters, dispatch),
     loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
     setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),

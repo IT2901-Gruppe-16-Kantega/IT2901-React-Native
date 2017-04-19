@@ -55,3 +55,7 @@ export function removeFilter(filter) {
     payload: filter,
   }
 }
+
+export function removeAllFilters() {
+  return { type: "REMOVE_ALL_FILTERS" }
+}

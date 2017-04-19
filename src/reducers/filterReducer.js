@@ -45,6 +45,9 @@ export default function reducer(state={
       });
       return {...state, allSelectedFilters: newFilters}
     }
+    case "REMOVE_ALL_FILTERS": {
+      return {...state, allSelectedFilters: []}
+    }
   }
   return state
 }

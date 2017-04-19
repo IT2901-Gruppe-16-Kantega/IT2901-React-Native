@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates'
 
@@ -15,6 +16,9 @@ import * as templates from '../../utilities/templates'
 
 */
 var TabBar = React.createClass({
+  propTypes: {
+    elements: PropTypes.string.isRequired,
+  },
 
   render() {
     return <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0, height: 50, flexDirection: 'row' }}>
