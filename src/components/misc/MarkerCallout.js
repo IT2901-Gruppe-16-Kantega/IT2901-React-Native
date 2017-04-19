@@ -4,16 +4,24 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
+  Picker,
 } from 'react-native';
+
 
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import PropertyValue from './PropertyValue';
+import Button from '../misc/Button'
 
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
+import * as dataActions from '../../actions/dataActions'
+import * as reportActions from '../../actions/reportActions'
+
+
+
 
 /*
 The callout shown when the user taps a pin on the map view.
@@ -22,15 +30,22 @@ var MarkerCallout = React.createClass({
   render() {
     var {roadObject} = this.props;
 
-    return <View>
+    return <View style={{flex: 1}}>
       <TouchableHighlight
         onPress={this.openObjectInformation}>
         <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       </TouchableHighlight>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
+      <Button style = "list" text="Rapporter" onPress={() => {
+          this.props.setReportViewType("NEW")
+          this.props.setRoadObject(this.props.roadObject)
+          Actions.CustomizeReportView()
+        }
+          } />
     </View>
   },
+
 
   // Called when the user taps the title of the callout
   // Opens the object info view.
@@ -82,7 +97,8 @@ var MarkerCallout = React.createClass({
       }
     }
     return "";
-  }
+  },
+
 });
 
 var styles = StyleSheet.create({
@@ -98,13 +114,20 @@ function mapStateToProps(state) {
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch)
-  }
+    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+    reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
+    setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
+    setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
+
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (MarkerCallout);

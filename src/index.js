@@ -28,6 +28,7 @@ import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
+import CustomizeReportView from './components/views/CustomizeReportView'
 
 import NavigationBar from './components/misc/NavigationBar'
 
@@ -96,7 +97,7 @@ class App extends Component {
           key="ReportView"
           component={ReportView}
           title="Rapport"
-          hideNavBar={false} />
+          hideNavBar={false}/>
         <Scene
           key="RoadMapView"
           component={RoadMapView}
@@ -113,10 +114,21 @@ class App extends Component {
           hideNavBar={false}
           //rightTitle={this.getObjectInfoViewRightTitle}
           onRight={ () => console.log("Hei") } />
-      </Scene>
+
+        <Scene
+          key="CustomizeReportView"
+          component={CustomizeReportView}
+          sceneStyle={{paddingTop: 64}}
+          title={()=> {
+            if(this.props.reportViewType==="NEW") return "Registrer rapport"
+            else return "Endre rapport"
+          }}
+          hideNavBar={false} />
+    </Scene>
+
     );
   }
-  
+
   render() {
     return (
       <Router
@@ -156,6 +168,7 @@ function mapStateToProps(state) {
     loadingProgress: state.dataReducer.loadingProgress,
     sidebarFrame: state.mapReducer.sidebarFrame,
     isEditingRoadObject: state.dataReducer.isEditingRoadObject,
+    reportViewType: state. reportReducer. reportViewType,
   };
 }
 

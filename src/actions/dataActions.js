@@ -7,6 +7,17 @@ const storage = storageEngine('NVDB-storage')
 /*
   Actions associated with searches
 */
+
+
+export function reportRoadObject(reportObject, roadSearch) {
+  roadSearch.report.push(reportObject)
+  storage.saveSearch(roadSearch)
+  return {
+    type: "REPORT_ROAD_OBJECT",
+    payload: roadSearch,
+  }
+}
+
 export function setDescription(input) {
   return {
     type: "SET_DESCRIPTION",

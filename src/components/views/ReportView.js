@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  ListView,
+  TouchableHighlight,
   } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -13,54 +15,106 @@ import Container from '../misc/Container'
 
 import * as templates from '../../utilities/templates'
 import * as reportActions from '../../actions/reportActions'
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 /*
-View that shows information about a single report
+View that shows information about reports
 */
 var ReportView = React.createClass({
+  componentDidMount() {
+  },
+
   render() {
     return <Container>
-      <View style={templates.top}/>
-        <View style={styles.header}>
-          <Text style={{color: templates.colors.white}}>NVDB-app</Text>
-        </View>
-        <View style={styles.contents}>
-          <Text style={styles.text}>
-            Her vil det komme informasjon om rapporter
-          </Text>
-        </View>
-        <View style={templates.footer}>
-          <Text style={{color: templates.gray}}>Gruppe 16 NTNU</Text>
-        </View>
+        {this.renderReportObjects()}
     </Container>
-  }
+  },
+
+  renderReportObjects() {
+    if(this.props.currentRoadSearch.report) {
+      return <ListView
+        dataSource={ds.cloneWithRows(this.props.currentRoadSearch.report)}
+        renderRow={this.renderRow}
+        renderFooter={this.renderFooter}
+        enableEmptySections={true}
+      />
+    } else {
+      return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+        <Text>Ingen rapporter registrert...</Text>
+      </View>
+    }
+  },
+
+  // Render each saved road search row
+  renderRow(reportObject, sectionID, rowID, highlightRow) {
+
+
+    //TODO Feiltype, valgt på kart ikke tekst slik det er nå
+
+    return <TouchableHighlight
+      key={rowID}
+      onPress={() => {
+        this.props.setReportViewType("EDIT")
+        this.props.setReportObject(reportObject)
+        this.props.setRoadObject(reportObject.roadObject)
+        Actions.CustomizeReportView()
+      }}
+      style={[styles.row, this.props.theme.container]}>
+      <View>
+        <Text style={this.props.theme.text}>{reportObject.date}</Text>
+        <Text style={this.props.theme.title}>VegobjektID: {reportObject.roadObject.id}</Text>
+        <Text style={this.props.theme.text}>Objekttype: {}
+          {reportObject.roadObject.metadata.type.navn}
+          ({reportObject.roadObject.metadata.type.id})
+        </Text>
+        <Text/>
+        <View style={{flexDirection: "row", alignItems: 'center'}}>
+        <Text style={[this.props.theme.subtitle, {color: templates.colors.orange, fontWeight: 'bold'}]}>
+          Feil: </Text>
+        <Text style={[this.props.theme.text, {color: templates.colors.orange}]}>
+          Mangler egengeometri</Text>
+      </View>
+      </View>
+    </TouchableHighlight>
+  },
+
+  renderFooter() {
+    return <View style={styles.footerStyle}>
+    </View>
+  },
 });
 
 var styles = StyleSheet.create({
+  row: {
+    padding: 10,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  buttonContainer: {
+    marginTop: 10,
+    alignItems: 'flex-end',
+  },
+  footerStyle: {
+    padding: 10,
+    alignItems: 'center',
+  }
 
-  //Top-leve containers
-  header: {
-    flex: 7.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  contents: {
-    flex: 10.5,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: templates.colors.white
-  },
-  text: {
-    color: templates.colors.darkGray,
-  },
 })
 
 function mapStateToProps(state) {
   return {
-    fetching: state.dataReducer.fetching,
-    fetched: state.dataReducer.fetched,
+    theme: state.settingsReducer.themeStyle,
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
   };}
-  function mapDispatchToProps(dispatch) {return bindActionCreators(reportActions, dispatch);}
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
+      setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
+      setReportObject: bindActionCreators(reportActions.setReportObject, dispatch),
+
+    }
+  }
+
   export default connect(mapStateToProps, mapDispatchToProps) (ReportView);
