@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 var NavigationBar = React.createClass({
   render() {
-    console.log(this.props.navigationBarStyle.backgroundColor);
     return <NavBar {...this.props} navigationBarStyle={{ backgroundColor: this.props.navigationBarStyle.backgroundColor }} />
   }
 });

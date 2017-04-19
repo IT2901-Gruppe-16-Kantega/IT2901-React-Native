@@ -14,9 +14,9 @@ import * as templates from '../../utilities/templates'
 var TabBar = React.createClass({
   // Check PropTypes. Requires [{title: string, onPress: func}]
   propTypes: {
-    tabs: PropTypes.arrayOf(React.PropTypes.shape({
-      title: React.PropTypes.string.isRequired,
-      onPress: React.PropTypes.func.isRequired,
+    tabs: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      onPress: PropTypes.func.isRequired,
     })),
   },
 

@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 var PropertyValue = React.createClass({
+  propTypes: {
+    property: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
+  },
+
   render() {
     return <Text style={{paddingTop: 2, paddingBottom: 2}}>
       <Text style={this.props.theme.property}>{this.props.property}: </Text>

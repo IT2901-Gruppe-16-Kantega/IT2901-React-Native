@@ -76,12 +76,10 @@ var CurrentSearchView = React.createClass({
   },
 
   createDescriptionArea() {
-    var placeholder = ""
-    if(this.props.description == "") {
-      placeholder = "Skriv inn en beskrivelse eller et notat"
-    }
+    const {theme, description} = this.props;
+    const placeholder = description || "Skriv inn en beskrivelse eller et notat"
     return  <View style={styles.descriptionArea}>
-      <PropertyValue property={"Beskrivelse/Notater"}/>
+      <Text style={theme.subtitle}>Beskrivelse/notater</Text>
       <TextInput
         underlineColorAndroid={templates.colors.lightGray}
         autocorrect={false}
@@ -89,27 +87,24 @@ var CurrentSearchView = React.createClass({
           flex: 1,
           padding: 5,
           fontSize: 15,
-          color: this.props.theme.secondaryTextColor,
-          backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
+          color: theme.secondaryTextColor,
+          backgroundColor: theme.navigationBarStyle.backgroundColor
         }}
-        onBlur={()=>{console.log("asd")}}
         multiline={true}
-        placeholderTextColor={this.props.theme.placeholderTextColor}
+        placeholderTextColor={theme.placeholderTextColor}
         placeholder={placeholder}
-        onChangeText={(text) => {
-          this.props.setDescription(text)
-        }}
+        onChangeText={text => this.props.setDescription(text)}
         keyboardType="default"
-        value={this.props.description}
+        value={description}
         onEndEditing={this.saveDescription}
         />
     </View>
   },
 
-  //TODO this is now implemented using really bad redux-practise, should implement better
+  //TODO this is now implemented using really bad redux-practice, should implement better
   saveDescription() {
-    this.props.currentRoadSearch.description = this.props.description
-    this.props.searchSaved(this.props.currentRoadSearch)
+    this.props.currentRoadSearch.description = this.props.description;
+    this.props.searchSaved(this.props.currentRoadSearch);
   },
 
   createButtons() {

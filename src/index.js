@@ -47,64 +47,49 @@ var scenes = null;
 
 class App extends Component {
   componentWillMount() {
-	if(Platform.OS === "android") {
-		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-	}
+  	if(Platform.OS === "android") {
+  		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+  	}
+
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
     var stored = storage.load(function(progress) {
       this.props.setLoadingProgress(progress);
     }.bind(this));
     this.props.loadSearches(stored)
+
     scenes = Actions.create(
       <Scene key="root">
         <Scene
           key="StartingView"
           component={StartingView}
-          navBar={NavigationBar}
-          title=""
           type='reset'
-          hideNavBar={true}
-          initial={true}
-
-          />
+          initial={true} />
         <Scene
           key="SearchView"
-          component={SearchView}
-          hideNavBar={false}
-          />
+          component={SearchView} />
         <Scene
           key="StoredDataView"
           component={StoredDataView}
-          navBar={NavigationBar}
-          title="Lagrede søk"
-          hideNavBar={false} />
+          title="Lagrede søk" />
         <Scene
           key="SettingsView"
           component={SettingsView}
-          title="Innstillinger"
-          hideNavBar={false} />
+          title="Innstillinger" />
         <Scene
           key="LoadingView"
-          component={LoadingView}
-          title=""
-          hideNavBar={true} />
+          component={LoadingView} />
         <Scene
           key="CurrentSearchView"
           component={CurrentSearchView}
-          title=""
-          hideNavBar={true}
-          type = 'reset' />
+          type='reset' />
         <Scene
           key="ReportView"
           component={ReportView}
-          title="Rapport"
-          hideNavBar={false}/>
+          title="Rapport" />
         <Scene
           key="RoadMapView"
           component={RoadMapView}
-          title=""
-          hideNavBar={false}
           onRight={ () => this.toggleSidebar() }
           rightTitle="Filtrer"
           onBack={() => this.exitMap()}
@@ -112,18 +97,15 @@ class App extends Component {
         <Scene
           key="ObjectInfoView"
           component={ObjectInfoView}
-          sceneStyle={{paddingTop: 64}}
-          title=""
-          hideNavBar={false} />
+          sceneStyle={{paddingTop: 64}} />
         <Scene
           key="CustomizeReportView"
           component={CustomizeReportView}
           sceneStyle={{paddingTop: 64}}
           title={()=> {
-            if(this.props.reportViewType==="NEW") return "Registrer rapport"
+            if(this.props.reportViewType === "NEW") return "Registrer rapport"
             else return "Endre rapport"
-          }}
-          hideNavBar={false} />
+          }} />
     </Scene>
     );
   }
@@ -132,6 +114,7 @@ class App extends Component {
     return (
       <Router
         scenes={scenes}
+        navBar={NavigationBar}
         sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
       </Router>
     )

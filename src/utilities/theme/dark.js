@@ -3,7 +3,7 @@ import * as templates from '../templates';
 module.exports = {
   backgroundColor: templates.colors.darkGray,
   containerColor: templates.colors.orange,
-  navigationBackground: templates.colors.middleGray,
+  navigationBackground: templates.colors.orange,
 
   primaryTextColor: templates.colors.white,
   secondaryTextColor: templates.colors.middleGray,
