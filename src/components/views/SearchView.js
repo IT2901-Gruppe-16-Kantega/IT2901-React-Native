@@ -61,13 +61,13 @@ var SearchView = React.createClass({
       {this.createViewArea()}
       {this.createButton()}
       <TabBar
-        elements={[
-          {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}, chosen: this.props.chosenSearchTab},
-          {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}, chosen: this.props.chosenSearchTab},
+        tabs={[
+          {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
+          {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
           {title: tabs.CLOSEST, onPress: ()=>{
             this.props.setChosenSearchTab(tabs.CLOSEST)
             this.getUserPosition() // Should be done somewhere else
-          }, chosen: this.props.chosenSearchTab},
+          }},
         ]}
         />
     </Container>

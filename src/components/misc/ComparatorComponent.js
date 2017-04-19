@@ -20,14 +20,16 @@ for road objects.
 */
 class ComparatorComponent extends Component {
   render() {
-    return <TouchableHighlight
-      style={this.buttonStyle()}
-      underlayColor={templates.colors.blue}
-      onPress={this.selectFunction.bind(this, this.props.type)}>
-      <View>
-        <Text style={this.textStyle()}>{this.props.type}</Text>
-      </View>
-    </TouchableHighlight>
+    return (
+      <TouchableHighlight
+        style={this.buttonStyle()}
+        underlayColor={templates.colors.blue}
+        onPress={this.selectFunction.bind(this, this.props.type)}>
+        <View>
+          <Text style={this.textStyle()}>{this.props.type}</Text>
+        </View>
+      </TouchableHighlight>
+    );
   }
 
   // Called when selecting a function.
