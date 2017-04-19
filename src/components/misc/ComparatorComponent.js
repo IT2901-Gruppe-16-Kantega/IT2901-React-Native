@@ -9,40 +9,62 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import * as values from '../../utilities/values';
-import * as templates from '../../utilities/templates';
 import * as filterActions from '../../actions/filterActions';
 
-class ComparatorComponent extends React.Component {
+import * as templates from '../../utilities/templates';
+import * as values from '../../utilities/values';
+
+/*
+Component used to choose different filters when searching
+for road objects.
+*/
+class ComparatorComponent extends Component {
   render() {
     return <TouchableHighlight
-      style={this.getButtonStyle()}
+      style={this.buttonStyle()}
       underlayColor={templates.colors.blue}
       onPress={this.selectFunction.bind(this, this.props.type)}>
-      <View><Text style={this.getTextStyle()}>{this.props.type}</Text></View>
+      <View>
+        <Text style={this.textStyle()}>{this.props.type}</Text>
+      </View>
     </TouchableHighlight>
   }
 
+  // Called when selecting a function.
   selectFunction(type) {
     this.props.selectFunction(this.props.type);
 
+    // Because HAS_VALUE and HAS_NOT_VALUE is not dependent on a filter value,
+    // clicking any of these buttons will deselect any selected filter value.
     if(this.props.type === values.comparators.HAS_VALUE || this.props.type === values.comparators.HAS_NOT_VALUE) {
       this.props.deselectFilterValue();
     }
   }
 
-  getButtonStyle() {
+  // Checks if the comparator is the currently selected comparator.
+  isSelected() {
+    return this.props.selectedFunction === this.props.type;
+  }
+
+  // The style of the container
+  buttonStyle() {
     return {
       flex: 1,
       margin: 2,
       padding: 5,
       borderRadius: 3,
-      backgroundColor: templates.colors.orange,
+      backgroundColor: this.isSelected() ? templates.colors.blue : templates.colors.orange,
     }
   }
 
-  getTextStyle() {
-    return {fontSize: 15, textAlign: 'center', fontWeight: this.props.selectedFunction == this.props.type ? 'bold' : '100'}
+  // The style of the text
+  textStyle() {
+    return {
+      fontSize: 15,
+      textAlign: 'center',
+      color: 'white',
+      fontWeight: this.isSelected() ? 'bold' : '100'
+    }
   }
 }
 
