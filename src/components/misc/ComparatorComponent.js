@@ -7,6 +7,7 @@ import {
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import * as values from '../../utilities/values';
 import * as templates from '../../utilities/templates';
@@ -44,6 +45,10 @@ class ComparatorComponent extends React.Component {
     return {fontSize: 15, textAlign: 'center', fontWeight: this.props.selectedFunction == this.props.type ? 'bold' : '100'}
   }
 }
+
+ComparatorComponent.propTypes = {
+  type: PropTypes.
+};
 
 function mapStateToProps(state) {
   return {
