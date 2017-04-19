@@ -47,7 +47,8 @@ class ComparatorComponent extends React.Component {
 }
 
 ComparatorComponent.propTypes = {
-  type: PropTypes.
+  type: PropTypes.oneOf(Object.values(values.comparators)).isRequired,
+
 };
 
 function mapStateToProps(state) {
