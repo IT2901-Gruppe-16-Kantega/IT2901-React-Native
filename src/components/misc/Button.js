@@ -63,10 +63,6 @@ var styles = StyleSheet.create({
     backgroundColor: templates.colors.white,
   },
   title: {
-    shadowColor: 'black',
-    shadowOffset: {width: 5, height: 5},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
     backgroundColor: templates.colors.orange,
     margin: 5,
     height: 75,
