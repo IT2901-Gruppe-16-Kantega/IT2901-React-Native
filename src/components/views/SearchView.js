@@ -134,7 +134,7 @@ var SearchView = React.createClass({
         enableEmptySections={true}
         renderRow={(rowData) => {
             return <Button
-              style={this.closestRoadListItemStyle(rowData.vegreferanse.kortform)}
+              type={this.closestRoadListItemStyle(rowData.vegreferanse.kortform)}
               onPress={() => {
                 selectedVegreferanse = rowData.vegreferanse.kortform;
                 const chosenRoad = this.props.closestRoadsList.find((data) => {
@@ -270,7 +270,7 @@ var SearchView = React.createClass({
   createButton() {
     var count = this.props.numberOfObjectsToBeFetched || 0;
     return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
-      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed} style={"search"} />
+      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed} type={"search"} />
     </View>
   },
 

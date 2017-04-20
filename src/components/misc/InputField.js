@@ -75,7 +75,7 @@ var InputField = React.createClass({
         renderRow={(rowData) => {
           if(!this.props.choosenBool) {
             return <Button
-              style={"list"}
+              type={"list"}
               onPress={()=>{
                 Keyboard.dismiss();
 

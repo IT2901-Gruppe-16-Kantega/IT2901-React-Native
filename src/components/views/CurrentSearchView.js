@@ -110,12 +110,12 @@ var CurrentSearchView = React.createClass({
   createButtons() {
     return <View>
       <View style={styles.topButtons}>
-        <Button text="Kart" onPress={Actions.RoadMapView} />
-        <Button text="AR" onPress={this.openAR} />
+        <Button text="Kart" type={"half"} onPress={Actions.RoadMapView} />
+        <Button text="AR" type={"half"} onPress={this.openAR} />
       </View>
       <View style={styles.bottomButtons}>
-        <Button text="Rapport" onPress={Actions.ReportView} />
-        <Button text="Tilbake" onPress={Actions.StartingView} />
+        <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
+        <Button text="Tilbake" type={"half"} onPress={Actions.StartingView} />
       </View>
     </View>
   },

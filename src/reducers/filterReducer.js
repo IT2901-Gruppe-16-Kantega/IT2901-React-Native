@@ -17,7 +17,6 @@ export default function reducer(state={
       return {...state, selectedFunction: null}
     }
     case "SELECT_FILTER": {
-      console.log("selectFilter")
       return {...state, selectedFilter: action.payload}
     }
     case "DESELECT_FILTER": {

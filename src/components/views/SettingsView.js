@@ -23,23 +23,17 @@ var SettingsView = React.createClass({
   render() {
     return <Container>
       <SettingSwitch
-        onChange={this.props.setClustering}
+        onValueChange={this.props.setClustering}
         value={this.props.clusteringOn}
         title={"Markørgruppering"}
         description={"BETA: Grupper nære martmarkører."} />
       <SettingSwitch
-        disabled={true}
-        onChange={null}
-        value={false}
-        title={"Autolagring"}
-        description={"IMPLEMENTER: Lagre søk automatisk."} />
-      <SettingSwitch
-        onChange={this.props.incrementChangeCount}
+        onValueChange={this.props.incrementChangeCount}
         value={false}
         title={"Gjør endring"}
         description={"Antall endringer: " + this.props.changeCount} />
       <SettingSwitch
-        onChange={this.props.setDarkMode}
+        onValueChange={this.props.setDarkMode}
         value={this.props.darkModeOn}
         title={"Nattmodus"}
         description={"Mørk bakgrunn og lys tekst."} />

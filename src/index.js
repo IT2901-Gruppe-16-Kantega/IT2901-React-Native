@@ -160,7 +160,6 @@ function mapDispatchToProps(dispatch) {
     setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
-    setIsEditingRoadObject: bindActionCreators(dataActions.setIsEditingRoadObject, dispatch),
   }
 }
 

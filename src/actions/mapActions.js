@@ -12,15 +12,7 @@ export function toggleSecondSidebar(open) {
   }
 }
 
-export function selectObject(roadObject) {
-  return {
-    type: "SELECT_OBJECT",
-    payload: roadObject,
-  }
-}
-
 export function selectMarker(marker) {
-  console.log(marker)
   return {
     type: "SELECT_MARKER",
     payload: marker,

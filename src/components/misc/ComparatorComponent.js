@@ -19,6 +19,11 @@ Component used to choose different filters when searching
 for road objects.
 */
 class ComparatorComponent extends Component {
+  static propTypes = {
+    type: PropTypes.oneOf(Object.values(values.comparators)).isRequired,
+
+  };
+
   render() {
     return (
       <TouchableHighlight
@@ -69,11 +74,6 @@ class ComparatorComponent extends Component {
     }
   }
 }
-
-ComparatorComponent.propTypes = {
-  type: PropTypes.oneOf(Object.values(values.comparators)).isRequired,
-
-};
 
 function mapStateToProps(state) {
   return {

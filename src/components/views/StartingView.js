@@ -25,9 +25,9 @@ var StartingView = React.createClass({
     return <Container>
       {this.renderLoadingView()}
       <View style={styles.contents}>
-        <Button style={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
-        <Button style={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
-        <Button style={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
+        <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
+        <Button type={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
+        <Button type={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
       </View>
     </Container>
   },

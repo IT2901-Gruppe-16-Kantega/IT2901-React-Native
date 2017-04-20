@@ -167,7 +167,6 @@ var SidebarSecondary = React.createClass({
       // HAS_NOT_VALUE and HAS_VALUE conflicts
       if((f.funksjon === comparators.HAS_VALUE && selFunc === comparators.HAS_NOT_VALUE) ||
          (f.funksjon === comparators.HAS_NOT_VALUE && selFunc === comparators.HAS_VALUE)) {
-        console.log("HAS_VALUE and HAS_NOT_VALUE conflicts")
         return true;
       }
 

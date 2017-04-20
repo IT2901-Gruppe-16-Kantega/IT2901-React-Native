@@ -47,7 +47,7 @@ var StoredDataView = React.createClass({
     } else {
       return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <Text>Ingen søk...</Text>
-        <Button text={"Gjør et søk"} onPress={Actions.SearchView} />
+        <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
       </View>
     }
   },
@@ -83,7 +83,7 @@ var StoredDataView = React.createClass({
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-      <Button text={"Slett alt"} onPress={() => {
+      <Button type={"small"} text={"Slett alt"} onPress={() => {
           storage.clear()
           this.props.clearAllSearches()
 
@@ -92,7 +92,6 @@ var StoredDataView = React.createClass({
   },
 
   issueDeleteSearch(search) {
-    console.log(search)
     Alert.alert('Slette søk',
     'Klikk bekreft for å slette søk utført: '+search.date,
       [{text: 'Bekreft', onPress: () => {

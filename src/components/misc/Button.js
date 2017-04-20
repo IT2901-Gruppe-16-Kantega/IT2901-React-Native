@@ -2,118 +2,117 @@ import React from 'react'
 import {
   Text,
   TouchableHighlight,
-  StyleSheet,
   View,
   Dimensions
 } from 'react-native';
 
+import PropTypes from 'prop-types';
+
 import * as templates from '../../utilities/templates'
+
+const types = {
+  TITLE: "title",
+  SEARCH: "search",
+  LIST: "list",
+  LIST_SELECTED: "listSelected",
+  SMALL: "small",
+  HALF: "half",
+}
 
 let ScreenWidth = Dimensions.get("window").width;
 
 var Button = React.createClass({
-  render() {
-    var subText = this.props.subText ? <Text style={this.subTextStyle()}>{this.props.subText}</Text> : null;
+  propTypes: {
+    text: PropTypes.string.isRequired,
+    onPress: PropTypes.func.isRequired,
+    type: PropTypes.oneOf(Object.values(types)).isRequired,
+  },
 
+  render() {
     return <TouchableHighlight
-      key={this.props.k}
       style={this.buttonStyle()}
       onPress={this.props.onPress}
-      underlayColor={templates.colors.orange}
+      underlayColor={templates.colors.blue}
       >
       <View>
         <Text style={this.textStyle()}>{this.props.text}</Text>
-        {subText}
       </View>
     </TouchableHighlight>
   },
 
   buttonStyle() {
-    if(!this.props.style) {
-      return [styles.button, styles.large]
+    const {type} = this.props;
+    var style = {
+      backgroundColor: templates.colors.orange,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 2,
+      padding: 5,
     }
-    return [styles.button, styles[this.props.style]]
+
+    switch(type) {
+      case types.SMALL:
+        style.margin = 2;
+        break;
+
+      case types.TITLE:
+        style.width = 200;
+        style.height = 75;
+        style.margin = 5;
+        break;
+
+      case types.SEARCH:
+        style.shadowColor = templates.colors.middleGray;
+        style.shadowOpacity = 1;
+        style.shadowOffset = { width: 3, height: 3 };
+        style.shadowRadius = 2;
+        style.width = ScreenWidth - 30;
+        style.height = 50;
+        break;
+
+      case types.LIST_SELECTED:
+        style.backgroundColor = templates.colors.blue;
+        style.padding = 10;
+
+      case types.LIST:
+        style.marginBottom = 2;
+        break;
+
+      case types.HALF:
+        style.width = ScreenWidth / 2 - 40;
+        style.height = ScreenWidth / 6;
+        style.margin = 5;
+        break;
+    }
+
+    return style;
   },
 
   textStyle() {
-    if(!this.props.style) {
-      return styles.text;
+    const {type} = this.props;
+    var style = { color: templates.colors.white, fontSize: 16 }
+
+    switch(type) {
+      case types.TITLE:
+        style.fontWeight = 'bold';
+        style.fontSize = 20;
+
+      case types.HALF:
+        style.fontWeight = 'bold';
+        break;
+
+      case types.SEARCH:
+        style.fontWeight = 'bold';
+        style.fontSize = 18;
+        break;
+
+      case types.LIST_SELECTED:
+        style.fontWeight = 'bold';
+        break;
     }
-    const style = this.props.style + "Text";
-    if(styles[style]) {
-      return [styles.text, styles[style]]
-    }
-  },
 
-  subTextStyle() {
-
-  }
-})
-
-var styles = StyleSheet.create({
-  button: {
-    borderRadius: 2,
-    padding: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    return style;
   },
-  small: {
-    height: 30,
-    width: 100,
-    backgroundColor: templates.colors.white,
-  },
-  title: {
-    backgroundColor: templates.colors.orange,
-    margin: 5,
-    height: 75,
-    width: 250,
-  },
-  large: {
-    margin: 5,
-    height: 50,
-    width: 150,
-    backgroundColor: templates.colors.orange,
-  },
-  search: {
-    width: ScreenWidth * 0.95,
-    height: 50,
-    backgroundColor: templates.colors.orange,
-    shadowColor: 'black',
-    shadowOffset: {width: 5, height: 5},
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    zIndex: 20,
-  },
-  searchText: {
-    fontSize: 20,
-  },
-  list: {
-    backgroundColor: templates.colors.orange,
-    marginBottom: 2,
-    height: 40,
-  },
-  listSelected: {
-    backgroundColor: templates.colors.blue,
-    marginBottom: 2,
-    height: 50,
-  },
-  listText: {
-    color: templates.colors.white,
-  },
-  listSelectedText: {
-    color: templates.colors.white,
-    fontSize: 22,
-  },
-  text: {
-    color: templates.colors.white,
-    fontWeight: 'bold',
-  },
-  titleText: {
-    fontSize: 22,
-  },
-  subText: {
-    fontSize: 10,
-  }
 })
 
 export default Button;

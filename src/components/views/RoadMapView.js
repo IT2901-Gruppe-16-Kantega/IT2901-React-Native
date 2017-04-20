@@ -17,13 +17,14 @@ import Container from '../misc/Container'
 import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
-import MapMarker from '../misc/MapMarker'
 
-import {comparators, datatype, importance} from '../../utilities/values';
-import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
+import {parseGeometry, randomColor} from '../../utilities/utils'
+import {comparators, datatype, importance} from '../../utilities/values';
+
 import * as dataActions from '../../actions/dataActions';
 import * as mapActions from '../../actions/mapActions';
+import * as reportActions from '../../actions/reportActions';
 
 // Create a reference to the map, to change it's region
 var map = null;
@@ -32,8 +33,10 @@ var map = null;
 View that holds the map
 */
 var RoadMapView = React.createClass({
-  componentWillMount() {
-    this.createCluster();
+  componentDidMount() {
+    setTimeout(() => {
+      this.createCluster();
+    }, 1000);
   },
 
   componentDidUpdate(prevProps) {
@@ -64,15 +67,16 @@ var RoadMapView = React.createClass({
       features.push(feature);
 
       if(!this.props.region) {
-        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.1, longitudeDelta: 0.1 })
+        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 1, longitudeDelta: 1 })
       }
+      this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 })
     }
     cluster.load(features);
     this.props.setCluster(cluster);
 
     setTimeout(() => {
       this.setMarkersAtRegion();
-    }, 50)
+    }, 500)
   },
 
   render() {
@@ -83,8 +87,7 @@ var RoadMapView = React.createClass({
           style={{ flex: 1 }}
           showsUserLocation={true}
           region={this.props.region}
-          onRegionChange={this.changeRegion}
-          onLongPress={this.addMarker} >
+          onRegionChange={this.changeRegion} >
           {this.props.markers}
         </MapView>
         <SidebarMain />
@@ -155,7 +158,7 @@ var RoadMapView = React.createClass({
     }, 10)
 
     setTimeout(() => {
-      Actions.ObjectInfoView({rightTitle: "Lagre"});
+      Actions.ObjectInfoView();
     }, 500)
   },
 
@@ -267,12 +270,10 @@ var RoadMapView = React.createClass({
         } else {
           return <MapView.Marker
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
-            key={index}
+            key={marker.properties.roadObject.id}
             pinColor={templates.colors.blue} >
             <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
-              <MarkerCallout
-                roadObject={marker.properties.roadObject}
-              />
+              <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
           </MapView.Marker>
         }
@@ -334,12 +335,11 @@ function mapStateToProps(state) {
     roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
-    currentRoadSearch: state.dataReducer.currentRoadSearch,
 
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
 
-    selectedObject: state.mapReducer.selectedObject,
+    selectedObject: state.dataReducer.selectedObject,
 
     allSelectedFilters: state.filterReducer.allSelectedFilters,
 
@@ -353,10 +353,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
     selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
 
-    addRoadObject: bindActionCreators(dataActions.addRoadObject, dispatch),
+    addRoadObject: bindActionCreators(reportActions.addRoadObject, dispatch),
     setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
     setCluster: bindActionCreators(mapActions.setCluster, dispatch),

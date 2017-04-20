@@ -51,39 +51,18 @@ var CustomizeReportView = React.createClass({
     else {
       return <Container>
         {this.createRoadObjectInfo()}
-        {this.createErrorInfo()}
 
       </Container>
     }
   },
   createRoadObjectInfo() {
-    console.log(this.props.reportObject)
-      return <View style={styles.roadObjectInfo}>
+    return <View style={styles.roadObjectInfo}>
         <Text style={this.props.theme.title}>Rapport</Text>
         <Text style={this.props.theme.text}>{this.props.reportObject.date}</Text>
         <PropertyValue property={"VegobjektID"} value={this.props.reportObject.roadObject.id} />
         <PropertyValue property={"Vegobjekttype"} value={this.props.reportObject.roadObject.metadata.type.navn+"("+this.props.reportObject.roadObject.metadata.type.id+")"} />
       </View>
   },
-  createObjectEgenskaper() {
-    //lag fleksibel liste over alle egenskaper til objektet
-    //klikk på en egenskap for markering som feil
-  },
-  createErrorInfo() {
-    return <View style={styles.errorInfo}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={this.props.theme.title}>Feiltype: {}</Text>
-      </View>
-      <Picker
-        selectedValue={this.props.chosenErrorType}
-        onValueChange={(value) => this.props.setErrorType(value)}>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker>
-    </View>
-  },
-
-
 
   createReportObject() {
     const description = 'Ikke beskrevet'
@@ -93,16 +72,7 @@ var CustomizeReportView = React.createClass({
       description: description,
       date: date,
     }
-    this.props.reportRoadObject(reportObject, this.props.currentRoadSearch)
-    this.props.setReportObject(reportObject)
   },
-
-  //TODO this should handle saving the reportObject
-  componentWillUnmount() {
-    console.log('sssss')
-  },
-
-
 });
 
 var styles = StyleSheet.create({
@@ -122,7 +92,7 @@ var styles = StyleSheet.create({
 
 })
 
-function mapStateToProps(state) {
+/*function mapStateToProps(state) {
   return {
     theme: state.settingsReducer.themeStyle,
     chosenErrorType: state.reportReducer.chosenErrorType,
@@ -131,15 +101,15 @@ function mapStateToProps(state) {
     roadObject: state.reportReducer.roadObject,
     reportViewType: state.reportReducer.reportViewType,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
+  };
+}
 
-  };}
-
-  function mapDispatchToProps(dispatch) {
-    return {
-      reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
-      setReportObject: bindActionCreators(reportActions.setReportObject, dispatch),
-      setErrorType: bindActionCreators(reportActions.setErrorType, dispatch),
-    }
+function mapDispatchToProps(dispatch) {
+  return {
+    reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
+    setReportObject: bindActionCreators(reportActions.setReportObject, dispatch),
+    setErrorType: bindActionCreators(reportActions.setErrorType, dispatch),
   }
+}*/
 
-  export default connect(mapStateToProps, mapDispatchToProps) (CustomizeReportView);
+export default connect(null, null) (CustomizeReportView);

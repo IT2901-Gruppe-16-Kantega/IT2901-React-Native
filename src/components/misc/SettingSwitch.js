@@ -7,17 +7,23 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates';
 
 var SettingSwitch = React.createClass({
+  propTypes: {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    disabled: PropTypes.bool,
+    onValueChange: PropTypes.func.isRequired,
+    value: PropTypes.bool.isRequired,
+  },
+
   render() {
     return <View style={styles.container}>
       <View style={styles.switchContainer}>
-        <Switch
-          disabled={this.props.disabled}
-          onValueChange={this.props.onChange}
-          value={this.props.value} />
+        <Switch {...this.props} />
       </View>
       <View style={styles.textContainer}>
         <Text style={this.props.theme.subtitle}>{this.props.title}</Text>
