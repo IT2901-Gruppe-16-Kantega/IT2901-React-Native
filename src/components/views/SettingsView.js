@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import * as templates from '../../utilities/templates';
 import * as reportActions from '../../actions/reportActions';
 import * as settingsActions from '../../actions/settingsActions';
 
-var SettingsView = React.createClass({
+class SettingsView extends React.Component {
   render() {
     return <Container>
       <SettingSwitch
@@ -39,14 +39,14 @@ var SettingsView = React.createClass({
         description={"Mørk bakgrunn og lys tekst."} />
     </Container>
   }
-});
+}
 
 function mapStateToProps(state) {
   return {
     clusteringOn: state.settingsReducer.clusteringOn,
     darkModeOn: state.settingsReducer.darkModeOn,
     changeCount: state.reportReducer.changeCount,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

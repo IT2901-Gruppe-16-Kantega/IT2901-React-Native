@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
 } from 'react-native';
 
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -13,7 +14,11 @@ import MarkerCallout from '../../misc/MarkerCallout'
 import {fetchCloseby} from '../../../utilities/wrapper'
 import * as searchActions from '../../../actions/searchActions'
 
-var SearchMap = React.createClass({
+class SearchMap extends React.Component {
+  static propTypes = {
+    validate: PropTypes.func.isRequired,
+  }
+
   render() {
     return <MapView
       initialRegion={this.props.searchCoordinate}
@@ -22,7 +27,7 @@ var SearchMap = React.createClass({
       onPress={this.mapPressed}>
       {this.renderMarker()}
     </MapView>
-  },
+  }
 
   renderMarker() {
     if(this.props.searchCoordinate) {
@@ -32,7 +37,7 @@ var SearchMap = React.createClass({
         >
       </MapView.Marker>
     }
-  },
+  }
 
   mapPressed(info) {
     this.props.resetPositionSearchParameters();
@@ -58,14 +63,14 @@ var SearchMap = React.createClass({
       }
     }.bind(this));
   }
-});
+}
 
 function mapStateToProps(state) {
   return {
     veg_input: state.searchReducer.veg_input,
     searchCoordinate: state.searchReducer.searchCoordinate,
-  };
-};
+  }
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -74,7 +79,7 @@ function mapDispatchToProps(dispatch) {
     chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
     selectSearchCoordinate: bindActionCreators(searchActions.selectSearchCoordinate, dispatch),
     resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
-  };
-};
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (SearchMap);

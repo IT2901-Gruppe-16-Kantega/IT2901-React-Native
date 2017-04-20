@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -28,20 +28,20 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 /*
 View that shows all stored data
 */
-var StoredDataView = React.createClass({
+class StoredDataView extends React.Component {
   render() {
     return <Container>
       {this.renderSearches()}
     </Container>
-  },
+  }
 
   renderSearches() {
     if(this.props.allSearches.length != 0) {
       return <ListView
         // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
-        renderRow={this.renderRow}
-        renderFooter={this.renderFooter}
+        renderRow={this.renderRow.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         enableEmptySections={true}
       />
     } else {
@@ -50,7 +50,7 @@ var StoredDataView = React.createClass({
         <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
       </View>
     }
-  },
+  }
 
   // Render each saved road search row
   renderRow(roadSearch, sectionID, rowID, highlightRow) {
@@ -79,7 +79,7 @@ var StoredDataView = React.createClass({
         </View>
       </View>
     </TouchableHighlight>
-  },
+  }
 
   renderFooter() {
     return <View style={styles.footerStyle}>
@@ -89,7 +89,7 @@ var StoredDataView = React.createClass({
 
         }} style={"small"} />
     </View>
-  },
+  }
 
   issueDeleteSearch(search) {
     Alert.alert('Slette søk',
@@ -102,14 +102,14 @@ var StoredDataView = React.createClass({
       }
         }, {text: 'Avbryt'}]
     );
-  },
+  }
 
   // Open the selected roadSearch item
   openSearch(search) {
     this.props.setCurrentRoadSearch(search);
     Actions.CurrentSearchView();
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   row: {
@@ -132,7 +132,7 @@ function mapStateToProps(state) {
   return {
     allSearches: state.dataReducer.allSearches,
     theme: state.settingsReducer.themeStyle,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

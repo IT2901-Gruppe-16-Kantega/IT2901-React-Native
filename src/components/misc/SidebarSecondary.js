@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   ListView,
@@ -24,19 +24,20 @@ import * as templates from '../../utilities/templates';
 import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
 
-let ScreenWidth = Dimensions.get("window").width;
-var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const ScreenWidth = Dimensions.get("window").width;
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 /*
 This component is for selecting advanced filtering.
 */
-var SidebarSecondary = React.createClass({
-	componentWillMount() {
-		if(Platform.OS === "android") {
-			UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-		}
-	},
-  	render() {
+class SidebarSecondary extends React.Component {
+  componentWillMount() {
+  	if(Platform.OS === "android") {
+  		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+  	}
+  }
+
+  render() {
     var listView;
     if(this.props.selectedFilter.tillatte_verdier && this.props.selectedFunction) {
       if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
@@ -51,13 +52,13 @@ var SidebarSecondary = React.createClass({
     return <View style={StyleSheet.flatten([templates.sidebar, this.secondSidebarFrame()])}>
       <TouchableHighlight
         underlayColor={templates.colors.blue}
-        onPress={this.hideSidebar}>
+        onPress={() => this.hideSidebar()}>
         <View><Text style={styles.sidebarTitle}>{"<"} {this.props.selectedFilter.navn}</Text></View>
       </TouchableHighlight>
 
       <View>
         <TouchableHighlight
-          onPress={this.addFilter}
+          onPress={() => this.addFilter()}
           underlayColor={templates.colors.blue}
           style={this.addFilterButtonStyle()} >
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>{this.status().message}</Text>
@@ -69,7 +70,7 @@ var SidebarSecondary = React.createClass({
 
       {listView}
     </View>
-  },
+  }
 
   addFilterButtonStyle() {
     return {
@@ -79,14 +80,14 @@ var SidebarSecondary = React.createClass({
       borderRadius: 3,
       alignItems: 'center',
     };
-  },
+  }
 
   hideSidebar() {
     this.props.deselectFilterValue();
     this.props.deselectFunction();
     this.props.clearFilterValueText();
     this.props.toggleSecondSidebar(false)
-  },
+  }
 
   status() {
     // Failure if not selected a filter function (NOT_EQUAL, EQUAL, >= etc)
@@ -208,7 +209,7 @@ var SidebarSecondary = React.createClass({
     }
 
     return { message: "Legg til filter", longMessage: "", canAdd: true }
-  },
+  }
 
   addFilter() {
     if(!this.status().canAdd) {
@@ -216,10 +217,14 @@ var SidebarSecondary = React.createClass({
       return;
     }
 
+    const {selectedFunction, selectedFilter} = this.props;
     var verdi;
-    if(this.props.selectedFilter.tillatte_verdier) { verdi = this.props.selectedFilterValue }
-    else if(this.props.selectedFilter.datatype === datatype.tall) { verdi = parseFloat(this.props.filterValueText) }
-    else if(this.props.selectedFilter.datatype === datatype.dato) { verdi = this.props.filterValueText.substring(0, 10) }
+    if(selectedFunction === comparators.HAS_VALUE || selectedFunction === comparators.HAS_NOT_VALUE) {
+      verdi = null;
+    }
+    else if(selectedFilter.tillatte_verdier) { verdi = this.props.selectedFilterValue }
+    else if(selectedFilter.datatype === datatype.tall) { verdi = parseFloat(this.props.filterValueText) }
+    else if(selectedFilter.datatype === datatype.dato) { verdi = this.props.filterValueText.substring(0, 10) }
     else { verdi = this.props.filterValueText }
 
     var filter = {
@@ -234,7 +239,7 @@ var SidebarSecondary = React.createClass({
     this.props.deselectFilterValue();
     this.props.deselectFunction();
     this.props.clearFilterValueText();
-  },
+  }
 
   createTextInput(placeholder, type) {
     return <TextInput
@@ -246,7 +251,7 @@ var SidebarSecondary = React.createClass({
       value={this.props.filterValueText}
       returnKeyType='done'
     />
-  },
+  }
 
   createSearchBox() {
     if(!this.props.selectedFunction || this.props.selectedFunction === comparators.HAS_VALUE || this.props.selectedFunction === comparators.HAS_NOT_VALUE) {
@@ -270,7 +275,7 @@ var SidebarSecondary = React.createClass({
     else {
       return this.createTextInput("<Tekstverdi>", "default");
     }
-  },
+  }
 
   createComparators() {
     var comparatorComponents = [
@@ -299,7 +304,7 @@ var SidebarSecondary = React.createClass({
     }
 
     return <View>{comparatorComponents}</View>
-  },
+  }
 
   getDataSource() {
     var source = this.props.selectedFilter.tillatte_verdier.sort(function(a, b) {
@@ -312,36 +317,36 @@ var SidebarSecondary = React.createClass({
 
       source = source.filter(function(value) {
         return value.navn.toLowerCase().indexOf(searchString.toLowerCase()) !== -1;
-      }); // bind(this)
+      });
     }
 
     return ds.cloneWithRows(source);
-  },
+  }
 
   renderRow(rowData, sectionID, rowID, highlightRow) {
     return (
       <TouchableHighlight
         key={rowID}
         underlayColor={templates.colors.blue}
-        onPress={this.props.selectFilterValue.bind(this, rowData)}>
+        onPress={() => this.props.selectFilterValue(rowData)}>
         <View style={this.getRowStyle(rowData.id)}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
         </View>
       </TouchableHighlight>
     )
-  },
+  }
 
   getRowStyle(id) {
     if(id === this.props.selectedFilterValue.id) {
       return [styles.sidebarItem, {backgroundColor: templates.colors.blue}]
     }
     return styles.sidebarItem;
-  },
+  }
 
   secondSidebarFrame() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
-    var style = {width: this.props.sidebarFrame.width};
+    var style = {width: this.props.sidebarFrame.width, top: 10};
 
     if(this.props.showSecondSidebar) {
       style.left = ScreenWidth - style.width + 3;
@@ -350,7 +355,7 @@ var SidebarSecondary = React.createClass({
     }
     return style;
   }
-})
+}
 
 styles = StyleSheet.create({
   buttonContainer: {
@@ -396,7 +401,7 @@ function mapStateToProps(state) {
     allSelectedFilters: state.filterReducer.allSelectedFilters,
 
     selectedMarker: state.mapReducer.selectedMarker,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -409,6 +414,6 @@ function mapDispatchToProps(dispatch) {
     clearFilterValueText: bindActionCreators(filterActions.clearFilterValueText, dispatch),
     addFilter: bindActionCreators(filterActions.addFilter, dispatch),
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (SidebarSecondary);

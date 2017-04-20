@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,31 +9,29 @@ import {
   Keyboard,
 } from 'react-native';
 
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import * as templates from '../../utilities/templates'
-import Button from './Button'
-
-/* props:
-type,
-list,
-textType,
-choosenBool ,
-inputFunction,
-chooserFunction,
-colorController,
-updateFunction,
-extData
-*/
+import * as templates from '../../utilities/templates';
+import Button from './Button';
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-var InputField = React.createClass({
-  componentWillMount(){
+class InputField extends React.Component {
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    textType: PropTypes.string.isRequired,
+    choosenBool: PropTypes.bool.isRequired,
+    inputFunction: PropTypes.func.isRequired,
+    chooserFunction: PropTypes.func.isRequired,
+    colorController: PropTypes.oneOf(['red', templates.colors.orange, templates.colors.green]).isRequired,
+    updateFunction: PropTypes.func.isRequired,
+    extData: PropTypes.array,
+  }
 
-  },
   render() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var dataSource = ds.cloneWithRows(this.props.list)
@@ -96,13 +94,13 @@ var InputField = React.createClass({
           }
           }}/>
     </View>
-  },
+  }
 
   renderHeader() {
     if(this.props.textType) {
       return <Text style={[this.props.theme.text, {marginLeft: 5}]}>{this.props.type.capitalize()}</Text>
     }
-  },
+  }
 
   getListViewStyle() {
     var height;
@@ -112,7 +110,7 @@ var InputField = React.createClass({
       height: height,
     }
   }
-})
+}
 
 function mapStateToProps(state) {
   return { theme: state.settingsReducer.themeStyle };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import * as values from '../../utilities/values';
 Component used to choose different filters when searching
 for road objects.
 */
-class ComparatorComponent extends Component {
+class ComparatorComponent extends React.Component {
   static propTypes = {
     type: PropTypes.oneOf(Object.values(values.comparators)).isRequired,
 
@@ -78,7 +78,7 @@ class ComparatorComponent extends Component {
 function mapStateToProps(state) {
   return {
     selectedFunction: state.filterReducer.selectedFunction,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -86,6 +86,6 @@ function mapDispatchToProps(dispatch) {
     selectFunction: bindActionCreators(filterActions.selectFunction, dispatch),
     deselectFilterValue: bindActionCreators(filterActions.deselectFilterValue, dispatch),
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (ComparatorComponent);

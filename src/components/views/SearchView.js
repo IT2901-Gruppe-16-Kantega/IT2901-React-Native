@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -55,7 +55,7 @@ var selectedVegreferanse;
 /*
 View used when user specifies what data to be fetched from NVDB
 */
-var SearchView = React.createClass({
+class SearchView extends React.Component {
   render() {
     return <Container>
       {this.createViewArea()}
@@ -71,7 +71,7 @@ var SearchView = React.createClass({
         ]}
         />
     </Container>
-  },
+  }
 
   createViewArea() {
     if (this.props.chosenSearchTab === tabs.SEARCH) {
@@ -101,7 +101,7 @@ var SearchView = React.createClass({
         {this.createClosestRoadsList()}
       </ScrollView>
     }
-  },
+  }
 
   typeInputStyleForMap() {
     var height;
@@ -120,7 +120,7 @@ var SearchView = React.createClass({
       borderRadius: 10,
       height: height,
     }
-  },
+  }
 
   createClosestRoadsList() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
@@ -151,7 +151,7 @@ var SearchView = React.createClass({
           }/>
         <View style={{flex: 0.17}}><Text></Text></View>
     </View>
-  },
+  }
 
   closestRoadListItemStyle(ref) {
     if(ref === selectedVegreferanse) {
@@ -159,7 +159,7 @@ var SearchView = React.createClass({
     } else {
       return "list";
     }
-  },
+  }
 
   chooseClosestRoad(road) {
     this.props.resetPositionSearchParameters();
@@ -181,8 +181,7 @@ var SearchView = React.createClass({
       this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
     }
     this.validate()
-  },
-
+  }
 
   getUserPosition() {
     navigator.geolocation.getCurrentPosition((initialPosition) => {
@@ -192,7 +191,7 @@ var SearchView = React.createClass({
       }.bind(this));
     }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-  },
+  }
 
   createFylkeInput() {
     return <View>
@@ -208,7 +207,7 @@ var SearchView = React.createClass({
           />
       </View>
     </View>
-  },
+  }
 
   createKommuneInput() {
     return <View>
@@ -225,7 +224,7 @@ var SearchView = React.createClass({
           />
       </View>
     </View>
-  },
+  }
 
   createTypeInput(style) {
     return <View style={[styles.inputArea, style]}>
@@ -239,7 +238,7 @@ var SearchView = React.createClass({
         updateFunction={this.validate}
         />
     </View>
-  },
+  }
 
   createVegInput() {
     return <View style={styles.inputArea}>
@@ -265,14 +264,14 @@ var SearchView = React.createClass({
           />
       </View>
     </View>
-  },
+  }
 
   createButton() {
     var count = this.props.numberOfObjectsToBeFetched || 0;
     return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
       <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed} type={"search"} />
     </View>
-  },
+  }
 
   validate() {
     // Reset count before finding new number
@@ -285,23 +284,18 @@ var SearchView = React.createClass({
       var vegString = ''
       var isValidatingVeg = false
       if(this.props.vegobjekttyper_chosen) { vegobjektStr = this.props.vegobjekttyper_input[0].id }
-      //else { vegobjektStr = '532' }
       if(this.props.fylke_chosen) { fylkeStr = 'fylke=' + this.props.fylke_input[0].nummer + '&' }
-      //else { fylkeStr = '' }
       if(this.props.kommune_chosen) { kommuneStr = 'kommune=' + this.props.kommune_input[0].nummer + '&' }
-      //else { kommuneStr = '' }
       if(this.props.veg_input != "") {
         isValidatingVeg = true
         vegString = '&vegreferanse=' + this.props.veg_input + '&'}
       else {
-        //vegString = ''
-        //isVegValidation = false
         this.props.setValidityOfVeg('NOT_CHOSEN')
       }
       var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
       this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
     })
-  },
+  }
 
   check(url, shouldFetchNumber, isValidatingVeg) {
     // Create a new fetching url from getting the number of objects to
@@ -324,7 +318,7 @@ var SearchView = React.createClass({
       else {
       }
     })
-  },
+  }
 
   searchButtonPressed() {
     this.forceUpdate(() => {
@@ -352,7 +346,7 @@ var SearchView = React.createClass({
         }
       }
     })
-  },
+  }
 
   initiateSearch() {
     if(this.props.numberOfObjectsToBeFetched >= 8000) {
@@ -363,13 +357,13 @@ var SearchView = React.createClass({
       );
     }
     else { this.search(); }
-  },
+  }
 
   search() {
     this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
     Actions.LoadingView();
   }
-});
+}
 
 var styles = StyleSheet.create({
   content: {
@@ -415,34 +409,35 @@ function mapStateToProps(state) {
     chosenSearchTab: state.uiReducer.chosenSearchTab,
 
     theme: state.settingsReducer.themeStyle,
-  };}
-
-  function mapDispatchToProps(dispatch) {
-    return {
-      //input search variables, uses searchActions to set variables before creatingURL
-      inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
-      chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
-
-      inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
-      setValidityOfVeg: bindActionCreators(searchActions.setValidityOfVeg, dispatch),
-      resetVegField: bindActionCreators(searchActions.resetVegField, dispatch),
-
-      inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
-      chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
-
-      inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
-      chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
-
-      inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
-
-      setURL: bindActionCreators(searchActions.setURL, dispatch),
-      combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
-      setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
-
-      setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
-
-      resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
-    }
   }
+}
 
-  export default connect(mapStateToProps, mapDispatchToProps) (SearchView);
+function mapDispatchToProps(dispatch) {
+  return {
+    //input search variables, uses searchActions to set variables before creatingURL
+    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
+    chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
+
+    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
+    setValidityOfVeg: bindActionCreators(searchActions.setValidityOfVeg, dispatch),
+    resetVegField: bindActionCreators(searchActions.resetVegField, dispatch),
+
+    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
+
+    inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
+    chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
+
+    inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
+
+    setURL: bindActionCreators(searchActions.setURL, dispatch),
+    combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
+    setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
+
+    setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
+
+    resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (SearchView);

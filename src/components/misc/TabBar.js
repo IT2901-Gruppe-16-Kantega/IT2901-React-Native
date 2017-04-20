@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Text,
   View,
@@ -11,14 +11,13 @@ import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates'
 
-var TabBar = React.createClass({
-  // Check PropTypes. Requires [{title: string, onPress: func}]
-  propTypes: {
+class TabBar extends React.Component {
+  static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       onPress: PropTypes.func.isRequired,
     })),
-  },
+  }
 
   render() {
     return (
@@ -28,7 +27,7 @@ var TabBar = React.createClass({
         })}
       </View>
     );
-  },
+  }
 
   // Creates a single tab
   createTab(tab) {
@@ -41,18 +40,18 @@ var TabBar = React.createClass({
         <Text style={this.textStyle(tab)}>{tab.title}</Text>
       </TouchableHighlight>
     );
-  },
+  }
 
   // Checks if the provided tab is the selected tab
   isSelected(tab) {
     return this.props.chosenSearchTab === tab.title;
-  },
+  }
 
   // Returns style based on if selected/not selected
   style(tab) {
     if (this.isSelected(tab)) { return this.props.theme.tabChosen; }
     else { return this.props.theme.tabNotChosen; }
-  },
+  }
 
   // Tab container style
   tabStyle(tab) {
@@ -66,7 +65,7 @@ var TabBar = React.createClass({
       borderTopWidth: style.borderTopWidth,
       borderColor: this.props.theme.mainContainer.backgroundColor,
     }
-  },
+  }
 
   // Tab text style
   textStyle(tab) {
@@ -77,7 +76,7 @@ var TabBar = React.createClass({
       fontSize: this.props.theme.subtitle.fontSize,
     }
   }
-})
+}
 
 var styles = StyleSheet.create({
   container: {

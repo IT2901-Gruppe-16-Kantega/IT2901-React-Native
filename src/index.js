@@ -28,7 +28,6 @@ import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
-import CustomizeReportView from './components/views/CustomizeReportView'
 
 import NavigationBar from './components/misc/NavigationBar'
 
@@ -98,14 +97,6 @@ class App extends Component {
           key="ObjectInfoView"
           component={ObjectInfoView}
           sceneStyle={{paddingTop: 64}} />
-        <Scene
-          key="CustomizeReportView"
-          component={CustomizeReportView}
-          sceneStyle={{paddingTop: 64}}
-          title={()=> {
-            if(this.props.reportViewType === "NEW") return "Registrer rapport"
-            else return "Endre rapport"
-          }} />
     </Scene>
     );
   }
@@ -125,7 +116,7 @@ class App extends Component {
 
     var width = ScreenWidth / 2.2;
     var xPos = ScreenWidth - width + 3;
-    var frame = {width: width};
+    var frame = {width: width, top: 10};
 
     if((this.props.sidebarFrame.left == xPos) || close) {
       frame.left = ScreenWidth;

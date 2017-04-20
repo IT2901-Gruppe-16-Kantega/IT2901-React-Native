@@ -39,9 +39,12 @@ export default function reducer(state={
     }
     case "REMOVE_FILTER": {
       var remFilter = action.payload;
+      console.log(state.allSelectedFilters)
       var newFilters = state.allSelectedFilters.filter(f => {
-        return (!(f.egenskap.id === remFilter.egenskap.id && f.funksjon === remFilter.funksjon && f.verdi === remFilter.verdi));
+        const sameValue = ((f.verdi === remFilter.verdi));
+        return (!(f.egenskap.id === remFilter.egenskap.id && f.funksjon === remFilter.funksjon && sameValue));
       });
+      console.log(newFilters)
       return {...state, allSelectedFilters: newFilters}
     }
     case "REMOVE_ALL_FILTERS": {

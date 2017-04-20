@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -32,12 +32,12 @@ var map = null;
 /*
 View that holds the map
 */
-var RoadMapView = React.createClass({
+class RoadMapView extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.createCluster();
     }, 1000);
-  },
+  }
 
   componentDidUpdate(prevProps) {
     if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
@@ -45,7 +45,7 @@ var RoadMapView = React.createClass({
         this.createCluster();
       }, 10)
     }
-  },
+  }
 
   createCluster() {
     const cluster = supercluster({
@@ -77,7 +77,7 @@ var RoadMapView = React.createClass({
     setTimeout(() => {
       this.setMarkersAtRegion();
     }, 500)
-  },
+  }
 
   render() {
     return <Container>
@@ -94,7 +94,7 @@ var RoadMapView = React.createClass({
         <SidebarSecondary />
       </View>
     </Container>
-  },
+  }
 
   addMarker(e) {
     if(this.getZoomLevel() < 16) {
@@ -160,7 +160,7 @@ var RoadMapView = React.createClass({
     setTimeout(() => {
       Actions.ObjectInfoView();
     }, 500)
-  },
+  }
 
   setMarkersAtRegion() {
     if(this.props.cluster && this.props.cluster.getClusters) {
@@ -177,12 +177,12 @@ var RoadMapView = React.createClass({
         this.props.setMarkers(m);
       }
     }
-  },
+  }
 
   getZoomLevel() {
     const angle = this.props.region.longitudeDelta;
     return Math.round(Math.log(360 / angle) / Math.LN2);
-  },
+  }
 
   shouldSkipObject(roadObject) {
     if(this.props.allSelectedFilters) {
@@ -240,7 +240,7 @@ var RoadMapView = React.createClass({
     }
 
     return false;
-  },
+  }
 
   createMapFeatures(markers) {
     return markers.map((marker, index) => {
@@ -279,12 +279,12 @@ var RoadMapView = React.createClass({
         }
       }
     })
-  },
+  }
 
   changeRegion(region) {
     this.props.setRegion(region);
     this.setMarkersAtRegion()
-  },
+  }
 
   markerPressed(marker) {
     let isCluster = marker.properties && marker.properties.cluster;
@@ -302,8 +302,8 @@ var RoadMapView = React.createClass({
       latitudeDelta: isCluster ? region.latitudeDelta / 5 : region.latitudeDelta,
     }
     map.animateToRegion(newRegion, 200);
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   cluster: {
@@ -349,7 +349,8 @@ function mapStateToProps(state) {
     markers: state.mapReducer.markers,
     cluster: state.mapReducer.cluster,
     clusteringOn: state.settingsReducer.clusteringOn,
-  };}
+  }
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -361,6 +362,6 @@ function mapDispatchToProps(dispatch) {
     setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
     setCluster: bindActionCreators(mapActions.setCluster, dispatch),
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (RoadMapView);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -24,10 +24,10 @@ import * as reportActions from '../../actions/reportActions'
 /*
 The callout shown when the user taps a pin on the map view.
 */
-var MarkerCallout = React.createClass({
-  propTypes: {
+class MarkerCallout extends React.Component {
+  static propTypes = {
     roadObject: PropTypes.object.isRequired,
-  },
+  }
 
   render() {
     var {roadObject} = this.props;
@@ -36,16 +36,16 @@ var MarkerCallout = React.createClass({
       <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
-      <Button type="list" text="Informasjon" onPress={this.openObjectInformation} />
+      <Button type="list" text="Informasjon" onPress={() => this.openObjectInformation()} />
     </View>
-  },
+  }
 
   // Called when the user taps the title of the callout
   // Opens the object info view.
   openObjectInformation() {
     this.props.selectObject(this.props.roadObject);
     Actions.ObjectInfoView();
-  },
+  }
 
   // Cycles through all the selected filters, and adds information
   // about each of them to the callout bubble.
@@ -78,7 +78,7 @@ var MarkerCallout = React.createClass({
 
       return textComponents;
     }
-  },
+  }
 
   // Returns eventual postfixes, for example 'mm' for measurements
   getPostfix() {
@@ -90,9 +90,8 @@ var MarkerCallout = React.createClass({
       }
     }
     return "";
-  },
-
-});
+  }
+}
 
 var styles = StyleSheet.create({
   title: {
@@ -108,7 +107,7 @@ function mapStateToProps(state) {
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -116,6 +115,6 @@ function mapDispatchToProps(dispatch) {
     selectObject: bindActionCreators(dataActions.selectObject, dispatch),
     searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (MarkerCallout);

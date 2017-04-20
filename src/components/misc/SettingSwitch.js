@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -11,14 +11,14 @@ import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates';
 
-var SettingSwitch = React.createClass({
+class SettingSwitch extends React.Component {
   propTypes: {
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     disabled: PropTypes.bool,
     onValueChange: PropTypes.func.isRequired,
     value: PropTypes.bool.isRequired,
-  },
+  }
 
   render() {
     return <View style={styles.container}>
@@ -30,8 +30,8 @@ var SettingSwitch = React.createClass({
         <Text style={this.props.theme.text}>{this.props.description}</Text>
       </View>
     </View>
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   container: {
@@ -44,7 +44,7 @@ var styles = StyleSheet.create({
   textContainer: {
     flex: 0.8,
   },
-});
+})
 
 function mapStateToProps(state) {
   return { theme: state.settingsReducer.themeStyle };

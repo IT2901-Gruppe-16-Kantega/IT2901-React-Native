@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -38,12 +38,12 @@ const reportType = {
   WRONG: 'EGENSKAP_FEIL',
 }
 
-var ObjectInfoView = React.createClass({
+class ObjectInfoView extends React.Component {
   componentWillMount() {
   	if(Platform.OS === "android") {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
-  },
+  }
 
   render() {
     const {selectedObject, objekttypeInfo} = this.props;
@@ -62,12 +62,12 @@ var ObjectInfoView = React.createClass({
           keyboardShouldPersistTaps='always'
           style={{marginBottom: this.props.keyboardPadding}}
           dataSource={ds.cloneWithRows(selectedObject.egenskaper)}
-          renderHeader={this.renderHeader}
-          renderRow={this.renderRow}
+          renderHeader={this.renderHeader.bind(this)}
+          renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
         />
     </Container>
-  },
+  }
 
   renderHeader() {
     const {isEditingRoadObject, theme} = this.props;
@@ -82,7 +82,7 @@ var ObjectInfoView = React.createClass({
         {this.renderReport()}
       </View>
     );
-  },
+  }
 
   renderReport() {
     const report = this.getReport();
@@ -92,12 +92,12 @@ var ObjectInfoView = React.createClass({
         <Text style={this.props.theme.subtitle}>Rapport:</Text>
         <ListView
           dataSource={ds.cloneWithRows(report.endringer)}
-          renderRow={this.renderReportChange}
+          renderRow={this.renderReportChange.bind(this)}
           enableEmptySections={true}
         />
       </View>
     );
-  },
+  }
 
   renderReportChange(change, sectionID, rowID) {
     return (
@@ -109,7 +109,7 @@ var ObjectInfoView = React.createClass({
         <Text>{change.dato}</Text>
       </View>
     );
-  },
+  }
 
   renderRow(property, sectionID, rowID, highlightRow) {
     return (
@@ -123,7 +123,7 @@ var ObjectInfoView = React.createClass({
         </View>
       </TouchableHighlight>
     );
-  },
+  }
 
   renderNotExistingProperties() {
     const {selectedObject, objekttypeInfo} = this.props;
@@ -143,7 +143,7 @@ var ObjectInfoView = React.createClass({
         enableEmptySections={true}
       />
     );
-  },
+  }
 
   addOrChangeProperty(property, propertyValue) {
     var verdi = null;
@@ -175,7 +175,7 @@ var ObjectInfoView = React.createClass({
     }
     this.props.inputNewPropertyValue(null);
     this.props.setIsEditingRoadObject(false);
-  },
+  }
 
   selectProperty(property) {
     if(this.isEditing(property)) {
@@ -184,7 +184,7 @@ var ObjectInfoView = React.createClass({
       this.props.selectPropertyCurrentlyEditing(property);
       this.props.inputNewPropertyValue(null);
     }
-  },
+  }
 
   renderIfPropertyEditing(property) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -201,7 +201,7 @@ var ObjectInfoView = React.createClass({
         </View>
       );
     }
-  },
+  }
 
   renderEnumListView(egenskapstype) {
     if(this.isEnumType(egenskapstype)) {
@@ -214,12 +214,12 @@ var ObjectInfoView = React.createClass({
       return (
         <ListView
           dataSource={ds.cloneWithRows(verdier)}
-          renderRow={this.renderPropertyValueRow}
+          renderRow={this.renderPropertyValueRow.bind(this)}
           enableEmptySections={true}
         />
       );
     }
-  },
+  }
 
   renderPropertyValueRow(propertyValue) {
     return (
@@ -227,11 +227,8 @@ var ObjectInfoView = React.createClass({
         <Text>{propertyValue.navn}</Text>
       </TouchableHighlight>
     );
-  },
+  }
 
-  //roadSearch.report
-  //[{vegobjekt: {}, endringer: [{egenskap: <obj>, dato: <datetime>, type: (FEIL, LAGT_TIL), beskrivelse: ""}]}]
-  //[{vegobjekt: null, type: <type>, endringer: ...}]
   addChangeToReport(property, reportType) {
     const existingReport = this.getReport();
     const change = {
@@ -242,21 +239,21 @@ var ObjectInfoView = React.createClass({
     }
     this.props.reportChange(change);
     console.log(this.props.report)
-  },
+  }
 
   // HELPERS
   isEditing(property) {
     return this.props.propertyCurrentlyEditing === property;
-  },
+  }
   getEgenskapstype(id) {
     return this.props.objekttypeInfo.egenskapstyper.find(e => e.id == id);
-  },
+  }
   isEnumType(property) {
     return ((property.datatype === datatype.flerverdiattributtTall) || (property.datatype === datatype.flerverdiAttributtTekst))
-  },
+  }
   getReport() {
     return this.props.report.find(report => report.vegobjekt === this.props.selectedObject.id);
-  },
+  }
 
   // STYLES
   propertyContainerStyle(property) {
@@ -266,7 +263,7 @@ var ObjectInfoView = React.createClass({
       padding: 10,
     }
   }
-});
+}
 
 var styles = StyleSheet.create({
   mainInfo: {
@@ -292,7 +289,7 @@ function mapStateToProps(state) {
     newPropertyValue: state.reportReducer.newPropertyValue,
     newProperty: state.reportReducer.newProperty,
     showReport: state.reportReducer.showReport,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -303,7 +300,7 @@ function mapDispatchToProps(dispatch) {
     reportChange: bindActionCreators(dataActions.reportChange, dispatch),
     setNewProperty: bindActionCreators(reportActions.setNewProperty, dispatch),
     setShowReport: bindActionCreators(reportActions.setShowReport, dispatch),
-  };
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (ObjectInfoView);

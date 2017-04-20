@@ -21,12 +21,12 @@ const types = {
 
 let ScreenWidth = Dimensions.get("window").width;
 
-var Button = React.createClass({
-  propTypes: {
+export default class Button extends React.Component {
+  static propTypes = {
     text: PropTypes.string.isRequired,
     onPress: PropTypes.func.isRequired,
     type: PropTypes.oneOf(Object.values(types)).isRequired,
-  },
+  }
 
   render() {
     return <TouchableHighlight
@@ -38,7 +38,7 @@ var Button = React.createClass({
         <Text style={this.textStyle()}>{this.props.text}</Text>
       </View>
     </TouchableHighlight>
-  },
+  }
 
   buttonStyle() {
     const {type} = this.props;
@@ -86,7 +86,7 @@ var Button = React.createClass({
     }
 
     return style;
-  },
+  }
 
   textStyle() {
     const {type} = this.props;
@@ -112,7 +112,5 @@ var Button = React.createClass({
     }
 
     return style;
-  },
-})
-
-export default Button;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -30,18 +30,18 @@ import * as mapActions from '../../actions/mapActions'
 /*
 Shows information about current search, buttons for viewing map and opening AR
 */
-var CurrentSearchView = React.createClass({
+class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
     this.props.setDescription(this.props.currentRoadSearch.description)
-  },
+  }
 
   render() {
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
-  },
+  }
 
   createInfoView() {
     var kommuneValue = "Ikke spesifisert"
@@ -73,7 +73,7 @@ var CurrentSearchView = React.createClass({
         </View>
       </TouchableWithoutFeedback>
     </View>
-  },
+  }
 
   createDescriptionArea() {
     const {theme, description} = this.props;
@@ -99,13 +99,12 @@ var CurrentSearchView = React.createClass({
         onEndEditing={this.saveDescription}
         />
     </View>
-  },
+  }
 
-  //TODO this is now implemented using really bad redux-practice, should implement better
   saveDescription() {
     this.props.currentRoadSearch.description = this.props.description;
     this.props.searchSaved(this.props.currentRoadSearch);
-  },
+  }
 
   createButtons() {
     return <View>
@@ -118,7 +117,7 @@ var CurrentSearchView = React.createClass({
         <Button text="Tilbake" type={"half"} onPress={Actions.StartingView} />
       </View>
     </View>
-  },
+  }
 
   openAR() {
     //kan brukes ved mottak av data fra unity
@@ -141,8 +140,8 @@ var CurrentSearchView = React.createClass({
     } else {
       console.log("Not ios or android")
     }
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   informationArea: {
@@ -183,16 +182,17 @@ function mapStateToProps(state) {
     allSearches: state.dataReducer.allSearches,
     theme: state.settingsReducer.themeStyle,
     description: state.dataReducer.description,
-  };}
-
-  function mapDispatchToProps(dispatch) {
-    return {
-      //dataActions
-      resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
-      setRegion: bindActionCreators(mapActions.setRegion, dispatch),
-      searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
-      setDescription: bindActionCreators(dataActions.setDescription, dispatch),
-    }
   }
-  //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
-  export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //dataActions
+    resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+    setRegion: bindActionCreators(mapActions.setRegion, dispatch),
+    searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+    setDescription: bindActionCreators(dataActions.setDescription, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
