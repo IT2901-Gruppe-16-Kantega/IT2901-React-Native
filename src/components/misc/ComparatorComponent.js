@@ -21,8 +21,7 @@ for road objects.
 class ComparatorComponent extends React.Component {
   static propTypes = {
     type: PropTypes.oneOf(Object.values(values.comparators)).isRequired,
-
-  };
+  }
 
   render() {
     return (
