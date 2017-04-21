@@ -52,7 +52,7 @@ export function getTheme(name) {
       backgroundColor: templates.colors.orange,
       fontWeight: 'normal',
       textColor: templates.colors.white,
-      borderTopWidth: 0.5,
+      borderTopWidth: 1,
     },
   }
 }

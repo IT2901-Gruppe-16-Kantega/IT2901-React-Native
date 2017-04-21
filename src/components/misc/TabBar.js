@@ -61,7 +61,7 @@ class TabBar extends React.Component {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: style.backgroundColor,
-      borderWidth: 0.5,
+      borderWidth: 1,
       borderTopWidth: style.borderTopWidth,
       borderColor: this.props.theme.mainContainer.backgroundColor,
     }
