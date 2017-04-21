@@ -33,7 +33,7 @@ export function getTheme(name) {
     mainContainer: {
       flex: 1,
       backgroundColor: themeColors.backgroundColor,
-      alignItems: 'stretch',
+      //alignItems: 'stretch',
     },
     container: {
       backgroundColor: themeColors.containerColor,

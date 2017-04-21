@@ -72,7 +72,7 @@ class ObjectInfoView extends React.Component {
   renderHeader() {
     const {isEditingRoadObject, theme} = this.props;
     return (
-      <View style={{ padding: 10, backgroundColor: templates.colors.lightGray }}>
+      <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor }}>
         <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
           <Button type={"small"} text="Legg til egenskap" onPress={() => this.props.setIsEditingRoadObject(!isEditingRoadObject)} />
           <Button type={"small"} text={this.props.showReport ? "Skjul rapport" : "Vis rapport"} onPress={() => this.props.setShowReport(!this.props.showReport)} />

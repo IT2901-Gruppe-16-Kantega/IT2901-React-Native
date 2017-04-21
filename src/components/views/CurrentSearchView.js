@@ -88,7 +88,7 @@ class CurrentSearchView extends React.Component {
           padding: 5,
           fontSize: 15,
           color: theme.secondaryTextColor,
-          backgroundColor: theme.navigationBarStyle.backgroundColor
+          backgroundColor: theme.container.backgroundColor,
         }}
         multiline={true}
         placeholderTextColor={theme.placeholderTextColor}

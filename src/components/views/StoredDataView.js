@@ -45,10 +45,12 @@ class StoredDataView extends React.Component {
         enableEmptySections={true}
       />
     } else {
-      return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <Text>Ingen søk...</Text>
-        <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
-      </View>
+      return (
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <Text>Ingen søk...</Text>
+          <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
+        </View>
+      );
     }
   }
 
@@ -82,9 +84,7 @@ class StoredDataView extends React.Component {
   }
 
   renderFooter() {
-    return <View style={styles.footerStyle}>
-      <Button type={"small"} text={"Slett alt"} onPress={this.issueDeleteAllSearches.bind(this)} style={"small"} />
-    </View>
+    return <Button type={"small"} text={"Slett alt"} onPress={this.issueDeleteAllSearches.bind(this)} style={"small"} />
   }
 
   issueDeleteSearch(search) {
@@ -125,18 +125,13 @@ class StoredDataView extends React.Component {
 var styles = StyleSheet.create({
   row: {
     padding: 10,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: templates.colors.middleGray,
   },
   buttonContainer: {
     marginTop: 10,
     alignItems: 'flex-end',
   },
-  footerStyle: {
-    padding: 10,
-    alignItems: 'center',
-  }
 })
 
 function mapStateToProps(state) {
