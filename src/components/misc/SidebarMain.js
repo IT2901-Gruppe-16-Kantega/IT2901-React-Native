@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 import Button from '../misc/Button'
 
 import * as templates from '../../utilities/templates';
+import {comparators} from '../../utilities/values';
+
 import * as dataActions from '../../actions/dataActions';
 import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
@@ -39,7 +41,7 @@ class SidebarMain extends React.Component {
       <TouchableHighlight
         key={rowID}
         underlayColor={templates.colors.blue}
-        onPress={() => this.selectFilter(rowData)}
+        onPress={this.selectFilter.bind(this, rowData)}
         >
         <View style={styles.sidebarItem}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
@@ -54,8 +56,13 @@ class SidebarMain extends React.Component {
     var views = [];
     for(var i = 0; i < this.props.allSelectedFilters.length; i++) {
       const filter = this.props.allSelectedFilters[i];
-      const verdi = filter.egenskap.tillatte_verdier ? filter.verdi.navn : (filter.verdi ? filter.verdi.toString() : null);
-
+      var verdi;
+      /*if(filter.funksjon === comparators.HAS_VALUE || filter.funksjon === comparators.HAS_NOT_VALUE) {
+        verdi = null;
+      }
+      else if(filter.egenskap.tillatte_verdier) { verdi = filter.verdi.navn; }
+      else */
+      verdi = (filter.egenskap.tillatte_verdier && filter.verdi) ? filter.verdi.navn : (filter.verdi ? filter.verdi.toString() : null);
       const key = filter.egenskap.id + filter.funksjon + verdi;
       const linebreak = verdi ? " " : "\n";
       const linebreak2 = verdi ? "\n" : null;

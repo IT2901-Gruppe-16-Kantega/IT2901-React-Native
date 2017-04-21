@@ -24,9 +24,11 @@ View that shows information about reports
 */
 class ReportView extends React.Component {
   render() {
-    return <Container>
+    return (
+      <Container>
         {this.renderReportObjects()}
-    </Container>
+      </Container>
+    );
   }
 
   renderReportObjects() {
@@ -34,14 +36,16 @@ class ReportView extends React.Component {
     if(report.length > 0) {
       return <ListView
         dataSource={ds.cloneWithRows(report)}
-        renderRow={this.renderRow}
-        renderFooter={this.renderFooter}
+        renderRow={this.renderRow.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         enableEmptySections={true}
       />
     } else {
-      return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <Text>Ingen rapporter registrert...</Text>
-      </View>
+      return (
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <Text>Ingen rapporter registrert...</Text>
+        </View>
+      );
     }
   }
 

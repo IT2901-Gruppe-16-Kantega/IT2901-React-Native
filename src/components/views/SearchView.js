@@ -147,8 +147,7 @@ class SearchView extends React.Component {
               }}
               text={rowData.vegreferanse.kortform + " (" + rowData.avstand + "m)"}
             />
-          }
-          }/>
+          }}/>
         <View style={{flex: 0.17}}><Text></Text></View>
     </View>
   }
@@ -203,7 +202,7 @@ class SearchView extends React.Component {
           inputFunction={this.props.inputFylke}
           chooserFunction={this.props.chooseFylke}
           colorController={this.props.fylke_color}
-          updateFunction={this.validate}
+          updateFunction={this.validate.bind(this)}
           />
       </View>
     </View>
@@ -219,7 +218,7 @@ class SearchView extends React.Component {
           inputFunction={this.props.inputKommune}
           chooserFunction={this.props.chooseKommune}
           colorController={this.props.kommune_color}
-          updateFunction={this.validate}
+          updateFunction={this.validate.bind(this)}
           extData={this.props.fylke_input}
           />
       </View>
@@ -235,7 +234,7 @@ class SearchView extends React.Component {
         inputFunction={this.props.inputVegobjekttyper}
         chooserFunction={this.props.chooseVegobjekttyper}
         colorController={this.props.vegobjekttyper_color}
-        updateFunction={this.validate}
+        updateFunction={this.validate.bind(this)}
         />
     </View>
   }
@@ -269,7 +268,7 @@ class SearchView extends React.Component {
   createButton() {
     var count = this.props.numberOfObjectsToBeFetched || 0;
     return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
-      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed} type={"search"} />
+      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed.bind(this)} type={"search"} />
     </View>
   }
 

@@ -77,11 +77,11 @@ class App extends Component {
           title="Innstillinger" />
         <Scene
           key="LoadingView"
-          component={LoadingView} />
+          component={LoadingView}
+          type='reset' />
         <Scene
           key="CurrentSearchView"
-          component={CurrentSearchView}
-          type='reset' />
+          component={CurrentSearchView} />
         <Scene
           key="ReportView"
           component={ReportView}

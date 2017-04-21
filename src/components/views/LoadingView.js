@@ -68,7 +68,7 @@ class LoadingView extends React.Component {
       );
 
       this.props.resetSearchParameters();
-      Actions.CurrentSearchView();
+      Actions.CurrentSearchView({type: 'reset'});
     }
   }
 }

@@ -43,7 +43,7 @@ class SidebarSecondary extends React.Component {
       if(this.props.selectedFunction !== comparators.HAS_VALUE && this.props.selectedFunction !== comparators.HAS_NOT_VALUE) {
         listView = <ListView
           dataSource={this.getDataSource()}
-          renderRow={this.renderRow}
+          renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
         />
       }
@@ -52,13 +52,13 @@ class SidebarSecondary extends React.Component {
     return <View style={StyleSheet.flatten([templates.sidebar, this.secondSidebarFrame()])}>
       <TouchableHighlight
         underlayColor={templates.colors.blue}
-        onPress={() => this.hideSidebar()}>
+        onPress={this.hideSidebar.bind(this)}>
         <View><Text style={styles.sidebarTitle}>{"<"} {this.props.selectedFilter.navn}</Text></View>
       </TouchableHighlight>
 
       <View>
         <TouchableHighlight
-          onPress={() => this.addFilter()}
+          onPress={this.addFilter.bind(this)}
           underlayColor={templates.colors.blue}
           style={this.addFilterButtonStyle()} >
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>{this.status().message}</Text>
@@ -121,14 +121,14 @@ class SidebarSecondary extends React.Component {
             canAdd: false
           }
         }
-        else if(this.props.selectedFilter.datatype == datatype.tall && isNaN(parseFloat(this.props.filterValueText))) {
+        else if(this.props.selectedFilter.datatype === datatype.tall && isNaN(parseFloat(this.props.filterValueText))) {
           return {
             message: "Skriv inn tallverdi",
             longMessage: "Verdien i tekstfeltet må være et tall.",
             canAdd: false
           }
         }
-        else if(this.props.selectedFilter.datatype == datatype.dato && !moment(this.props.filterValueText, "YYYY-MM-DD").isValid()) {
+        else if(this.props.selectedFilter.datatype === datatype.dato && !moment(this.props.filterValueText, "YYYY-MM-DD").isValid()) {
           return {
             message: "Ugyldig dato",
             longMessage: "Skriv inn dato i formatet 'ÅÅÅÅ-MM-DD'",
@@ -139,11 +139,11 @@ class SidebarSecondary extends React.Component {
     }
 
     // Failure if conflicts with already selected filter (eg: HAS_VALUE and HAS_NOT_VALUE)
-    const verdi = this.props.selectedFilter.tillatte_verdier ? this.props.selectedFilterValue.id : this.props.filterValueText;
+    const verdi = this.props.selectedFilter.tillatte_verdier ? (this.props.selectedFilterValue.id || null) : this.props.filterValueText;
     const selFunc = this.props.selectedFunction;
 
-    const filteredFilters = this.props.allSelectedFilters.filter(f => {
-      const fVerdi = f.egenskap.tillatte_verdier ? f.verdi.id : f.verdi;
+    const conflictingFilters = this.props.allSelectedFilters.filter(f => {
+      const fVerdi = (f.egenskap.tillatte_verdier && f.verdi) ? f.verdi.id : f.verdi;
 
       // Different filters
       if(!(f.egenskap === this.props.selectedFilter)) {
@@ -184,7 +184,7 @@ class SidebarSecondary extends React.Component {
       }
     });
 
-    if(filteredFilters.length > 0) {
+    if(conflictingFilters.length > 0) {
       return {
         message: "Umulig kombinasjon",
         longMessage: "Denne kombinasjonen kan ikke velges sammen med filtrene du allerede har valgt.",
@@ -193,14 +193,16 @@ class SidebarSecondary extends React.Component {
     }
 
     // Failure if the exact same filter already exists
-    const filteredFilters2 = this.props.allSelectedFilters.filter(f => {
-      const fVerdi = f.egenskap.tillatte_verdier ? f.verdi.id : f.verdi;
-      return (f.egenskap === this.props.selectedFilter &&
-                f.funksjon === this.props.selectedFunction &&
-                fVerdi === verdi);
+    const sameFilter = this.props.allSelectedFilters.find(f => {
+      const fVerdi = (f.egenskap.tillatte_verdier && f.verdi) ? f.verdi.id : f.verdi;
+
+      const sameEgenskap = f.egenskap === this.props.selectedFilter;
+      const sameFunksjon = f.funksjon === this.props.selectedFunction;
+      const sameVerdi = fVerdi === verdi;
+      return sameEgenskap && sameFunksjon && sameVerdi;
     });
 
-    if(filteredFilters2.length > 0) {
+    if(sameFilter) {
       return {
         message: "Eksisterer allerede",
         longMessage: "Dette filteret har du allerede lagt til.",
@@ -328,7 +330,7 @@ class SidebarSecondary extends React.Component {
       <TouchableHighlight
         key={rowID}
         underlayColor={templates.colors.blue}
-        onPress={() => this.props.selectFilterValue(rowData)}>
+        onPress={this.props.selectFilterValue.bind(this, rowData)}>
         <View style={this.getRowStyle(rowData.id)}>
           <Text style={styles.sidebarItemTitle}>{rowData.navn}</Text>
         </View>

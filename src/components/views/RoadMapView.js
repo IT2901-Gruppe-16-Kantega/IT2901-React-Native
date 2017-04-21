@@ -33,6 +33,11 @@ var map = null;
 View that holds the map
 */
 class RoadMapView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.changeRegion = this.changeRegion.bind(this);
+  }
+
   componentDidMount() {
     setTimeout(() => {
       this.createCluster();
@@ -201,7 +206,7 @@ class RoadMapView extends React.Component {
               return true;
             }
 
-            if(filter.egenskap.tillatte_verdier) {
+            if(filter.egenskap.tillatte_verdier && filter.verdi) {
               const isEqual = markerProperty.enum_id === filter.verdi.id;
               if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
                 return true;

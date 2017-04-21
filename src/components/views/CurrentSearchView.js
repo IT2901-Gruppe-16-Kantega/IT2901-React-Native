@@ -110,13 +110,22 @@ class CurrentSearchView extends React.Component {
     return <View>
       <View style={styles.topButtons}>
         <Button text="Kart" type={"half"} onPress={Actions.RoadMapView} />
-        <Button text="AR" type={"half"} onPress={this.openAR} />
+        <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
       </View>
       <View style={styles.bottomButtons}>
         <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
-        <Button text="Tilbake" type={"half"} onPress={Actions.StartingView} />
+        <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
       </View>
     </View>
+  }
+
+  goBack() {
+    // If from StoredDataView, pop, else go to StartingView (if from search)
+    if(Actions.pop()) {
+      Actions.pop();
+    } else {
+      Actions.StartingView();
+    }
   }
 
   openAR() {

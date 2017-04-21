@@ -177,6 +177,11 @@ class ObjectInfoView extends React.Component {
     this.props.setIsEditingRoadObject(false);
   }
 
+  addErrorToReport(property) {
+    this.addChangeToReport(property, reportType.WRONG);
+    this.selectProperty(null);
+  }
+
   selectProperty(property) {
     if(this.isEditing(property)) {
       this.props.selectPropertyCurrentlyEditing(null);
@@ -194,7 +199,7 @@ class ObjectInfoView extends React.Component {
       return (
         <View>
           <Text style={this.props.theme.text}>{"Type: " + property.datatype_tekst}</Text>
-          {property.verdi && <SettingSwitch title="Marker feil" value={false} onValueChange={() => this.addChangeToReport(property, reportType.WRONG)} />}
+          {property.verdi && <SettingSwitch title="Marker feil" value={false} onValueChange={this.addErrorToReport.bind(this, property)} />}
           <TextInput value={this.props.newPropertyValue} onChangeText={text => this.props.inputNewPropertyValue(text)} placeholder={"Skriv inn verdi..."} height={40} style={{ backgroundColor: 'lightgray', padding: 5 }} />
           {!this.isEnumType(property) && <Button text="Lagre" type="list" onPress={() => this.addOrChangeProperty(this.props.propertyCurrentlyEditing, this.props.newPropertyValue)} />}
           {this.renderEnumListView(egenskapstype)}
@@ -238,7 +243,6 @@ class ObjectInfoView extends React.Component {
       beskrivelse: "",
     }
     this.props.reportChange(change);
-    console.log(this.props.report)
   }
 
   // HELPERS

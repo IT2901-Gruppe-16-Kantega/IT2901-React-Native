@@ -83,24 +83,35 @@ class StoredDataView extends React.Component {
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-      <Button type={"small"} text={"Slett alt"} onPress={() => {
-          storage.clear()
-          this.props.clearAllSearches()
-
-        }} style={"small"} />
+      <Button type={"small"} text={"Slett alt"} onPress={this.issueDeleteAllSearches.bind(this)} style={"small"} />
     </View>
   }
 
   issueDeleteSearch(search) {
     Alert.alert('Slette søk',
-    'Klikk bekreft for å slette søk utført: '+search.date,
-      [{text: 'Bekreft', onPress: () => {
-        storage.deleteFile(search)
+      'Klikk bekreft for å slette søk utført: ' + search.date,
+      [
+        { text: 'Bekreft',
+          onPress: () => {
+            storage.deleteFile(search);
+            this.props.deleteSearch(this.props.allSearches, search);
+            this.forceUpdate(); }},
+        { text: 'Avbryt' }
+      ]
+    );
+  }
 
-        this.props.deleteSearch(this.props.allSearches, search)
-        this.forceUpdate()
-      }
-        }, {text: 'Avbryt'}]
+  issueDeleteAllSearches() {
+    Alert.alert('Slette alle søk',
+      'Klikk bekreft for å slette ALLE søk. Dette vil også slette alle ' +
+      'rapporter, og kan ikke angres!',
+      [
+        { text: 'Bekreft',
+          onPress: () => {
+            storage.clear();
+            this.props.clearAllSearches(); }},
+        { text: 'Avbryt' }
+      ]
     );
   }
 
