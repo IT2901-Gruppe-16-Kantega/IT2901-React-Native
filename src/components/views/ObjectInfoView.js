@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -6,20 +6,24 @@ import {
   ListView,
   TouchableHighlight,
   TextInput,
-  Keyboard,
   LayoutAnimation,
   Platform,
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
-import Container from '../misc/Container'
+import Button from '../misc/Button';
+import Container from '../misc/Container';
 import PropertyValue from '../misc/PropertyValue';
-import InputField from '../misc/InputField';
+import SettingSwitch from '../misc/SettingSwitch';
 
 import * as templates from '../../utilities/templates';
+import {datatype} from '../../utilities/values';
+
 import * as dataActions from '../../actions/dataActions';
+import * as reportActions from '../../actions/reportActions';
 import * as uiActions from '../../actions/uiActions';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -27,14 +31,19 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 /*
 Shows information about a selected object
 */
-var ObjectInfoView = React.createClass({
+
+const reportType = {
+  NEW: 'EGENSKAP_NY',
+  CHANGED: 'EGENSKAP_ENDRET',
+  WRONG: 'EGENSKAP_FEIL',
+}
+
+class ObjectInfoView extends React.Component {
   componentWillMount() {
-    Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
-    Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
-	if(Platform.OS === "android") {
-		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-	}
-  },
+  	if(Platform.OS === "android") {
+  		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+  	}
+  }
 
   render() {
     const {selectedObject, objekttypeInfo} = this.props;
@@ -42,7 +51,7 @@ var ObjectInfoView = React.createClass({
 
     return <Container>
         <View style={styles.mainInfo}>
-          <Text style={styles.title}>{objekttypeInfo.navn}</Text>
+          <Text style={this.props.theme.title}>{objekttypeInfo.navn}</Text>
           <PropertyValue property={"ID"} value={selectedObject.id} />
           <PropertyValue property={"Beskrivelse"} value={objekttypeInfo.beskrivelse} />
           <PropertyValue property={"Stedfesting"} value={objekttypeInfo.stedfesting} />
@@ -50,155 +59,252 @@ var ObjectInfoView = React.createClass({
           <PropertyValue property={"Sist modifisert"} value={metadata.sist_modifisert} />
         </View>
         <ListView
+          keyboardShouldPersistTaps='always'
           style={{marginBottom: this.props.keyboardPadding}}
           dataSource={ds.cloneWithRows(selectedObject.egenskaper)}
-          renderRow={this.renderRow}
+          renderHeader={this.renderHeader.bind(this)}
+          renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
         />
     </Container>
-  },
+  }
 
-  inputFocused(refName) {
-    this.props.resetNewPropertyValue();
-
-    setTimeout(() => {
-      let scrollResponder = this.refs.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        React.findNodeHandle(this.refs[refName]),
-        110, //additionalOffset
-        true
-      );
-    }, 50);
-  },
-
-  renderRow(rowData, sectionID, rowID, highlightRow) {
-    var enum_id = "";
-    if(rowData.enum_id) {
-      enum_id = " (" + rowData.enum_id + ")";
-    }
-    var egenskapstype = this.getEgenskapstype(rowData.id);
-
-    var h = rowData.id + 'input'
-
-    var verdi;
-    // This is a new object, where the value is not filled in yet
-    if(this.props.selectedObject.ny && !rowData.verdi) {
-      verdi = "";
-    } else {
-      verdi = rowData.verdi.toString();
-    }
-
-    var input;
-    if(egenskapstype.tillatte_verdier) {
-      var enumValues = [];
-      var enumValues = egenskapstype.tillatte_verdier.filter(e => {
-        if(this.props.editedPropertyValue === "") { return false }
-        return e.navn.toLowerCase().indexOf(this.props.editedPropertyValue.toLowerCase()) !== -1;
-      }).slice(0, 10);
-
-      input = <InputField
-        type={rowData.navn}
-        list={enumValues}
-        textType={this.props.editedPropertyValue}
-        choosenBool={false}
-        editable={true}
-        inputFunction={(text) => this.props.inputPropertyValue.bind(this, text, egenskapstype.navn)}
-        chooserFunction={this.chooseEnumValueForProperty}
-        colorController={'red'}
-        updateFunction={this.update} />
-    } else {
-      input = <TextInput
-        ref={h}
-        style={styles.value}
-        placeholder={"Legg inn verdi"}
-        value={verdi}
-        onFocus={this.inputFocused.bind(this, h)}
-      />
-    }
-
+  renderHeader() {
+    const {isEditingRoadObject, theme} = this.props;
     return (
-      <TouchableHighlight
-        onPress={this.doSomething(rowData.id)}
-        key={rowData.id}
-        >
-        <View style={styles.item}>
-          <Text style={styles.itemTitle}>{rowData.navn} ({rowData.id})</Text>
-          {input}
-          <PropertyValue property={"Datatype"} value={rowData.datatype_tekst + " (" + rowData.datatype + ")"} />
-          <PropertyValue property={"Viktighet"} value={egenskapstype.viktighet_tekst} />
+      <View style={{ padding: 10, backgroundColor: templates.colors.lightGray }}>
+        <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+          <Button type={"small"} text="Legg til egenskap" onPress={() => this.props.setIsEditingRoadObject(!isEditingRoadObject)} />
+          <Button type={"small"} text={this.props.showReport ? "Skjul rapport" : "Vis rapport"} onPress={() => this.props.setShowReport(!this.props.showReport)} />
+        </View>
+        {this.props.newProperty && this.renderRow(this.props.newProperty)}
+        {isEditingRoadObject && this.renderNotExistingProperties()}
+        {this.renderReport()}
+      </View>
+    );
+  }
+
+  renderReport() {
+    const report = this.getReport();
+    if(!(report && this.props.showReport)) { return <View />}
+    return (
+      <View>
+        <Text style={this.props.theme.subtitle}>Rapport:</Text>
+        <ListView
+          dataSource={ds.cloneWithRows(report.endringer)}
+          renderRow={this.renderReportChange.bind(this)}
+          enableEmptySections={true}
+        />
+      </View>
+    );
+  }
+
+  renderReportChange(change, sectionID, rowID) {
+    return (
+      <View style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: templates.colors.middleGray }} key={rowID + 'change'}>
+        <Text style={this.props.theme.text} >
+          <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
+        </Text>
+        <Text>{"Verdi: " + change.egenskap.verdi}</Text>
+        <Text>{change.dato}</Text>
+      </View>
+    );
+  }
+
+  renderRow(property, sectionID, rowID, highlightRow) {
+    return (
+      <TouchableHighlight style={this.propertyContainerStyle(property)}
+        underlayColor={"lightgray"}
+        onPress={this.selectProperty.bind(this, property)}>
+        <View>
+          <Text style={this.props.theme.subtitle}>{property.navn}</Text>
+          <Text style={this.props.theme.text}>{property.verdi || "<Ingen verdi>"}</Text>
+          {this.renderIfPropertyEditing(property)}
         </View>
       </TouchableHighlight>
-    )
-  },
+    );
+  }
 
-  update() {
-    console.log("update")
-  },
+  renderNotExistingProperties() {
+    const {selectedObject, objekttypeInfo} = this.props;
+    const report = this.getReport();
 
-  keyboardDidShow(e) {
-    //LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    this.props.setKeyboardPadding(e.endCoordinates.height);
-  },
+    var notExistingProperties = objekttypeInfo.egenskapstyper.filter(typeEgenskap => {
+      const findFunction = function(objektEgenskap) { return objektEgenskap.id === typeEgenskap.id }
+      var existsInReport = false;
+      //if(report) { existsInReport = report.endringer.find(e => findFunction(e.egenskap)) }
+      return !(selectedObject.egenskaper.find(findFunction) || existsInReport)
+    });
 
-  keyboardDidHide(e) {
-    //LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    this.props.setKeyboardPadding(0);
-  },
+    return (
+      <ListView
+        dataSource={ds.cloneWithRows(notExistingProperties)}
+        renderRow={property => <TouchableHighlight style={{ padding: 5, borderBottomWidth: 1 }} onPress={() => this.addOrChangeProperty(property)}><Text style={this.props.theme.text}>{property.navn}</Text></TouchableHighlight>}
+        enableEmptySections={true}
+      />
+    );
+  }
 
-  doSomething(id) {
-    if(true) { // editing
-
+  addOrChangeProperty(property, propertyValue) {
+    var verdi = null;
+    if(propertyValue) {
+      verdi = propertyValue.navn || propertyValue;
     }
-  },
 
+    if(property.verdi === verdi) { alert("samme verdi!"); return }
+
+    const propertySkeleton = {
+      id: property.id,
+      navn: property.navn,
+      datatype: property.datatype,
+      datatype_tekst: property.datatype_tekst,
+      verdi: verdi,
+    };
+    if(this.isEnumType(property)) {
+      propertySkeleton.enum_id = propertyValue && propertyValue.id || null;
+    }
+
+    if(propertyValue) {
+      var type = property === this.props.newProperty ? reportType.NEW : reportType.CHANGED;
+      this.addChangeToReport(propertySkeleton, type)
+      this.props.setNewProperty(null);
+      this.selectProperty(null);
+    } else {
+      this.props.setNewProperty(propertySkeleton);
+      this.selectProperty(propertySkeleton);
+    }
+    this.props.inputNewPropertyValue(null);
+    this.props.setIsEditingRoadObject(false);
+  }
+
+  addErrorToReport(property) {
+    this.addChangeToReport(property, reportType.WRONG);
+    this.selectProperty(null);
+  }
+
+  selectProperty(property) {
+    if(this.isEditing(property)) {
+      this.props.selectPropertyCurrentlyEditing(null);
+    } else {
+      this.props.selectPropertyCurrentlyEditing(property);
+      this.props.inputNewPropertyValue(null);
+    }
+  }
+
+  renderIfPropertyEditing(property) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    const egenskapstype = this.getEgenskapstype(property.id);
+    if(this.isEditing(property)) {
+      return (
+        <View>
+          <Text style={this.props.theme.text}>{"Type: " + property.datatype_tekst}</Text>
+          {property.verdi && <SettingSwitch title="Marker feil" value={false} onValueChange={this.addErrorToReport.bind(this, property)} />}
+          <TextInput value={this.props.newPropertyValue} onChangeText={text => this.props.inputNewPropertyValue(text)} placeholder={"Skriv inn verdi..."} height={40} style={{ backgroundColor: 'lightgray', padding: 5 }} />
+          {!this.isEnumType(property) && <Button text="Lagre" type="list" onPress={() => this.addOrChangeProperty(this.props.propertyCurrentlyEditing, this.props.newPropertyValue)} />}
+          {this.renderEnumListView(egenskapstype)}
+        </View>
+      );
+    }
+  }
+
+  renderEnumListView(egenskapstype) {
+    if(this.isEnumType(egenskapstype)) {
+      const verdier = egenskapstype.tillatte_verdier.sort((a, b) => a.id - b.id);
+      if(this.props.newPropertyValue) {
+        verdier = verdier.filter(v => v.navn.toString().toLowerCase().indexOf(this.props.newPropertyValue.toLowerCase()) > -1);
+      }
+      if(verdier.length > 10) { verdier = verdier.slice(0, 10) }
+
+      return (
+        <ListView
+          dataSource={ds.cloneWithRows(verdier)}
+          renderRow={this.renderPropertyValueRow.bind(this)}
+          enableEmptySections={true}
+        />
+      );
+    }
+  }
+
+  renderPropertyValueRow(propertyValue) {
+    return (
+      <TouchableHighlight onPress={() => this.addOrChangeProperty(this.props.propertyCurrentlyEditing, propertyValue)} style={{ padding: 20, backgroundColor: 'orange', marginTop: 5 }}>
+        <Text>{propertyValue.navn}</Text>
+      </TouchableHighlight>
+    );
+  }
+
+  addChangeToReport(property, reportType) {
+    const existingReport = this.getReport();
+    const change = {
+      egenskap: property,
+      dato: moment().format('YYYY-MM-DD HH:mm:ss'),
+      type: reportType,
+      beskrivelse: "",
+    }
+    this.props.reportChange(change);
+  }
+
+  // HELPERS
+  isEditing(property) {
+    return this.props.propertyCurrentlyEditing === property;
+  }
   getEgenskapstype(id) {
     return this.props.objekttypeInfo.egenskapstyper.find(e => e.id == id);
-  },
-});
+  }
+  isEnumType(property) {
+    return ((property.datatype === datatype.flerverdiattributtTall) || (property.datatype === datatype.flerverdiAttributtTekst))
+  }
+  getReport() {
+    return this.props.report.find(report => report.vegobjekt === this.props.selectedObject.id);
+  }
+
+  // STYLES
+  propertyContainerStyle(property) {
+    return {
+      borderBottomColor: templates.colors.middleGray,
+      borderBottomWidth: 1,
+      padding: 10,
+    }
+  }
+}
 
 var styles = StyleSheet.create({
   mainInfo: {
-    backgroundColor: templates.colors.orange,
+    backgroundColor: templates.colors.blue,
     zIndex: 2,
     borderBottomColor: templates.colors.darkGray,
     borderBottomWidth: 3,
     padding: 10,
   },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold'
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  item: {
-    borderBottomColor: templates.colors.darkGray,
-    borderBottomWidth: 1,
-    padding: 10,
-  },
-  value: {
-    fontSize: 16,
-    height: 40,
-  }
 })
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setKeyboardPadding: bindActionCreators(uiActions.setKeyboardPadding, dispatch),
-    inputPropertyValue: bindActionCreators(dataActions.inputPropertyValue, dispatch),
-    resetNewPropertyValue: bindActionCreators(dataActions.resetNewPropertyValue, dispatch),
-  }
-};
 
 function mapStateToProps(state) {
   return {
-    keyboardPadding: state.uiReducer.keyboardPadding,
-    objekttypeInfo: state.dataReducer.objekttypeInfo,
-    selectedObject: state.mapReducer.selectedObject,
-    editedPropertyValue: state.dataReducer.editedPropertyValue,
-    editedPropertyValueName: state.dataReducer.editedPropertyValueName,
-  };
+    theme: state.settingsReducer.themeStyle,
+
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    selectedObject: state.dataReducer.selectedObject,
+    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
+    report: state.dataReducer.currentRoadSearch.report,
+
+    isEditingRoadObject: state.reportReducer.isEditingRoadObject,
+    propertyCurrentlyEditing: state.reportReducer.propertyCurrentlyEditing,
+    newPropertyValue: state.reportReducer.newPropertyValue,
+    newProperty: state.reportReducer.newProperty,
+    showReport: state.reportReducer.showReport,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setIsEditingRoadObject: bindActionCreators(reportActions.setIsEditingRoadObject, dispatch),
+    selectPropertyCurrentlyEditing: bindActionCreators(reportActions.selectPropertyCurrentlyEditing, dispatch),
+    inputNewPropertyValue: bindActionCreators(reportActions.inputNewPropertyValue, dispatch),
+    reportChange: bindActionCreators(dataActions.reportChange, dispatch),
+    setNewProperty: bindActionCreators(reportActions.setNewProperty, dispatch),
+    setShowReport: bindActionCreators(reportActions.setShowReport, dispatch),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (ObjectInfoView);

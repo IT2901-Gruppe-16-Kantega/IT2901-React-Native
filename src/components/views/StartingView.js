@@ -20,17 +20,17 @@ import * as templates from '../../utilities/templates'
 /*
 starting page of application
 */
-var StartingView = React.createClass({
+class StartingView extends React.Component {
   render() {
     return <Container>
       {this.renderLoadingView()}
       <View style={styles.contents}>
-        <Button style={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
-        <Button style={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
-        <Button style={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
+        <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
+        <Button type={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
+        <Button type={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
       </View>
     </Container>
-  },
+  }
 
   renderLoadingView() {
     if(this.props.loadingProgress < 1) {
@@ -52,7 +52,7 @@ var StartingView = React.createClass({
       return <View/>
     }
   }
-});
+}
 
 var styles = StyleSheet.create({
   loadingProgress: {
@@ -90,7 +90,7 @@ function mapStateToProps(state) {
     loadingProgress: state.dataReducer.loadingProgress,
     fetching: state.dataReducer.fetching,
     theme: state.settingsReducer.themeStyle,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {return bindActionCreators(userActions, dispatch);}

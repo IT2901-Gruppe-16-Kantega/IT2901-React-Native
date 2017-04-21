@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -28,29 +28,29 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 /*
 View that shows all stored data
 */
-var StoredDataView = React.createClass({
+class StoredDataView extends React.Component {
   render() {
     return <Container>
       {this.renderSearches()}
     </Container>
-  },
+  }
 
   renderSearches() {
     if(this.props.allSearches.length != 0) {
       return <ListView
         // Create the data source. Sort by date created (descending, newest first)
         dataSource={ds.cloneWithRows(this.props.allSearches.sort((a, b) => b.key - a.key))}
-        renderRow={this.renderRow}
-        renderFooter={this.renderFooter}
+        renderRow={this.renderRow.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         enableEmptySections={true}
       />
     } else {
       return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <Text>Ingen søk...</Text>
-        <Button text={"Gjør et søk"} onPress={Actions.SearchView} />
+        <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
       </View>
     }
-  },
+  }
 
   // Render each saved road search row
   renderRow(roadSearch, sectionID, rowID, highlightRow) {
@@ -79,38 +79,48 @@ var StoredDataView = React.createClass({
         </View>
       </View>
     </TouchableHighlight>
-  },
+  }
 
   renderFooter() {
     return <View style={styles.footerStyle}>
-      <Button text={"Slett alt"} onPress={() => {
-          storage.clear()
-          this.props.clearAllSearches()
-
-        }} style={"small"} />
+      <Button type={"small"} text={"Slett alt"} onPress={this.issueDeleteAllSearches.bind(this)} style={"small"} />
     </View>
-  },
+  }
 
   issueDeleteSearch(search) {
-    console.log(search)
     Alert.alert('Slette søk',
-    'Klikk bekreft for å slette søk utført: '+search.date,
-      [{text: 'Bekreft', onPress: () => {
-        storage.deleteFile(search)
-
-        this.props.deleteSearch(this.props.allSearches, search)
-        this.forceUpdate()
-      }
-        }, {text: 'Avbryt'}]
+      'Klikk bekreft for å slette søk utført: ' + search.date,
+      [
+        { text: 'Bekreft',
+          onPress: () => {
+            storage.deleteFile(search);
+            this.props.deleteSearch(this.props.allSearches, search);
+            this.forceUpdate(); }},
+        { text: 'Avbryt' }
+      ]
     );
-  },
+  }
+
+  issueDeleteAllSearches() {
+    Alert.alert('Slette alle søk',
+      'Klikk bekreft for å slette ALLE søk. Dette vil også slette alle ' +
+      'rapporter, og kan ikke angres!',
+      [
+        { text: 'Bekreft',
+          onPress: () => {
+            storage.clear();
+            this.props.clearAllSearches(); }},
+        { text: 'Avbryt' }
+      ]
+    );
+  }
 
   // Open the selected roadSearch item
   openSearch(search) {
     this.props.setCurrentRoadSearch(search);
     Actions.CurrentSearchView();
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   row: {
@@ -133,7 +143,7 @@ function mapStateToProps(state) {
   return {
     allSearches: state.dataReducer.allSearches,
     theme: state.settingsReducer.themeStyle,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

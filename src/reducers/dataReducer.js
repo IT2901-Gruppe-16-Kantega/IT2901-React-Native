@@ -13,6 +13,7 @@ export default function reducer(state={
 
   //this holds the currently chosen roadSearch to avoid calling the entire array all the time
   currentRoadSearch: null,
+  selectedObject: null,
 
   // used by currentSearchView
   description: "",
@@ -24,11 +25,11 @@ export default function reducer(state={
   //used by filewriter
   writing_file: false,
 
-  objekttypeInfo: [],
+  objekttypeInfo: [], // Not used?
 
   isEditingRoadObject: false,
-  editedPropertyValue: "",
-  editedPropertyValueName: null,
+  editingProperty: null,
+  newPropertyValue: null,
 
   loadingProgress: 1,
 
@@ -36,13 +37,38 @@ export default function reducer(state={
   switch (action.type) {
     // cases associated with searches
 
-    case "REPORT_ROAD_OBJECT": {
+    /*case "REPORT_ROAD_OBJECT": {
       const searches = state.allSearches
       const search = action.payload
       searches.splice(searches.indexOf(search), 1)
       searches.push(search);
       return {...state, allSearches: searches, currentRoadSearch: search}
+    }*/
+    case "REPORT_CHANGE": {
+      const searches = state.allSearches;
+      const search = state.currentRoadSearch;
+      const object = state.selectedObject;
+      const change = action.payload;
 
+      const foundReport = search.report.find(report => report.vegobjekt === object.id);
+      if(foundReport) {
+        const indexOfFoundProperty = foundReport.endringer.map(e => e.egenskap.id).indexOf(change.egenskap.id);
+        if(indexOfFoundProperty >= 0) {
+          foundReport.endringer[indexOfFoundProperty] = change;
+        } else {
+          foundReport.endringer.push(change);
+        }
+      } else {
+        search.report.push({vegobjekt: object.id, endringer: [change]})
+      }
+
+      searches.splice(searches.indexOf(search), 1);
+      searches.push(search);
+
+      return {...state, allSearches: searches}
+    }
+    case "SELECT_OBJECT": {
+      return {...state, selectedObject: action.payload}
     }
     case "SET_DESCRIPTION": {
       return {...state, description: action.payload}
@@ -141,21 +167,6 @@ export default function reducer(state={
     }
     case "SET_OBJEKTTYPE_INFO": {
       return{...state, objekttypeInfo: action.payload}
-    }
-    case "ADD_ROAD_OBJECT": {
-      var newRoadSearch = state.currentRoadSearch;
-      newRoadSearch.roadObjects.push(action.payload);
-      return {...state, currentRoadSearch: newRoadSearch}
-    }
-    case "SET_IS_EDITING_ROAD_OBJECT": {
-      return {...state, isEditingRoadObject: action.payload}
-    }
-    // When creating a new object or editing an existing one.
-    case "INPUT_PROPERTY_VALUE": {
-      return {...state, editedPropertyValue: action.payload.value, editedPropertyValueName: action.payload.property}
-    }
-    case "RESET_NEW_PROPERTY_VALUE": {
-      return {...state, editedPropertyValue: "", editedPropertyValueName: null}
     }
   }
   return state

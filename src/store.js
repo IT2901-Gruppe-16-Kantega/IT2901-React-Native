@@ -10,7 +10,7 @@ import reducers from './reducers'
 
 
 //Debug
-const middleware = applyMiddleware(promise(), thunk, logger())
+const middleware = applyMiddleware(promise(), thunk, /*logger()*/)
 
 //kjøring
 //const middleware = applyMiddleware(promise(), thunk)

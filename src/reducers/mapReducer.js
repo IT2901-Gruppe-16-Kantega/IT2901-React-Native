@@ -10,8 +10,6 @@ export default function reducer(state={
 
   showSecondSidebar: false,
 
-  selectedObject: null,
-
   selectedMarker: null,
 
   region: null,
@@ -26,9 +24,6 @@ export default function reducer(state={
     }
     case "TOGGLE_SECOND_SIDEBAR": {
       return {...state, showSecondSidebar: action.payload}
-    }
-    case "SELECT_OBJECT": {
-      return {...state, selectedObject: action.payload}
     }
     case "SELECT_MARKER": {
       return {...state, selectedMarker: action.payload}

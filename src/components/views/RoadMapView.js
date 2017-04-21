@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -17,13 +17,14 @@ import Container from '../misc/Container'
 import MarkerCallout from '../misc/MarkerCallout'
 import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
-import MapMarker from '../misc/MapMarker'
 
-import {comparators, datatype, importance} from '../../utilities/values';
-import {parseGeometry, randomColor} from '../../utilities/utils'
 import * as templates from '../../utilities/templates';
+import {parseGeometry, randomColor} from '../../utilities/utils'
+import {comparators, datatype, importance} from '../../utilities/values';
+
 import * as dataActions from '../../actions/dataActions';
 import * as mapActions from '../../actions/mapActions';
+import * as reportActions from '../../actions/reportActions';
 
 // Create a reference to the map, to change it's region
 var map = null;
@@ -31,10 +32,17 @@ var map = null;
 /*
 View that holds the map
 */
-var RoadMapView = React.createClass({
-  componentWillMount() {
-    this.createCluster();
-  },
+class RoadMapView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.changeRegion = this.changeRegion.bind(this);
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.createCluster();
+    }, 1000);
+  }
 
   componentDidUpdate(prevProps) {
     if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
@@ -42,7 +50,7 @@ var RoadMapView = React.createClass({
         this.createCluster();
       }, 10)
     }
-  },
+  }
 
   createCluster() {
     const cluster = supercluster({
@@ -64,16 +72,17 @@ var RoadMapView = React.createClass({
       features.push(feature);
 
       if(!this.props.region) {
-        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.1, longitudeDelta: 0.1 })
+        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 1, longitudeDelta: 1 })
       }
+      this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 })
     }
     cluster.load(features);
     this.props.setCluster(cluster);
 
     setTimeout(() => {
       this.setMarkersAtRegion();
-    }, 50)
-  },
+    }, 500)
+  }
 
   render() {
     return <Container>
@@ -83,15 +92,14 @@ var RoadMapView = React.createClass({
           style={{ flex: 1 }}
           showsUserLocation={true}
           region={this.props.region}
-          onRegionChange={this.changeRegion}
-          onLongPress={this.addMarker} >
+          onRegionChange={this.changeRegion} >
           {this.props.markers}
         </MapView>
         <SidebarMain />
         <SidebarSecondary />
       </View>
     </Container>
-  },
+  }
 
   addMarker(e) {
     if(this.getZoomLevel() < 16) {
@@ -155,9 +163,9 @@ var RoadMapView = React.createClass({
     }, 10)
 
     setTimeout(() => {
-      Actions.ObjectInfoView({rightTitle: "Lagre"});
+      Actions.ObjectInfoView();
     }, 500)
-  },
+  }
 
   setMarkersAtRegion() {
     if(this.props.cluster && this.props.cluster.getClusters) {
@@ -174,12 +182,12 @@ var RoadMapView = React.createClass({
         this.props.setMarkers(m);
       }
     }
-  },
+  }
 
   getZoomLevel() {
     const angle = this.props.region.longitudeDelta;
     return Math.round(Math.log(360 / angle) / Math.LN2);
-  },
+  }
 
   shouldSkipObject(roadObject) {
     if(this.props.allSelectedFilters) {
@@ -198,7 +206,7 @@ var RoadMapView = React.createClass({
               return true;
             }
 
-            if(filter.egenskap.tillatte_verdier) {
+            if(filter.egenskap.tillatte_verdier && filter.verdi) {
               const isEqual = markerProperty.enum_id === filter.verdi.id;
               if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
                 return true;
@@ -237,7 +245,7 @@ var RoadMapView = React.createClass({
     }
 
     return false;
-  },
+  }
 
   createMapFeatures(markers) {
     return markers.map((marker, index) => {
@@ -267,23 +275,21 @@ var RoadMapView = React.createClass({
         } else {
           return <MapView.Marker
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
-            key={index}
+            key={marker.properties.roadObject.id}
             pinColor={templates.colors.blue} >
             <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
-              <MarkerCallout
-                roadObject={marker.properties.roadObject}
-              />
+              <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
           </MapView.Marker>
         }
       }
     })
-  },
+  }
 
   changeRegion(region) {
     this.props.setRegion(region);
     this.setMarkersAtRegion()
-  },
+  }
 
   markerPressed(marker) {
     let isCluster = marker.properties && marker.properties.cluster;
@@ -301,8 +307,8 @@ var RoadMapView = React.createClass({
       latitudeDelta: isCluster ? region.latitudeDelta / 5 : region.latitudeDelta,
     }
     map.animateToRegion(newRegion, 200);
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   cluster: {
@@ -334,12 +340,11 @@ function mapStateToProps(state) {
     roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
-    currentRoadSearch: state.dataReducer.currentRoadSearch,
 
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
 
-    selectedObject: state.mapReducer.selectedObject,
+    selectedObject: state.dataReducer.selectedObject,
 
     allSelectedFilters: state.filterReducer.allSelectedFilters,
 
@@ -349,18 +354,19 @@ function mapStateToProps(state) {
     markers: state.mapReducer.markers,
     cluster: state.mapReducer.cluster,
     clusteringOn: state.settingsReducer.clusteringOn,
-  };}
+  }
+}
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
     selectMarker: bindActionCreators(mapActions.selectMarker, dispatch),
 
-    addRoadObject: bindActionCreators(dataActions.addRoadObject, dispatch),
+    addRoadObject: bindActionCreators(reportActions.addRoadObject, dispatch),
     setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
     setCluster: bindActionCreators(mapActions.setCluster, dispatch),
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (RoadMapView);

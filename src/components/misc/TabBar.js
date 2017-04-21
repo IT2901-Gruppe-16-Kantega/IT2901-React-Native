@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Text,
   View,
@@ -7,60 +7,93 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates'
 
-/*props
-  elements: [{title: "", onPress: {}, image: {}}]
-
-*/
-var TabBar = React.createClass({
+class TabBar extends React.Component {
+  static propTypes = {
+    tabs: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      onPress: PropTypes.func.isRequired,
+    })),
+  }
 
   render() {
-    return <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0, height: 50, flexDirection: 'row' }}>
-      {this.createTabs()}
-    </View>
-  },
+    return (
+      <View style={styles.container}>
+        {this.props.tabs.map(e => {
+          return this.createTab(e);
+        })}
+      </View>
+    );
+  }
 
-  createTabs() {
-    var tabs = [];
-    for(var i = 0; i < this.props.elements.length; i++) {
-      const tab = this.createTab(this.props.elements[i]);
-      tabs.push(tab);
+  // Creates a single tab
+  createTab(tab) {
+    return (
+      <TouchableHighlight
+        key={tab.title}
+        style={this.tabStyle(tab)}
+        onPress={tab.onPress}
+        underlayColor={templates.colors.middleGray}>
+        <Text style={this.textStyle(tab)}>{tab.title}</Text>
+      </TouchableHighlight>
+    );
+  }
+
+  // Checks if the provided tab is the selected tab
+  isSelected(tab) {
+    return this.props.chosenSearchTab === tab.title;
+  }
+
+  // Returns style based on if selected/not selected
+  style(tab) {
+    if (this.isSelected(tab)) { return this.props.theme.tabChosen; }
+    else { return this.props.theme.tabNotChosen; }
+  }
+
+  // Tab container style
+  tabStyle(tab) {
+    const style = this.style(tab);
+    return {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: style.backgroundColor,
+      borderWidth: 1,
+      borderTopWidth: style.borderTopWidth,
+      borderColor: this.props.theme.mainContainer.backgroundColor,
     }
-    return tabs;
-  },
+  }
 
-  createTab(element) {
-    var style;
-    if (element.chosen == element.title) { style = this.props.theme.tabChosen; }
-    else { style = this.props.theme.tabNotChosen; }
+  // Tab text style
+  textStyle(tab) {
+    const style = this.style(tab);
+    return {
+      color: style.textColor,
+      fontWeight: style.fontWeight,
+      fontSize: this.props.theme.subtitle.fontSize,
+    }
+  }
+}
 
-    return <TouchableHighlight
-      key={element.title}
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: style.backgroundColor,
-        borderWidth: 0.5,
-        borderTopWidth: style.borderTopWidth,
-        borderColor: this.props.theme.mainContainer.backgroundColor,
-      }}
-      onPress={element.onPress}
-      underlayColor={templates.colors.middleGray}
-      >
-        <Text style={{
-            color: style.textColor,
-            fontWeight: style.fontWeight,
-            fontSize: this.props.theme.subtitle.fontSize,
-          }}>{element.title}</Text>
-    </TouchableHighlight>
+var styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    height: 50,
+    flexDirection: 'row',
   }
 })
 
 function mapStateToProps(state) {
-  return { theme: state.settingsReducer.themeStyle };
+  return {
+    theme: state.settingsReducer.themeStyle,
+    chosenSearchTab: state.uiReducer.chosenSearchTab,
+  };
 }
 
 export default connect(mapStateToProps, null) (TabBar);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import PropertyValue from '../misc/PropertyValue'
 
 import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
 import * as templates from '../../utilities/templates'
+
 import * as dataActions from '../../actions/dataActions'
 import * as mapActions from '../../actions/mapActions'
 import * as searchActions from '../../actions/searchActions'
@@ -24,7 +25,7 @@ import * as searchActions from '../../actions/searchActions'
 /*
 view shown when fetching/loading data
 */
-var LoadingView = React.createClass({
+class LoadingView extends React.Component {
   componentWillMount() {
     fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
       this.props.setObjekttypeInfo(data);
@@ -33,7 +34,7 @@ var LoadingView = React.createClass({
     }.bind(this));
 
     this.props.fetchDataStart();
-  },
+  }
 
   render() {
     return <Container>
@@ -53,24 +54,24 @@ var LoadingView = React.createClass({
         </View>
       </View>
     </Container>
-  },
+  }
 
   //this may be really bad as componentDidUpdate may be called a lot of times
   componentDidUpdate() {
     if(this.props.fetched) {
       this.props.createSearchObject(
-        '',
+        '', // description
         this.props.objects,
-        [],
+        [], // report
         this.props.combinedSearchParameters,
         this.props.objekttypeInfo
       );
 
       this.props.resetSearchParameters();
-      Actions.CurrentSearchView();
-      }
-    },
-});
+      Actions.CurrentSearchView({type: 'reset'});
+    }
+  }
+}
 
 function mapStateToProps(state) {
   return {
@@ -94,7 +95,7 @@ function mapStateToProps(state) {
     objekttypeInfo: state.dataReducer.objekttypeInfo,
     allSearches: state.dataReducer.allSearches,
     selectedFilter: state.filterReducer.selectedFilter,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

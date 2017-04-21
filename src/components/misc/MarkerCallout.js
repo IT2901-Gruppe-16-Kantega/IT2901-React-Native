@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import PropertyValue from './PropertyValue';
 import Button from '../misc/Button'
@@ -20,39 +21,31 @@ import * as mapActions from '../../actions/mapActions'
 import * as dataActions from '../../actions/dataActions'
 import * as reportActions from '../../actions/reportActions'
 
-
-
-
 /*
 The callout shown when the user taps a pin on the map view.
 */
-var MarkerCallout = React.createClass({
+class MarkerCallout extends React.Component {
+  static propTypes = {
+    roadObject: PropTypes.object.isRequired,
+  }
+
   render() {
     var {roadObject} = this.props;
 
     return <View style={{flex: 1}}>
-      <TouchableHighlight
-        onPress={this.openObjectInformation}>
-        <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
-      </TouchableHighlight>
+      <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
-      <Button style = "list" text="Rapporter" onPress={() => {
-          this.props.setReportViewType("NEW")
-          this.props.setRoadObject(this.props.roadObject)
-          Actions.CustomizeReportView()
-        }
-          } />
+      <Button type="list" text="Informasjon" onPress={() => this.openObjectInformation()} />
     </View>
-  },
-
+  }
 
   // Called when the user taps the title of the callout
   // Opens the object info view.
   openObjectInformation() {
     this.props.selectObject(this.props.roadObject);
     Actions.ObjectInfoView();
-  },
+  }
 
   // Cycles through all the selected filters, and adds information
   // about each of them to the callout bubble.
@@ -85,7 +78,7 @@ var MarkerCallout = React.createClass({
 
       return textComponents;
     }
-  },
+  }
 
   // Returns eventual postfixes, for example 'mm' for measurements
   getPostfix() {
@@ -97,9 +90,8 @@ var MarkerCallout = React.createClass({
       }
     }
     return "";
-  },
-
-});
+  }
+}
 
 var styles = StyleSheet.create({
   title: {
@@ -115,19 +107,14 @@ function mapStateToProps(state) {
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
-
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectObject: bindActionCreators(mapActions.selectObject, dispatch),
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
     searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
-    reportRoadObject: bindActionCreators(dataActions.reportRoadObject, dispatch),
-    setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
-    setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
-
-    }
-};
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (MarkerCallout);

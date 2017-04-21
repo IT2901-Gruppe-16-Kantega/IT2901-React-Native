@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -30,18 +30,18 @@ import * as mapActions from '../../actions/mapActions'
 /*
 Shows information about current search, buttons for viewing map and opening AR
 */
-var CurrentSearchView = React.createClass({
+class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
     this.props.setDescription(this.props.currentRoadSearch.description)
-  },
+  }
 
   render() {
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
-  },
+  }
 
   createInfoView() {
     var kommuneValue = "Ikke spesifisert"
@@ -73,15 +73,13 @@ var CurrentSearchView = React.createClass({
         </View>
       </TouchableWithoutFeedback>
     </View>
-  },
+  }
 
   createDescriptionArea() {
-    var placeholder = ""
-    if(this.props.description == "") {
-      placeholder = "Skriv inn en beskrivelse eller et notat"
-    }
+    const {theme, description} = this.props;
+    const placeholder = description || "Skriv inn en beskrivelse eller et notat"
     return  <View style={styles.descriptionArea}>
-      <PropertyValue property={"Beskrivelse/Notater"}/>
+      <Text style={theme.subtitle}>Beskrivelse/notater</Text>
       <TextInput
         underlineColorAndroid={templates.colors.lightGray}
         autocorrect={false}
@@ -89,41 +87,46 @@ var CurrentSearchView = React.createClass({
           flex: 1,
           padding: 5,
           fontSize: 15,
-          color: this.props.theme.secondaryTextColor,
-          backgroundColor: this.props.theme.navigationBarStyle.backgroundColor
+          color: theme.secondaryTextColor,
+          backgroundColor: theme.navigationBarStyle.backgroundColor
         }}
-        onBlur={()=>{console.log("asd")}}
         multiline={true}
-        placeholderTextColor={this.props.theme.placeholderTextColor}
+        placeholderTextColor={theme.placeholderTextColor}
         placeholder={placeholder}
-        onChangeText={(text) => {
-          this.props.setDescription(text)
-        }}
+        onChangeText={text => this.props.setDescription(text)}
         keyboardType="default"
-        value={this.props.description}
+        value={description}
         onEndEditing={this.saveDescription}
         />
     </View>
-  },
+  }
 
-  //TODO this is now implemented using really bad redux-practise, should implement better
   saveDescription() {
-    this.props.currentRoadSearch.description = this.props.description
-    this.props.searchSaved(this.props.currentRoadSearch)
-  },
+    this.props.currentRoadSearch.description = this.props.description;
+    this.props.searchSaved(this.props.currentRoadSearch);
+  }
 
   createButtons() {
     return <View>
       <View style={styles.topButtons}>
-        <Button text="Kart" onPress={Actions.RoadMapView} />
-        <Button text="AR" onPress={this.openAR} />
+        <Button text="Kart" type={"half"} onPress={Actions.RoadMapView} />
+        <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
       </View>
       <View style={styles.bottomButtons}>
-        <Button text="Rapport" onPress={Actions.ReportView} />
-        <Button text="Tilbake" onPress={Actions.StartingView} />
+        <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
+        <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
       </View>
     </View>
-  },
+  }
+
+  goBack() {
+    // If from StoredDataView, pop, else go to StartingView (if from search)
+    if(Actions.pop()) {
+      Actions.pop();
+    } else {
+      Actions.StartingView();
+    }
+  }
 
   openAR() {
     //kan brukes ved mottak av data fra unity
@@ -146,8 +149,8 @@ var CurrentSearchView = React.createClass({
     } else {
       console.log("Not ios or android")
     }
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   informationArea: {
@@ -188,16 +191,17 @@ function mapStateToProps(state) {
     allSearches: state.dataReducer.allSearches,
     theme: state.settingsReducer.themeStyle,
     description: state.dataReducer.description,
-  };}
-
-  function mapDispatchToProps(dispatch) {
-    return {
-      //dataActions
-      resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
-      setRegion: bindActionCreators(mapActions.setRegion, dispatch),
-      searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
-      setDescription: bindActionCreators(dataActions.setDescription, dispatch),
-    }
   }
-  //function mapDispatchToProps(dispatch) {return bindActionCreators(dataActions, dispatch);}
-  export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //dataActions
+    resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+    setRegion: bindActionCreators(mapActions.setRegion, dispatch),
+    searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),
+    setDescription: bindActionCreators(dataActions.setDescription, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (CurrentSearchView);

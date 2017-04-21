@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ListView,
   TouchableHighlight,
+  Share,
   } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -14,107 +15,77 @@ import { connect } from 'react-redux'
 import Container from '../misc/Container'
 
 import * as templates from '../../utilities/templates'
-import * as reportActions from '../../actions/reportActions'
+import * as dataActions from '../../actions/dataActions'
+
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 /*
 View that shows information about reports
 */
-var ReportView = React.createClass({
-  componentDidMount() {
-  },
-
+class ReportView extends React.Component {
   render() {
-    return <Container>
+    return (
+      <Container>
         {this.renderReportObjects()}
-    </Container>
-  },
+      </Container>
+    );
+  }
 
   renderReportObjects() {
-    if(this.props.currentRoadSearch.report) {
+    const {report} = this.props.currentRoadSearch;
+    if(report.length > 0) {
       return <ListView
-        dataSource={ds.cloneWithRows(this.props.currentRoadSearch.report)}
-        renderRow={this.renderRow}
-        renderFooter={this.renderFooter}
+        dataSource={ds.cloneWithRows(report)}
+        renderRow={this.renderRow.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         enableEmptySections={true}
       />
     } else {
-      return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <Text>Ingen rapporter registrert...</Text>
-      </View>
+      return (
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <Text>Ingen rapporter registrert...</Text>
+        </View>
+      );
     }
-  },
-
-  // Render each saved road search row
-  renderRow(reportObject, sectionID, rowID, highlightRow) {
-
-
-    //TODO Feiltype, valgt på kart ikke tekst slik det er nå
-
-    return <TouchableHighlight
-      key={rowID}
-      onPress={() => {
-        this.props.setReportViewType("EDIT")
-        this.props.setReportObject(reportObject)
-        this.props.setRoadObject(reportObject.roadObject)
-        Actions.CustomizeReportView()
-      }}
-      style={[styles.row, this.props.theme.container]}>
-      <View>
-        <Text style={this.props.theme.text}>{reportObject.date}</Text>
-        <Text style={this.props.theme.title}>VegobjektID: {reportObject.roadObject.id}</Text>
-        <Text style={this.props.theme.text}>Objekttype: {}
-          {reportObject.roadObject.metadata.type.navn}
-          ({reportObject.roadObject.metadata.type.id})
-        </Text>
-        <Text/>
-        <View style={{flexDirection: "row", alignItems: 'center'}}>
-        <Text style={[this.props.theme.subtitle, {color: templates.colors.orange, fontWeight: 'bold'}]}>
-          Feil: </Text>
-        <Text style={[this.props.theme.text, {color: templates.colors.orange}]}>
-          Mangler egengeometri</Text>
-      </View>
-      </View>
-    </TouchableHighlight>
-  },
-
-  renderFooter() {
-    return <View style={styles.footerStyle}>
-    </View>
-  },
-});
-
-var styles = StyleSheet.create({
-  row: {
-    padding: 10,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  buttonContainer: {
-    marginTop: 10,
-    alignItems: 'flex-end',
-  },
-  footerStyle: {
-    padding: 10,
-    alignItems: 'center',
   }
 
-})
+  renderRow(reportItem) {
+    return (
+      <TouchableHighlight onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
+        <Text>{reportItem.vegobjekt}</Text>
+      </TouchableHighlight>
+    );
+  }
+
+  renderFooter() {
+    const message = JSON.stringify(this.props.currentRoadSearch.report);
+    return (
+      <View>
+        <TouchableHighlight onPress={() => Share.share({ message: message })}>
+          <Text>Del</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  goToObjectInfoView(objectID) {
+    const object = this.props.currentRoadSearch.roadObjects.find(o => o.id === objectID);
+    this.props.selectObject(object);
+    Actions.ObjectInfoView();
+  }
+}
 
 function mapStateToProps(state) {
   return {
     theme: state.settingsReducer.themeStyle,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
-  };}
-
-  function mapDispatchToProps(dispatch) {
-    return {
-      setReportViewType: bindActionCreators(reportActions.setReportViewType, dispatch),
-      setRoadObject: bindActionCreators(reportActions.setRoadObject, dispatch),
-      setReportObject: bindActionCreators(reportActions.setReportObject, dispatch),
-
-    }
   }
+}
 
-  export default connect(mapStateToProps, mapDispatchToProps) (ReportView);
+function mapDispatchToProps(dispatch) {
+  return {
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (ReportView);

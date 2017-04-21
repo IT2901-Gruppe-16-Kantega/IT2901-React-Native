@@ -28,14 +28,15 @@ import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
-import CustomizeReportView from './components/views/CustomizeReportView'
 
 import NavigationBar from './components/misc/NavigationBar'
 
 // misc imports
 import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
+
 import * as dataActions from './actions/dataActions'
+import * as filterActions from './actions/filterActions'
 import * as mapActions from './actions/mapActions'
 
 let ScreenWidth = Dimensions.get("window").width;
@@ -45,87 +46,58 @@ var scenes = null;
 
 class App extends Component {
   componentWillMount() {
-	if(Platform.OS === "android") {
-		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-	}
+  	if(Platform.OS === "android") {
+  		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+  	}
+
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
     var stored = storage.load(function(progress) {
       this.props.setLoadingProgress(progress);
     }.bind(this));
     this.props.loadSearches(stored)
+
     scenes = Actions.create(
       <Scene key="root">
         <Scene
           key="StartingView"
           component={StartingView}
-          navBar={NavigationBar}
-          title=""
           type='reset'
-          hideNavBar={true}
-          initial={true}
-
-          />
+          initial={true} />
         <Scene
           key="SearchView"
-          component={SearchView}
-          hideNavBar={false}
-          />
+          component={SearchView} />
         <Scene
           key="StoredDataView"
           component={StoredDataView}
-          navBar={NavigationBar}
-          title="Lagrede søk"
-          hideNavBar={false} />
+          title="Lagrede søk" />
         <Scene
           key="SettingsView"
           component={SettingsView}
-          title="Innstillinger"
-          hideNavBar={false} />
+          title="Innstillinger" />
         <Scene
           key="LoadingView"
           component={LoadingView}
-          title=""
-          hideNavBar={true} />
+          type='reset' />
         <Scene
           key="CurrentSearchView"
-          component={CurrentSearchView}
-          title=""
-          hideNavBar={true}
-          type = 'reset' />
+          component={CurrentSearchView} />
         <Scene
           key="ReportView"
           component={ReportView}
-          title="Rapport"
-          hideNavBar={false}/>
+          title="Rapport" />
         <Scene
           key="RoadMapView"
           component={RoadMapView}
-          title=""
-          hideNavBar={false}
-          onRight={ this.toggleSidebar.bind(this) }
+          onRight={ () => this.toggleSidebar() }
           rightTitle="Filtrer"
+          onBack={() => this.exitMap()}
           navigationBarStyle={this.props.navigationBarStyle} />
         <Scene
           key="ObjectInfoView"
           component={ObjectInfoView}
-          sceneStyle={{paddingTop: 64}}
-          title=""
-          hideNavBar={false}
-          //rightTitle={this.getObjectInfoViewRightTitle}
-          onRight={ () => console.log("Hei") } />
-
-        <Scene
-          key="CustomizeReportView"
-          component={CustomizeReportView}
-          sceneStyle={{paddingTop: 64}}
-          title={()=> {
-            if(this.props.reportViewType==="NEW") return "Registrer rapport"
-            else return "Endre rapport"
-          }}
-          hideNavBar={false} />
+          sceneStyle={{paddingTop: 64}} />
     </Scene>
-
     );
   }
 
@@ -133,26 +105,20 @@ class App extends Component {
     return (
       <Router
         scenes={scenes}
+        navBar={NavigationBar}
         sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
       </Router>
     )
   }
 
-  getObjectInfoViewRightTitle() {
-    if(this.props.isEditingRoadObject) {
-      return "Lagre";
-    }
-    return "Rediger";
-  }
-
-  toggleSidebar() {
+  toggleSidebar(close) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
     var width = ScreenWidth / 2.2;
     var xPos = ScreenWidth - width + 3;
-    var frame = {width: width};
+    var frame = {width: width, top: 10};
 
-    if(this.props.sidebarFrame.left == xPos) {
+    if((this.props.sidebarFrame.left == xPos) || close) {
       frame.left = ScreenWidth;
       this.props.toggleSecondSidebar(false);
     } else {
@@ -160,6 +126,12 @@ class App extends Component {
     }
 
     this.props.setSidebarFrame(frame);
+  }
+
+  exitMap() {
+    Actions.pop();
+    this.toggleSidebar(true);
+    this.props.removeAllFilters();
   }
 }
 
@@ -174,11 +146,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    removeAllFilters: bindActionCreators(filterActions.removeAllFilters, dispatch),
     loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
     setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
     setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
     toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
-    setIsEditingRoadObject: bindActionCreators(dataActions.setIsEditingRoadObject, dispatch),
   }
 }
 

@@ -9,12 +9,26 @@ const storage = storageEngine('NVDB-storage')
 */
 
 
-export function reportRoadObject(reportObject, roadSearch) {
+/*export function reportRoadObject(reportObject, roadSearch) {
   roadSearch.report.push(reportObject)
   storage.saveSearch(roadSearch)
   return {
     type: "REPORT_ROAD_OBJECT",
     payload: roadSearch,
+  }
+}*/
+
+export function reportChange(change) {
+  return {
+    type: "REPORT_CHANGE",
+    payload: change,
+  }
+}
+
+export function selectObject(roadObject) {
+  return {
+    type: "SELECT_OBJECT",
+    payload: roadObject,
   }
 }
 
@@ -181,32 +195,5 @@ export function inputFylke(input){
     .catch((err) => {
       dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
     })
-  }
-}
-
-export function addRoadObject(object) {
-  return {
-    type: "ADD_ROAD_OBJECT",
-    payload: object,
-  }
-}
-
-export function setIsEditingRoadObject(editing) {
-  return {
-    type: "SET_IS_EDITING_ROAD_OBJECT",
-    payload: editing,
-  }
-}
-
-export function inputPropertyValue(value, property) {
-  return {
-    type: "INPUT_PROPERTY_VALUE",
-    payload: {value, property},
-  }
-}
-
-export function resetNewPropertyValue() {
-  return {
-    type: "RESET_NEW_PROPERTY_VALUE",
   }
 }

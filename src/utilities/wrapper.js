@@ -64,6 +64,7 @@ async function fetchData(_path) {
     return data;
   } catch(error) {
     console.log('ERROR: wrapper.fetchData');
+    return null;
   }
 }
 

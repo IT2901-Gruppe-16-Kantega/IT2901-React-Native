@@ -50,8 +50,13 @@ export function addFilter(filter) {
 }
 
 export function removeFilter(filter) {
+  console.log(filter);
   return {
     type: "REMOVE_FILTER",
     payload: filter,
   }
+}
+
+export function removeAllFilters() {
+  return { type: "REMOVE_ALL_FILTERS" }
 }
