@@ -18,12 +18,8 @@ export default function reducer(state={
   // used by currentSearchView
   description: "",
 
-  //currently not used
-  currentRoadSearchIndex: null,
-  andel_egengeometri: null,
-
   //used by filewriter
-  writing_file: false,
+  writingFile: false,
 
   objekttypeInfo: [], // Not used?
 
@@ -35,15 +31,6 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
-    // cases associated with searches
-
-    /*case "REPORT_ROAD_OBJECT": {
-      const searches = state.allSearches
-      const search = action.payload
-      searches.splice(searches.indexOf(search), 1)
-      searches.push(search);
-      return {...state, allSearches: searches, currentRoadSearch: search}
-    }*/
     case "REPORT_CHANGE": {
       const searches = state.allSearches;
       const search = state.currentRoadSearch;
@@ -140,29 +127,11 @@ export default function reducer(state={
         numberOfObjectsFetchedSoFar: 0,
       }
     }
-    case "CLEAR_DATA": {
-      return {
-        ...state,
-        kommune_input: 'ukjent',
-        kommune: 'not input',
-        valid_kommune: false,
-        fetching: false,
-        fetched: false,
-        error: null,
-        objects: [],
-        region: {
-          latitude: 63.43,
-          longitude: 10.40,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
-        }
-      }
-    }
     //used by filewriter
     case "WRITING_FILE": {
       return {
         ...state,
-        writing_file: true,
+        writingFile: true,
       }
     }
     case "SET_OBJEKTTYPE_INFO": {

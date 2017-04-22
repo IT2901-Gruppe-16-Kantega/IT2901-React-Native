@@ -26,7 +26,7 @@ export default function reducer(state={
     case "SET_REPORTVIEW_TYPE": {
       return {...state, reportViewType: action.payload}
     }*/
-    case "INCREMENT_CHANGE_COUNT": {
+    case "REPORT_CHANGE": {
       const newChangeCount = state.changeCount + 1;
       return {...state, changeCount: newChangeCount}
     }

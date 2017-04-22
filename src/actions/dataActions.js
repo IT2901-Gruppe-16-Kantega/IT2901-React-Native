@@ -150,13 +150,6 @@ export function resetFetching(){
   }
 }
 
-export function clearData(){
-  return{
-    type: "CLEAR_DATA",
-  }
-}
-
-
 /*
   Actions associated with filewriter
 */
@@ -182,13 +175,13 @@ export function inputFylke(input){
       if(result.length == 1){
         dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
           result: result,
-          fylke_text: input.text,
+          fylkeText: input.text,
         }})
       }
       else {
         dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
           result: result,
-          fylke_text: input.text,
+          fylkeText: input.text,
         }})
       }
     })

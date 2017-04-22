@@ -9,6 +9,7 @@ import {
   Navigator,
   Platform,
   UIManager,
+  Linking
 } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 
@@ -46,6 +47,9 @@ var scenes = null;
 
 class App extends Component {
   componentWillMount() {
+    Linking.getInitialURL().then(url => {
+      if(url) { console.log(url) }
+    });
   	if(Platform.OS === "android") {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
@@ -81,7 +85,8 @@ class App extends Component {
           type='reset' />
         <Scene
           key="CurrentSearchView"
-          component={CurrentSearchView} />
+          component={CurrentSearchView}
+          title="Informasjon om søk" />
         <Scene
           key="ReportView"
           component={ReportView}

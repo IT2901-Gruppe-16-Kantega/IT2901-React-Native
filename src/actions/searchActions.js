@@ -40,13 +40,13 @@ export function inputFylke(input){
         if(result.length == 1){
           dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
             result: result,
-            fylke_text: input,
+            fylkeText: input,
           }})
         }
         else {
           dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
             result: result,
-            fylke_text: input,
+            fylkeText: input,
           }})
         }
       })
@@ -78,13 +78,13 @@ export function inputVegobjekttyper(input) {
       if(result.length == 1){
         dispatch({type: "INPUT_VEGOBJEKTTYPER_SINGLE", payload: {
           result: result,
-          vegobjekttyper_text: input,
+          vegobjekttyperText: input,
         }})
       }
       else {
         dispatch({type: "INPUT_VEGOBJEKTTYPER_MULTIPLE", payload: {
           result: result,
-          vegobjekttyper_text: input,
+          vegobjekttyperText: input,
         }})
       }
     })
@@ -132,13 +132,13 @@ export function inputKommune(input, fylke) {
         if(result.length==1){
           dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
             result: result,
-            kommune_text: input,
+            kommuneText: input,
           }})
         }
         else {
           dispatch({type: "INPUT_KOMMUNE_MULTIPLE", payload: {
             result: result,
-            kommune_text: input,
+            kommuneText: input,
           }})
         }
       })
@@ -151,8 +151,8 @@ export function inputKommune(input, fylke) {
 
 
 
-export function combineSearchParameters(fylke_input, veg_input, kommune_input, vegobjekttype) {
-  var combinedSearchParameters = [fylke_input, veg_input, kommune_input, vegobjekttype];
+export function combineSearchParameters(fylkeInput, vegInput, kommuneInput, vegobjekttype) {
+  var combinedSearchParameters = [fylkeInput, vegInput, kommuneInput, vegobjekttype];
   return {
     type: "COMBINE_PARAMETERS",
     payload: combinedSearchParameters,

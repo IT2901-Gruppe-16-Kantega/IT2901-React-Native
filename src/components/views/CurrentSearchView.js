@@ -48,31 +48,22 @@ class CurrentSearchView extends React.Component {
     if (this.props.currentRoadSearch.searchParameters[2] != null) {
       kommuneValue = this.props.currentRoadSearch.searchParameters[2].navn
     }
-    return <View style={{flex: 2}}>
-      <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
-        <View style={styles.informationArea}>
-          <View style={{flex: 1}}><Text/></View>
-          <View style={styles.info}>
-            <Text style={this.props.theme.title}>Informasjon om valgt vegsøk:</Text>
-            <Text></Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flex:0.5}}></View>
-              <View style={{flex:10}}>
-                <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
-                <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
-                <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
-                <PropertyValue property={"Kommune"} value={kommuneValue} />
-                <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
-              </View>
-              <View style={{flex:1}}></View>
+    return (
+      <View style={{flex: 2, padding: 20 }}>
+        <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
+          <View style={styles.informationArea}>
+            <View style={styles.info}>
+              <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
+              <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+              <PropertyValue property={"Kommune"} value={kommuneValue} />
+              <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+              {this.createDescriptionArea()}
             </View>
-            <Text></Text>
-            {this.createDescriptionArea()}
           </View>
-          <View style={{flex: 1}}><Text/></View>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
   }
 
   createDescriptionArea() {
@@ -96,7 +87,7 @@ class CurrentSearchView extends React.Component {
         onChangeText={text => this.props.setDescription(text)}
         keyboardType="default"
         value={description}
-        onEndEditing={this.saveDescription}
+        onEndEditing={this.saveDescription.bind(this)}
         />
     </View>
   }
@@ -165,6 +156,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
   },
   descriptionArea: {
+    marginTop: 20,
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',

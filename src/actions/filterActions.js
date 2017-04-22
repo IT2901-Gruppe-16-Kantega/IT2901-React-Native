@@ -1,7 +1,7 @@
-export function selectFunction(selected_function) {
+export function selectFunction(selectedFunction) {
   return {
     type: "SELECT_FUNCTION",
-    payload: selected_function,
+    payload: selectedFunction,
   }
 }
 

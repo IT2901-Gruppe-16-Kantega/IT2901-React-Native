@@ -4,15 +4,15 @@ import {kommuner} from '../data/kommuner';
 /*
   wrapper.js: file wich contains methods used in fetching data from server
 */
-var fetch_finished = false; //bool used to keep information about fetching state
-const url_kommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
+var fetchFinished = false; //bool used to keep information about fetching state
+const urlKommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
 const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
 //fetches from api given url. When result is availiable-> calls callback function given as param
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antageli vil firstobjet.metadata.returnert feile og denne må håndteres
 
-function fetchFromAPI_all(callback, url) {
+function fetchFromAPI(callback, url) {
   //console.log('#wrapper.fetchFromAPI');
   var objects = [];
   fetchData(url).then(function(firstObject){
@@ -38,7 +38,7 @@ function recursiveFetch(object, objects, callback){
   fetchData(nextObjectRef).then(function(nextObject){
     var flere = nextObject.metadata.returnert;
     if(flere > 0){
-      this.fetch_finished = false;
+      this.fetchFinished = false;
       //console.log('--> flere objekter finnes');
       callback(objects, false);
       recursiveFetch(nextObject, objects, callback);
@@ -55,11 +55,11 @@ function recursiveFetch(object, objects, callback){
 }
 
 // the function wich handels all communication with NVDB
-// _path is url of data to be fetched
-async function fetchData(_path) {
+// path is url of data to be fetched
+async function fetchData(path) {
   //console.log('#wrapper.fetchdata');
   try {
-    const response = await fetch(_path);
+    const response = await fetch(path);
     const data = await response.json();
     return data;
   } catch(error) {
@@ -92,8 +92,8 @@ async function fetchVeg(url){
   The following methods fetches data from NVDB to be used in specifying offline data
   Kan hende generell fetchFromAPI burde håndtere alt, gjøres etterhver
 */
-function fetch_Kommuner(callback){
-  fetchData(url_kommuner).then(function(data){
+function fetchKommuner(callback){
+  fetchData(urlKommuner).then(function(data){
     callback(data, true);
   })
 }
@@ -139,4 +139,4 @@ async function fetchVeger(fylke, vegkategori){
   }
 }
 
-export {fetchFromAPI_all, fetch_Kommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchVeg, fetchCloseby, fetchData};
+export {fetchFromAPI, fetchKommuner,fetchTotalNumberOfObjects, fetchVeger, fetchObjekttypeInfo, fetchVeg, fetchCloseby, fetchData};
