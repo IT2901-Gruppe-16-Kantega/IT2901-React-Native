@@ -86,6 +86,7 @@ class ObjectInfoView extends React.Component {
 
   renderReport() {
     const report = this.getReport();
+
     if(!(report && this.props.showReport)) { return <View />}
     return (
       <View>
@@ -101,14 +102,24 @@ class ObjectInfoView extends React.Component {
 
   renderReportChange(change, sectionID, rowID) {
     return (
-      <View style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: templates.colors.middleGray }} key={rowID + 'change'}>
-        <Text style={this.props.theme.text} >
-          <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
-        </Text>
-        <Text>{"Verdi: " + change.egenskap.verdi}</Text>
-        <Text>{change.dato}</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>
+          <Button type={"small"} text={"X"} onPress={this.removeFromReport.bind(this, change)} />
+        </View>
+        <View style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: templates.colors.middleGray }} key={rowID + 'change'}>
+          <Text style={this.props.theme.text} >
+            <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
+          </Text>
+          <Text>{"Verdi: " + change.egenskap.verdi}</Text>
+          <Text>{change.dato}</Text>
+        </View>
       </View>
     );
+  }
+
+  removeFromReport(change) {
+    this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change, true);
+    this.forceUpdate();
   }
 
   renderRow(property, sectionID, rowID, highlightRow) {
@@ -242,7 +253,7 @@ class ObjectInfoView extends React.Component {
       type: reportType,
       beskrivelse: "",
     }
-    this.props.reportChange(change);
+    this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
   }
 
   // HELPERS

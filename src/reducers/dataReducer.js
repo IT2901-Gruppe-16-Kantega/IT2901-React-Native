@@ -32,27 +32,12 @@ export default function reducer(state={
 }, action) {
   switch (action.type) {
     case "REPORT_CHANGE": {
+      const search = action.payload;
       const searches = state.allSearches;
-      const search = state.currentRoadSearch;
-      const object = state.selectedObject;
-      const change = action.payload;
+      var newSearches = searches.splice(searches.indexOf(search), 1);
+      newSearches.push(search);
 
-      const foundReport = search.report.find(report => report.vegobjekt === object.id);
-      if(foundReport) {
-        const indexOfFoundProperty = foundReport.endringer.map(e => e.egenskap.id).indexOf(change.egenskap.id);
-        if(indexOfFoundProperty >= 0) {
-          foundReport.endringer[indexOfFoundProperty] = change;
-        } else {
-          foundReport.endringer.push(change);
-        }
-      } else {
-        search.report.push({vegobjekt: object.id, endringer: [change]})
-      }
-
-      searches.splice(searches.indexOf(search), 1);
-      searches.push(search);
-
-      return {...state, allSearches: searches}
+      return {...state, allSearches: newSearches, currentRoadSearch: search}
     }
     case "SELECT_OBJECT": {
       return {...state, selectedObject: action.payload}
@@ -83,9 +68,13 @@ export default function reducer(state={
       }
     }
     case "SET_CURRENT_ROAD_SEARCH": {
+      var search = null;
+      if(action.payload.key) { search = action.payload }
+      else { search = state.allSearches.find(s => s.key === action.payload) }
+
       return {
         ...state,
-        currentRoadSearch: action.payload,
+        currentRoadSearch: search,
       }
     }
 

@@ -33,10 +33,24 @@ Shows information about current search, buttons for viewing map and opening AR
 class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
-    this.props.setDescription(this.props.currentRoadSearch.description)
+    if(this.props.currentRoadSearch) {
+      this.props.setDescription(this.props.currentRoadSearch.description)
+    }
   }
 
   render() {
+    if(!this.props.currentRoadSearch) {
+      return (
+        <Container>
+          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Text style={this.props.theme.title}>Ingen/feil søk spesifisert.</Text>
+          </View>
+        </Container>
+      );
+    }
+
+    console.log(this.props.currentRoadSearch)
+
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
@@ -123,12 +137,12 @@ class CurrentSearchView extends React.Component {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
     if(Platform.OS === "ios") {
-      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-        if(!err) Linking.openURL("nvdbAr:");
+      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.vegar", (err, data) => {
+        if(!err) Linking.openURL("vegar.ar:");
       });
     } else if (Platform.OS === "android"){
       // Save data.json
-      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
       console.log(dataPath);
       var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
       RNFS.writeFile(dataPath, data, "utf8")

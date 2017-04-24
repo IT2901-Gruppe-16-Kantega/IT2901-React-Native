@@ -18,10 +18,25 @@ const storage = storageEngine('NVDB-storage')
   }
 }*/
 
-export function reportChange(change) {
+export function reportChange(search, object, change, shouldDelete) {
+  const foundReport = search.report.find(r => r.vegobjekt === object.id);
+
+  if(foundReport) {
+    const indexOfFoundProperty = foundReport.endringer.map(e => e.egenskap.id).indexOf(change.egenskap.id);
+    if(indexOfFoundProperty >= 0) {
+      if(shouldDelete) { foundReport.endringer.splice(indexOfFoundProperty, 1) }
+      else { foundReport.endringer[indexOfFoundProperty] = change }
+    } else if(!shouldDelete) {
+      foundReport.endringer.push(change);
+    }
+  } else if(!shouldDelete) {
+    search.report.push({vegobjekt: object.id, endringer: [change]})
+  }
+  storage.saveSearch(search);
+
   return {
     type: "REPORT_CHANGE",
-    payload: change,
+    payload: search,
   }
 }
 
@@ -70,7 +85,7 @@ export function setLoadingProgress(progress) {
   }
 }
 
-export function setCurrentRoadSearch(roadSearch){
+export function setCurrentRoadSearch(roadSearch) {
   return {
     type: "SET_CURRENT_ROAD_SEARCH",
     payload: roadSearch,

@@ -1,6 +1,8 @@
 //
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
 import {fylker} from '../data/fylker';
+import {kommuner} from '../data/kommuner';
+import {vegobjekttyper} from '../data/vegobjekttyper';
 
 export function inputClosestRoads(input) {
   return {
@@ -12,11 +14,16 @@ export function inputClosestRoads(input) {
 //functions for handling input in all searchfields
 export function chooseKommune(input) {
   return function(dispatch) {
+    const intInput = parseInt(input);
+    var kommune;
+    if(intInput) { kommune = [kommuner.find(k => k.nummer === intInput)] }
+    else { kommune = input }
+
     dispatch({
         type: "CHOOSE_KOMMUNE",
-        payload: input,
+        payload: kommune,
       })
-    const fylke = fylker.find(f => {return f.nummer === input[0].fylke})
+    const fylke = fylker.find(f => {return f.nummer === kommune[0].fylke})
     dispatch({
       type: "CHOOSE_FYLKE_FROM_KOMMUNE",
       payload: fylke,
@@ -58,9 +65,14 @@ export function inputFylke(input){
 }
 
 export function chooseFylke(input) {
-  return{
+  const intInput = parseInt(input);
+  var fylke;
+  if(intInput) { fylke = [fylker.find(f => f.nummer === intInput)] }
+  else { fylke = input }
+
+  return {
     type: "CHOOSE_FYLKE",
-    payload: input,
+    payload: fylke,
   }
 }
 
@@ -95,9 +107,14 @@ export function inputVegobjekttyper(input) {
 }
 
 export function chooseVegobjekttyper(input) {
+  const intInput = parseInt(input);
+  var vegobjekttype;
+  if(intInput) { vegobjekttype = [vegobjekttyper.find(v => v.id === intInput)] }
+  else { vegobjekttype = input }
+
   return{
     type: "CHOOSE_VEGOBJEKTTYPER",
-    payload: input,
+    payload: vegobjekttype,
   }
 }
 
@@ -129,7 +146,7 @@ export function inputKommune(input, fylke) {
     else{
       searchForKommune(input, fylke)
       .then((result) => {
-        if(result.length==1){
+        if(result.length == 1){
           dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
             result: result,
             kommuneText: input,
@@ -188,4 +205,8 @@ export function setURL(url) {
     type: "SET_URL",
     payload: url,
   }
+}
+
+export function generateURL() {
+  return { type: "GENERATE_URL" }
 }
