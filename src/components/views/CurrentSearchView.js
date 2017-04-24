@@ -148,7 +148,7 @@ class CurrentSearchView extends React.Component {
       RNFS.writeFile(dataPath, data, "utf8")
       .then((success) => console.log("data.json saved successfully"))
       .catch((err) => console.error("An error occurred when saving data.json", err));
-      Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
+      Linking.openURL("vegar.ar:").catch(err => console.error('An error occurred', err));
       // TODO Save roads.json here
       //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
     } else {

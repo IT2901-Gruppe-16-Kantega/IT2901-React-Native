@@ -74,7 +74,7 @@ class RoadMapView extends React.Component {
       if(!this.props.region) {
         this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 1, longitudeDelta: 1 })
       }
-      this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 })
+      //this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 })
     }
     cluster.load(features);
     this.props.setCluster(cluster);

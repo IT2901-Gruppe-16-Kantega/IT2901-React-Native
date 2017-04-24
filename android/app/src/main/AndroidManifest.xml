@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.nvdb.rn"
-	android:sharedUserId="com.nvdb"
+	package="com.vegar.kart"
+	android:sharedUserId="com.vegar"
 	android:versionCode="1"
 	android:versionName="1.0">
 
@@ -36,7 +36,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="nvdbRn" />
+				<data android:scheme="vegar.kart" />
 			</intent-filter>
 		</activity>
 		<activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
