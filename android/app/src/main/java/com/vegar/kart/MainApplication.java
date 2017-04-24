@@ -1,4 +1,4 @@
-package com.nvdb.rn;
+package com.vegar.kart;
 
 import android.app.Application;
 import android.util.Log;
