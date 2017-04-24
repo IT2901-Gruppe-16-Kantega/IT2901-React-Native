@@ -1,9 +1,9 @@
 import * as templates from '../templates';
 
 module.exports = {
-  backgroundColor: templates.colors.darkGray,
-  containerColor: templates.colors.orange,
-  navigationBackground: templates.colors.orange,
+  backgroundColor: templates.colors.black,
+  containerColor: templates.colors.darkGray,
+  navigationBackground: templates.colors.darkGray,
 
   primaryTextColor: templates.colors.white,
   secondaryTextColor: templates.colors.middleGray,

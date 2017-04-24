@@ -24,9 +24,9 @@ class InputField extends React.Component {
     type: PropTypes.string.isRequired,
     list: PropTypes.array.isRequired,
     textType: PropTypes.string.isRequired,
-    choosenBool: PropTypes.bool.isRequired,
+    choosen: PropTypes.bool.isRequired,
     inputFunction: PropTypes.func.isRequired,
-    chooserFunction: PropTypes.func.isRequired,
+    chooserFunction: PropTypes.func,
     colorController: PropTypes.oneOf(['red', templates.colors.orange, templates.colors.green]).isRequired,
     updateFunction: PropTypes.func.isRequired,
     extData: PropTypes.array,
@@ -34,9 +34,9 @@ class InputField extends React.Component {
 
   render() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
-    var dataSource = ds.cloneWithRows(this.props.list)
+    var list = this.props.list || [];
 
-    return <View>
+    return <View style={{ padding: 10 }}>
       {this.renderHeader()}
       <View style={{borderBottomWidth: 2, borderBottomColor: this.props.colorController}}>
         <TextInput
@@ -68,10 +68,10 @@ class InputField extends React.Component {
       <ListView
         style={this.getListViewStyle()}
         keyboardShouldPersistTaps='always'
-        dataSource={dataSource}
+        dataSource={ds.cloneWithRows(list)}
         enableEmptySections= {true}
         renderRow={(rowData) => {
-          if(!this.props.choosenBool) {
+          if(!this.props.choosen) {
             return <Button
               type={"list"}
               onPress={()=>{
@@ -104,11 +104,9 @@ class InputField extends React.Component {
 
   getListViewStyle() {
     var height;
-    if(this.props.choosenBool) { height = 0 }
+    if(this.props.choosen || !(this.props.list)) { height = 0 }
     else { height = Math.min(this.props.list.length * 40, 150) }
-    return {
-      height: height,
-    }
+    return { height: height }
   }
 }
 

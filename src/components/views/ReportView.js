@@ -9,13 +9,14 @@ import {
   } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import Container from '../misc/Container'
+import Button from '../misc/Button';
+import Container from '../misc/Container';
 
-import * as templates from '../../utilities/templates'
-import * as dataActions from '../../actions/dataActions'
+import * as templates from '../../utilities/templates';
+import * as dataActions from '../../actions/dataActions';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -50,15 +51,46 @@ class ReportView extends React.Component {
   }
 
   renderRow(reportItem) {
+    const {theme} = this.props;
+
     return (
-      <TouchableHighlight onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
-        <Text>{reportItem.vegobjekt}</Text>
+      <TouchableHighlight key={reportItem.vegobjekt} onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
+        <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor, borderBottomWidth: 1, borderBottomColor: theme.backgroundColor }}>
+          <Text style={theme.title}>{reportItem.vegobjekt}</Text>
+          <Text style={theme.subtitle}>{this.createSubtitle(reportItem)}</Text>
+        </View>
       </TouchableHighlight>
     );
   }
 
+  /*createSomething(reportItem) {
+    var arr = [];
+    for(var i = 0; i < reportItem.endringer.length; i++) {
+      const endring = reportItem.endringer[i];
+      if(arr[endring.type]) {
+        arr[endring.type += 1]
+      } else {
+        arr[endring.type] = 1;
+      }
+    }
+
+    var lines = [];
+    for(key in arr) {
+      lines.push(<Text style={this.props.theme.text}>{arr[key] + " " + key}</Text>);
+    }
+
+    return <View>{lines}</View>;
+  }*/
+
+  createSubtitle(reportItem) {
+    const num = reportItem.endringer.length;
+    return num + " endring" + (num === 1 ? "" : "er");
+  }
+
   renderFooter() {
     const message = JSON.stringify(this.props.currentRoadSearch.report);
+    return <Button type="small" text="Del rapport" onPress={() => Share.share({ message: message })} />
+
     return (
       <View>
         <TouchableHighlight onPress={() => Share.share({ message: message })}>

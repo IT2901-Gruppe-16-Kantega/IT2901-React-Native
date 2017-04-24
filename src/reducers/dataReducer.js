@@ -18,12 +18,8 @@ export default function reducer(state={
   // used by currentSearchView
   description: "",
 
-  //currently not used
-  currentRoadSearchIndex: null,
-  andel_egengeometri: null,
-
   //used by filewriter
-  writing_file: false,
+  writingFile: false,
 
   objekttypeInfo: [], // Not used?
 
@@ -35,37 +31,13 @@ export default function reducer(state={
 
 }, action) {
   switch (action.type) {
-    // cases associated with searches
-
-    /*case "REPORT_ROAD_OBJECT": {
-      const searches = state.allSearches
-      const search = action.payload
-      searches.splice(searches.indexOf(search), 1)
-      searches.push(search);
-      return {...state, allSearches: searches, currentRoadSearch: search}
-    }*/
     case "REPORT_CHANGE": {
+      const search = action.payload;
       const searches = state.allSearches;
-      const search = state.currentRoadSearch;
-      const object = state.selectedObject;
-      const change = action.payload;
+      var newSearches = searches.splice(searches.indexOf(search), 1);
+      newSearches.push(search);
 
-      const foundReport = search.report.find(report => report.vegobjekt === object.id);
-      if(foundReport) {
-        const indexOfFoundProperty = foundReport.endringer.map(e => e.egenskap.id).indexOf(change.egenskap.id);
-        if(indexOfFoundProperty >= 0) {
-          foundReport.endringer[indexOfFoundProperty] = change;
-        } else {
-          foundReport.endringer.push(change);
-        }
-      } else {
-        search.report.push({vegobjekt: object.id, endringer: [change]})
-      }
-
-      searches.splice(searches.indexOf(search), 1);
-      searches.push(search);
-
-      return {...state, allSearches: searches}
+      return {...state, allSearches: newSearches, currentRoadSearch: search}
     }
     case "SELECT_OBJECT": {
       return {...state, selectedObject: action.payload}
@@ -96,9 +68,13 @@ export default function reducer(state={
       }
     }
     case "SET_CURRENT_ROAD_SEARCH": {
+      var search = null;
+      if(action.payload.key) { search = action.payload }
+      else { search = state.allSearches.find(s => s.key === action.payload) }
+
       return {
         ...state,
-        currentRoadSearch: action.payload,
+        currentRoadSearch: search,
       }
     }
 
@@ -140,29 +116,11 @@ export default function reducer(state={
         numberOfObjectsFetchedSoFar: 0,
       }
     }
-    case "CLEAR_DATA": {
-      return {
-        ...state,
-        kommune_input: 'ukjent',
-        kommune: 'not input',
-        valid_kommune: false,
-        fetching: false,
-        fetched: false,
-        error: null,
-        objects: [],
-        region: {
-          latitude: 63.43,
-          longitude: 10.40,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
-        }
-      }
-    }
     //used by filewriter
     case "WRITING_FILE": {
       return {
         ...state,
-        writing_file: true,
+        writingFile: true,
       }
     }
     case "SET_OBJEKTTYPE_INFO": {

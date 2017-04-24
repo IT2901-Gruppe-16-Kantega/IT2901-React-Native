@@ -22,6 +22,7 @@ var Color = require('color');
 import Button from '../misc/Button';
 import Container from '../misc/Container';
 import InputField from '../misc/InputField';
+import LocationInputComponent from '../misc/LocationInputComponent';
 import PropertyValue from '../misc/PropertyValue';
 import TabBar from '../misc/TabBar';
 
@@ -41,7 +42,7 @@ const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
 
 const tabs = {
   SEARCH: "Søk",
-  MAP: "Finn",
+  MAP: "Kart",
   CLOSEST: "Nærmeste",
 }
 
@@ -57,127 +58,123 @@ View used when user specifies what data to be fetched from NVDB
 */
 class SearchView extends React.Component {
   render() {
-    return <Container>
-      {this.createViewArea()}
-      {this.createButton()}
-      <TabBar
-        tabs={[
-          {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
-          {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
-          {title: tabs.CLOSEST, onPress: ()=>{
-            this.props.setChosenSearchTab(tabs.CLOSEST)
-            this.getUserPosition() // Should be done somewhere else
-          }},
-        ]}
-        />
-    </Container>
+    return (
+      <Container>
+        {this.renderMainContent()}
+        {this.renderDownloadButton()}
+        <TabBar
+          tabs={[
+            {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
+            {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
+            {title: tabs.CLOSEST, onPress: ()=>{
+              this.props.setChosenSearchTab(tabs.CLOSEST)
+              this.getUserPosition() // Should be done somewhere else
+            }},
+          ]}
+          />
+      </Container>
+    );
   }
 
-  createViewArea() {
+  renderMainContent() {
     if (this.props.chosenSearchTab === tabs.SEARCH) {
-      return <ScrollView
-        style={styles.content}
-        scrollEnabled={true}
-        keyboardShouldPersistTaps='always'>
-        {this.createTypeInput()}
-        {this.createFylkeInput()}
-        {this.createKommuneInput()}
-        {this.createVegInput()}
-      </ScrollView>
+      return (
+        <ScrollView
+          style={styles.content}
+          scrollEnabled={true}
+          keyboardShouldPersistTaps='always'>
+          {this.renderTypeInput()}
+          <LocationInputComponent withVeg validate={this.validate.bind(this)} />
+        </ScrollView>
+      );
     }
     else if (this.props.chosenSearchTab === tabs.MAP) {
-      return <View style={{ flex: 1 }}>
-        <SearchMap validate={this.validate} />
-        {this.createTypeInput(this.typeInputStyleForMap())}
-      </View>
+      return (
+        <View style={{ flex: 1 }}>
+          <SearchMap validate={this.validate} />
+          {this.renderTypeInput(this.typeInputStyleForMap())}
+        </View>
+      );
     }
     else if (this.props.chosenSearchTab === tabs.CLOSEST) {
-      return <ScrollView
-        style={styles.content}
-        scrollEnabled={false}
-        keyboardShouldPersistTaps='always'
-        >
-        {this.createTypeInput()}
-        {this.createClosestRoadsList()}
-      </ScrollView>
+      return (
+        <ScrollView
+          style={styles.content}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.renderTypeInput()}
+          {this.renderClosestRoadsList()}
+        </ScrollView>
+      );
     }
   }
 
-  typeInputStyleForMap() {
-    var height;
-    if(this.props.vegobjekttyper_chosen) { height = 75 }
-    else {
-      const MaxHeight = 150;
-      const NumberOfTypes = this.props.vegobjekttyper_input.length;
-      height = Math.min(NumberOfTypes * 50 + 75, 200)
-    }
-    return {
-      position: 'absolute',
-      top: 10,
-      left: 10,
-      right: 10,
-      backgroundColor: Color(this.props.theme.backgroundColor).alpha(0.4),
-      borderRadius: 10,
-      height: height,
-    }
+  renderTypeInput(style) {
+    return (
+      <View style={[styles.inputArea, style]}>
+        <InputField type='vegobjekttype'
+          list={this.props.vegobjekttyperInput}
+          textType={this.props.vegobjekttyperText}
+          choosen={this.props.vegobjekttyperChosen}
+          inputFunction={this.props.inputVegobjekttyper}
+          chooserFunction={this.props.chooseVegobjekttyper}
+          colorController={this.props.vegobjekttyperColor}
+          updateFunction={this.validate.bind(this)}
+          />
+      </View>
+    );
   }
 
-  createClosestRoadsList() {
+  renderDownloadButton() {
+    const count = this.props.numberOfObjectsToBeFetched || 0;
+    const buttonText = "Last ned objekter (" + count + ")";
+    return (
+      <View style={styles.downloadButtonContainer}>
+        <Button text={buttonText} onPress={this.searchButtonPressed.bind(this)} type={"search"} />
+      </View>
+    );
+  }
+
+  renderClosestRoadsList() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
-    var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
 
-    return <View style={styles.content}>
-      <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
-      <ListView
-        keyboardShouldPersistTaps='always'
-        dataSource={dataSource}
-        enableEmptySections={true}
-        renderRow={(rowData) => {
-            return <Button
-              type={this.closestRoadListItemStyle(rowData.vegreferanse.kortform)}
-              onPress={() => {
-                selectedVegreferanse = rowData.vegreferanse.kortform;
-                const chosenRoad = this.props.closestRoadsList.find((data) => {
-                  if(data.vegreferanse.kortform === rowData.vegreferanse.kortform) {
-                    return data;
-                  }
-                });
-
-                this.chooseClosestRoad(chosenRoad)
-              }}
-              text={rowData.vegreferanse.kortform + " (" + rowData.avstand + "m)"}
-            />
-          }}/>
-        <View style={{flex: 0.17}}><Text></Text></View>
-    </View>
-  }
-
-  closestRoadListItemStyle(ref) {
-    if(ref === selectedVegreferanse) {
-      return "listSelected";
-    } else {
-      return "list";
-    }
+    return (
+      <View style={styles.content}>
+        <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
+        <ListView
+          keyboardShouldPersistTaps='always'
+          dataSource={ds.cloneWithRows(this.props.closestRoadsList)}
+          enableEmptySections={true}
+          renderRow={(rowData) => {
+              const {kortform} = rowData.vegreferanse;
+              return <Button
+                type={kortform === selectedVegreferanse ? "listSelected" : "list"}
+                onPress={() => {
+                  selectedVegreferanse = kortform;
+                  this.chooseClosestRoad(rowData);
+                }}
+                text={kortform + " (" + rowData.avstand + "m)"}
+              />
+            }}/>
+      </View>
+    );
   }
 
   chooseClosestRoad(road) {
     this.props.resetPositionSearchParameters();
+
     const vegreferanse = road.vegreferanse;
-    const fylke = vegreferanse.fylke;
-    const kommune = vegreferanse.kommune;
-    const kategori = vegreferanse.kategori;
-    const status = vegreferanse.status;
-    const nummer = vegreferanse.nummer;
+    const {fylke, kommune, kategori, status, nummer} = vegreferanse;
+
     if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
-      const chosenFylke = []
-      chosenFylke.push(fylker.find(f => f.nummer === fylke))
-      this.props.chooseFylke(chosenFylke)
-      this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])
+      this.props.chooseFylke(fylke)
+      this.props.chooseKommune(kommune)
      }
     else {
       this.props.inputVeg(kategori + status + nummer)
-      this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
+      this.props.chooseFylke(fylke)
     }
     this.validate()
   }
@@ -192,84 +189,23 @@ class SearchView extends React.Component {
     );
   }
 
-  createFylkeInput() {
-    return <View>
-      <View style={styles.inputArea}>
-        <InputField type='fylke'
-          list={this.props.fylke_input}
-          textType={this.props.fylke_text}
-          choosenBool={this.props.fylke_chosen}
-          inputFunction={this.props.inputFylke}
-          chooserFunction={this.props.chooseFylke}
-          colorController={this.props.fylke_color}
-          updateFunction={this.validate.bind(this)}
-          />
-      </View>
-    </View>
-  }
-
-  createKommuneInput() {
-    return <View>
-      <View style={styles.inputArea}>
-        <InputField type='kommune'
-          list={this.props.kommune_input}
-          textType={this.props.kommune_text}
-          choosenBool={this.props.kommune_chosen}
-          inputFunction={this.props.inputKommune}
-          chooserFunction={this.props.chooseKommune}
-          colorController={this.props.kommune_color}
-          updateFunction={this.validate.bind(this)}
-          extData={this.props.fylke_input}
-          />
-      </View>
-    </View>
-  }
-
-  createTypeInput(style) {
-    return <View style={[styles.inputArea, style]}>
-      <InputField type='vegobjekttype'
-        list={this.props.vegobjekttyper_input}
-        textType={this.props.vegobjekttyper_text}
-        choosenBool={this.props.vegobjekttyper_chosen}
-        inputFunction={this.props.inputVegobjekttyper}
-        chooserFunction={this.props.chooseVegobjekttyper}
-        colorController={this.props.vegobjekttyper_color}
-        updateFunction={this.validate.bind(this)}
-        />
-    </View>
-  }
-
-  createVegInput() {
-    return <View style={styles.inputArea}>
-      <View style={{
-          borderBottomWidth: 2,
-          borderBottomColor: this.props.veg_color,
-        }}>
-        <TextInput
-          autocorrect= {false}
-          style={{
-            padding: 5,
-            height: 40,
-            color: this.props.theme.primaryTextColor,
-          }}
-          placeholderTextColor={this.props.theme.placeholderTextColor}
-          placeholder={'Skriv inn veg'}
-          onChangeText={(text) => {
-            this.props.inputVeg(text);
-            this.validate();
-          }}
-          returnKeyType='done'
-          value={this.props.veg_input}
-          />
-      </View>
-    </View>
-  }
-
-  createButton() {
-    var count = this.props.numberOfObjectsToBeFetched || 0;
-    return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
-      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed.bind(this)} type={"search"} />
-    </View>
+  typeInputStyleForMap() {
+    var height;
+    if(this.props.vegobjekttyperChosen) { height = 75 }
+    else {
+      const MaxHeight = 150;
+      const NumberOfTypes = this.props.vegobjekttyperInput.length;
+      height = Math.min(NumberOfTypes * 50 + 75, 200)
+    }
+    return {
+      position: 'absolute',
+      top: 10,
+      left: 10,
+      right: 10,
+      backgroundColor: Color(this.props.theme.backgroundColor).alpha(0.4),
+      borderRadius: 10,
+      height: height,
+    }
   }
 
   validate() {
@@ -282,18 +218,21 @@ class SearchView extends React.Component {
       var kommuneStr = ''
       var vegString = ''
       var isValidatingVeg = false
-      if(this.props.vegobjekttyper_chosen) { vegobjektStr = this.props.vegobjekttyper_input[0].id }
-      if(this.props.fylke_chosen) { fylkeStr = 'fylke=' + this.props.fylke_input[0].nummer + '&' }
-      if(this.props.kommune_chosen) { kommuneStr = 'kommune=' + this.props.kommune_input[0].nummer + '&' }
-      if(this.props.veg_input != "") {
+      if(this.props.vegobjekttyperChosen) { vegobjektStr = this.props.vegobjekttyperInput[0].id }
+      if(this.props.fylkeChosen) { fylkeStr = 'fylke=' + this.props.fylkeInput[0].nummer + '&' }
+      if(this.props.kommuneChosen) { kommuneStr = 'kommune=' + this.props.kommuneInput[0].nummer + '&' }
+      if(this.props.vegInput !== "") {
         isValidatingVeg = true
-        vegString = '&vegreferanse=' + this.props.veg_input + '&'}
+        vegString = '&vegreferanse=' + this.props.vegInput + '&'}
       else {
         this.props.setValidityOfVeg('NOT_CHOSEN')
       }
       var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
-      this.check(url, this.props.vegobjekttyper_chosen, isValidatingVeg)
+      this.check(url, this.props.vegobjekttyperChosen, isValidatingVeg)
     })
+    /*setTimeout(() => {
+      this.props.generateURL();
+    }, 10);*/
   }
 
   check(url, shouldFetchNumber, isValidatingVeg) {
@@ -314,8 +253,6 @@ class SearchView extends React.Component {
       else if(response[0].code === 4005) {
         if(isValidatingVeg) { this.props.setValidityOfVeg('NOT_VALID') }
       }
-      else {
-      }
     })
   }
 
@@ -327,13 +264,13 @@ class SearchView extends React.Component {
           "(eller så må du vente på at søket fullføres). Det kan også hende at du " +
           "må trykke på et felt på nytt for å oppdatere telleren.");
       }
-      else if (!this.props.vegobjekttyper_chosen) {
+      else if (!this.props.vegobjekttyperChosen) {
         Alert.alert(alertType.ERROR, "Ingen vegobjekttyper spesifisert");
       }
       else {
-        var vegType = this.props.veg_input.substring(0, 1).toUpperCase();
+        var vegType = this.props.vegInput.substring(0, 1).toUpperCase();
         if(vegType === 'K') {
-          if(this.props.kommune_chosen) {
+          if(this.props.kommuneChosen) {
             this.initiateSearch(numObjects);
           }
           else {
@@ -352,14 +289,16 @@ class SearchView extends React.Component {
       Alert.alert(alertType.WARNING,
       'Dette søket vil hente ' + this.props.numberOfObjectsToBeFetched +
       ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',
-        [{text: 'Utfør', onPress: this.search}, {text: 'Avbryt'}]
+        [{text: 'Utfør', onPress: this.search.bind(this)}, {text: 'Avbryt'}]
       );
     }
     else { this.search(); }
   }
 
   search() {
-    this.props.combineSearchParameters(this.props.fylke_input[0], this.props.veg_input, this.props.kommune_input[0], this.props.vegobjekttyper_input[0]);
+    const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
+    this.props.combineSearchParameters(
+      fylkeInput ? fylkeInput[0] : null, vegInput, kommuneInput ? kommuneInput[0] : null, vegobjekttyperInput ? vegobjekttyperInput[0] : null);
     Actions.LoadingView();
   }
 }
@@ -368,36 +307,31 @@ var styles = StyleSheet.create({
   content: {
     padding: 10,
   },
-
-  inputArea: {
-    padding: 10,
-  },
+  downloadButtonContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 50,
+    height: 60,
+  }
 })
 
 function mapStateToProps(state) {
   return {
-    //fylke fields
-    fylke_input: state.searchReducer.fylke_input,
-    fylke_text: state.searchReducer.fylke_text,
-    fylke_chosen: state.searchReducer.fylke_chosen,
-    fylke_color: state.searchReducer.fylke_color,
+    fylkeInput: state.searchReducer.fylkeInput,
+    fylkeChosen: state.searchReducer.fylkeChosen,
 
-    //veg fields
-    veg_input: state.searchReducer.veg_input,
-    veg_color: state.searchReducer.veg_color,
-    veg_valid: state.searchReducer.veg_valid,
+    kommuneInput: state.searchReducer.kommuneInput,
+    kommuneChosen: state.searchReducer.kommuneChosen,
 
-    //kommune
-    kommune_input: state.searchReducer.kommune_input,
-    kommune_text: state.searchReducer.kommune_text,
-    kommune_chosen: state.searchReducer.kommune_chosen,
-    kommune_color: state.searchReducer.kommune_color,
+    vegInput: state.searchReducer.vegInput,
 
     //vegobjekttyper fields
-    vegobjekttyper_input: state.searchReducer.vegobjekttyper_input,
-    vegobjekttyper_text: state.searchReducer.vegobjekttyper_text,
-    vegobjekttyper_chosen: state.searchReducer.vegobjekttyper_chosen,
-    vegobjekttyper_color: state.searchReducer.vegobjekttyper_color,
+    vegobjekttyperInput: state.searchReducer.vegobjekttyperInput,
+    vegobjekttyperText: state.searchReducer.vegobjekttyperText,
+    vegobjekttyperChosen: state.searchReducer.vegobjekttyperChosen,
+    vegobjekttyperColor: state.searchReducer.vegobjekttyperColor,
 
     //misc
     closestRoadsList: state.searchReducer.closestRoadsList,
@@ -414,14 +348,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     //input search variables, uses searchActions to set variables before creatingURL
-    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
     chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
 
     inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
     setValidityOfVeg: bindActionCreators(searchActions.setValidityOfVeg, dispatch),
-    resetVegField: bindActionCreators(searchActions.resetVegField, dispatch),
 
-    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
     chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
 
     inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
@@ -430,6 +361,8 @@ function mapDispatchToProps(dispatch) {
     inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
 
     setURL: bindActionCreators(searchActions.setURL, dispatch),
+    generateURL: bindActionCreators(searchActions.generateURL, dispatch),
+
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
     setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 

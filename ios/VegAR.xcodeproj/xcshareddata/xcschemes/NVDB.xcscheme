@@ -30,8 +30,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "NVDB.app"
-               BlueprintName = "NVDB"
-               ReferencedContainer = "container:NVDB.xcodeproj">
+               BlueprintName = "VegAR"
+               ReferencedContainer = "container:VegAR.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "NVDBTests.xctest"
-               BlueprintName = "NVDBTests"
-               ReferencedContainer = "container:NVDB.xcodeproj">
+               BuildableName = "VegARTests.xctest"
+               BlueprintName = "VegARTests"
+               ReferencedContainer = "container:VegAR.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "NVDBTests.xctest"
-               BlueprintName = "NVDBTests"
-               ReferencedContainer = "container:NVDB.xcodeproj">
+               BuildableName = "VegARTests.xctest"
+               BlueprintName = "VegARTests"
+               ReferencedContainer = "container:VegAR.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -72,8 +72,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "NVDB.app"
-            BlueprintName = "NVDB"
-            ReferencedContainer = "container:NVDB.xcodeproj">
+            BlueprintName = "VegAR"
+            ReferencedContainer = "container:VegAR.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -95,8 +95,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "NVDB.app"
-            BlueprintName = "NVDB"
-            ReferencedContainer = "container:NVDB.xcodeproj">
+            BlueprintName = "VegAR"
+            ReferencedContainer = "container:VegAR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -114,8 +114,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "NVDB.app"
-            BlueprintName = "NVDB"
-            ReferencedContainer = "container:NVDB.xcodeproj">
+            BlueprintName = "VegAR"
+            ReferencedContainer = "container:VegAR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -13,10 +13,13 @@ import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
 
 import Container from '../misc/Container';
+import LocationInputComponent from '../misc/LocationInputComponent';
 import SettingSwitch from '../misc/SettingSwitch';
 
 import * as templates from '../../utilities/templates';
+
 import * as reportActions from '../../actions/reportActions';
+import * as searchActions from '../../actions/searchActions';
 import * as settingsActions from '../../actions/settingsActions';
 
 class SettingsView extends React.Component {
@@ -46,6 +49,11 @@ function mapStateToProps(state) {
     clusteringOn: state.settingsReducer.clusteringOn,
     darkModeOn: state.settingsReducer.darkModeOn,
     changeCount: state.reportReducer.changeCount,
+
+    kommuneText: state.searchReducer.kommuneText,
+    kommuneInput: state.searchReducer.kommuneInput,
+    kommuneChosen: state.searchReducer.kommuneChosen,
+    kommuneColor: state.searchReducer.kommuneColor,
   }
 }
 
@@ -54,6 +62,9 @@ function mapDispatchToProps(dispatch) {
     setClustering: bindActionCreators(settingsActions.setClustering, dispatch),
     setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
     incrementChangeCount: bindActionCreators(reportActions.incrementChangeCount, dispatch),
+
+    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+    chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
   }
 }
 

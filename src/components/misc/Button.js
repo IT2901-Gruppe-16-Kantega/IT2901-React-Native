@@ -62,7 +62,7 @@ export default class Button extends React.Component {
         break;
 
       case types.SEARCH:
-        style.shadowColor = templates.colors.middleGray;
+        style.shadowColor = templates.colors.darkGray;
         style.shadowOpacity = 1;
         style.shadowOffset = { width: 3, height: 3 };
         style.shadowRadius = 2;

@@ -33,10 +33,24 @@ Shows information about current search, buttons for viewing map and opening AR
 class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
-    this.props.setDescription(this.props.currentRoadSearch.description)
+    if(this.props.currentRoadSearch) {
+      this.props.setDescription(this.props.currentRoadSearch.description)
+    }
   }
 
   render() {
+    if(!this.props.currentRoadSearch) {
+      return (
+        <Container>
+          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Text style={this.props.theme.title}>Ingen/feil søk spesifisert.</Text>
+          </View>
+        </Container>
+      );
+    }
+
+    console.log(this.props.currentRoadSearch)
+
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
@@ -48,31 +62,22 @@ class CurrentSearchView extends React.Component {
     if (this.props.currentRoadSearch.searchParameters[2] != null) {
       kommuneValue = this.props.currentRoadSearch.searchParameters[2].navn
     }
-    return <View style={{flex: 2}}>
-      <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
-        <View style={styles.informationArea}>
-          <View style={{flex: 1}}><Text/></View>
-          <View style={styles.info}>
-            <Text style={this.props.theme.title}>Informasjon om valgt vegsøk:</Text>
-            <Text></Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flex:0.5}}></View>
-              <View style={{flex:10}}>
-                <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
-                <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
-                <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
-                <PropertyValue property={"Kommune"} value={kommuneValue} />
-                <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
-              </View>
-              <View style={{flex:1}}></View>
+    return (
+      <View style={{flex: 2, padding: 20 }}>
+        <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
+          <View style={styles.informationArea}>
+            <View style={styles.info}>
+              <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
+              <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+              <PropertyValue property={"Kommune"} value={kommuneValue} />
+              <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+              {this.createDescriptionArea()}
             </View>
-            <Text></Text>
-            {this.createDescriptionArea()}
           </View>
-          <View style={{flex: 1}}><Text/></View>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
   }
 
   createDescriptionArea() {
@@ -88,7 +93,7 @@ class CurrentSearchView extends React.Component {
           padding: 5,
           fontSize: 15,
           color: theme.secondaryTextColor,
-          backgroundColor: theme.navigationBarStyle.backgroundColor
+          backgroundColor: theme.container.backgroundColor,
         }}
         multiline={true}
         placeholderTextColor={theme.placeholderTextColor}
@@ -96,7 +101,7 @@ class CurrentSearchView extends React.Component {
         onChangeText={text => this.props.setDescription(text)}
         keyboardType="default"
         value={description}
-        onEndEditing={this.saveDescription}
+        onEndEditing={this.saveDescription.bind(this)}
         />
     </View>
   }
@@ -132,12 +137,12 @@ class CurrentSearchView extends React.Component {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
     if(Platform.OS === "ios") {
-      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-        if(!err) Linking.openURL("nvdbAr:");
+      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.vegar", (err, data) => {
+        if(!err) Linking.openURL("vegar.ar:");
       });
     } else if (Platform.OS === "android"){
       // Save data.json
-      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
       console.log(dataPath);
       var data = "{ \"objekter\" :" + JSON.stringify(this.props.currentRoadSearch.roadObjects) + "}";
       RNFS.writeFile(dataPath, data, "utf8")
@@ -165,6 +170,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
   },
   descriptionArea: {
+    marginTop: 20,
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',

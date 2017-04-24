@@ -33,7 +33,7 @@ class SearchMap extends React.Component {
     if(this.props.searchCoordinate) {
       return <MapView.Marker
         coordinate={this.props.searchCoordinate}
-        title={this.props.veg_input}
+        title={this.props.vegInput}
         >
       </MapView.Marker>
     }
@@ -67,7 +67,7 @@ class SearchMap extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    veg_input: state.searchReducer.veg_input,
+    vegInput: state.searchReducer.vegInput,
     searchCoordinate: state.searchReducer.searchCoordinate,
   }
 }

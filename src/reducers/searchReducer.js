@@ -7,30 +7,30 @@ export default function reducer(state={
 
   // Fylke variables
   // List used to hold all the returned possible choises based on user input
-  fylke_input: [],
+  fylkeInput: [],
   // String used to set the text of inputfield when the user has chosen a value
-  fylke_text: '',
+  fylkeText: '',
   // Boolean used to specify if the user has chosen a value
-  fylke_chosen: false,
+  fylkeChosen: false,
   // Color of the underline in textinput field, used to give feedback on validity of input
-  fylke_color: templates.colors.orange,
+  fylkeColor: templates.colors.orange,
 
   //Veg variables
-  veg_input: '',
-  veg_color: templates.colors.orange,
-  veg_valid: false,
+  vegInput: '',
+  vegColor: templates.colors.orange,
+  vegValid: false,
 
   //Kommune variables
-  kommune_input: [],
-  kommune_text: '',
-  kommune_chosen: false,
-  kommune_color: templates.colors.orange,
+  kommuneInput: [],
+  kommuneText: '',
+  kommuneChosen: false,
+  kommuneColor: templates.colors.orange,
 
   //Vegobjekttyper varibales
-  vegobjekttyper_input: [],
-  vegobjekttyper_text: '',
-  vegobjekttyper_chosen: false,
-  vegobjekttyper_color: templates.colors.red,
+  vegobjekttyperInput: [],
+  vegobjekttyperText: '',
+  vegobjekttyperChosen: false,
+  vegobjekttyperColor: templates.colors.red,
 
   //
   url: '',
@@ -45,9 +45,9 @@ export default function reducer(state={
   closestRoadsList: [],
 
   //To be removed:
-  fylke_navn: '',
-  kommune_navn: '',
-  vegobjekttyper_navn: '',
+  fylkeNavn: '',
+  kommuneNavn: '',
+  vegobjekttyperNavn: '',
 
 }, action) {
   switch (action.type) {
@@ -60,37 +60,37 @@ export default function reducer(state={
     case "INPUT_KOMMUNE_RESET": {
       return {
         ...state,
-        kommune_input: [],
-        kommune_text: '',
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        kommuneInput: [],
+        kommuneText: '',
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
       }
     }
     case "INPUT_FYLKE_RESET": {
       return {
         ...state,
-        fylke_input: [],
-        fylke_text: '',
-        fylke_chosen: false,
-        fylke_color: templates.colors.orange,
-        kommune_input: [],
-        kommune_text: '',
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        fylkeInput: [],
+        fylkeText: '',
+        fylkeChosen: false,
+        fylkeColor: templates.colors.orange,
+        kommuneInput: [],
+        kommuneText: '',
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
       }
     }
     case "RESET_VEGFIELD": {
       return {
         ...state,
-        veg_color: templates.colors.orange,
-        veg_valid: false,
+        vegColor: templates.colors.orange,
+        vegValid: false,
       }
     }
     case "INPUT_VEG_NOT_CHOSEN": {
       return {
         ...state,
-        veg_color: templates.colors.orange,
-        veg_valid: false,
+        vegColor: templates.colors.orange,
+        vegValid: false,
       }
     }
     case "SET_URL": {
@@ -99,135 +99,152 @@ export default function reducer(state={
         url: action.payload,
       }
     }
+    case "GENERATE_URL": {
+      const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+      var tStr = '', fStr = '', kStr = '', vStr = '';
+      const tChosen = state.vegobjekttyperChosen;
+      const fChosen = state.fylkeChosen;
+      const kChosen = state.kommuneChosen;
+      const vChosen = state.vegInput;
+
+      if(tChosen) { tStr = state.vegobjekttyperInput[0].id }
+      if(fChosen) { fStr = 'fylke=' + state.fylkeInput[0].nummer + '&' }
+      if(kChosen) { kStr = 'kommune=' + state.kommuneInput[0].nummer + '&' }
+      if(vChosen) { vStr = '&vegreferanse=' + state.vegInput + '&' }
+      const statisticsURL = baseURL + tStr + '/statistikk?' + fStr + kStr + vStr;
+      var fetchingURL = statisticsURL.replace("/statistikk", "") + 'inkluder=alle&srid=4326&antall=8000';
+
+      return {...state}
+    }
 
     case "INPUT_FYLKE_MULTIPLE": {
       return{
         ...state,
-        fylke_input: action.payload.result,
-        fylke_chosen: false,
-        fylke_text: action.payload.fylke_text,
-        fylke_color: templates.colors.orange,
+        fylkeInput: action.payload.result,
+        fylkeChosen: false,
+        fylkeText: action.payload.fylkeText,
+        fylkeColor: templates.colors.orange,
 
-        kommune_color: templates.colors.orange,
-        kommune_input: [],
-        kommune_chosen: false,
+        kommuneColor: templates.colors.orange,
+        kommuneInput: [],
+        kommuneChosen: false,
 
       }
     }
     case "INPUT_FYLKE_SINGLE": {
       return{
         ...state,
-        fylke_input: action.payload.result,
-        fylke_navn: action.payload.result[0].navn,
-        fylke_chosen: false,
-        fylke_text: action.payload.fylke_text,
-        fylke_color: templates.colors.orange,
-        kommune_color: templates.colors.orange,
-        kommune_input: [],
-        kommune_chosen: false,
+        fylkeInput: action.payload.result,
+        fylkeNavn: action.payload.result[0].navn,
+        fylkeChosen: false,
+        fylkeText: action.payload.fylkeText,
+        fylkeColor: templates.colors.orange,
+        kommuneColor: templates.colors.orange,
+        kommuneInput: [],
+        kommuneChosen: false,
 
       }
     }
     case "INPUT_FYLKE_NOT_VALID": {
       return{
         ...state,
-        fylke_input: [],
-        fylke_navn: '',
-        fylke_text: action.payload,
-        fylke_chosen: false,
-        fylke_color: 'red',
+        fylkeInput: [],
+        fylkeNavn: '',
+        fylkeText: action.payload,
+        fylkeChosen: false,
+        fylkeColor: 'red',
 
-        kommune_color: templates.colors.orange,
-        kommune_input: [],
+        kommuneColor: templates.colors.orange,
+        kommuneInput: [],
 
       }
     }
     case "CHOOSE_FYLKE": {
       return {
         ...state,
-        fylke_input: action.payload,
-        fylke_navn: action.payload[0].navn,
-        fylke_text: action.payload[0].navn,
-        fylke_chosen: true,
-        fylke_color: templates.colors.green,
+        fylkeInput: action.payload,
+        fylkeNavn: action.payload[0].navn,
+        fylkeText: action.payload[0].navn,
+        fylkeChosen: true,
+        fylkeColor: templates.colors.green,
 
-        kommune_input: [],
-        kommune_text: '',
+        kommuneInput: [],
+        kommuneText: '',
 
 
-        kommune_color: templates.colors.orange,
+        kommuneColor: templates.colors.orange,
       }
     }
     case "CHOOSE_FYLKE_FROM_KOMMUNE": {
       return {
         ...state,
-        fylke_input: [action.payload],
-        fylke_navn: action.payload.navn,
-        fylke_text: action.payload.navn,
-        fylke_chosen: true,
-        fylke_color: templates.colors.green,
+        fylkeInput: [action.payload],
+        fylkeNavn: action.payload.navn,
+        fylkeText: action.payload.navn,
+        fylkeChosen: true,
+        fylkeColor: templates.colors.green,
       }
     }
 
     case 'INPUT_VEG': {
       return{
         ...state,
-        veg_input: action.payload,
+        vegInput: action.payload,
       }
     }
 
     case 'INPUT_VEG_VALID': {
       return{
         ...state,
-        veg_valid: true,
-        veg_color: templates.colors.green,
+        vegValid: true,
+        vegColor: templates.colors.green,
       }
     }
     case 'INPUT_VEG_NOT_VALID': {
       return{
         ...state,
-        veg_valid: false,
-        veg_color: 'red',
+        vegValid: false,
+        vegColor: 'red',
       }
     }
 
     case "INPUT_KOMMUNE_MULTIPLE": {
       return{
         ...state,
-        kommune_input: action.payload.result,
-        kommune_text: action.payload.kommune_text,
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        kommuneInput: action.payload.result,
+        kommuneText: action.payload.kommuneText,
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
       }
     }
     case "INPUT_KOMMUNE_SINGLE": {
       return{
         ...state,
-        kommune_input: action.payload.result,
-        kommune_navn: action.payload.result[0].navn,
-        kommune_text: action.payload.kommune_text,
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        kommuneInput: action.payload.result,
+        kommuneNavn: action.payload.result[0].navn,
+        kommuneText: action.payload.kommuneText,
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
       }
     }
     case "INPUT_KOMMUNE_NOT_VALID": {
       return{
         ...state,
-        kommune_input: [],
-        kommune_navn: '',
-        kommune_text: action.payload,
-        kommune_chosen: false,
-        kommune_color: 'red',
+        kommuneInput: [],
+        kommuneNavn: '',
+        kommuneText: action.payload,
+        kommuneChosen: false,
+        kommuneColor: 'red',
       }
     }
     case "CHOOSE_KOMMUNE": {
       return {
         ...state,
-        kommune_input: action.payload,
-        kommune_navn: action.payload[0].navn,
-        kommune_text: action.payload[0].navn,
-        kommune_chosen: true,
-        kommune_color: templates.colors.green,
+        kommuneInput: action.payload,
+        kommuneNavn: action.payload[0].navn,
+        kommuneText: action.payload[0].navn,
+        kommuneChosen: true,
+        kommuneColor: templates.colors.green,
 
       }
     }
@@ -235,40 +252,40 @@ export default function reducer(state={
     case "INPUT_VEGOBJEKTTYPER_MULTIPLE": {
       return{
         ...state,
-        vegobjekttyper_input: action.payload.result,
-        vegobjekttyper_chosen: false,
-        vegobjekttyper_text: action.payload.vegobjekttyper_text,
-        vegobjekttyper_color: templates.colors.orange,
+        vegobjekttyperInput: action.payload.result,
+        vegobjekttyperChosen: false,
+        vegobjekttyperText: action.payload.vegobjekttyperText,
+        vegobjekttyperColor: templates.colors.orange,
       }
     }
     case "INPUT_VEGOBJEKTTYPER_SINGLE": {
       return{
         ...state,
-        vegobjekttyper_input: action.payload.result,
-        vegobjekttyper_navn: action.payload.result[0].navn,
-        vegobjekttyper_chosen: false,
-        vegobjekttyper_text: action.payload.vegobjekttyper_text,
-        vegobjekttyper_color: templates.colors.orange,
+        vegobjekttyperInput: action.payload.result,
+        vegobjekttyperNavn: action.payload.result[0].navn,
+        vegobjekttyperChosen: false,
+        vegobjekttyperText: action.payload.vegobjekttyperText,
+        vegobjekttyperColor: templates.colors.orange,
       }
     }
     case "INPUT_VEGOBJEKTTYPER_NOT_VALID": {
       return{
         ...state,
-        vegobjekttyper_input: [],
-        vegobjekttyper_navn: '',
-        vegobjekttyper_text: action.payload,
-        vegobjekttyper_chosen: false,
-        vegobjekttyper_color: 'red',
+        vegobjekttyperInput: [],
+        vegobjekttyperNavn: '',
+        vegobjekttyperText: action.payload,
+        vegobjekttyperChosen: false,
+        vegobjekttyperColor: 'red',
       }
     }
     case "CHOOSE_VEGOBJEKTTYPER": {
       return {
         ...state,
-        vegobjekttyper_input: action.payload,
-        vegobjekttyper_navn: action.payload[0].navn,
-        vegobjekttyper_text: action.payload[0].navn,
-        vegobjekttyper_chosen: true,
-        vegobjekttyper_color: templates.colors.green,
+        vegobjekttyperInput: action.payload,
+        vegobjekttyperNavn: action.payload[0].navn,
+        vegobjekttyperText: action.payload[0].navn,
+        vegobjekttyperChosen: true,
+        vegobjekttyperColor: templates.colors.green,
       }
     }
 
@@ -282,27 +299,27 @@ export default function reducer(state={
     case "RESET_SEARCH_PARAMETERS": {
       return {
         ...state,
-        fylke_input: [],
-        fylke_navn: '',
-        fylke_text: '',
-        fylke_chosen: false,
-        fylke_color: templates.colors.orange,
+        fylkeInput: [],
+        fylkeNavn: '',
+        fylkeText: '',
+        fylkeChosen: false,
+        fylkeColor: templates.colors.orange,
 
-        veg_input: '',
-        veg_color: templates.colors.orange,
-        veg_valid: false,
+        vegInput: '',
+        vegColor: templates.colors.orange,
+        vegValid: false,
 
-        kommune_input: [],
-        kommune_navn: '',
-        kommune_text: '',
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        kommuneInput: [],
+        kommuneNavn: '',
+        kommuneText: '',
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
 
-        vegobjekttyper_input: [],
-        vegobjekttyper_navn: '',
-        vegobjekttyper_text: '',
-        vegobjekttyper_chosen: false,
-        vegobjekttyper_color: templates.colors.orange,
+        vegobjekttyperInput: [],
+        vegobjekttyperNavn: '',
+        vegobjekttyperText: '',
+        vegobjekttyperChosen: false,
+        vegobjekttyperColor: templates.colors.orange,
 
         url: '',
 
@@ -312,21 +329,21 @@ export default function reducer(state={
     case "RESET_POSITION_SEARCH_PARAMETERS": {
       return {
         ...state,
-        fylke_input: [],
-        fylke_navn: '',
-        fylke_text: '',
-        fylke_chosen: false,
-        fylke_color: templates.colors.orange,
+        fylkeInput: [],
+        fylkeNavn: '',
+        fylkeText: '',
+        fylkeChosen: false,
+        fylkeColor: templates.colors.orange,
 
-        veg_input: '',
-        veg_color: templates.colors.orange,
-        veg_valid: false,
+        vegInput: '',
+        vegColor: templates.colors.orange,
+        vegValid: false,
 
-        kommune_input: [],
-        kommune_navn: '',
-        kommune_text: '',
-        kommune_chosen: false,
-        kommune_color: templates.colors.orange,
+        kommuneInput: [],
+        kommuneNavn: '',
+        kommuneText: '',
+        kommuneChosen: false,
+        kommuneColor: templates.colors.orange,
 
         url: '',
 

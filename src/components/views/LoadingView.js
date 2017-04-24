@@ -15,7 +15,7 @@ import * as Progress from 'react-native-progress';
 import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
-import {fetchFromAPI_all, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
+import {fetchFromAPI, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
 import * as templates from '../../utilities/templates'
 
 import * as dataActions from '../../actions/dataActions'
@@ -30,7 +30,7 @@ class LoadingView extends React.Component {
     fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
       this.props.setObjekttypeInfo(data);
 
-      fetchFromAPI_all(this.props.fetchDataReturned, this.props.url);
+      fetchFromAPI(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
     this.props.fetchDataStart();
@@ -80,7 +80,7 @@ function mapStateToProps(state) {
     url: state.searchReducer.url,
 
     //Fields used when creating URL
-    kommune: state.searchReducer.kommune_input,
+    kommune: state.searchReducer.kommuneInput,
 
     //Needed when creating roadSearch object
     objects: state.dataReducer.objects,
