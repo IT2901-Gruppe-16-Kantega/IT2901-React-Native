@@ -59,3 +59,5 @@ app/REDUX_TUTORIALFILE.js
 src/components/oldSearchView.js
 notis.js
 build_apk.sh
+install_apk.sh
+copy_apk.sh

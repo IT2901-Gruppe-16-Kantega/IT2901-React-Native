@@ -80463,7 +80463,7 @@ if(!err)_reactNative.Linking.openURL("vegar.ar:");
 
 var dataPath=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/files/data.json";
 console.log(dataPath);
-var data=JSON.stringify(this.props.currentRoadSearch);
+var data=JSON.stringify(this.props.currentRoadSearch.key);
 _reactNativeFs2.default.writeFile(dataPath,data,"utf8").
 then(function(success){return console.log("data.json saved successfully");}).
 catch(function(err){return console.error("An error occurred when saving data.json",err);});
@@ -92718,8 +92718,8 @@ var _reactNativeFs=require(486 /* react-native-fs */);var _reactNativeFs2=babelH
 var rootPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/NVDB-storage";
 var searchesPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/NVDB-storage/searches";
 
-var rootPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/NVDB-storage";
-var searchesPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/NVDB-storage/searches";exports.default=
+var rootPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/files";
+var searchesPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/files/searches";exports.default=
 
 function(key){return{
 

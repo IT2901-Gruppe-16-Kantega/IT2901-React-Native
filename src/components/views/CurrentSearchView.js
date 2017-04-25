@@ -144,7 +144,7 @@ class CurrentSearchView extends React.Component {
       // Save data.json
       let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
       console.log(dataPath);
-      var data = JSON.stringify(this.props.currentRoadSearch);
+      var data = JSON.stringify(this.props.currentRoadSearch.key);
       RNFS.writeFile(dataPath, data, "utf8")
       .then((success) => console.log("data.json saved successfully"))
       .catch((err) => console.error("An error occurred when saving data.json", err));
