@@ -38,7 +38,6 @@ function searchForVegobjekttyper(input){
 
 //handle chosen fylke
 function searchForKommune(input, fylke) {
-  console.log(fylke)
   if(fylke.length == 0) {
     var filteredKommuneList = kommuner;
   }

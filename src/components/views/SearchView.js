@@ -58,48 +58,135 @@ View used when user specifies what data to be fetched from NVDB
 */
 class SearchView extends React.Component {
   render() {
-    return <Container>
-      {this.createViewArea()}
-      {this.createDownloadButton()}
-      <TabBar
-        tabs={[
-          {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
-          {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
-          {title: tabs.CLOSEST, onPress: ()=>{
-            this.props.setChosenSearchTab(tabs.CLOSEST)
-            this.getUserPosition() // Should be done somewhere else
-          }},
-        ]}
-        />
-    </Container>
+    return (
+      <Container>
+        {this.renderMainContent()}
+        {this.renderDownloadButton()}
+        <TabBar
+          tabs={[
+            {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
+            {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
+            {title: tabs.CLOSEST, onPress: ()=>{
+              this.props.setChosenSearchTab(tabs.CLOSEST)
+              this.getUserPosition() // Should be done somewhere else
+            }},
+          ]}
+          />
+      </Container>
+    );
   }
 
-  createViewArea() {
+  renderMainContent() {
     if (this.props.chosenSearchTab === tabs.SEARCH) {
-      return <ScrollView
-        style={styles.content}
-        scrollEnabled={true}
-        keyboardShouldPersistTaps='always'>
-        {this.createTypeInput()}
-        <LocationInputComponent withVeg validate={this.validate.bind(this)} />
-      </ScrollView>
+      return (
+        <ScrollView
+          style={styles.content}
+          scrollEnabled={true}
+          keyboardShouldPersistTaps='always'>
+          {this.renderTypeInput()}
+          <LocationInputComponent withVeg validate={this.validate.bind(this)} />
+        </ScrollView>
+      );
     }
     else if (this.props.chosenSearchTab === tabs.MAP) {
-      return <View style={{ flex: 1 }}>
-        <SearchMap validate={this.validate} />
-        {this.createTypeInput(this.typeInputStyleForMap())}
-      </View>
+      return (
+        <View style={{ flex: 1 }}>
+          <SearchMap validate={this.validate} />
+          {this.renderTypeInput(this.typeInputStyleForMap())}
+        </View>
+      );
     }
     else if (this.props.chosenSearchTab === tabs.CLOSEST) {
-      return <ScrollView
-        style={styles.content}
-        scrollEnabled={false}
-        keyboardShouldPersistTaps='always'
-        >
-        {this.createTypeInput()}
-        {this.createClosestRoadsList()}
-      </ScrollView>
+      return (
+        <ScrollView
+          style={styles.content}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps='always'
+          >
+          {this.renderTypeInput()}
+          {this.renderClosestRoadsList()}
+        </ScrollView>
+      );
     }
+  }
+
+  renderTypeInput(style) {
+    return (
+      <View style={[styles.inputArea, style]}>
+        <InputField type='vegobjekttype'
+          list={this.props.vegobjekttyperInput}
+          textType={this.props.vegobjekttyperText}
+          choosen={this.props.vegobjekttyperChosen}
+          inputFunction={this.props.inputVegobjekttyper}
+          chooserFunction={this.props.chooseVegobjekttyper}
+          colorController={this.props.vegobjekttyperColor}
+          updateFunction={this.validate.bind(this)}
+          />
+      </View>
+    );
+  }
+
+  renderDownloadButton() {
+    const count = this.props.numberOfObjectsToBeFetched || 0;
+    const buttonText = "Last ned objekter (" + count + ")";
+    return (
+      <View style={styles.downloadButtonContainer}>
+        <Button text={buttonText} onPress={this.searchButtonPressed.bind(this)} type={"search"} />
+      </View>
+    );
+  }
+
+  renderClosestRoadsList() {
+    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
+
+    return (
+      <View style={styles.content}>
+        <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
+        <ListView
+          keyboardShouldPersistTaps='always'
+          dataSource={ds.cloneWithRows(this.props.closestRoadsList)}
+          enableEmptySections={true}
+          renderRow={(rowData) => {
+              const {kortform} = rowData.vegreferanse;
+              return <Button
+                type={kortform === selectedVegreferanse ? "listSelected" : "list"}
+                onPress={() => {
+                  selectedVegreferanse = kortform;
+                  this.chooseClosestRoad(rowData);
+                }}
+                text={kortform + " (" + rowData.avstand + "m)"}
+              />
+            }}/>
+      </View>
+    );
+  }
+
+  chooseClosestRoad(road) {
+    this.props.resetPositionSearchParameters();
+
+    const vegreferanse = road.vegreferanse;
+    const {fylke, kommune, kategori, status, nummer} = vegreferanse;
+
+    if(kategori === 'K') {
+      this.props.inputVeg(kategori + status + nummer)
+      this.props.chooseFylke(fylke)
+      this.props.chooseKommune(kommune)
+     }
+    else {
+      this.props.inputVeg(kategori + status + nummer)
+      this.props.chooseFylke(fylke)
+    }
+    this.validate()
+  }
+
+  getUserPosition() {
+    navigator.geolocation.getCurrentPosition((initialPosition) => {
+      fetchCloseby(10, initialPosition.coords, function(closestList) {
+        this.props.inputClosestRoads(closestList);
+
+      }.bind(this));
+    }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
   typeInputStyleForMap() {
@@ -121,97 +208,6 @@ class SearchView extends React.Component {
     }
   }
 
-  createClosestRoadsList() {
-    var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
-    var dataSource = ds.cloneWithRows(this.props.closestRoadsList)
-
-    return <View style={styles.content}>
-      <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
-      <ListView
-        keyboardShouldPersistTaps='always'
-        dataSource={dataSource}
-        enableEmptySections={true}
-        renderRow={(rowData) => {
-            return <Button
-              type={this.closestRoadListItemStyle(rowData.vegreferanse.kortform)}
-              onPress={() => {
-                selectedVegreferanse = rowData.vegreferanse.kortform;
-                const chosenRoad = this.props.closestRoadsList.find((data) => {
-                  if(data.vegreferanse.kortform === rowData.vegreferanse.kortform) {
-                    return data;
-                  }
-                });
-
-                this.chooseClosestRoad(chosenRoad)
-              }}
-              text={rowData.vegreferanse.kortform + " (" + rowData.avstand + "m)"}
-            />
-          }}/>
-        <View style={{flex: 0.17}}><Text></Text></View>
-    </View>
-  }
-
-  closestRoadListItemStyle(ref) {
-    if(ref === selectedVegreferanse) {
-      return "listSelected";
-    } else {
-      return "list";
-    }
-  }
-
-  chooseClosestRoad(road) {
-    this.props.resetPositionSearchParameters();
-    const vegreferanse = road.vegreferanse;
-    const fylke = vegreferanse.fylke;
-    const kommune = vegreferanse.kommune;
-    const kategori = vegreferanse.kategori;
-    const status = vegreferanse.status;
-    const nummer = vegreferanse.nummer;
-    if(kategori === 'K') {
-      this.props.inputVeg(kategori + status + nummer)
-      const chosenFylke = []
-      chosenFylke.push(fylker.find(f => f.nummer === fylke))
-      this.props.chooseFylke(chosenFylke)
-      this.props.chooseKommune([kommuner.find(k => k.nummer === kommune)])
-     }
-    else {
-      this.props.inputVeg(kategori + status + nummer)
-      this.props.chooseFylke([fylker.find(f => f.nummer === fylke)])
-    }
-    this.validate()
-  }
-
-  getUserPosition() {
-    navigator.geolocation.getCurrentPosition((initialPosition) => {
-      fetchCloseby(10, initialPosition.coords, function(closestList) {
-        this.props.inputClosestRoads(closestList);
-
-      }.bind(this));
-    }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-  }
-
-  createTypeInput(style) {
-    return <View style={[styles.inputArea, style]}>
-      <InputField type='vegobjekttype'
-        list={this.props.vegobjekttyperInput}
-        textType={this.props.vegobjekttyperText}
-        choosen={this.props.vegobjekttyperChosen}
-        inputFunction={this.props.inputVegobjekttyper}
-        chooserFunction={this.props.chooseVegobjekttyper}
-        colorController={this.props.vegobjekttyperColor}
-        updateFunction={this.validate.bind(this)}
-        />
-    </View>
-  }
-
-  createDownloadButton() {
-    var count = this.props.numberOfObjectsToBeFetched || 0;
-    return <View style={{ alignItems: 'center', position: 'absolute', left: 0, right: 0, bottom: 50, height: 60 }}>
-      <Button text={"Last ned objekter (" + count + ")"} onPress={this.searchButtonPressed.bind(this)} type={"search"} />
-    </View>
-  }
-
   validate() {
     // Reset count before finding new number
     this.props.setNumberOfObjectsToBeFetched(0);
@@ -225,7 +221,7 @@ class SearchView extends React.Component {
       if(this.props.vegobjekttyperChosen) { vegobjektStr = this.props.vegobjekttyperInput[0].id }
       if(this.props.fylkeChosen) { fylkeStr = 'fylke=' + this.props.fylkeInput[0].nummer + '&' }
       if(this.props.kommuneChosen) { kommuneStr = 'kommune=' + this.props.kommuneInput[0].nummer + '&' }
-      if(this.props.vegInput != "") {
+      if(this.props.vegInput !== "") {
         isValidatingVeg = true
         vegString = '&vegreferanse=' + this.props.vegInput + '&'}
       else {
@@ -234,6 +230,9 @@ class SearchView extends React.Component {
       var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
       this.check(url, this.props.vegobjekttyperChosen, isValidatingVeg)
     })
+    /*setTimeout(() => {
+      this.props.generateURL();
+    }, 10);*/
   }
 
   check(url, shouldFetchNumber, isValidatingVeg) {
@@ -253,8 +252,6 @@ class SearchView extends React.Component {
       }
       else if(response[0].code === 4005) {
         if(isValidatingVeg) { this.props.setValidityOfVeg('NOT_VALID') }
-      }
-      else {
       }
     })
   }
@@ -292,14 +289,16 @@ class SearchView extends React.Component {
       Alert.alert(alertType.WARNING,
       'Dette søket vil hente ' + this.props.numberOfObjectsToBeFetched +
       ' vegobjekter og kan ta lang tid. Er du sikker på at du vil utføre søket?',
-        [{text: 'Utfør', onPress: this.search}, {text: 'Avbryt'}]
+        [{text: 'Utfør', onPress: this.search.bind(this)}, {text: 'Avbryt'}]
       );
     }
     else { this.search(); }
   }
 
   search() {
-    this.props.combineSearchParameters(this.props.fylkeInput[0], this.props.vegInput, this.props.kommuneInput[0], this.props.vegobjekttyperInput[0]);
+    const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
+    this.props.combineSearchParameters(
+      fylkeInput ? fylkeInput[0] : null, vegInput, kommuneInput ? kommuneInput[0] : null, vegobjekttyperInput ? vegobjekttyperInput[0] : null);
     Actions.LoadingView();
   }
 }
@@ -308,6 +307,14 @@ var styles = StyleSheet.create({
   content: {
     padding: 10,
   },
+  downloadButtonContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 50,
+    height: 60,
+  }
 })
 
 function mapStateToProps(state) {
@@ -354,6 +361,8 @@ function mapDispatchToProps(dispatch) {
     inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
 
     setURL: bindActionCreators(searchActions.setURL, dispatch),
+    generateURL: bindActionCreators(searchActions.generateURL, dispatch),
+
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
     setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
 

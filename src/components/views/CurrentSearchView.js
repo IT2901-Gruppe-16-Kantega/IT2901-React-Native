@@ -33,10 +33,25 @@ Shows information about current search, buttons for viewing map and opening AR
 class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
-    this.props.setDescription(this.props.currentRoadSearch.description)
+
+    if(this.props.currentRoadSearch) {
+      this.props.setDescription(this.props.currentRoadSearch.description)
+    }
   }
 
   render() {
+    if(!this.props.currentRoadSearch) {
+      return (
+        <Container>
+          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Text style={this.props.theme.title}>Ingen/feil søk spesifisert.</Text>
+          </View>
+        </Container>
+      );
+    }
+
+    console.log(this.props.currentRoadSearch)
+
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>

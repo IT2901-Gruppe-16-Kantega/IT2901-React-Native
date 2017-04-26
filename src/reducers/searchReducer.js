@@ -99,6 +99,23 @@ export default function reducer(state={
         url: action.payload,
       }
     }
+    case "GENERATE_URL": {
+      const baseURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+      var tStr = '', fStr = '', kStr = '', vStr = '';
+      const tChosen = state.vegobjekttyperChosen;
+      const fChosen = state.fylkeChosen;
+      const kChosen = state.kommuneChosen;
+      const vChosen = state.vegInput;
+
+      if(tChosen) { tStr = state.vegobjekttyperInput[0].id }
+      if(fChosen) { fStr = 'fylke=' + state.fylkeInput[0].nummer + '&' }
+      if(kChosen) { kStr = 'kommune=' + state.kommuneInput[0].nummer + '&' }
+      if(vChosen) { vStr = '&vegreferanse=' + state.vegInput + '&' }
+      const statisticsURL = baseURL + tStr + '/statistikk?' + fStr + kStr + vStr;
+      var fetchingURL = statisticsURL.replace("/statistikk", "") + 'inkluder=alle&srid=4326&antall=8000';
+
+      return {...state}
+    }
 
     case "INPUT_FYLKE_MULTIPLE": {
       return{

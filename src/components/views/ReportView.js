@@ -54,18 +54,17 @@ class ReportView extends React.Component {
     const {theme} = this.props;
 
     return (
-      <TouchableHighlight onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
+      <TouchableHighlight key={reportItem.vegobjekt} onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
         <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor, borderBottomWidth: 1, borderBottomColor: theme.backgroundColor }}>
           <Text style={theme.title}>{reportItem.vegobjekt}</Text>
           <Text style={theme.subtitle}>{this.createSubtitle(reportItem)}</Text>
-          {this.createSomething(reportItem)}
         </View>
       </TouchableHighlight>
     );
   }
 
-  createSomething(reportItem) {
-    var arr = [];
+  /*createSomething(reportItem) {
+    var arr = [];
     for(var i = 0; i < reportItem.endringer.length; i++) {
       const endring = reportItem.endringer[i];
       if(arr[endring.type]) {
@@ -81,7 +80,7 @@ class ReportView extends React.Component {
     }
 
     return <View>{lines}</View>;
-  }
+  }*/
 
   createSubtitle(reportItem) {
     const num = reportItem.endringer.length;
