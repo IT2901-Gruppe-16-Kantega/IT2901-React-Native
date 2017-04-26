@@ -1,14 +1,16 @@
 import { AsyncStorage, Platform } from 'react-native';
 import RNFS from 'react-native-fs'
 
-// RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+// RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
 
 
 const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
 const searchesPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage/searches";
 
+
 const rootPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files";
 const searchesPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/searches";
+
 
 export default (key) => ({
 

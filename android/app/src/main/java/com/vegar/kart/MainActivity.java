@@ -1,4 +1,4 @@
-package com.nvdb.rn;
+package com.vegar.kart;
 
 import com.facebook.react.ReactActivity;
 

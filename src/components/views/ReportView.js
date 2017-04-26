@@ -65,6 +65,7 @@ class ReportView extends React.Component {
 
   /*createSomething(reportItem) {
     var arr = [];
+
     for(var i = 0; i < reportItem.endringer.length; i++) {
       const endring = reportItem.endringer[i];
       if(arr[endring.type]) {

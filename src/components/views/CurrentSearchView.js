@@ -33,7 +33,6 @@ Shows information about current search, buttons for viewing map and opening AR
 class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
-
     if(this.props.currentRoadSearch) {
       this.props.setDescription(this.props.currentRoadSearch.description)
     }
@@ -138,18 +137,18 @@ class CurrentSearchView extends React.Component {
     //kan brukes ved mottak av data fra unity
     //this.props.fetchDataReturned(objects, true);
     if(Platform.OS === "ios") {
-      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.nvdb", (err, data) => {
-        if(!err) Linking.openURL("nvdbAr:");
+      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.vegar", (err, data) => {
+        if(!err) Linking.openURL("vegar.ar:");
       });
     } else if (Platform.OS === "android"){
       // Save data.json
-      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.nvdb/files/data.json";
+      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
       console.log(dataPath);
       var data = JSON.stringify(this.props.currentRoadSearch.key);
       RNFS.writeFile(dataPath, data, "utf8")
       .then((success) => console.log("data.json saved successfully"))
       .catch((err) => console.error("An error occurred when saving data.json", err));
-      Linking.openURL("nvdbAr:").catch(err => console.error('An error occurred', err));
+      Linking.openURL("vegar.ar:").catch(err => console.error('An error occurred', err));
       // TODO Save roads.json here
       //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
     } else {
