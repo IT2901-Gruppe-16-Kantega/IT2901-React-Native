@@ -69,7 +69,7 @@ class ObjectInfoView extends React.Component {
     </Container>
   }
 
-  renderHeader() {
+  renderHeader() {
     const {isEditingRoadObject, theme} = this.props;
     return (
       <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor }}>

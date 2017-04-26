@@ -140,7 +140,6 @@ class App extends Component {
     const darkMode = result["dm"];
     this.props.setDarkMode(darkMode);
     if(mainParts[0] === "rapport") {
-      //com.vegar.rn://rapport?id=13
       const id = parseInt(result["id"]);
       this.props.setCurrentRoadSearch(id);
       //Actions.ReportView();
