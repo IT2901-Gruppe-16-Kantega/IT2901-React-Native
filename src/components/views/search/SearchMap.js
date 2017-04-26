@@ -24,7 +24,7 @@ class SearchMap extends React.Component {
       initialRegion={this.props.searchCoordinate}
       style={{ flex: 1 }}
       showsUserLocation={true}
-      onPress={this.mapPressed}>
+      onPress={this.mapPressed.bind(this)}>
       {this.renderMarker()}
     </MapView>
   }

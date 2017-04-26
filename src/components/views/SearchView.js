@@ -91,7 +91,7 @@ class SearchView extends React.Component {
     else if (this.props.chosenSearchTab === tabs.MAP) {
       return (
         <View style={{ flex: 1 }}>
-          <SearchMap validate={this.validate} />
+          <SearchMap validate={this.validate.bind(this)} />
           {this.renderTypeInput(this.typeInputStyleForMap())}
         </View>
       );
