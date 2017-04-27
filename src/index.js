@@ -124,6 +124,7 @@ class App extends Component {
   }
 
   handleDeepLink(e) {
+	console.log(e.url);
     const route = e.url.replace(/.*?:\/\//g, "");
     const mainParts = route.split("?");
 
@@ -141,6 +142,8 @@ class App extends Component {
     this.props.setDarkMode(darkMode);
     if(mainParts[0] === "rapport") {
       const id = parseInt(result["id"]);
+	  const storage = storageEngine('NVDB-storage')
+	  storage.loadReport(id);
       this.props.setCurrentRoadSearch(id);
       //Actions.ReportView();
       Actions.CurrentSearchView();
