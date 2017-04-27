@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import App from './src/index'
 import {store} from './src/store'
 
-var NVDB = React.createClass({
+var VegAR = React.createClass({
   getInitialState() {
     return {
     }
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('NVDB', () => NVDB);
+AppRegistry.registerComponent('VegAR', () => VegAR);

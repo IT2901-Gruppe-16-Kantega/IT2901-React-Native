@@ -1,4 +1,4 @@
-package com.vegar.kart;
+package com.vegar;
 
 import com.facebook.react.ReactActivity;
 
