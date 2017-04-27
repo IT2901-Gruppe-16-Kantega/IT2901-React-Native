@@ -1590,13 +1590,13 @@ return Array.from(arr);
 }
 };
 })(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);
-__d(/* NVDB/index.android.js */function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(/* VegAR/index.android.js */function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 var _reactRedux=require(399 /* react-redux */);
 var _index=require(436 /* ./src/index */);var _index2=babelHelpers.interopRequireDefault(_index);
 var _store=require(564 /* ./src/store */);
 
-var NVDB=_react2.default.createClass({displayName:'NVDB',
+var VegAR=_react2.default.createClass({displayName:'VegAR',
 getInitialState:function getInitialState(){
 return{};
 
@@ -1615,8 +1615,8 @@ flex:1}});
 
 
 
-_reactNative.AppRegistry.registerComponent('NVDB',function(){return NVDB;});
-}, 0, null, "NVDB/index.android.js");
+_reactNative.AppRegistry.registerComponent('VegAR',function(){return VegAR;});
+}, 0, null, "VegAR/index.android.js");
 __d(/* react/react.js */function(global, require, module, exports) {'use strict';
 
 module.exports=require(13 /* ./lib/React */);
@@ -70013,7 +70013,7 @@ verify(mapDispatchToProps,'mapDispatchToProps',displayName);
 verify(mergeProps,'mergeProps',displayName);
 }
 }, 435, null, "react-redux/lib/connect/verifySubselectors.js");
-__d(/* NVDB/src/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
+__d(/* VegAR/src/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
 var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
@@ -70072,7 +70072,7 @@ if(_reactNative.Platform.OS==="android"){
 _reactNative.UIManager.setLayoutAnimationEnabledExperimental&&_reactNative.UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-var storage=(0,_storageEngine2.default)('NVDB-storage');
+var storage=(0,_storageEngine2.default)('VegAR-storage');
 storage.initialize();
 var stored=storage.load(function(progress){
 this.props.setLoadingProgress(progress);
@@ -70242,7 +70242,7 @@ setCurrentRoadSearch:(0,_redux.bindActionCreators)(dataActions.setCurrentRoadSea
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(App);
-}, 436, null, "NVDB/src/index.js");
+}, 436, null, "VegAR/src/index.js");
 __d(/* react-native-router-flux/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.Util=exports.getInitialStateFromRoot=exports.TabbedView=exports.TabBar=exports.Switch=exports.Scene=exports.Router=exports.Reducer=exports.NavBar=exports.Modal=exports.DefaultRenderer=exports.ActionConst=exports.Actions=undefined;var _Actions=require(438 /* ./src/Actions */);var _Actions2=babelHelpers.interopRequireDefault(_Actions);
 var _ActionConst=require(441 /* ./src/ActionConst */);var ActionConst=babelHelpers.interopRequireWildcard(_ActionConst);
 var _DefaultRenderer=require(442 /* ./src/DefaultRenderer */);var _DefaultRenderer2=babelHelpers.interopRequireDefault(_DefaultRenderer);
@@ -80317,7 +80317,7 @@ return hooks;
 
 });
 }, 484, null, "moment/moment.js");
-__d(/* NVDB/src/components/views/CurrentSearchView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(/* VegAR/src/components/views/CurrentSearchView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -80530,7 +80530,7 @@ setDescription:(0,_redux.bindActionCreators)(dataActions.setDescription,dispatch
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(CurrentSearchView);
-}, 485, null, "NVDB/src/components/views/CurrentSearchView.js");
+}, 485, null, "VegAR/src/components/views/CurrentSearchView.js");
 __d(/* react-native-fs/FS.common.js */function(global, require, module, exports) {
 
 
@@ -81447,7 +81447,7 @@ resolve(data);
 
 userDefaults;
 }, 489, null, "react-native-user-defaults/UserDefaults.js");
-__d(/* NVDB/src/components/misc/Button.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(/* VegAR/src/components/misc/Button.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -81562,7 +81562,7 @@ break;}
 
 return style;
 }}]);return Button;}(_react2.default.Component);Button.propTypes={text:_propTypes2.default.string.isRequired,onPress:_propTypes2.default.func.isRequired,type:_propTypes2.default.oneOf(Object.values(types)).isRequired};exports.default=Button;
-}, 490, null, "NVDB/src/components/misc/Button.js");
+}, 490, null, "VegAR/src/components/misc/Button.js");
 __d(/* prop-types/index.js */function(global, require, module, exports) {
 
 
@@ -82205,7 +82205,7 @@ ReactPropTypes.PropTypes=ReactPropTypes;
 return ReactPropTypes;
 };
 }, 495, null, "prop-types/factoryWithThrowingShims.js");
-__d(/* NVDB/src/utilities/templates.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
+__d(/* VegAR/src/utilities/templates.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
 var colors=exports.colors={
 black:'black',
 blue:'#008ec2',
@@ -82240,8 +82240,8 @@ borderWidth:3,
 borderColor:colors.blue,
 
 backgroundColor:colors.white};
-}, 496, null, "NVDB/src/utilities/templates.js");
-__d(/* NVDB/src/components/misc/Container.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 496, null, "VegAR/src/utilities/templates.js");
+__d(/* VegAR/src/components/misc/Container.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -82264,8 +82264,8 @@ return{style:state.settingsReducer.themeStyle};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(Container);
-}, 497, null, "NVDB/src/components/misc/Container.js");
-__d(/* NVDB/src/components/misc/PropertyValue.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 497, null, "VegAR/src/components/misc/Container.js");
+__d(/* VegAR/src/components/misc/PropertyValue.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 var _reactRedux=require(399 /* react-redux */);
@@ -82293,8 +82293,8 @@ return{theme:state.settingsReducer.themeStyle};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(PropertyValue);
-}, 498, null, "NVDB/src/components/misc/PropertyValue.js");
-__d(/* NVDB/src/utilities/utils.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.randomColor=exports.parseGeometry=exports.searchForVegobjekttyper=exports.searchForFylke=exports.searchForKommune=undefined;
+}, 498, null, "VegAR/src/components/misc/PropertyValue.js");
+__d(/* VegAR/src/utilities/utils.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.randomColor=exports.parseGeometry=exports.searchForVegobjekttyper=exports.searchForFylke=exports.searchForKommune=undefined;
 var _fylker=require(500 /* ../data/fylker */);
 var _kommuner=require(501 /* ../data/kommuner */);
 var _vegobjekttyper=require(502 /* ../data/vegobjekttyper */);
@@ -82413,8 +82413,8 @@ return color;
 }exports.
 
 searchForKommune=searchForKommune;exports.searchForFylke=searchForFylke;exports.searchForVegobjekttyper=searchForVegobjekttyper;exports.parseGeometry=parseGeometry;exports.randomColor=randomColor;
-}, 499, null, "NVDB/src/utilities/utils.js");
-__d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var fylker=[{
+}, 499, null, "VegAR/src/utilities/utils.js");
+__d(/* VegAR/src/data/fylker.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var fylker=[{
 "navn":"Østfold",
 "nummer":1,
 "region":1,
@@ -82429,7 +82429,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":2,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/2"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/2"}},
 
 {
 "navn":"Akershus",
@@ -82446,7 +82446,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":3,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/3"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/3"}},
 
 {
 "navn":"Oslo",
@@ -82463,7 +82463,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":4,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/4"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/4"}},
 
 {
 "navn":"Hedmark",
@@ -82480,7 +82480,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":5,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/5"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/5"}},
 
 {
 "navn":"Oppland",
@@ -82497,7 +82497,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":6,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/6"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/6"}},
 
 {
 "navn":"Buskerud",
@@ -82514,7 +82514,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":8,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/8"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/8"}},
 
 {
 "navn":"Vestfold",
@@ -82531,7 +82531,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":9,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/9"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/9"}},
 
 {
 "navn":"Telemark",
@@ -82548,7 +82548,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":10,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/10"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/10"}},
 
 {
 "navn":"Aust-Agder",
@@ -82565,7 +82565,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":11,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/11"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/11"}},
 
 {
 "navn":"Vest-Agder",
@@ -82582,7 +82582,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":12,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/12"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/12"}},
 
 {
 "navn":"Rogaland",
@@ -82599,7 +82599,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":14,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/14"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/14"}},
 
 {
 "navn":"Hordaland",
@@ -82616,7 +82616,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":15,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/15"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/15"}},
 
 {
 "navn":"Sogn og Fjordane",
@@ -82633,7 +82633,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":16,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/16"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/16"}},
 
 {
 "navn":"Møre og Romsdal",
@@ -82650,7 +82650,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":18,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/18"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/18"}},
 
 {
 "navn":"Sør-Trøndelag",
@@ -82667,7 +82667,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":19,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/19"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/19"}},
 
 {
 "navn":"Nord-Trøndelag",
@@ -82684,7 +82684,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":20,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/20"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/20"}},
 
 {
 "navn":"Nordland",
@@ -82701,7 +82701,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":22,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/22"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/22"}},
 
 {
 "navn":"Troms",
@@ -82718,7 +82718,7 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":23,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/23"}},
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/23"}},
 
 {
 "navn":"Finnmark",
@@ -82735,13 +82735,13 @@ __d(/* NVDB/src/data/fylker.js */function(global, require, module, exports) {Obj
 "vegobjekt":{
 "id":24,
 "type":535,
-"href":"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/535/24"}}];exports.
+"href":"https://www.vegvesen.no/VegAR/api/v2/vegobjekter/535/24"}}];exports.
 
 
 
 fylker=fylker;
-}, 500, null, "NVDB/src/data/fylker.js");
-__d(/* NVDB/src/data/kommuner.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var kommuner=[{
+}, 500, null, "VegAR/src/data/fylker.js");
+__d(/* VegAR/src/data/kommuner.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var kommuner=[{
 "navn":"Halden",
 "nummer":101,
 "region":1,
@@ -88707,8 +88707,8 @@ __d(/* NVDB/src/data/kommuner.js */function(global, require, module, exports) {O
 
 
 kommuner=kommuner;
-}, 501, null, "NVDB/src/data/kommuner.js");
-__d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var vegobjekttyper=[{
+}, 501, null, "VegAR/src/data/kommuner.js");
+__d(/* VegAR/src/data/vegobjekttyper.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var vegobjekttyper=[{
 "id":3,
 "navn":"Skjerm",
 "beskrivelse":"En frittstående konstruksjon som skal være et hinder for f.eks støyutbredelse",
@@ -88716,7 +88716,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Skjerm",
-"sosinvdbnavn":"Skjerm_3",
+"sosiVegARnavn":"Skjerm_3",
 "sorteringsnummer":4760},
 {
 "id":5,
@@ -88726,7 +88726,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Der rekkverk følger vegens kurvatur er start og slutt rekkverkets begynnelse/slutt. Dette defineres ved start / støtpute, evt fra der rekkverk blir synlig/usynlig.  Rekkverk der vi har avvik fra mellom referanse og målt lengde , skal",
 "sosinavn":"Rekkverk",
-"sosinvdbnavn":"Rekkverk_5",
+"sosiVegARnavn":"Rekkverk_5",
 "sorteringsnummer":3600},
 {
 "id":7,
@@ -88736,7 +88736,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Gjerde",
-"sosinvdbnavn":"Gjerde_7",
+"sosiVegARnavn":"Gjerde_7",
 "sorteringsnummer":4800},
 {
 "id":9,
@@ -88746,7 +88746,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Kantstein registreres også der det er nedsenket kantstein, men det skal der registreres nedsenket kantstein (VT 10) som punktobjekt i tillegg.  I rundkjøringer skal både indre og ytre kantstein registreres. Kommentar som datter kan vise hva er hva.",
 "sosinavn":"Kantstein",
-"sosinvdbnavn":"Kantstein_9",
+"sosiVegARnavn":"Kantstein_9",
 "sorteringsnummer":3330},
 {
 "id":10,
@@ -88756,7 +88756,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-12-15",
 "veiledning":"Registreres helst med koordinater.",
 "sosinavn":"NedsenkaKantstein",
-"sosinvdbnavn":"NedsenkaKantstein_10",
+"sosiVegARnavn":"NedsenkaKantstein_10",
 "sorteringsnummer":3331},
 {
 "id":11,
@@ -88765,7 +88765,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_StolpeGenerell",
-"sosinvdbnavn":"Utgår_StolpeGenerell_11",
+"sosiVegARnavn":"Utgår_StolpeGenerell_11",
 "sorteringsnummer":5140},
 {
 "id":13,
@@ -88775,7 +88775,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"PortDør",
-"sosinvdbnavn":"PortDør_13",
+"sosiVegARnavn":"PortDør_13",
 "sorteringsnummer":5620},
 {
 "id":14,
@@ -88785,7 +88785,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Nedføringen beskrives her. Et fiktivt start/sluttpunkt.  Dersom man har avvik fra referanselinjas geometri skrives hele lengden her.",
 "sosinavn":"Rekkverksende",
-"sosinvdbnavn":"Rekkverksende_14",
+"sosiVegARnavn":"Rekkverksende_14",
 "sorteringsnummer":3602},
 {
 "id":15,
@@ -88795,7 +88795,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Grasdekker",
-"sosinvdbnavn":"Grasdekker_15",
+"sosiVegARnavn":"Grasdekker_15",
 "sorteringsnummer":5220},
 {
 "id":18,
@@ -88804,7 +88804,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Kan bør koordinatfestes",
 "sosinavn":"PlantekasseKrukke",
-"sosinvdbnavn":"PlantekasseKrukke_18",
+"sosiVegARnavn":"PlantekasseKrukke_18",
 "sorteringsnummer":0},
 {
 "id":19,
@@ -88814,7 +88814,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-06-09",
 "veiledning":"",
 "sosinavn":"KunstUtsmykking",
-"sosinvdbnavn":"KunstUtsmykking_19",
+"sosiVegARnavn":"KunstUtsmykking_19",
 "sorteringsnummer":5310},
 {
 "id":20,
@@ -88824,7 +88824,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"KantstolperRefleks",
-"sosinvdbnavn":"KantstolperRefleks_20",
+"sosiVegARnavn":"KantstolperRefleks_20",
 "sorteringsnummer":4220},
 {
 "id":21,
@@ -88833,7 +88833,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"Kantstolper og refleks er behandlet i tillegget til HB R610 (111). Der refleks brukes som optisk ledning skal det registreres ( andre krav , bla til vasking )",
 "sosinavn":"Brøytestikk",
-"sosinvdbnavn":"Brøytestikk_21",
+"sosiVegARnavn":"Brøytestikk_21",
 "sorteringsnummer":0},
 {
 "id":22,
@@ -88843,7 +88843,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Ferist registreres når den er operativ. Dersom rista settes ut av funksjon ( fylles osv ) skal den slettes ( blir historisk ) Settes den i funksjon igjen registreres den inn på nytt. Objektet driftes bare når det er i bruk",
 "sosinavn":"Ferist",
-"sosinvdbnavn":"Ferist_22",
+"sosiVegARnavn":"Ferist_22",
 "sorteringsnummer":3840},
 {
 "id":23,
@@ -88853,7 +88853,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Bør koordinatfestes  Dersom bommen er satt opp mtp stenging av veg i tunnel, skal den kunne knyttes til tunnelsystem",
 "sosinavn":"Vegbom",
-"sosinvdbnavn":"Vegbom_23",
+"sosiVegARnavn":"Vegbom_23",
 "sorteringsnummer":3580},
 {
 "id":24,
@@ -88863,7 +88863,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Skiltportal",
-"sosinvdbnavn":"Skiltportal_24",
+"sosiVegARnavn":"Skiltportal_24",
 "sorteringsnummer":3860},
 {
 "id":25,
@@ -88873,7 +88873,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Leskur",
-"sosinvdbnavn":"Leskur_25",
+"sosiVegARnavn":"Leskur_25",
 "sorteringsnummer":4900},
 {
 "id":26,
@@ -88883,7 +88883,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Lekeapparat",
-"sosinvdbnavn":"Lekeapparat_26",
+"sosiVegARnavn":"Lekeapparat_26",
 "sorteringsnummer":5340},
 {
 "id":27,
@@ -88893,7 +88893,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Renovasjon",
-"sosinvdbnavn":"Renovasjon_27",
+"sosiVegARnavn":"Renovasjon_27",
 "sorteringsnummer":5380},
 {
 "id":28,
@@ -88903,7 +88903,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Kan/bør koordinatfestes",
 "sosinavn":"Utemøbler",
-"sosinvdbnavn":"Utemøbler_28",
+"sosiVegARnavn":"Utemøbler_28",
 "sorteringsnummer":5320},
 {
 "id":29,
@@ -88912,7 +88912,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Hvorfor tilstand skade strekning ?  Vi mangler Oppfylt dato om dette blir et ønske ( kan lages som funksjon i VegReg )",
 "sosinavn":"Strøsandkasse",
-"sosinvdbnavn":"Strøsandkasse_29",
+"sosiVegARnavn":"Strøsandkasse_29",
 "sorteringsnummer":0},
 {
 "id":30,
@@ -88921,7 +88921,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Veganlegg",
-"sosinvdbnavn":"Veganlegg_30",
+"sosiVegARnavn":"Veganlegg_30",
 "sorteringsnummer":0},
 {
 "id":37,
@@ -88930,7 +88930,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Kryss registreres i skjæringspunkt mellom referanselinjer og gies sideposisjon..Ei trafikkøy kan assosieres",
 "sosinavn":"Vegkryss",
-"sosinvdbnavn":"Vegkryss_37",
+"sosiVegARnavn":"Vegkryss_37",
 "sorteringsnummer":0},
 {
 "id":39,
@@ -88940,7 +88940,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Rasteplass",
-"sosinvdbnavn":"Rasteplass_39",
+"sosiVegARnavn":"Rasteplass_39",
 "sorteringsnummer":5200},
 {
 "id":40,
@@ -88950,7 +88950,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-01-27",
 "veiledning":"Måles ut fra bruksområde",
 "sosinavn":"Snuplass",
-"sosinvdbnavn":"Snuplass_40",
+"sosiVegARnavn":"Snuplass_40",
 "sorteringsnummer":3120},
 {
 "id":41,
@@ -88960,7 +88960,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Ferjeoppstillingsplass",
-"sosinvdbnavn":"Ferjeoppstillingsplass_41",
+"sosiVegARnavn":"Ferjeoppstillingsplass_41",
 "sorteringsnummer":3760},
 {
 "id":42,
@@ -88969,7 +88969,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Kollektivknutepunkt",
-"sosinvdbnavn":"Kollektivknutepunkt_42",
+"sosiVegARnavn":"Kollektivknutepunkt_42",
 "sorteringsnummer":0},
 {
 "id":43,
@@ -88979,7 +88979,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Parkeringsområde",
-"sosinvdbnavn":"Parkeringsområde_43",
+"sosiVegARnavn":"Parkeringsområde_43",
 "sorteringsnummer":3740},
 {
 "id":44,
@@ -88989,7 +88989,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Antall oppstillingsplasser kan registreres, inklusive type veiing",
 "sosinavn":"Kontroll-Veieplass",
-"sosinvdbnavn":"Kontroll-Veieplass_44",
+"sosiVegARnavn":"Kontroll-Veieplass_44",
 "sorteringsnummer":3780},
 {
 "id":45,
@@ -88999,7 +88999,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Vegobjektet representerer hele bomstasjonen. Det kan knyttes til ulike \"datterobjekt\", f.eks \"Vegbom\", \"Bygning\" (innkrevingsboder og evt pauserom), \"Kamera/video\", \"Dokumentasjon\" og \"Kommentar\".",
 "sosinavn":"Bomstasjon",
-"sosinvdbnavn":"Bomstasjon_45",
+"sosiVegARnavn":"Bomstasjon_45",
 "sorteringsnummer":3800},
 {
 "id":46,
@@ -89008,7 +89008,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Det skal angis sideposisjon.  Minst en av egenskapstypene \"Primæraktivitet og Bruksområde\" skal gis.",
 "sosinavn":"Avkjørsel",
-"sosinvdbnavn":"Avkjørsel_46",
+"sosiVegARnavn":"Avkjørsel_46",
 "sorteringsnummer":0},
 {
 "id":47,
@@ -89018,7 +89018,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Det er generert opp mange en meters elementer ved overgang pkt til str. Sjekk for overlapp her ved nyregistrering.Del av holdeplassutrustning. Start i enden av spiss og slutt i enden av spiss.",
 "sosinavn":"Trafikklomme",
-"sosinvdbnavn":"Trafikklomme_47",
+"sosiVegARnavn":"Trafikklomme_47",
 "sorteringsnummer":3110},
 {
 "id":48,
@@ -89028,7 +89028,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Fortau på bru, overgang veg bru og fortau i tilknytning til busslommer vurderes spesielt (se gsv- instruks). Avklar vedlikeholdsansvar mot kanstein",
 "sosinavn":"Fortau",
-"sosinvdbnavn":"Fortau_48",
+"sosiVegARnavn":"Fortau_48",
 "sorteringsnummer":3170},
 {
 "id":49,
@@ -89038,7 +89038,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Registreres i forbindelse med vegkryss. I sideveg er alternativet å registrere øya til hovedvegen og bruke tilfarter som sideposisjon. Diverse lengdebegreper på døtrer og lengde må gies. All type belegning kan gies, inkl. evt utsmykking.",
 "sosinavn":"Trafikkøy",
-"sosinvdbnavn":"Trafikkøy_49",
+"sosiVegARnavn":"Trafikkøy_49",
 "sorteringsnummer":3070},
 {
 "id":57,
@@ -89048,7 +89048,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Registreres som flate med geometri eller som strekningsdata med maks høgde. Flata reknes fra indre grøfteskråning til topp inngrep i naturlig terreng.Skråflate kan delvis dekkes av et sikringslag, trafikksikkerhet eller pga erosjon Her registreres ikke volum.",
 "sosinavn":"Skjæring",
-"sosinvdbnavn":"Skjæring_57",
+"sosiVegARnavn":"Skjæring_57",
 "sorteringsnummer":4600},
 {
 "id":59,
@@ -89058,7 +89058,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Fiberduk",
-"sosinvdbnavn":"Fiberduk_59",
+"sosiVegARnavn":"Fiberduk_59",
 "sorteringsnummer":4500},
 {
 "id":60,
@@ -89067,7 +89067,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"Forekomster hentes fra BRUTUS med jevne mellomrom.  Vedlikehold av forekomster skal derfor også gjøres vha BRUTUS.",
 "sosinavn":"Bru",
-"sosinvdbnavn":"Bru_60",
+"sosiVegARnavn":"Bru_60",
 "sorteringsnummer":0},
 {
 "id":62,
@@ -89077,7 +89077,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Støttemur",
-"sosinvdbnavn":"Støttemur_62",
+"sosiVegARnavn":"Støttemur_62",
 "sorteringsnummer":4680},
 {
 "id":64,
@@ -89086,7 +89086,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Ferjeleie",
-"sosinvdbnavn":"Ferjeleie_64",
+"sosiVegARnavn":"Ferjeleie_64",
 "sorteringsnummer":0},
 {
 "id":65,
@@ -89096,7 +89096,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Bygning",
-"sosinvdbnavn":"Bygning_65",
+"sosiVegARnavn":"Bygning_65",
 "sorteringsnummer":4840},
 {
 "id":66,
@@ -89106,7 +89106,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Skredoverbygg",
-"sosinvdbnavn":"Skredoverbygg_66",
+"sosiVegARnavn":"Skredoverbygg_66",
 "sorteringsnummer":5420},
 {
 "id":67,
@@ -89116,7 +89116,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Tunnelløp",
-"sosinvdbnavn":"Tunnelløp_67",
+"sosiVegARnavn":"Tunnelløp_67",
 "sorteringsnummer":5460},
 {
 "id":69,
@@ -89126,7 +89126,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Tunnelportal",
-"sosinvdbnavn":"Tunnelportal_69",
+"sosiVegARnavn":"Tunnelportal_69",
 "sorteringsnummer":5480},
 {
 "id":70,
@@ -89136,7 +89136,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Vann-OgFrostsikring",
-"sosinvdbnavn":"Vann-OgFrostsikring_70",
+"sosiVegARnavn":"Vann-OgFrostsikring_70",
 "sorteringsnummer":5500},
 {
 "id":71,
@@ -89146,7 +89146,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Betongutstøping",
-"sosinvdbnavn":"Betongutstøping_71",
+"sosiVegARnavn":"Betongutstøping_71",
 "sorteringsnummer":5520},
 {
 "id":72,
@@ -89156,7 +89156,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Bergsikring",
-"sosinvdbnavn":"Bergsikring_72",
+"sosiVegARnavn":"Bergsikring_72",
 "sorteringsnummer":4620},
 {
 "id":73,
@@ -89166,7 +89166,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Sikringsbolt",
-"sosinvdbnavn":"Sikringsbolt_73",
+"sosiVegARnavn":"Sikringsbolt_73",
 "sorteringsnummer":4640},
 {
 "id":74,
@@ -89175,7 +89175,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_Tildekningslag",
-"sosinvdbnavn":"Utgår_Tildekningslag_74",
+"sosiVegARnavn":"Utgår_Tildekningslag_74",
 "sorteringsnummer":0},
 {
 "id":77,
@@ -89185,7 +89185,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Kan være datter til \"Grøft, lukket\". Kan også være ledning fra fallkum i stikkrenne til bortledning mot resipient",
 "sosinavn":"Rørledning",
-"sosinvdbnavn":"Rørledning_77",
+"sosiVegARnavn":"Rørledning_77",
 "sorteringsnummer":4280},
 {
 "id":78,
@@ -89195,7 +89195,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"LukketRørgrøft",
-"sosinvdbnavn":"LukketRørgrøft_78",
+"sosiVegARnavn":"LukketRørgrøft_78",
 "sorteringsnummer":4240},
 {
 "id":79,
@@ -89205,7 +89205,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Stikkrenne registreres med start innløp sett i kjøreretningen.  Stikkrenna inngår ikke i Lukka drenering.  Det regnes derfor ikke som stikkrenne der lukka drenering krysser vegen Vi kan ha tilknytning til kum både for innløp og utløp. Videreføring fra vegkroppen fra kum mot rørledning som kan ha egne kummer over eks. dyrka mark",
 "sosinavn":"StikkrenneKulvert",
-"sosinvdbnavn":"StikkrenneKulvert_79",
+"sosiVegARnavn":"StikkrenneKulvert_79",
 "sorteringsnummer":4320},
 {
 "id":80,
@@ -89215,7 +89215,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Kan registreres som datter til \"Grøft, lukka\" når \"Grøft, åpen\" tar overflatevann, mens \"Grøft, lukka\" tar dypdrenering. Det kan registreres parallelle grøfter (høyre, venstre, midt) Ulike dybder med utgangspunkt i Vegnormaler, funksjonskontrakter (mal)",
 "sosinavn":"GrøftÅpen",
-"sosinvdbnavn":"GrøftÅpen_80",
+"sosiVegARnavn":"GrøftÅpen_80",
 "sorteringsnummer":4260},
 {
 "id":81,
@@ -89224,7 +89224,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"ElvBekkGjenlagt",
-"sosinvdbnavn":"ElvBekkGjenlagt_81",
+"sosiVegARnavn":"ElvBekkGjenlagt_81",
 "sorteringsnummer":0},
 {
 "id":82,
@@ -89233,7 +89233,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Hydraveg",
-"sosinvdbnavn":"Hydraveg_82",
+"sosiVegARnavn":"Hydraveg_82",
 "sorteringsnummer":0},
 {
 "id":83,
@@ -89243,7 +89243,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Kum",
-"sosinvdbnavn":"Kum_83",
+"sosiVegARnavn":"Kum_83",
 "sorteringsnummer":4360},
 {
 "id":85,
@@ -89253,7 +89253,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Pumpe",
-"sosinvdbnavn":"Pumpe_85",
+"sosiVegARnavn":"Pumpe_85",
 "sorteringsnummer":6300},
 {
 "id":86,
@@ -89262,7 +89262,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Belysningsstrekning",
-"sosinvdbnavn":"Belysningsstrekning_86",
+"sosiVegARnavn":"Belysningsstrekning_86",
 "sorteringsnummer":4040},
 {
 "id":87,
@@ -89272,7 +89272,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Belysningspunkt",
-"sosinvdbnavn":"Belysningspunkt_87",
+"sosiVegARnavn":"Belysningspunkt_87",
 "sorteringsnummer":4060},
 {
 "id":88,
@@ -89282,7 +89282,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Lysarmatur",
-"sosinvdbnavn":"Lysarmatur_88",
+"sosiVegARnavn":"Lysarmatur_88",
 "sorteringsnummer":4100},
 {
 "id":89,
@@ -89292,7 +89292,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Strekning skal være så lang at alle signalpunkt tilhørende signalanlegget blir innenfor strekningen. Geometrisk punkt som skal representere signalanlegget gis midt i krysset eller midt på aktuell strekning. Registrer hvert signalpunkt med referanse.",
 "sosinavn":"Signalanlegg",
-"sosinvdbnavn":"Signalanlegg_89",
+"sosiVegARnavn":"Signalanlegg_89",
 "sorteringsnummer":3980},
 {
 "id":90,
@@ -89302,7 +89302,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Signalpunkt",
-"sosinvdbnavn":"Signalpunkt_90",
+"sosiVegARnavn":"Signalpunkt_90",
 "sorteringsnummer":4000},
 {
 "id":91,
@@ -89312,7 +89312,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Hvert signalhode defineres. ( Ikke sum ) Egenskap : Antall lamper defineres",
 "sosinavn":"Signalhode",
-"sosinvdbnavn":"Signalhode_91",
+"sosiVegARnavn":"Signalhode_91",
 "sorteringsnummer":4020},
 {
 "id":92,
@@ -89322,7 +89322,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Kabel",
-"sosinvdbnavn":"Kabel_92",
+"sosiVegARnavn":"Kabel_92",
 "sorteringsnummer":4120},
 {
 "id":95,
@@ -89332,7 +89332,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Skiltpunkt",
-"sosinvdbnavn":"Skiltpunkt_95",
+"sosiVegARnavn":"Skiltpunkt_95",
 "sorteringsnummer":3880},
 {
 "id":96,
@@ -89342,7 +89342,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Referansen knyttes til skiltpunktet. Oppsettingsutstyr og skiltplater med diverse egenskaper omfattes av registreringen. Det er laget texturer som kan velges. Skiltpunkt kan settes på portal, slik at overhengende skilt kan registreres på feltnivå.",
 "sosinavn":"Skiltplate",
-"sosinvdbnavn":"Skiltplate_96",
+"sosiVegARnavn":"Skiltplate_96",
 "sorteringsnummer":3900},
 {
 "id":97,
@@ -89352,7 +89352,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"VariabeltSkilt",
-"sosinvdbnavn":"VariabeltSkilt_97",
+"sosiVegARnavn":"VariabeltSkilt_97",
 "sorteringsnummer":3920},
 {
 "id":98,
@@ -89362,7 +89362,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Referansestolpe",
-"sosinvdbnavn":"Referansestolpe_98",
+"sosiVegARnavn":"Referansestolpe_98",
 "sorteringsnummer":3960},
 {
 "id":99,
@@ -89372,7 +89372,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"VegoppmerkingLangsgåend",
-"sosinvdbnavn":"VegoppmerkingLangsgåend_99",
+"sosiVegARnavn":"VegoppmerkingLangsgåend_99",
 "sorteringsnummer":3680},
 {
 "id":100,
@@ -89381,7 +89381,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Jernbanekryssing",
-"sosinvdbnavn":"Jernbanekryssing_100",
+"sosiVegARnavn":"Jernbanekryssing_100",
 "sorteringsnummer":0},
 {
 "id":103,
@@ -89391,7 +89391,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Registreres fra /til der det fysiske objekter starter / slutter.  Dersom det er et gangfelt, så er dette objektet mor til fartsdemperen.  Kan også stå alene.",
 "sosinavn":"Fartsdemper",
-"sosinvdbnavn":"Fartsdemper_103",
+"sosiVegARnavn":"Fartsdemper_103",
 "sorteringsnummer":3820},
 {
 "id":104,
@@ -89400,7 +89400,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseUoffisiell",
-"sosinvdbnavn":"BruksklasseUoffisiell_104",
+"sosiVegARnavn":"BruksklasseUoffisiell_104",
 "sorteringsnummer":0},
 {
 "id":105,
@@ -89409,7 +89409,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Fartsgrense",
-"sosinvdbnavn":"Fartsgrense_105",
+"sosiVegARnavn":"Fartsgrense_105",
 "sorteringsnummer":0},
 {
 "id":106,
@@ -89418,7 +89418,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vinterdriftsstrategi",
-"sosinvdbnavn":"Vinterdriftsstrategi_106",
+"sosiVegARnavn":"Vinterdriftsstrategi_106",
 "sorteringsnummer":0},
 {
 "id":107,
@@ -89427,7 +89427,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VærutsattVeg",
-"sosinvdbnavn":"VærutsattVeg_107",
+"sosiVegARnavn":"VærutsattVeg_107",
 "sorteringsnummer":0},
 {
 "id":110,
@@ -89436,7 +89436,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Service",
-"sosinvdbnavn":"Service_110",
+"sosiVegARnavn":"Service_110",
 "sorteringsnummer":0},
 {
 "id":113,
@@ -89445,7 +89445,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Høydemåling",
-"sosinvdbnavn":"Høydemåling_113",
+"sosiVegARnavn":"Høydemåling_113",
 "sorteringsnummer":0},
 {
 "id":123,
@@ -89454,7 +89454,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeDekke",
-"sosinvdbnavn":"TilstandSkadeDekke_123",
+"sosiVegARnavn":"TilstandSkadeDekke_123",
 "sorteringsnummer":0},
 {
 "id":137,
@@ -89464,7 +89464,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Fylling",
-"sosinvdbnavn":"Fylling_137",
+"sosiVegARnavn":"Fylling_137",
 "sorteringsnummer":4560},
 {
 "id":144,
@@ -89474,7 +89474,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"PlastringErosjonssikri",
-"sosinvdbnavn":"PlastringErosjonssikri_144",
+"sosiVegARnavn":"PlastringErosjonssikri_144",
 "sorteringsnummer":4580},
 {
 "id":145,
@@ -89484,7 +89484,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2015-03-17",
 "veiledning":"",
 "sosinavn":"Membran",
-"sosinvdbnavn":"Membran_145",
+"sosiVegARnavn":"Membran_145",
 "sorteringsnummer":5510},
 {
 "id":147,
@@ -89494,7 +89494,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Fjellrom",
-"sosinvdbnavn":"Fjellrom_147",
+"sosiVegARnavn":"Fjellrom_147",
 "sorteringsnummer":5600},
 {
 "id":153,
@@ -89504,7 +89504,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Værstasjon",
-"sosinvdbnavn":"Værstasjon_153",
+"sosiVegARnavn":"Værstasjon_153",
 "sorteringsnummer":5680},
 {
 "id":155,
@@ -89513,7 +89513,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Vekt",
-"sosinvdbnavn":"Vekt_155",
+"sosiVegARnavn":"Vekt_155",
 "sorteringsnummer":0},
 {
 "id":162,
@@ -89522,7 +89522,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"ATK-punkt",
-"sosinvdbnavn":"ATK-punkt_162",
+"sosiVegARnavn":"ATK-punkt_162",
 "sorteringsnummer":0},
 {
 "id":163,
@@ -89532,7 +89532,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"KameraOvervåkning",
-"sosinvdbnavn":"KameraOvervåkning_163",
+"sosiVegARnavn":"KameraOvervåkning_163",
 "sorteringsnummer":5760},
 {
 "id":164,
@@ -89542,7 +89542,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"MåleutstyrSvevestøv",
-"sosinvdbnavn":"MåleutstyrSvevestøv_164",
+"sosiVegARnavn":"MåleutstyrSvevestøv_164",
 "sorteringsnummer":6160},
 {
 "id":165,
@@ -89552,7 +89552,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Vindmåler",
-"sosinvdbnavn":"Vindmåler_165",
+"sosiVegARnavn":"Vindmåler_165",
 "sorteringsnummer":5740},
 {
 "id":166,
@@ -89561,7 +89561,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Teledybdemåler",
-"sosinvdbnavn":"Teledybdemåler_166",
+"sosiVegARnavn":"Teledybdemåler_166",
 "sorteringsnummer":0},
 {
 "id":167,
@@ -89571,7 +89571,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"DetektorTrafikk",
-"sosinvdbnavn":"DetektorTrafikk_167",
+"sosiVegARnavn":"DetektorTrafikk_167",
 "sorteringsnummer":6080},
 {
 "id":172,
@@ -89581,7 +89581,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Trafikkdeler registreres fra fysisk/malt startpunkt. Man må splitte objektet dersom man vil splitte malt og fysiske enheter",
 "sosinavn":"Trafikkdeler",
-"sosinvdbnavn":"Trafikkdeler_172",
+"sosiVegARnavn":"Trafikkdeler_172",
 "sorteringsnummer":3071},
 {
 "id":174,
@@ -89591,7 +89591,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Gangfelt",
-"sosinvdbnavn":"Gangfelt_174",
+"sosiVegARnavn":"Gangfelt_174",
 "sorteringsnummer":3210},
 {
 "id":180,
@@ -89601,7 +89601,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Nødtelefon",
-"sosinvdbnavn":"Nødtelefon_180",
+"sosiVegARnavn":"Nødtelefon_180",
 "sorteringsnummer":5860},
 {
 "id":181,
@@ -89611,7 +89611,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Lysmast",
-"sosinvdbnavn":"Lysmast_181",
+"sosiVegARnavn":"Lysmast_181",
 "sorteringsnummer":4080},
 {
 "id":183,
@@ -89621,7 +89621,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"KabelbruStige",
-"sosinvdbnavn":"KabelbruStige_183",
+"sosiVegARnavn":"KabelbruStige_183",
 "sorteringsnummer":4121},
 {
 "id":199,
@@ -89629,9 +89629,9 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Trær er flerårige vedaktige planter som har definert stamme og krone.",
 "stedfesting":"LINJE",
 "objektliste_dato":"2012-05-08",
-"veiledning":"Det skal registreres trær som skal ha parklik skjøtsel samt verdifulle trær, andre trær som skal skjøttes skal registreres som \"Naturområde\" (tidl. \"Vegetasjonsområde, spesielt\"). Det anbefales å registreres en forekomst i NVDB per tre. Det har tidligere tildels vært praksis å registrere flere trær sammen. Det åpnes for noe skjønn rundt dette, men som et minimum må alle trær i en gruppe ha tilnærmet identiske egenskaper.",
+"veiledning":"Det skal registreres trær som skal ha parklik skjøtsel samt verdifulle trær, andre trær som skal skjøttes skal registreres som \"Naturområde\" (tidl. \"Vegetasjonsområde, spesielt\"). Det anbefales å registreres en forekomst i VegAR per tre. Det har tidligere tildels vært praksis å registrere flere trær sammen. Det åpnes for noe skjønn rundt dette, men som et minimum må alle trær i en gruppe ha tilnærmet identiske egenskaper.",
 "sosinavn":"Trær",
-"sosinvdbnavn":"Trær_199",
+"sosiVegARnavn":"Trær_199",
 "sorteringsnummer":5280},
 {
 "id":203,
@@ -89640,7 +89640,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Registreres i senter skjerm",
 "sosinavn":"Utgår_Kumskjerm",
-"sosinvdbnavn":"Utgår_Kumskjerm_203",
+"sosiVegARnavn":"Utgår_Kumskjerm_203",
 "sorteringsnummer":0},
 {
 "id":208,
@@ -89650,7 +89650,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"BassengMagasin",
-"sosinvdbnavn":"BassengMagasin_208",
+"sosiVegARnavn":"BassengMagasin_208",
 "sorteringsnummer":6340},
 {
 "id":209,
@@ -89660,7 +89660,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Hydrant",
-"sosinvdbnavn":"Hydrant_209",
+"sosiVegARnavn":"Hydrant_209",
 "sorteringsnummer":6000},
 {
 "id":210,
@@ -89670,7 +89670,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Pumpestasjon",
-"sosinvdbnavn":"Pumpestasjon_210",
+"sosiVegARnavn":"Pumpestasjon_210",
 "sorteringsnummer":6280},
 {
 "id":212,
@@ -89680,7 +89680,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"VifteVentilator",
-"sosinvdbnavn":"VifteVentilator_212",
+"sosiVegARnavn":"VifteVentilator_212",
 "sorteringsnummer":5660},
 {
 "id":213,
@@ -89690,7 +89690,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Brannslokningsapparat",
-"sosinvdbnavn":"Brannslokningsapparat_213",
+"sosiVegARnavn":"Brannslokningsapparat_213",
 "sorteringsnummer":5980},
 {
 "id":214,
@@ -89700,7 +89700,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Siktmåler",
-"sosinvdbnavn":"Siktmåler_214",
+"sosiVegARnavn":"Siktmåler_214",
 "sorteringsnummer":6140},
 {
 "id":215,
@@ -89710,7 +89710,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Gassmåler",
-"sosinvdbnavn":"Gassmåler_215",
+"sosiVegARnavn":"Gassmåler_215",
 "sorteringsnummer":6120},
 {
 "id":226,
@@ -89720,7 +89720,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Definert i HB N200 (018)",
 "sosinavn":"Bærelag",
-"sosinvdbnavn":"Bærelag_226",
+"sosiVegARnavn":"Bærelag_226",
 "sorteringsnummer":4420},
 {
 "id":227,
@@ -89730,7 +89730,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Forsterkningslag",
-"sosinvdbnavn":"Forsterkningslag_227",
+"sosiVegARnavn":"Forsterkningslag_227",
 "sorteringsnummer":4460},
 {
 "id":229,
@@ -89740,7 +89740,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Frostsikringslag",
-"sosinvdbnavn":"Frostsikringslag_229",
+"sosiVegARnavn":"Frostsikringslag_229",
 "sorteringsnummer":4480},
 {
 "id":234,
@@ -89750,7 +89750,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Voll",
-"sosinvdbnavn":"Voll_234",
+"sosiVegARnavn":"Voll_234",
 "sorteringsnummer":4740},
 {
 "id":241,
@@ -89760,7 +89760,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Vegdekke",
-"sosinvdbnavn":"Vegdekke_241",
+"sosiVegARnavn":"Vegdekke_241",
 "sorteringsnummer":4400},
 {
 "id":243,
@@ -89770,7 +89770,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Toalettanlegg",
-"sosinvdbnavn":"Toalettanlegg_243",
+"sosiVegARnavn":"Toalettanlegg_243",
 "sorteringsnummer":5400},
 {
 "id":269,
@@ -89779,7 +89779,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegskulderVegkant",
-"sosinvdbnavn":"VegskulderVegkant_269",
+"sosiVegARnavn":"VegskulderVegkant_269",
 "sorteringsnummer":0},
 {
 "id":270,
@@ -89788,7 +89788,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Skråning",
-"sosinvdbnavn":"Skråning_270",
+"sosiVegARnavn":"Skråning_270",
 "sorteringsnummer":0},
 {
 "id":273,
@@ -89797,7 +89797,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Bør koordinatfestes",
 "sosinavn":"Dyresperre",
-"sosinvdbnavn":"Dyresperre_273",
+"sosiVegARnavn":"Dyresperre_273",
 "sorteringsnummer":0},
 {
 "id":274,
@@ -89807,7 +89807,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Blomsterbeplantning",
-"sosinvdbnavn":"Blomsterbeplantning_274",
+"sosiVegARnavn":"Blomsterbeplantning_274",
 "sorteringsnummer":5240},
 {
 "id":276,
@@ -89816,7 +89816,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandSkadeSkiltpunk",
-"sosinvdbnavn":"TilstandSkadeSkiltpunk_276",
+"sosiVegARnavn":"TilstandSkadeSkiltpunk_276",
 "sorteringsnummer":0},
 {
 "id":277,
@@ -89825,7 +89825,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandSkadeBelysning",
-"sosinvdbnavn":"TilstandSkadeBelysning_277",
+"sosiVegARnavn":"TilstandSkadeBelysning_277",
 "sorteringsnummer":0},
 {
 "id":278,
@@ -89835,7 +89835,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Ventilasjonsanlegg",
-"sosinvdbnavn":"Ventilasjonsanlegg_278",
+"sosiVegARnavn":"Ventilasjonsanlegg_278",
 "sorteringsnummer":5640},
 {
 "id":284,
@@ -89844,7 +89844,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeRekkverk",
-"sosinvdbnavn":"TilstandSkadeRekkverk_284",
+"sosiVegARnavn":"TilstandSkadeRekkverk_284",
 "sorteringsnummer":0},
 {
 "id":290,
@@ -89852,7 +89852,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Telehiv",
-"sosinvdbnavn":"Telehiv_290",
+"sosiVegARnavn":"Telehiv_290",
 "sorteringsnummer":0},
 {
 "id":291,
@@ -89861,7 +89861,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Viltfare",
-"sosinvdbnavn":"Viltfare_291",
+"sosiVegARnavn":"Viltfare_291",
 "sorteringsnummer":0},
 {
 "id":293,
@@ -89870,7 +89870,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Breddemåling",
-"sosinvdbnavn":"Breddemåling_293",
+"sosiVegARnavn":"Breddemåling_293",
 "sorteringsnummer":0},
 {
 "id":294,
@@ -89879,7 +89879,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeStrekning",
-"sosinvdbnavn":"TilstandSkadeStrekning_294",
+"sosiVegARnavn":"TilstandSkadeStrekning_294",
 "sorteringsnummer":0},
 {
 "id":297,
@@ -89888,7 +89888,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Kommentar",
-"sosinvdbnavn":"Kommentar_297",
+"sosiVegARnavn":"Kommentar_297",
 "sorteringsnummer":0},
 {
 "id":300,
@@ -89897,7 +89897,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Naturområde",
-"sosinvdbnavn":"Naturområde_300",
+"sosiVegARnavn":"Naturområde_300",
 "sorteringsnummer":0},
 {
 "id":301,
@@ -89906,7 +89906,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"Her er en breddemåling datter og angir den bredde som skal slåes . NB: Breddemåling må ha mor ( være bredde til et morobjekt )",
 "sosinavn":"Kantklippareal",
-"sosinvdbnavn":"Kantklippareal_301",
+"sosiVegARnavn":"Kantklippareal_301",
 "sorteringsnummer":0},
 {
 "id":302,
@@ -89915,7 +89915,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeGrøft",
-"sosinvdbnavn":"TilstandSkadeGrøft_302",
+"sosiVegARnavn":"TilstandSkadeGrøft_302",
 "sorteringsnummer":0},
 {
 "id":303,
@@ -89925,7 +89925,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Undergrunn",
-"sosinvdbnavn":"Undergrunn_303",
+"sosiVegARnavn":"Undergrunn_303",
 "sorteringsnummer":4540},
 {
 "id":318,
@@ -89934,7 +89934,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Snø-Isrydding",
-"sosinvdbnavn":"Snø-Isrydding_318",
+"sosiVegARnavn":"Snø-Isrydding_318",
 "sorteringsnummer":0},
 {
 "id":319,
@@ -89943,7 +89943,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Kolonnestrekning",
-"sosinvdbnavn":"Kolonnestrekning_319",
+"sosiVegARnavn":"Kolonnestrekning_319",
 "sorteringsnummer":0},
 {
 "id":335,
@@ -89952,7 +89952,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Avstandsmåling",
-"sosinvdbnavn":"Avstandsmåling_335",
+"sosiVegARnavn":"Avstandsmåling_335",
 "sorteringsnummer":0},
 {
 "id":342,
@@ -89962,7 +89962,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Trafikkspeil",
-"sosinvdbnavn":"Trafikkspeil_342",
+"sosiVegARnavn":"Trafikkspeil_342",
 "sorteringsnummer":3940},
 {
 "id":343,
@@ -89971,7 +89971,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Stedsnavn",
-"sosinvdbnavn":"Stedsnavn_343",
+"sosiVegARnavn":"Stedsnavn_343",
 "sorteringsnummer":0},
 {
 "id":438,
@@ -89980,35 +89980,35 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandSkadeSkiltplat",
-"sosinvdbnavn":"TilstandSkadeSkiltplat_438",
+"sosiVegARnavn":"TilstandSkadeSkiltplat_438",
 "sorteringsnummer":0},
 {
 "id":440,
 "navn":"Logg, avviksEntry",
 "veiledning":"",
 "sosinavn":"LoggAvviksEntry",
-"sosinvdbnavn":"LoggAvviksEntry_440",
+"sosiVegARnavn":"LoggAvviksEntry_440",
 "sorteringsnummer":0},
 {
 "id":441,
 "navn":"Logg, stedsfestingsEndring",
 "veiledning":"",
 "sosinavn":"LoggStedsfestingsEndri",
-"sosinvdbnavn":"LoggStedsfestingsEndri_441",
+"sosiVegARnavn":"LoggStedsfestingsEndri_441",
 "sorteringsnummer":0},
 {
 "id":442,
 "navn":"Logg, justering",
 "veiledning":"",
 "sosinavn":"LoggJustering",
-"sosinvdbnavn":"LoggJustering_442",
+"sosiVegARnavn":"LoggJustering_442",
 "sorteringsnummer":0},
 {
 "id":443,
 "navn":"Logg, kjøring",
 "veiledning":"",
 "sosinavn":"LoggKjøring",
-"sosinvdbnavn":"LoggKjøring_443",
+"sosiVegARnavn":"LoggKjøring_443",
 "sorteringsnummer":0},
 {
 "id":444,
@@ -90016,7 +90016,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Benyttes i forbindelse med datautveksling med VegReg.",
 "veiledning":"",
 "sosinavn":"FeilLogg",
-"sosinvdbnavn":"FeilLogg_444",
+"sosiVegARnavn":"FeilLogg_444",
 "sorteringsnummer":0},
 {
 "id":445,
@@ -90025,7 +90025,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Skred",
-"sosinvdbnavn":"Skred_445",
+"sosiVegARnavn":"Skred_445",
 "sorteringsnummer":0},
 {
 "id":446,
@@ -90034,7 +90034,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Dokumentasjon",
-"sosinvdbnavn":"Dokumentasjon_446",
+"sosiVegARnavn":"Dokumentasjon_446",
 "sorteringsnummer":0},
 {
 "id":447,
@@ -90044,7 +90044,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"TunnelløpUtenTrafikk",
-"sosinvdbnavn":"TunnelløpUtenTrafikk_447",
+"sosiVegARnavn":"TunnelløpUtenTrafikk_447",
 "sorteringsnummer":5470},
 {
 "id":448,
@@ -90053,7 +90053,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Tunnelsjakt",
-"sosinvdbnavn":"Tunnelsjakt_448",
+"sosiVegARnavn":"Tunnelsjakt_448",
 "sorteringsnummer":0},
 {
 "id":449,
@@ -90062,7 +90062,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Luminansmåling",
-"sosinvdbnavn":"Luminansmåling_449",
+"sosiVegARnavn":"Luminansmåling_449",
 "sorteringsnummer":0},
 {
 "id":450,
@@ -90072,7 +90072,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2015-10-06",
 "veiledning":"Utvidelse ( hs ) i kryss uten venstresvingefelt er breddeutvidelse. Dersom vegkant er merket tvers gjennom, er det lomme",
 "sosinavn":"BreddeutvidelseKryss",
-"sosinvdbnavn":"BreddeutvidelseKryss_450",
+"sosiVegARnavn":"BreddeutvidelseKryss_450",
 "sorteringsnummer":3115},
 {
 "id":451,
@@ -90082,7 +90082,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Holdeplassutrustning kan være  øverste morobjekt",
 "sosinavn":"Sykkelparkering",
-"sosinvdbnavn":"Sykkelparkering_451",
+"sosiVegARnavn":"Sykkelparkering_451",
 "sorteringsnummer":3720},
 {
 "id":452,
@@ -90091,7 +90091,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Undergang",
-"sosinvdbnavn":"Undergang_452",
+"sosiVegARnavn":"Undergang_452",
 "sorteringsnummer":0},
 {
 "id":453,
@@ -90101,7 +90101,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"ElektrostatiskRenseslø",
-"sosinvdbnavn":"ElektrostatiskRenseslø_453",
+"sosiVegARnavn":"ElektrostatiskRenseslø_453",
 "sorteringsnummer":6100},
 {
 "id":456,
@@ -90111,7 +90111,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Styreapparat",
-"sosinvdbnavn":"Styreapparat_456",
+"sosiVegARnavn":"Styreapparat_456",
 "sorteringsnummer":4200},
 {
 "id":458,
@@ -90121,7 +90121,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Fotocelle",
-"sosinvdbnavn":"Fotocelle_458",
+"sosiVegARnavn":"Fotocelle_458",
 "sorteringsnummer":6200},
 {
 "id":459,
@@ -90131,7 +90131,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2015-03-17",
 "veiledning":"",
 "sosinavn":"Lysmåler",
-"sosinvdbnavn":"Lysmåler_459",
+"sosiVegARnavn":"Lysmåler_459",
 "sorteringsnummer":5710},
 {
 "id":460,
@@ -90141,7 +90141,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Kondensmåler",
-"sosinvdbnavn":"Kondensmåler_460",
+"sosiVegARnavn":"Kondensmåler_460",
 "sorteringsnummer":5720},
 {
 "id":461,
@@ -90151,7 +90151,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"ElektriskAnlegg",
-"sosinvdbnavn":"ElektriskAnlegg_461",
+"sosiVegARnavn":"ElektriskAnlegg_461",
 "sorteringsnummer":4160},
 {
 "id":462,
@@ -90161,7 +90161,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Høydemåler",
-"sosinvdbnavn":"Høydemåler_462",
+"sosiVegARnavn":"Høydemåler_462",
 "sorteringsnummer":6180},
 {
 "id":463,
@@ -90171,7 +90171,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Temperaturmåler",
-"sosinvdbnavn":"Temperaturmåler_463",
+"sosiVegARnavn":"Temperaturmåler_463",
 "sorteringsnummer":5700},
 {
 "id":464,
@@ -90181,7 +90181,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Vannstandsmåler",
-"sosinvdbnavn":"Vannstandsmåler_464",
+"sosiVegARnavn":"Vannstandsmåler_464",
 "sorteringsnummer":6320},
 {
 "id":465,
@@ -90190,7 +90190,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_Matepunkt",
-"sosinvdbnavn":"Utgår_Matepunkt_465",
+"sosiVegARnavn":"Utgår_Matepunkt_465",
 "sorteringsnummer":4180},
 {
 "id":466,
@@ -90200,7 +90200,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Trafo",
-"sosinvdbnavn":"Trafo_466",
+"sosiVegARnavn":"Trafo_466",
 "sorteringsnummer":6220},
 {
 "id":467,
@@ -90210,7 +90210,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Nødstrømsaggregat",
-"sosinvdbnavn":"Nødstrømsaggregat_467",
+"sosiVegARnavn":"Nødstrømsaggregat_467",
 "sorteringsnummer":6240},
 {
 "id":468,
@@ -90220,7 +90220,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"UPS",
-"sosinvdbnavn":"UPS_468",
+"sosiVegARnavn":"UPS_468",
 "sorteringsnummer":6260},
 {
 "id":470,
@@ -90230,7 +90230,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Antenne",
-"sosinvdbnavn":"Antenne_470",
+"sosiVegARnavn":"Antenne_470",
 "sorteringsnummer":5780},
 {
 "id":471,
@@ -90240,7 +90240,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Mobiltelefonsamband",
-"sosinvdbnavn":"Mobiltelefonsamband_471",
+"sosiVegARnavn":"Mobiltelefonsamband_471",
 "sorteringsnummer":5840},
 {
 "id":472,
@@ -90250,7 +90250,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Radioanlegg",
-"sosinvdbnavn":"Radioanlegg_472",
+"sosiVegARnavn":"Radioanlegg_472",
 "sorteringsnummer":5820},
 {
 "id":473,
@@ -90260,7 +90260,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Telefonsentral",
-"sosinvdbnavn":"Telefonsentral_473",
+"sosiVegARnavn":"Telefonsentral_473",
 "sorteringsnummer":5880},
 {
 "id":474,
@@ -90270,7 +90270,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Brannslokkingsanlegg",
-"sosinvdbnavn":"Brannslokkingsanlegg_474",
+"sosiVegARnavn":"Brannslokkingsanlegg_474",
 "sorteringsnummer":5940},
 {
 "id":475,
@@ -90280,7 +90280,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Brannvarslingsanlegg",
-"sosinvdbnavn":"Brannvarslingsanlegg_475",
+"sosiVegARnavn":"Brannvarslingsanlegg_475",
 "sorteringsnummer":5920},
 {
 "id":478,
@@ -90290,7 +90290,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Branndetektor",
-"sosinvdbnavn":"Branndetektor_478",
+"sosiVegARnavn":"Branndetektor_478",
 "sorteringsnummer":5960},
 {
 "id":479,
@@ -90300,7 +90300,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Nødutgangsskilt",
-"sosinvdbnavn":"Nødutgangsskilt_479",
+"sosiVegARnavn":"Nødutgangsskilt_479",
 "sorteringsnummer":5900},
 {
 "id":481,
@@ -90310,7 +90310,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Tennpunkt",
-"sosinvdbnavn":"Tennpunkt_481",
+"sosiVegARnavn":"Tennpunkt_481",
 "sorteringsnummer":4140},
 {
 "id":482,
@@ -90320,7 +90320,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-06-21",
 "veiledning":"",
 "sosinavn":"Trafikkregistreringsst",
-"sosinvdbnavn":"Trafikkregistreringsst_482",
+"sosiVegARnavn":"Trafikkregistreringsst_482",
 "sorteringsnummer":6070},
 {
 "id":483,
@@ -90329,7 +90329,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Radar",
-"sosinvdbnavn":"Radar_483",
+"sosiVegARnavn":"Radar_483",
 "sorteringsnummer":0},
 {
 "id":485,
@@ -90338,7 +90338,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegstengning",
-"sosinvdbnavn":"Vegstengning_485",
+"sosiVegARnavn":"Vegstengning_485",
 "sorteringsnummer":0},
 {
 "id":487,
@@ -90348,7 +90348,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2017-02-22",
 "veiledning":"",
 "sosinavn":"Holdeplassutrustning",
-"sosinvdbnavn":"Holdeplassutrustning_487",
+"sosiVegARnavn":"Holdeplassutrustning_487",
 "sorteringsnummer":0},
 {
 "id":498,
@@ -90357,7 +90357,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"ViltskremmereVarslere",
-"sosinvdbnavn":"ViltskremmereVarslere_498",
+"sosiVegARnavn":"ViltskremmereVarslere_498",
 "sorteringsnummer":0},
 {
 "id":500,
@@ -90367,7 +90367,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Nødstasjon",
-"sosinvdbnavn":"Nødstasjon_500",
+"sosiVegARnavn":"Nødstasjon_500",
 "sorteringsnummer":6020},
 {
 "id":502,
@@ -90377,7 +90377,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"SkapTeknisk",
-"sosinvdbnavn":"SkapTeknisk_502",
+"sosiVegARnavn":"SkapTeknisk_502",
 "sorteringsnummer":5800},
 {
 "id":503,
@@ -90387,7 +90387,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"SidearealTunnel",
-"sosinvdbnavn":"SidearealTunnel_503",
+"sosiVegARnavn":"SidearealTunnel_503",
 "sorteringsnummer":5540},
 {
 "id":504,
@@ -90396,7 +90396,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"KryssingsmulighetÅpnin",
-"sosinvdbnavn":"KryssingsmulighetÅpnin_504",
+"sosiVegARnavn":"KryssingsmulighetÅpnin_504",
 "sorteringsnummer":0},
 {
 "id":507,
@@ -90405,7 +90405,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeFUStrekni",
-"sosinvdbnavn":"TilstandSkadeFUStrekni_507",
+"sosiVegARnavn":"TilstandSkadeFUStrekni_507",
 "sorteringsnummer":0},
 {
 "id":508,
@@ -90414,7 +90414,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Grøntanlegg",
-"sosinvdbnavn":"Grøntanlegg_508",
+"sosiVegARnavn":"Grøntanlegg_508",
 "sorteringsnummer":0},
 {
 "id":511,
@@ -90424,7 +90424,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Busker",
-"sosinvdbnavn":"Busker_511",
+"sosiVegARnavn":"Busker_511",
 "sorteringsnummer":5260},
 {
 "id":517,
@@ -90433,7 +90433,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"ArtsrikVegkant",
-"sosinvdbnavn":"ArtsrikVegkant_517",
+"sosiVegARnavn":"ArtsrikVegkant_517",
 "sorteringsnummer":0},
 {
 "id":518,
@@ -90442,7 +90442,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Siktsone",
-"sosinvdbnavn":"Siktsone_518",
+"sosiVegARnavn":"Siktsone_518",
 "sorteringsnummer":3150},
 {
 "id":519,
@@ -90452,7 +90452,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"VegoppmerkingTverrgåen",
-"sosinvdbnavn":"VegoppmerkingTverrgåen_519",
+"sosiVegARnavn":"VegoppmerkingTverrgåen_519",
 "sorteringsnummer":3700},
 {
 "id":521,
@@ -90461,7 +90461,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Dekketilstandsmåling",
-"sosinvdbnavn":"Dekketilstandsmåling_521",
+"sosiVegARnavn":"Dekketilstandsmåling_521",
 "sorteringsnummer":0},
 {
 "id":522,
@@ -90470,7 +90470,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Spormåling",
-"sosinvdbnavn":"Spormåling_522",
+"sosiVegARnavn":"Spormåling_522",
 "sorteringsnummer":0},
 {
 "id":523,
@@ -90479,7 +90479,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Jevnhets-Teksturmåling",
-"sosinvdbnavn":"Jevnhets-Teksturmåling_523",
+"sosiVegARnavn":"Jevnhets-Teksturmåling_523",
 "sorteringsnummer":0},
 {
 "id":524,
@@ -90488,7 +90488,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Spormåling_avledaPr20M",
-"sosinvdbnavn":"Spormåling_avledaPr20M_524",
+"sosiVegARnavn":"Spormåling_avledaPr20M_524",
 "sorteringsnummer":0},
 {
 "id":525,
@@ -90497,7 +90497,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Jevnhetsmåling_avledaP",
-"sosinvdbnavn":"Jevnhetsmåling_avledaP_525",
+"sosiVegARnavn":"Jevnhetsmåling_avledaP_525",
 "sorteringsnummer":0},
 {
 "id":526,
@@ -90506,7 +90506,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Friksjonsmåling",
-"sosinvdbnavn":"Friksjonsmåling_526",
+"sosiVegARnavn":"Friksjonsmåling_526",
 "sorteringsnummer":0},
 {
 "id":527,
@@ -90515,7 +90515,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Trafikanttilbud",
-"sosinvdbnavn":"Trafikanttilbud_527",
+"sosiVegARnavn":"Trafikanttilbud_527",
 "sorteringsnummer":0},
 {
 "id":528,
@@ -90524,7 +90524,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Tverrprofil",
-"sosinvdbnavn":"Tverrprofil_528",
+"sosiVegARnavn":"Tverrprofil_528",
 "sorteringsnummer":0},
 {
 "id":529,
@@ -90533,7 +90533,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeSkulderKa",
-"sosinvdbnavn":"TilstandSkadeSkulderKa_529",
+"sosiVegARnavn":"TilstandSkadeSkulderKa_529",
 "sorteringsnummer":0},
 {
 "id":532,
@@ -90542,7 +90542,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegreferanse",
-"sosinvdbnavn":"Vegreferanse_532",
+"sosiVegARnavn":"Vegreferanse_532",
 "sorteringsnummer":0},
 {
 "id":534,
@@ -90551,7 +90551,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Region",
-"sosinvdbnavn":"Region_534",
+"sosiVegARnavn":"Region_534",
 "sorteringsnummer":0},
 {
 "id":535,
@@ -90560,7 +90560,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Fylke",
-"sosinvdbnavn":"Fylke_535",
+"sosiVegARnavn":"Fylke_535",
 "sorteringsnummer":0},
 {
 "id":536,
@@ -90569,7 +90569,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Kommune",
-"sosinvdbnavn":"Kommune_536",
+"sosiVegARnavn":"Kommune_536",
 "sorteringsnummer":0},
 {
 "id":537,
@@ -90578,7 +90578,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegavdeling",
-"sosinvdbnavn":"Vegavdeling_537",
+"sosiVegARnavn":"Vegavdeling_537",
 "sorteringsnummer":0},
 {
 "id":538,
@@ -90587,7 +90587,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Gate",
-"sosinvdbnavn":"Gate_538",
+"sosiVegARnavn":"Gate_538",
 "sorteringsnummer":0},
 {
 "id":539,
@@ -90596,7 +90596,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Transportlenke",
-"sosinvdbnavn":"Transportlenke_539",
+"sosiVegARnavn":"Transportlenke_539",
 "sorteringsnummer":0},
 {
 "id":540,
@@ -90605,7 +90605,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Trafikkmengde",
-"sosinvdbnavn":"Trafikkmengde_540",
+"sosiVegARnavn":"Trafikkmengde_540",
 "sorteringsnummer":0},
 {
 "id":541,
@@ -90614,7 +90614,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegstandard",
-"sosinvdbnavn":"Vegstandard_541",
+"sosiVegARnavn":"Vegstandard_541",
 "sorteringsnummer":0},
 {
 "id":542,
@@ -90624,7 +90624,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"Rekkverk har støtpute som mor og stedfestes som punkt start/slutt rekkverk.Der det ikke er støtputer har vi en punktdefinisjon = rekkverksende ( et teoretisk punkt med start rekkverksstart )",
 "sosinavn":"Støtpute",
-"sosinvdbnavn":"Støtpute_542",
+"sosiVegARnavn":"Støtpute_542",
 "sorteringsnummer":3603},
 {
 "id":543,
@@ -90633,16 +90633,16 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Har rekkverk som mor. Registreres med pkt der det faste i skjøten avsluttes ( område for gliding begynner )",
 "sosinavn":"Rekkverksskjøt",
-"sosinvdbnavn":"Rekkverksskjøt_543",
+"sosiVegARnavn":"Rekkverksskjøt_543",
 "sorteringsnummer":0},
 {
 "id":562,
 "navn":"Testobjekttype",
-"beskrivelse":"Denne objekttypen benyttes ifbm testing av NVDB",
+"beskrivelse":"Denne objekttypen benyttes ifbm testing av VegAR",
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Testobjekttype",
-"sosinvdbnavn":"Testobjekttype_562",
+"sosiVegARnavn":"Testobjekttype_562",
 "sorteringsnummer":0},
 {
 "id":570,
@@ -90651,7 +90651,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Trafikkulykke",
-"sosinvdbnavn":"Trafikkulykke_570",
+"sosiVegARnavn":"Trafikkulykke_570",
 "sorteringsnummer":0},
 {
 "id":571,
@@ -90660,7 +90660,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"UlykkesinvolvertEnhet",
-"sosinvdbnavn":"UlykkesinvolvertEnhet_571",
+"sosiVegARnavn":"UlykkesinvolvertEnhet_571",
 "sorteringsnummer":0},
 {
 "id":572,
@@ -90669,7 +90669,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"UlykkesinvolvertPerson",
-"sosinvdbnavn":"UlykkesinvolvertPerson_572",
+"sosiVegARnavn":"UlykkesinvolvertPerson_572",
 "sorteringsnummer":0},
 {
 "id":573,
@@ -90678,7 +90678,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Svingerestriksjon",
-"sosinvdbnavn":"Svingerestriksjon_573",
+"sosiVegARnavn":"Svingerestriksjon_573",
 "sorteringsnummer":0},
 {
 "id":574,
@@ -90687,7 +90687,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Grunnkrets",
-"sosinvdbnavn":"Grunnkrets_574",
+"sosiVegARnavn":"Grunnkrets_574",
 "sorteringsnummer":0},
 {
 "id":575,
@@ -90696,7 +90696,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"FysiskTiltak",
-"sosinvdbnavn":"FysiskTiltak_575",
+"sosiVegARnavn":"FysiskTiltak_575",
 "sorteringsnummer":0},
 {
 "id":576,
@@ -90705,7 +90705,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Standardklasse",
-"sosinvdbnavn":"Standardklasse_576",
+"sosiVegARnavn":"Standardklasse_576",
 "sorteringsnummer":0},
 {
 "id":577,
@@ -90714,7 +90714,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegfunksjon",
-"sosinvdbnavn":"Vegfunksjon_577",
+"sosiVegARnavn":"Vegfunksjon_577",
 "sorteringsnummer":0},
 {
 "id":578,
@@ -90723,7 +90723,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Lensmannsdistrikt",
-"sosinvdbnavn":"Lensmannsdistrikt_578",
+"sosiVegARnavn":"Lensmannsdistrikt_578",
 "sorteringsnummer":0},
 {
 "id":579,
@@ -90732,7 +90732,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Politidistrikt",
-"sosinvdbnavn":"Politidistrikt_579",
+"sosiVegARnavn":"Politidistrikt_579",
 "sorteringsnummer":0},
 {
 "id":580,
@@ -90741,7 +90741,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Kontraktsområde",
-"sosinvdbnavn":"Kontraktsområde_580",
+"sosiVegARnavn":"Kontraktsområde_580",
 "sorteringsnummer":0},
 {
 "id":581,
@@ -90751,7 +90751,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Tunnel",
-"sosinvdbnavn":"Tunnel_581",
+"sosiVegARnavn":"Tunnel_581",
 "sorteringsnummer":5440},
 {
 "id":583,
@@ -90760,7 +90760,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegbredde",
-"sosinvdbnavn":"Vegbredde_583",
+"sosiVegARnavn":"Vegbredde_583",
 "sorteringsnummer":0},
 {
 "id":591,
@@ -90770,7 +90770,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-02-16",
 "veiledning":"Det skal normalt defineres en Høydebegrensning pr. atskilt del av vegbanen (dvs at på strekninger med fysisk midtdeler og ved atskilte tunnelløp må det defineres en høydebegrensning for hver side/hvert løp.  Feltangivelse skiller disse fra hverandre.",
 "sosinavn":"Høydebegrensning",
-"sosinvdbnavn":"Høydebegrensning_591",
+"sosiVegARnavn":"Høydebegrensning_591",
 "sorteringsnummer":5410},
 {
 "id":592,
@@ -90779,7 +90779,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Nedbøyningsmåling",
-"sosinvdbnavn":"Nedbøyningsmåling_592",
+"sosiVegARnavn":"Nedbøyningsmåling_592",
 "sorteringsnummer":0},
 {
 "id":594,
@@ -90788,7 +90788,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Støy-luftBygning",
-"sosinvdbnavn":"Støy-luftBygning_594",
+"sosiVegARnavn":"Støy-luftBygning_594",
 "sorteringsnummer":0},
 {
 "id":595,
@@ -90797,7 +90797,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Motorveg",
-"sosinvdbnavn":"Motorveg_595",
+"sosiVegARnavn":"Motorveg_595",
 "sorteringsnummer":0},
 {
 "id":596,
@@ -90806,7 +90806,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Forkjørsveg",
-"sosinvdbnavn":"Forkjørsveg_596",
+"sosiVegARnavn":"Forkjørsveg_596",
 "sorteringsnummer":0},
 {
 "id":597,
@@ -90815,7 +90815,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Støy-luftStrekningsdat",
-"sosinvdbnavn":"Støy-luftStrekningsdat_597",
+"sosiVegARnavn":"Støy-luftStrekningsdat_597",
 "sorteringsnummer":0},
 {
 "id":598,
@@ -90824,7 +90824,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Landskapsbelastning",
-"sosinvdbnavn":"Landskapsbelastning_598",
+"sosiVegARnavn":"Landskapsbelastning_598",
 "sorteringsnummer":0},
 {
 "id":599,
@@ -90833,7 +90833,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Landskapsproblemnivå",
-"sosinvdbnavn":"Landskapsproblemnivå_599",
+"sosiVegARnavn":"Landskapsproblemnivå_599",
 "sorteringsnummer":0},
 {
 "id":600,
@@ -90842,7 +90842,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Landskapsverdi",
-"sosinvdbnavn":"Landskapsverdi_600",
+"sosiVegARnavn":"Landskapsverdi_600",
 "sorteringsnummer":0},
 {
 "id":601,
@@ -90851,7 +90851,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Oppgravingsdata",
-"sosinvdbnavn":"Oppgravingsdata_601",
+"sosiVegARnavn":"Oppgravingsdata_601",
 "sorteringsnummer":0},
 {
 "id":602,
@@ -90860,7 +90860,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Oppgravingslag",
-"sosinvdbnavn":"Oppgravingslag_602",
+"sosiVegARnavn":"Oppgravingslag_602",
 "sorteringsnummer":0},
 {
 "id":603,
@@ -90869,7 +90869,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"PMS-parsell",
-"sosinvdbnavn":"PMS-parsell_603",
+"sosiVegARnavn":"PMS-parsell_603",
 "sorteringsnummer":0},
 {
 "id":604,
@@ -90878,7 +90878,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegnormalstrekning",
-"sosinvdbnavn":"Vegnormalstrekning_604",
+"sosiVegARnavn":"Vegnormalstrekning_604",
 "sorteringsnummer":0},
 {
 "id":605,
@@ -90887,7 +90887,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VærrelatertStrekning",
-"sosinvdbnavn":"VærrelatertStrekning_605",
+"sosiVegARnavn":"VærrelatertStrekning_605",
 "sorteringsnummer":0},
 {
 "id":606,
@@ -90896,7 +90896,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"InnkjøringForbudt",
-"sosinvdbnavn":"InnkjøringForbudt_606",
+"sosiVegARnavn":"InnkjøringForbudt_606",
 "sorteringsnummer":0},
 {
 "id":607,
@@ -90905,7 +90905,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Vegsperring",
-"sosinvdbnavn":"Vegsperring_607",
+"sosiVegARnavn":"Vegsperring_607",
 "sorteringsnummer":0},
 {
 "id":608,
@@ -90913,7 +90913,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Firma benyttet i forbindelse med dekkelegging eller oppbygging av vegkonstruksjonen.",
 "veiledning":"",
 "sosinavn":"Entreprenør",
-"sosinvdbnavn":"Entreprenør_608",
+"sosiVegARnavn":"Entreprenør_608",
 "sorteringsnummer":0},
 {
 "id":609,
@@ -90923,7 +90923,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Armeringsnett",
-"sosinvdbnavn":"Armeringsnett_609",
+"sosiVegARnavn":"Armeringsnett_609",
 "sorteringsnummer":4520},
 {
 "id":610,
@@ -90933,7 +90933,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Høydevarsler",
-"sosinvdbnavn":"Høydevarsler_610",
+"sosiVegARnavn":"Høydevarsler_610",
 "sorteringsnummer":6190},
 {
 "id":611,
@@ -90942,7 +90942,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Stedsinformasjon",
-"sosinvdbnavn":"Stedsinformasjon_611",
+"sosiVegARnavn":"Stedsinformasjon_611",
 "sorteringsnummer":0},
 {
 "id":613,
@@ -90951,7 +90951,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Filterlag",
-"sosinvdbnavn":"Filterlag_613",
+"sosiVegARnavn":"Filterlag_613",
 "sorteringsnummer":0},
 {
 "id":614,
@@ -90960,7 +90960,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegdekkeFresing",
-"sosinvdbnavn":"VegdekkeFresing_614",
+"sosiVegARnavn":"VegdekkeFresing_614",
 "sorteringsnummer":0},
 {
 "id":615,
@@ -90969,7 +90969,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegflate",
-"sosinvdbnavn":"Vegflate_615",
+"sosiVegARnavn":"Vegflate_615",
 "sorteringsnummer":0},
 {
 "id":616,
@@ -90978,7 +90978,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Feltstrekning",
-"sosinvdbnavn":"Feltstrekning_616",
+"sosiVegARnavn":"Feltstrekning_616",
 "sorteringsnummer":0},
 {
 "id":618,
@@ -90986,7 +90986,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Ett sett med oppgaver som skal gjøres med et utvalg av fagdata for en gitt strekning",
 "veiledning":"",
 "sosinavn":"OppdragFagdata",
-"sosinvdbnavn":"OppdragFagdata_618",
+"sosiVegARnavn":"OppdragFagdata_618",
 "sorteringsnummer":0},
 {
 "id":619,
@@ -90994,7 +90994,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Et sett med oppgaver som skal gjøres med et utvalg av vegnettet.",
 "veiledning":"",
 "sosinavn":"OppdragVegnett",
-"sosinvdbnavn":"OppdragVegnett_619",
+"sosiVegARnavn":"OppdragVegnett_619",
 "sorteringsnummer":0},
 {
 "id":620,
@@ -91002,7 +91002,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Enkeltoppgave i forbindelse med redigering av fagdata",
 "veiledning":"",
 "sosinavn":"OppgaveFagdata",
-"sosinvdbnavn":"OppgaveFagdata_620",
+"sosiVegARnavn":"OppgaveFagdata_620",
 "sorteringsnummer":0},
 {
 "id":621,
@@ -91010,14 +91010,14 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Enkeltoppgave i forbindelse med redigering av vegnettet",
 "veiledning":"",
 "sosinavn":"OppgaveVegnett",
-"sosinvdbnavn":"OppgaveVegnett_621",
+"sosiVegARnavn":"OppgaveVegnett_621",
 "sorteringsnummer":0},
 {
 "id":622,
 "navn":"SOSI-bestilling",
 "veiledning":"",
 "sosinavn":"SOSI-bestilling",
-"sosinvdbnavn":"SOSI-bestilling_622",
+"sosiVegARnavn":"SOSI-bestilling_622",
 "sorteringsnummer":0},
 {
 "id":623,
@@ -91027,7 +91027,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"StativForTuristinfo",
-"sosinvdbnavn":"StativForTuristinfo_623",
+"sosiVegARnavn":"StativForTuristinfo_623",
 "sorteringsnummer":5360},
 {
 "id":624,
@@ -91036,7 +91036,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Portalens skiltpunkt legges til h.s. Enkelte portaler kan dekke hovedveg og avkjøringer ( ramper osv )",
 "sosinavn":"Fartstavle",
-"sosinvdbnavn":"Fartstavle_624",
+"sosiVegARnavn":"Fartstavle_624",
 "sorteringsnummer":0},
 {
 "id":625,
@@ -91046,7 +91046,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"Skredmagasin",
-"sosinvdbnavn":"Skredmagasin_625",
+"sosiVegARnavn":"Skredmagasin_625",
 "sorteringsnummer":4769},
 {
 "id":626,
@@ -91055,7 +91055,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Friksjonsmåleserie",
-"sosinvdbnavn":"Friksjonsmåleserie_626",
+"sosiVegARnavn":"Friksjonsmåleserie_626",
 "sorteringsnummer":0},
 {
 "id":627,
@@ -91064,7 +91064,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"Referanser for stolper skal innmåles i referanselinja for veg. Stolper  kan også innmåles. Skal brukes til et eget stolperegister.",
 "sosinavn":"Referansepunkt",
-"sosinvdbnavn":"Referansepunkt_627",
+"sosiVegARnavn":"Referansepunkt_627",
 "sorteringsnummer":0},
 {
 "id":628,
@@ -91073,7 +91073,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegdekkeSporfylling",
-"sosinvdbnavn":"VegdekkeSporfylling_628",
+"sosiVegARnavn":"VegdekkeSporfylling_628",
 "sorteringsnummer":0},
 {
 "id":629,
@@ -91082,7 +91082,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegdekkeFlatelapping",
-"sosinvdbnavn":"VegdekkeFlatelapping_629",
+"sosiVegARnavn":"VegdekkeFlatelapping_629",
 "sorteringsnummer":0},
 {
 "id":631,
@@ -91091,7 +91091,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Vegkommentar",
-"sosinvdbnavn":"Vegkommentar_631",
+"sosiVegARnavn":"Vegkommentar_631",
 "sorteringsnummer":0},
 {
 "id":638,
@@ -91100,7 +91100,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Trafikkstasjon",
-"sosinvdbnavn":"Trafikkstasjon_638",
+"sosiVegARnavn":"Trafikkstasjon_638",
 "sorteringsnummer":0},
 {
 "id":639,
@@ -91109,7 +91109,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"KurvaturHorisontalelem",
-"sosinvdbnavn":"KurvaturHorisontalelem_639",
+"sosiVegARnavn":"KurvaturHorisontalelem_639",
 "sorteringsnummer":0},
 {
 "id":640,
@@ -91118,7 +91118,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"KurvaturVertikalelemen",
-"sosinvdbnavn":"KurvaturVertikalelemen_640",
+"sosiVegARnavn":"KurvaturVertikalelemen_640",
 "sorteringsnummer":0},
 {
 "id":641,
@@ -91127,7 +91127,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Kurvaturgenerering",
-"sosinvdbnavn":"Kurvaturgenerering_641",
+"sosiVegARnavn":"Kurvaturgenerering_641",
 "sorteringsnummer":0},
 {
 "id":642,
@@ -91136,7 +91136,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"KurvaturVertikalpunkt",
-"sosinvdbnavn":"KurvaturVertikalpunkt_642",
+"sosiVegARnavn":"KurvaturVertikalpunkt_642",
 "sorteringsnummer":0},
 {
 "id":643,
@@ -91145,7 +91145,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"StatistikkTrafikkmengd",
-"sosinvdbnavn":"StatistikkTrafikkmengd_643",
+"sosiVegARnavn":"StatistikkTrafikkmengd_643",
 "sorteringsnummer":0},
 {
 "id":644,
@@ -91154,7 +91154,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"StatistikkSpormåling",
-"sosinvdbnavn":"StatistikkSpormåling_644",
+"sosiVegARnavn":"StatistikkSpormåling_644",
 "sorteringsnummer":0},
 {
 "id":645,
@@ -91163,7 +91163,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"StatistikkJevnhetsmåli",
-"sosinvdbnavn":"StatistikkJevnhetsmåli_645",
+"sosiVegARnavn":"StatistikkJevnhetsmåli_645",
 "sorteringsnummer":0},
 {
 "id":647,
@@ -91172,7 +91172,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"StatistikkVegbredde",
-"sosinvdbnavn":"StatistikkVegbredde_647",
+"sosiVegARnavn":"StatistikkVegbredde_647",
 "sorteringsnummer":0},
 {
 "id":704,
@@ -91181,7 +91181,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Riksvegrute",
-"sosinvdbnavn":"Riksvegrute_704",
+"sosiVegARnavn":"Riksvegrute_704",
 "sorteringsnummer":0},
 {
 "id":705,
@@ -91190,7 +91190,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"SykkelruteTurFritid",
-"sosinvdbnavn":"SykkelruteTurFritid_705",
+"sosiVegARnavn":"SykkelruteTurFritid_705",
 "sorteringsnummer":0},
 {
 "id":707,
@@ -91198,7 +91198,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Trafikkindeks",
-"sosinvdbnavn":"Trafikkindeks_707",
+"sosiVegARnavn":"Trafikkindeks_707",
 "sorteringsnummer":0},
 {
 "id":708,
@@ -91206,7 +91206,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TrafikkdataITellepunkt",
-"sosinvdbnavn":"TrafikkdataITellepunkt_708",
+"sosiVegARnavn":"TrafikkdataITellepunkt_708",
 "sorteringsnummer":0},
 {
 "id":715,
@@ -91215,7 +91215,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Ulykkesfrekvens",
-"sosinvdbnavn":"Ulykkesfrekvens_715",
+"sosiVegARnavn":"Ulykkesfrekvens_715",
 "sorteringsnummer":0},
 {
 "id":716,
@@ -91224,7 +91224,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Ulykkespunkt",
-"sosinvdbnavn":"Ulykkespunkt_716",
+"sosiVegARnavn":"Ulykkespunkt_716",
 "sorteringsnummer":0},
 {
 "id":717,
@@ -91233,7 +91233,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Ulykkesstrekning",
-"sosinvdbnavn":"Ulykkesstrekning_717",
+"sosiVegARnavn":"Ulykkesstrekning_717",
 "sorteringsnummer":0},
 {
 "id":718,
@@ -91242,7 +91242,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Skadegradstetthet",
-"sosinvdbnavn":"Skadegradstetthet_718",
+"sosiVegARnavn":"Skadegradstetthet_718",
 "sorteringsnummer":0},
 {
 "id":719,
@@ -91251,7 +91251,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Støy-luftBeregning",
-"sosinvdbnavn":"Støy-luftBeregning_719",
+"sosiVegARnavn":"Støy-luftBeregning_719",
 "sorteringsnummer":0},
 {
 "id":720,
@@ -91260,7 +91260,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Støy-luftUtbredelse",
-"sosinvdbnavn":"Støy-luftUtbredelse_720",
+"sosiVegARnavn":"Støy-luftUtbredelse_720",
 "sorteringsnummer":0},
 {
 "id":721,
@@ -91269,7 +91269,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"FartsgrenseVariabel",
-"sosinvdbnavn":"FartsgrenseVariabel_721",
+"sosiVegARnavn":"FartsgrenseVariabel_721",
 "sorteringsnummer":0},
 {
 "id":722,
@@ -91278,7 +91278,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Vegbilder",
-"sosinvdbnavn":"Vegbilder_722",
+"sosiVegARnavn":"Vegbilder_722",
 "sorteringsnummer":0},
 {
 "id":751,
@@ -91287,7 +91287,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_Holdeplass",
-"sosinvdbnavn":"Utgår_Holdeplass_751",
+"sosiVegARnavn":"Utgår_Holdeplass_751",
 "sorteringsnummer":0},
 {
 "id":752,
@@ -91296,7 +91296,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_Stoppunkt",
-"sosinvdbnavn":"Utgår_Stoppunkt_752",
+"sosiVegARnavn":"Utgår_Stoppunkt_752",
 "sorteringsnummer":0},
 {
 "id":757,
@@ -91304,15 +91304,15 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "beskrivelse":"Vedlegg til vegliste.  For intern bruk i forbindelse med utarbeiding av veglister.",
 "veiledning":"",
 "sosinavn":"VeglisteVedlegg",
-"sosinvdbnavn":"VeglisteVedlegg_757",
+"sosiVegARnavn":"VeglisteVedlegg_757",
 "sorteringsnummer":0},
 {
 "id":760,
 "navn":"Rapportdefinisjon",
-"beskrivelse":"Rapportdefinisjon.  Til intern bruk i NVDB",
+"beskrivelse":"Rapportdefinisjon.  Til intern bruk i VegAR",
 "veiledning":"",
 "sosinavn":"Rapportdefinisjon",
-"sosinvdbnavn":"Rapportdefinisjon_760",
+"sosiVegARnavn":"Rapportdefinisjon_760",
 "sorteringsnummer":0},
 {
 "id":761,
@@ -91321,7 +91321,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandSkadePunkt",
-"sosinvdbnavn":"TilstandSkadePunkt_761",
+"sosiVegARnavn":"TilstandSkadePunkt_761",
 "sorteringsnummer":0},
 {
 "id":762,
@@ -91330,7 +91330,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandSkadeFUPunkt",
-"sosinvdbnavn":"TilstandSkadeFUPunkt_762",
+"sosiVegARnavn":"TilstandSkadeFUPunkt_762",
 "sorteringsnummer":0},
 {
 "id":765,
@@ -91339,7 +91339,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Friksjonsforbedring",
-"sosinvdbnavn":"Friksjonsforbedring_765",
+"sosiVegARnavn":"Friksjonsforbedring_765",
 "sorteringsnummer":0},
 {
 "id":766,
@@ -91348,7 +91348,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"OppslagstavleForRuteta",
-"sosinvdbnavn":"OppslagstavleForRuteta_766",
+"sosiVegARnavn":"OppslagstavleForRuteta_766",
 "sorteringsnummer":0},
 {
 "id":767,
@@ -91357,7 +91357,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_ReposVenteareal",
-"sosinvdbnavn":"Utgår_ReposVenteareal_767",
+"sosiVegARnavn":"Utgår_ReposVenteareal_767",
 "sorteringsnummer":3130},
 {
 "id":769,
@@ -91366,7 +91366,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vlenkeid",
-"sosinvdbnavn":"Vlenkeid_769",
+"sosiVegARnavn":"Vlenkeid_769",
 "sorteringsnummer":0},
 {
 "id":770,
@@ -91375,7 +91375,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Ferjesamband",
-"sosinvdbnavn":"Ferjesamband_770",
+"sosiVegARnavn":"Ferjesamband_770",
 "sorteringsnummer":0},
 {
 "id":771,
@@ -91384,7 +91384,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Byggegrense",
-"sosinvdbnavn":"Byggegrense_771",
+"sosiVegARnavn":"Byggegrense_771",
 "sorteringsnummer":0},
 {
 "id":774,
@@ -91393,7 +91393,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Nedbøyningsmåleserie",
-"sosinvdbnavn":"Nedbøyningsmåleserie_774",
+"sosiVegARnavn":"Nedbøyningsmåleserie_774",
 "sorteringsnummer":0},
 {
 "id":775,
@@ -91402,7 +91402,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"ATKInfluensstrekning",
-"sosinvdbnavn":"ATKInfluensstrekning_775",
+"sosiVegARnavn":"ATKInfluensstrekning_775",
 "sorteringsnummer":0},
 {
 "id":776,
@@ -91411,7 +91411,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Tunnelovervåkning",
-"sosinvdbnavn":"Tunnelovervåkning_776",
+"sosiVegARnavn":"Tunnelovervåkning_776",
 "sorteringsnummer":0},
 {
 "id":777,
@@ -91420,7 +91420,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Turistveg",
-"sosinvdbnavn":"Turistveg_777",
+"sosiVegARnavn":"Turistveg_777",
 "sorteringsnummer":0},
 {
 "id":779,
@@ -91429,7 +91429,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Kommunedele",
-"sosinvdbnavn":"Kommunedele_779",
+"sosiVegARnavn":"Kommunedele_779",
 "sorteringsnummer":0},
 {
 "id":780,
@@ -91438,7 +91438,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"FarligeForhold",
-"sosinvdbnavn":"FarligeForhold_780",
+"sosiVegARnavn":"FarligeForhold_780",
 "sorteringsnummer":0},
 {
 "id":783,
@@ -91447,7 +91447,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"FysiskInngrepIVannfore",
-"sosinvdbnavn":"FysiskInngrepIVannfore_783",
+"sosiVegARnavn":"FysiskInngrepIVannfore_783",
 "sorteringsnummer":0},
 {
 "id":784,
@@ -91456,7 +91456,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"KjemiskPåvirkningAvVan",
-"sosinvdbnavn":"KjemiskPåvirkningAvVan_784",
+"sosiVegARnavn":"KjemiskPåvirkningAvVan_784",
 "sorteringsnummer":0},
 {
 "id":785,
@@ -91465,7 +91465,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"StatistikkGenerell",
-"sosinvdbnavn":"StatistikkGenerell_785",
+"sosiVegARnavn":"StatistikkGenerell_785",
 "sorteringsnummer":0},
 {
 "id":786,
@@ -91474,7 +91474,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegminne",
-"sosinvdbnavn":"Vegminne_786",
+"sosiVegARnavn":"Vegminne_786",
 "sorteringsnummer":0},
 {
 "id":787,
@@ -91483,7 +91483,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_Naturvernområde",
-"sosinvdbnavn":"Utgår_Naturvernområde_787",
+"sosiVegARnavn":"Utgår_Naturvernområde_787",
 "sorteringsnummer":0},
 {
 "id":788,
@@ -91492,7 +91492,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_PrioriterteNatur",
-"sosinvdbnavn":"Utgår_PrioriterteNatur_788",
+"sosiVegARnavn":"Utgår_PrioriterteNatur_788",
 "sorteringsnummer":0},
 {
 "id":789,
@@ -91501,7 +91501,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_Kulturlandskap",
-"sosinvdbnavn":"Utgår_Kulturlandskap_789",
+"sosiVegARnavn":"Utgår_Kulturlandskap_789",
 "sorteringsnummer":0},
 {
 "id":790,
@@ -91510,7 +91510,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_ViktigeArtsforek",
-"sosinvdbnavn":"Utgår_ViktigeArtsforek_790",
+"sosiVegARnavn":"Utgår_ViktigeArtsforek_790",
 "sorteringsnummer":0},
 {
 "id":791,
@@ -91520,15 +91520,15 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Avrettingslag",
-"sosinvdbnavn":"Avrettingslag_791",
+"sosiVegARnavn":"Avrettingslag_791",
 "sorteringsnummer":4440},
 {
 "id":793,
-"navn":"NVDB dokumentasjon",
-"beskrivelse":"Objekttype benyttet for å dokumentere noen enum-verdier i NVDB.  Det kan forekomme avvik fra NVDB i og med at det ikke er automatisk synkronisering.",
+"navn":"VegAR dokumentasjon",
+"beskrivelse":"Objekttype benyttet for å dokumentere noen enum-verdier i VegAR.  Det kan forekomme avvik fra VegAR i og med at det ikke er automatisk synkronisering.",
 "veiledning":"",
-"sosinavn":"NVDBDokumentasjon",
-"sosinvdbnavn":"NVDBDokumentasjon_793",
+"sosinavn":"VegARDokumentasjon",
+"sosiVegARnavn":"VegARDokumentasjon_793",
 "sorteringsnummer":0},
 {
 "id":794,
@@ -91537,7 +91537,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Systemobjekt",
-"sosinvdbnavn":"Systemobjekt_794",
+"sosiVegARnavn":"Systemobjekt_794",
 "sorteringsnummer":0},
 {
 "id":795,
@@ -91546,7 +91546,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TiltakØkologiskeVerdie",
-"sosinvdbnavn":"TiltakØkologiskeVerdie_795",
+"sosiVegARnavn":"TiltakØkologiskeVerdie_795",
 "sorteringsnummer":0},
 {
 "id":796,
@@ -91555,7 +91555,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"PåvirkningØkologiskeVe",
-"sosinvdbnavn":"PåvirkningØkologiskeVe_796",
+"sosiVegARnavn":"PåvirkningØkologiskeVe_796",
 "sorteringsnummer":0},
 {
 "id":797,
@@ -91564,7 +91564,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Utgår_ØkologiskKorrido",
-"sosinvdbnavn":"Utgår_ØkologiskKorrido_797",
+"sosiVegARnavn":"Utgår_ØkologiskKorrido_797",
 "sorteringsnummer":0},
 {
 "id":798,
@@ -91572,7 +91572,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TrafikkmengdeKjørefelt",
-"sosinvdbnavn":"TrafikkmengdeKjørefelt_798",
+"sosiVegARnavn":"TrafikkmengdeKjørefelt_798",
 "sorteringsnummer":0},
 {
 "id":799,
@@ -91581,7 +91581,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"JordvollMotFjellskjæri",
-"sosinvdbnavn":"JordvollMotFjellskjæri_799",
+"sosiVegARnavn":"JordvollMotFjellskjæri_799",
 "sorteringsnummer":0},
 {
 "id":800,
@@ -91590,7 +91590,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"FremmedeArter",
-"sosinvdbnavn":"FremmedeArter_800",
+"sosiVegARnavn":"FremmedeArter_800",
 "sorteringsnummer":0},
 {
 "id":801,
@@ -91600,7 +91600,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Nødutgang",
-"sosinvdbnavn":"Nødutgang_801",
+"sosiVegARnavn":"Nødutgang_801",
 "sorteringsnummer":5590},
 {
 "id":803,
@@ -91610,7 +91610,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-05-08",
 "veiledning":"",
 "sosinavn":"Inspeksjonsluke",
-"sosinvdbnavn":"Inspeksjonsluke_803",
+"sosiVegARnavn":"Inspeksjonsluke_803",
 "sorteringsnummer":5630},
 {
 "id":804,
@@ -91619,7 +91619,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_Havarinisje",
-"sosinvdbnavn":"Utgår_Havarinisje_804",
+"sosiVegARnavn":"Utgår_Havarinisje_804",
 "sorteringsnummer":5560},
 {
 "id":805,
@@ -91628,7 +91628,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Utgår_Snunisje",
-"sosinvdbnavn":"Utgår_Snunisje_805",
+"sosiVegARnavn":"Utgår_Snunisje_805",
 "sorteringsnummer":5580},
 {
 "id":807,
@@ -91637,7 +91637,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Ferjestrekning",
-"sosinvdbnavn":"Ferjestrekning_807",
+"sosiVegARnavn":"Ferjestrekning_807",
 "sorteringsnummer":0},
 {
 "id":808,
@@ -91646,7 +91646,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Referansestrekning",
-"sosinvdbnavn":"Referansestrekning_808",
+"sosiVegARnavn":"Referansestrekning_808",
 "sorteringsnummer":0},
 {
 "id":809,
@@ -91655,7 +91655,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Døgnhvileplass",
-"sosinvdbnavn":"Døgnhvileplass_809",
+"sosiVegARnavn":"Døgnhvileplass_809",
 "sorteringsnummer":0},
 {
 "id":810,
@@ -91664,16 +91664,16 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vinterdriftsklasse",
-"sosinvdbnavn":"Vinterdriftsklasse_810",
+"sosiVegARnavn":"Vinterdriftsklasse_810",
 "sorteringsnummer":0},
 {
 "id":811,
 "navn":"Dataanalyse",
-"beskrivelse":"Objekttype som brukes lokalt for å ta vare på midlertidige analysedata, f.eks. mangel, overlapp eller annen inkonsistens. Objekter av denne type kan lagres lokalt i \"project\"-databaser, men skal ikke lagres i sentral NVDB-database.",
+"beskrivelse":"Objekttype som brukes lokalt for å ta vare på midlertidige analysedata, f.eks. mangel, overlapp eller annen inkonsistens. Objekter av denne type kan lagres lokalt i \"project\"-databaser, men skal ikke lagres i sentral VegAR-database.",
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Dataanalyse",
-"sosinvdbnavn":"Dataanalyse_811",
+"sosiVegARnavn":"Dataanalyse_811",
 "sorteringsnummer":0},
 {
 "id":812,
@@ -91683,7 +91683,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-06-09",
 "veiledning":"",
 "sosinavn":"Gatevarme",
-"sosinvdbnavn":"Gatevarme_812",
+"sosiVegARnavn":"Gatevarme_812",
 "sorteringsnummer":4119},
 {
 "id":813,
@@ -91692,7 +91692,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Gågate",
-"sosinvdbnavn":"Gågate_813",
+"sosiVegARnavn":"Gågate_813",
 "sorteringsnummer":0},
 {
 "id":815,
@@ -91701,7 +91701,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"AvkjørselHoldningsklas",
-"sosinvdbnavn":"AvkjørselHoldningsklas_815",
+"sosiVegARnavn":"AvkjørselHoldningsklas_815",
 "sorteringsnummer":0},
 {
 "id":816,
@@ -91710,7 +91710,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TaljerLøfteutstyr",
-"sosinvdbnavn":"TaljerLøfteutstyr_816",
+"sosiVegARnavn":"TaljerLøfteutstyr_816",
 "sorteringsnummer":0},
 {
 "id":819,
@@ -91720,7 +91720,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"Fordelingstavle",
-"sosinvdbnavn":"Fordelingstavle_819",
+"sosiVegARnavn":"Fordelingstavle_819",
 "sorteringsnummer":4165},
 {
 "id":821,
@@ -91729,7 +91729,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"FunksjonellVegklasse",
-"sosinvdbnavn":"FunksjonellVegklasse_821",
+"sosiVegARnavn":"FunksjonellVegklasse_821",
 "sorteringsnummer":0},
 {
 "id":822,
@@ -91738,7 +91738,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Landbruksvegklasse",
-"sosinvdbnavn":"Landbruksvegklasse_822",
+"sosiVegARnavn":"Landbruksvegklasse_822",
 "sorteringsnummer":0},
 {
 "id":823,
@@ -91747,7 +91747,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Streknings-ATK",
-"sosinvdbnavn":"Streknings-ATK_823",
+"sosiVegARnavn":"Streknings-ATK_823",
 "sorteringsnummer":0},
 {
 "id":824,
@@ -91756,7 +91756,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Skredpunkt",
-"sosinvdbnavn":"Skredpunkt_824",
+"sosiVegARnavn":"Skredpunkt_824",
 "sorteringsnummer":0},
 {
 "id":825,
@@ -91765,7 +91765,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"KurvaturStigning",
-"sosinvdbnavn":"KurvaturStigning_825",
+"sosiVegARnavn":"KurvaturStigning_825",
 "sorteringsnummer":0},
 {
 "id":826,
@@ -91774,7 +91774,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TEN-TVeg",
-"sosinvdbnavn":"TEN-TVeg_826",
+"sosiVegARnavn":"TEN-TVeg_826",
 "sorteringsnummer":0},
 {
 "id":828,
@@ -91783,7 +91783,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Rist",
-"sosinvdbnavn":"Rist_828",
+"sosiVegARnavn":"Rist_828",
 "sorteringsnummer":0},
 {
 "id":830,
@@ -91792,7 +91792,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Siktklasse",
-"sosinvdbnavn":"Siktklasse_830",
+"sosiVegARnavn":"Siktklasse_830",
 "sorteringsnummer":0},
 {
 "id":831,
@@ -91801,7 +91801,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Vegdekkeklasse",
-"sosinvdbnavn":"Vegdekkeklasse_831",
+"sosiVegARnavn":"Vegdekkeklasse_831",
 "sorteringsnummer":0},
 {
 "id":832,
@@ -91810,7 +91810,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Grøfteklasse",
-"sosinvdbnavn":"Grøfteklasse_832",
+"sosiVegARnavn":"Grøfteklasse_832",
 "sorteringsnummer":0},
 {
 "id":833,
@@ -91819,7 +91819,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Forbikjøringsstrekning",
-"sosinvdbnavn":"Forbikjøringsstrekning_833",
+"sosiVegARnavn":"Forbikjøringsstrekning_833",
 "sorteringsnummer":0},
 {
 "id":834,
@@ -91828,7 +91828,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandSkadeFjellskjæ",
-"sosinvdbnavn":"TilstandSkadeFjellskjæ_834",
+"sosiVegARnavn":"TilstandSkadeFjellskjæ_834",
 "sorteringsnummer":0},
 {
 "id":835,
@@ -91837,7 +91837,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Gangadkomst",
-"sosinvdbnavn":"Gangadkomst_835",
+"sosiVegARnavn":"Gangadkomst_835",
 "sorteringsnummer":0},
 {
 "id":836,
@@ -91847,7 +91847,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2012-09-14",
 "veiledning":"",
 "sosinavn":"VegoppmerkingForsterke",
-"sosinvdbnavn":"VegoppmerkingForsterke_836",
+"sosiVegARnavn":"VegoppmerkingForsterke_836",
 "sorteringsnummer":3710},
 {
 "id":838,
@@ -91856,7 +91856,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegbreddeBeregnet",
-"sosinvdbnavn":"VegbreddeBeregnet_838",
+"sosiVegARnavn":"VegbreddeBeregnet_838",
 "sorteringsnummer":0},
 {
 "id":843,
@@ -91866,7 +91866,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-25",
 "veiledning":"",
 "sosinavn":"Kabelgrøft",
-"sosinvdbnavn":"Kabelgrøft_843",
+"sosiVegARnavn":"Kabelgrøft_843",
 "sorteringsnummer":4124},
 {
 "id":844,
@@ -91875,7 +91875,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Nedføringsrenne",
-"sosinvdbnavn":"Nedføringsrenne_844",
+"sosiVegARnavn":"Nedføringsrenne_844",
 "sorteringsnummer":0},
 {
 "id":845,
@@ -91885,7 +91885,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-06-10",
 "veiledning":"",
 "sosinavn":"Fanggjerde",
-"sosinvdbnavn":"Fanggjerde_845",
+"sosiVegARnavn":"Fanggjerde_845",
 "sorteringsnummer":4762},
 {
 "id":846,
@@ -91895,7 +91895,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"SkredsikringBremsekjeg",
-"sosinvdbnavn":"SkredsikringBremsekjeg_846",
+"sosiVegARnavn":"SkredsikringBremsekjeg_846",
 "sorteringsnummer":4763},
 {
 "id":848,
@@ -91905,7 +91905,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-06-10",
 "veiledning":"",
 "sosinavn":"Snøskjerm",
-"sosinvdbnavn":"Snøskjerm_848",
+"sosiVegARnavn":"Snøskjerm_848",
 "sorteringsnummer":4761},
 {
 "id":849,
@@ -91915,7 +91915,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"SkredVarslingOvervåkni",
-"sosinvdbnavn":"SkredVarslingOvervåkni_849",
+"sosiVegARnavn":"SkredVarslingOvervåkni_849",
 "sorteringsnummer":4768},
 {
 "id":850,
@@ -91925,7 +91925,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"SkredsikringForbygning",
-"sosinvdbnavn":"SkredsikringForbygning_850",
+"sosiVegARnavn":"SkredsikringForbygning_850",
 "sorteringsnummer":4765},
 {
 "id":851,
@@ -91935,7 +91935,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-11-22",
 "veiledning":"",
 "sosinavn":"Skredutløsningstiltak",
-"sosinvdbnavn":"Skredutløsningstiltak_851",
+"sosiVegARnavn":"Skredutløsningstiltak_851",
 "sorteringsnummer":4766},
 {
 "id":852,
@@ -91945,7 +91945,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2013-10-09",
 "veiledning":"",
 "sosinavn":"TrekkerørKanal",
-"sosinvdbnavn":"TrekkerørKanal_852",
+"sosiVegARnavn":"TrekkerørKanal_852",
 "sorteringsnummer":4123},
 {
 "id":853,
@@ -91955,7 +91955,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2013-10-09",
 "veiledning":"",
 "sosinavn":"Trekkekum",
-"sosinvdbnavn":"Trekkekum_853",
+"sosiVegARnavn":"Trekkekum_853",
 "sorteringsnummer":4122},
 {
 "id":854,
@@ -91965,7 +91965,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2013-10-09",
 "veiledning":"",
 "sosinavn":"Tunnelport",
-"sosinvdbnavn":"Tunnelport_854",
+"sosiVegARnavn":"Tunnelport_854",
 "sorteringsnummer":5490},
 {
 "id":855,
@@ -91975,7 +91975,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2013-10-04",
 "veiledning":"",
 "sosinavn":"Gjerdeport",
-"sosinvdbnavn":"Gjerdeport_855",
+"sosiVegARnavn":"Gjerdeport_855",
 "sorteringsnummer":4810},
 {
 "id":856,
@@ -91984,7 +91984,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Trafikkreguleringer",
-"sosinvdbnavn":"Trafikkreguleringer_856",
+"sosiVegARnavn":"Trafikkreguleringer_856",
 "sorteringsnummer":0},
 {
 "id":857,
@@ -91993,7 +91993,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Brøyterode",
-"sosinvdbnavn":"Brøyterode_857",
+"sosiVegARnavn":"Brøyterode_857",
 "sorteringsnummer":0},
 {
 "id":858,
@@ -92002,7 +92002,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Strørode",
-"sosinvdbnavn":"Strørode_858",
+"sosiVegARnavn":"Strørode_858",
 "sorteringsnummer":0},
 {
 "id":859,
@@ -92012,7 +92012,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-02-03",
 "veiledning":"",
 "sosinavn":"TaktileIndikatorer",
-"sosinvdbnavn":"TaktileIndikatorer_859",
+"sosiVegARnavn":"TaktileIndikatorer_859",
 "sorteringsnummer":3220},
 {
 "id":860,
@@ -92022,7 +92022,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-06-10",
 "veiledning":"",
 "sosinavn":"Evakueringslysstreknin",
-"sosinvdbnavn":"Evakueringslysstreknin_860",
+"sosiVegARnavn":"Evakueringslysstreknin_860",
 "sorteringsnummer":5901},
 {
 "id":861,
@@ -92032,7 +92032,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2014-06-10",
 "veiledning":"",
 "sosinavn":"LedelysstrekningOptisk",
-"sosinvdbnavn":"LedelysstrekningOptisk_861",
+"sosiVegARnavn":"LedelysstrekningOptisk_861",
 "sorteringsnummer":5902},
 {
 "id":862,
@@ -92041,7 +92041,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Reisetidsregistrerings",
-"sosinvdbnavn":"Reisetidsregistrerings_862",
+"sosiVegARnavn":"Reisetidsregistrerings_862",
 "sorteringsnummer":0},
 {
 "id":871,
@@ -92050,7 +92050,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Bruksklasse",
-"sosinvdbnavn":"Bruksklasse_871",
+"sosiVegARnavn":"Bruksklasse_871",
 "sorteringsnummer":0},
 {
 "id":872,
@@ -92059,7 +92059,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Faunapassasje",
-"sosinvdbnavn":"Faunapassasje_872",
+"sosiVegARnavn":"Faunapassasje_872",
 "sorteringsnummer":0},
 {
 "id":874,
@@ -92068,7 +92068,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"SykkeltilbudRiksvegrut",
-"sosinvdbnavn":"SykkeltilbudRiksvegrut_874",
+"sosiVegARnavn":"SykkeltilbudRiksvegrut_874",
 "sorteringsnummer":4},
 {
 "id":875,
@@ -92078,7 +92078,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2015-10-06",
 "veiledning":"",
 "sosinavn":"Trapp",
-"sosinvdbnavn":"Trapp_875",
+"sosiVegARnavn":"Trapp_875",
 "sorteringsnummer":4960},
 {
 "id":876,
@@ -92088,7 +92088,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-10-27",
 "veiledning":"",
 "sosinavn":"Overvannsrenne",
-"sosinvdbnavn":"Overvannsrenne_876",
+"sosiVegARnavn":"Overvannsrenne_876",
 "sorteringsnummer":4262},
 {
 "id":877,
@@ -92097,7 +92097,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"TilstandsgradSidegrøft",
-"sosinvdbnavn":"TilstandsgradSidegrøft_877",
+"sosiVegARnavn":"TilstandsgradSidegrøft_877",
 "sorteringsnummer":0},
 {
 "id":878,
@@ -92106,7 +92106,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandsgradStikkrenn",
-"sosinvdbnavn":"TilstandsgradStikkrenn_878",
+"sosiVegARnavn":"TilstandsgradStikkrenn_878",
 "sorteringsnummer":0},
 {
 "id":879,
@@ -92115,7 +92115,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"TilstandsgradKum",
-"sosinvdbnavn":"TilstandsgradKum_879",
+"sosiVegARnavn":"TilstandsgradKum_879",
 "sorteringsnummer":0},
 {
 "id":880,
@@ -92124,7 +92124,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"UlykkesstrekningEgende",
-"sosinvdbnavn":"UlykkesstrekningEgende_880",
+"sosiVegARnavn":"UlykkesstrekningEgende_880",
 "sorteringsnummer":0},
 {
 "id":881,
@@ -92134,7 +92134,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-10-27",
 "veiledning":"",
 "sosinavn":"Klimaanlegg",
-"sosinvdbnavn":"Klimaanlegg_881",
+"sosiVegARnavn":"Klimaanlegg_881",
 "sorteringsnummer":5670},
 {
 "id":882,
@@ -92143,7 +92143,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"Vannhåndteringsanlegg",
-"sosinvdbnavn":"Vannhåndteringsanlegg_882",
+"sosiVegARnavn":"Vannhåndteringsanlegg_882",
 "sorteringsnummer":0},
 {
 "id":883,
@@ -92152,7 +92152,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"SkredutsattVeg",
-"sosinvdbnavn":"SkredutsattVeg_883",
+"sosiVegARnavn":"SkredutsattVeg_883",
 "sorteringsnummer":0},
 {
 "id":884,
@@ -92161,7 +92161,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Feierode",
-"sosinvdbnavn":"Feierode_884",
+"sosiVegARnavn":"Feierode_884",
 "sorteringsnummer":0},
 {
 "id":885,
@@ -92171,7 +92171,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-02-26",
 "veiledning":"",
 "sosinavn":"SanntidsinformasjonKol",
-"sosinvdbnavn":"SanntidsinformasjonKol_885",
+"sosiVegARnavn":"SanntidsinformasjonKol_885",
 "sorteringsnummer":3930},
 {
 "id":886,
@@ -92180,7 +92180,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Omkjøringsrute",
-"sosinvdbnavn":"Omkjøringsrute_886",
+"sosiVegARnavn":"Omkjøringsrute_886",
 "sorteringsnummer":0},
 {
 "id":887,
@@ -92189,7 +92189,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Trafikkberedskapsklass",
-"sosinvdbnavn":"Trafikkberedskapsklass_887",
+"sosiVegARnavn":"Trafikkberedskapsklass_887",
 "sorteringsnummer":0},
 {
 "id":888,
@@ -92198,7 +92198,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Stengningslenke",
-"sosinvdbnavn":"Stengningslenke_888",
+"sosiVegARnavn":"Stengningslenke_888",
 "sorteringsnummer":0},
 {
 "id":889,
@@ -92207,7 +92207,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseModulvognto",
-"sosinvdbnavn":"BruksklasseModulvognto_889",
+"sosiVegARnavn":"BruksklasseModulvognto_889",
 "sorteringsnummer":0},
 {
 "id":890,
@@ -92216,7 +92216,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseModulvognto",
-"sosinvdbnavn":"BruksklasseModulvognto_890",
+"sosiVegARnavn":"BruksklasseModulvognto_890",
 "sorteringsnummer":0},
 {
 "id":891,
@@ -92225,7 +92225,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Bruksklasse1265Mobilkr",
-"sosinvdbnavn":"Bruksklasse1265Mobilkr_891",
+"sosiVegARnavn":"Bruksklasse1265Mobilkr_891",
 "sorteringsnummer":0},
 {
 "id":892,
@@ -92234,7 +92234,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Bruksklasse1265Mobilkr",
-"sosinvdbnavn":"Bruksklasse1265Mobilkr_892",
+"sosiVegARnavn":"Bruksklasse1265Mobilkr_892",
 "sorteringsnummer":0},
 {
 "id":893,
@@ -92243,7 +92243,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Bruksklasse12100-vegne",
-"sosinvdbnavn":"Bruksklasse12100-vegne_893",
+"sosiVegARnavn":"Bruksklasse12100-vegne_893",
 "sorteringsnummer":0},
 {
 "id":894,
@@ -92252,7 +92252,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"Bruksklasse12100-vegne",
-"sosinvdbnavn":"Bruksklasse12100-vegne_894",
+"sosiVegARnavn":"Bruksklasse12100-vegne_894",
 "sorteringsnummer":0},
 {
 "id":895,
@@ -92261,7 +92261,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"VegROSPunkt",
-"sosinvdbnavn":"VegROSPunkt_895",
+"sosiVegARnavn":"VegROSPunkt_895",
 "sorteringsnummer":0},
 {
 "id":897,
@@ -92271,7 +92271,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "objektliste_dato":"2016-10-27",
 "veiledning":"",
 "sosinavn":"Kalksementpeler",
-"sosinvdbnavn":"Kalksementpeler_897",
+"sosiVegARnavn":"Kalksementpeler_897",
 "sorteringsnummer":4550},
 {
 "id":899,
@@ -92280,7 +92280,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"For testformål",
 "sosinavn":"TilstandsgradSkjerm_te",
-"sosinvdbnavn":"TilstandsgradSkjerm_te_899",
+"sosiVegARnavn":"TilstandsgradSkjerm_te_899",
 "sorteringsnummer":0},
 {
 "id":900,
@@ -92289,7 +92289,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseTømmertrans",
-"sosinvdbnavn":"BruksklasseTømmertrans_900",
+"sosiVegARnavn":"BruksklasseTømmertrans_900",
 "sorteringsnummer":0},
 {
 "id":901,
@@ -92298,7 +92298,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseTømmertrans",
-"sosinvdbnavn":"BruksklasseTømmertrans_901",
+"sosiVegARnavn":"BruksklasseTømmertrans_901",
 "sorteringsnummer":0},
 {
 "id":902,
@@ -92307,7 +92307,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseSpesialtran",
-"sosinvdbnavn":"BruksklasseSpesialtran_902",
+"sosiVegARnavn":"BruksklasseSpesialtran_902",
 "sorteringsnummer":0},
 {
 "id":903,
@@ -92316,7 +92316,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseSpesialtran",
-"sosinvdbnavn":"BruksklasseSpesialtran_903",
+"sosiVegARnavn":"BruksklasseSpesialtran_903",
 "sorteringsnummer":0},
 {
 "id":904,
@@ -92325,7 +92325,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseNormaltrans",
-"sosinvdbnavn":"BruksklasseNormaltrans_904",
+"sosiVegARnavn":"BruksklasseNormaltrans_904",
 "sorteringsnummer":0},
 {
 "id":905,
@@ -92334,7 +92334,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"BruksklasseNormaltrans",
-"sosinvdbnavn":"BruksklasseNormaltrans_905",
+"sosiVegARnavn":"BruksklasseNormaltrans_905",
 "sorteringsnummer":0},
 {
 "id":906,
@@ -92343,7 +92343,7 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"PUNKT",
 "veiledning":"",
 "sosinavn":"ElektriskKomponent_tes",
-"sosinvdbnavn":"ElektriskKomponent_tes_906",
+"sosiVegARnavn":"ElektriskKomponent_tes_906",
 "sorteringsnummer":0},
 {
 "id":907,
@@ -92352,22 +92352,22 @@ __d(/* NVDB/src/data/vegobjekttyper.js */function(global, require, module, expor
 "stedfesting":"LINJE",
 "veiledning":"",
 "sosinavn":"SykkelruteHovednettByT",
-"sosinvdbnavn":"SykkelruteHovednettByT_907",
+"sosiVegARnavn":"SykkelruteHovednettByT_907",
 "sorteringsnummer":0}];exports.
 
 
 vegobjekttyper=vegobjekttyper;
-}, 502, null, "NVDB/src/data/vegobjekttyper.js");
-__d(/* NVDB/src/utilities/wrapper.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.fetchData=exports.fetchCloseby=exports.fetchVeg=exports.fetchObjekttypeInfo=exports.fetchVeger=exports.fetchTotalNumberOfObjects=exports.fetchKommuner=exports.fetchFromAPI=undefined;var _fylker=require(500 /* ../data/fylker */);
+}, 502, null, "VegAR/src/data/vegobjekttyper.js");
+__d(/* VegAR/src/utilities/wrapper.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.fetchData=exports.fetchCloseby=exports.fetchVeg=exports.fetchObjekttypeInfo=exports.fetchVeger=exports.fetchTotalNumberOfObjects=exports.fetchKommuner=exports.fetchFromAPI=undefined;var _fylker=require(500 /* ../data/fylker */);
 var _kommuner=require(501 /* ../data/kommuner */);
 
 
 
 
 var fetchFinished=false;
-var urlKommuner='https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
-var objekttypeURL='https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
-var baseURL="https://www.vegvesen.no/nvdb/api/v2/";
+var urlKommuner='https://www.vegvesen.no/VegAR/api/v2/omrader/kommuner';
+var objekttypeURL='https://www.vegvesen.no/VegAR/api/v2/vegobjekttyper/';
+var baseURL="https://www.vegvesen.no/VegAR/api/v2/";
 
 
 
@@ -92500,8 +92500,8 @@ console.log('ERROR: wrapper.fetchVeger');case 14:case'end':return _context4.stop
 
 
 fetchFromAPI=fetchFromAPI;exports.fetchKommuner=fetchKommuner;exports.fetchTotalNumberOfObjects=fetchTotalNumberOfObjects;exports.fetchVeger=fetchVeger;exports.fetchObjekttypeInfo=fetchObjekttypeInfo;exports.fetchVeg=fetchVeg;exports.fetchCloseby=fetchCloseby;exports.fetchData=fetchData;
-}, 503, null, "NVDB/src/utilities/wrapper.js");
-__d(/* NVDB/src/actions/dataActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
+}, 503, null, "VegAR/src/utilities/wrapper.js");
+__d(/* VegAR/src/actions/dataActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
 
 
 
@@ -92686,7 +92686,7 @@ setObjekttypeInfo=setObjekttypeInfo;exports.
 
 
 
-inputFylke=inputFylke;var _moment=require(484 /* moment */);var _moment2=babelHelpers.interopRequireDefault(_moment);var _wrapper=require(503 /* ../utilities/wrapper */);var _storageEngine=require(505 /* ../utilities/storageEngine */);var _storageEngine2=babelHelpers.interopRequireDefault(_storageEngine);var storage=(0,_storageEngine2.default)('NVDB-storage');function reportChange(search,object,change,shouldDelete){var foundReport=search.report.find(function(r){return r.vegobjekt===object.id;});if(foundReport){var indexOfFoundProperty=foundReport.endringer.map(function(e){return e.egenskap.id;}).indexOf(change.egenskap.id);if(indexOfFoundProperty>=0){if(shouldDelete){foundReport.endringer.splice(indexOfFoundProperty,1);}else{foundReport.endringer[indexOfFoundProperty]=change;}}else if(!shouldDelete){foundReport.endringer.push(change);}}else if(!shouldDelete){search.report.push({vegobjekt:object.id,endringer:[change]});}storage.saveSearch(search);return{type:"REPORT_CHANGE",payload:search};}function selectObject(roadObject){return{type:"SELECT_OBJECT",payload:roadObject};}function setDescription(input){return{type:"SET_DESCRIPTION",payload:input};}function deleteSearch(allSearches,search){allSearches.splice(allSearches.indexOf(search),1);return{type:"DELETE_SEARCH",payload:allSearches};}function clearAllSearches(){return{type:"CLEAR_SEARCHES"};}function loadSearches(searches){return{type:"LOAD_SEARCHES",payload:searches};}function setLoadingProgress(progress){return{type:"SET_LOADING_PROGRESS",payload:progress};}function setCurrentRoadSearch(roadSearch){return{type:"SET_CURRENT_ROAD_SEARCH",payload:roadSearch};}function createSearchObject(description,objects,report,combParams,objekttypeInfo){var roadSearch={key:Date.now(),date:(0,_moment2.default)().format('MMMM Do YYYY, h:mm:ss a'),description:description,roadObjects:objects,report:report,searchParameters:combParams,objekttypeInfo:objekttypeInfo};searchSaved(roadSearch);return{type:"ADD_NEW_SEARCH_OBJECT",payload:roadSearch};}function searchSaved(roadSearch){storage.saveSearch(roadSearch);return{type:"SEARCH_SAVED"};}function setNumberOfObjectsToBeFetched(number){return{type:"SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED",payload:number};}function fetchDataStart(){return{type:"FETCH_DATA_START"};}function fetchDataReturned(data,fetched){var fetching=true;if(fetched){fetching=false;return{type:"FETCH_DATA_RETURNED",payload:{data:data,fetched:fetched,fetching:fetching}};}else{return{type:"FETCHING_NOT_FINISHED",payload:{currentlyFetched:data.length}};}}function resetFetching(){return{type:"RESET_FETCHING"};}function writingFile(){return{type:"WRITING_FILE"};}function setObjekttypeInfo(objekttypeInfo){return{type:"SET_OBJEKTTYPE_INFO",payload:objekttypeInfo};}function inputFylke(input){
+inputFylke=inputFylke;var _moment=require(484 /* moment */);var _moment2=babelHelpers.interopRequireDefault(_moment);var _wrapper=require(503 /* ../utilities/wrapper */);var _storageEngine=require(505 /* ../utilities/storageEngine */);var _storageEngine2=babelHelpers.interopRequireDefault(_storageEngine);var storage=(0,_storageEngine2.default)('VegAR-storage');function reportChange(search,object,change,shouldDelete){var foundReport=search.report.find(function(r){return r.vegobjekt===object.id;});if(foundReport){var indexOfFoundProperty=foundReport.endringer.map(function(e){return e.egenskap.id;}).indexOf(change.egenskap.id);if(indexOfFoundProperty>=0){if(shouldDelete){foundReport.endringer.splice(indexOfFoundProperty,1);}else{foundReport.endringer[indexOfFoundProperty]=change;}}else if(!shouldDelete){foundReport.endringer.push(change);}}else if(!shouldDelete){search.report.push({vegobjekt:object.id,endringer:[change]});}storage.saveSearch(search);return{type:"REPORT_CHANGE",payload:search};}function selectObject(roadObject){return{type:"SELECT_OBJECT",payload:roadObject};}function setDescription(input){return{type:"SET_DESCRIPTION",payload:input};}function deleteSearch(allSearches,search){allSearches.splice(allSearches.indexOf(search),1);return{type:"DELETE_SEARCH",payload:allSearches};}function clearAllSearches(){return{type:"CLEAR_SEARCHES"};}function loadSearches(searches){return{type:"LOAD_SEARCHES",payload:searches};}function setLoadingProgress(progress){return{type:"SET_LOADING_PROGRESS",payload:progress};}function setCurrentRoadSearch(roadSearch){return{type:"SET_CURRENT_ROAD_SEARCH",payload:roadSearch};}function createSearchObject(description,objects,report,combParams,objekttypeInfo){var roadSearch={key:Date.now(),date:(0,_moment2.default)().format('MMMM Do YYYY, h:mm:ss a'),description:description,roadObjects:objects,report:report,searchParameters:combParams,objekttypeInfo:objekttypeInfo};searchSaved(roadSearch);return{type:"ADD_NEW_SEARCH_OBJECT",payload:roadSearch};}function searchSaved(roadSearch){storage.saveSearch(roadSearch);return{type:"SEARCH_SAVED"};}function setNumberOfObjectsToBeFetched(number){return{type:"SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED",payload:number};}function fetchDataStart(){return{type:"FETCH_DATA_START"};}function fetchDataReturned(data,fetched){var fetching=true;if(fetched){fetching=false;return{type:"FETCH_DATA_RETURNED",payload:{data:data,fetched:fetched,fetching:fetching}};}else{return{type:"FETCHING_NOT_FINISHED",payload:{currentlyFetched:data.length}};}}function resetFetching(){return{type:"RESET_FETCHING"};}function writingFile(){return{type:"WRITING_FILE"};}function setObjekttypeInfo(objekttypeInfo){return{type:"SET_OBJEKTTYPE_INFO",payload:objekttypeInfo};}function inputFylke(input){
 return function(dispatch){
 searchForFylke(input.text).
 then(function(result){
@@ -92708,15 +92708,15 @@ dispatch({type:"FYLKE_INPUT_NOT_VALID",payload:input.text});
 });
 };
 }
-}, 504, null, "NVDB/src/actions/dataActions.js");
-__d(/* NVDB/src/utilities/storageEngine.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _reactNative=require(42 /* react-native */);
+}, 504, null, "VegAR/src/actions/dataActions.js");
+__d(/* VegAR/src/utilities/storageEngine.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _reactNative=require(42 /* react-native */);
 var _reactNativeFs=require(486 /* react-native-fs */);var _reactNativeFs2=babelHelpers.interopRequireDefault(_reactNativeFs);
 
 
 
 
-var rootPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/NVDB-storage";
-var searchesPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/NVDB-storage/searches";
+var rootPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/VegAR-storage";
+var searchesPathIOS=_reactNativeFs2.default.DocumentDirectoryPath+"/VegAR-storage/searches";
 
 var rootPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/files";
 var searchesPathAndroid=_reactNativeFs2.default.ExternalStorageDirectoryPath+"/Android/data/com.vegar/files/searches";exports.default=
@@ -92809,8 +92809,8 @@ then(function(){return console.log("file deleted");}).
 catch(function(err){return console.error("An error occured when deleting: "+err);});
 }
 }};};
-}, 505, null, "NVDB/src/utilities/storageEngine.js");
-__d(/* NVDB/src/actions/mapActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.setSidebarFrame=setSidebarFrame;exports.
+}, 505, null, "VegAR/src/utilities/storageEngine.js");
+__d(/* VegAR/src/actions/mapActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.setSidebarFrame=setSidebarFrame;exports.
 
 
 
@@ -92851,8 +92851,8 @@ type:"SET_CLUSTER",
 payload:cluster};
 
 }
-}, 506, null, "NVDB/src/actions/mapActions.js");
-__d(/* NVDB/src/components/views/LoadingView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 506, null, "VegAR/src/actions/mapActions.js");
+__d(/* VegAR/src/components/views/LoadingView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -92965,7 +92965,7 @@ resetFetching:(0,_redux.bindActionCreators)(dataActions.resetFetching,dispatch)}
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(LoadingView);
-}, 507, null, "NVDB/src/components/views/LoadingView.js");
+}, 507, null, "VegAR/src/components/views/LoadingView.js");
 __d(/* react-native-progress/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _Bar=require(509 /* ./Bar */);Object.defineProperty(exports,'Bar',{enumerable:true,get:function get(){return babelHelpers.interopRequireDefault(_Bar).default;}});var _Circle=require(510 /* ./Circle */);Object.defineProperty(exports,'Circle',{enumerable:true,get:function get(){return babelHelpers.interopRequireDefault(_Circle).
 default;}});var _CircleSnail=require(513 /* ./CircleSnail */);Object.defineProperty(exports,'CircleSnail',{enumerable:true,get:function get(){return babelHelpers.interopRequireDefault(_CircleSnail).
 default;}});var _Pie=require(514 /* ./Pie */);Object.defineProperty(exports,'Pie',{enumerable:true,get:function get(){return babelHelpers.interopRequireDefault(_Pie).
@@ -93947,7 +93947,7 @@ _react2.default.createElement(_reactNative.ART.Shape,babelHelpers.extends({d:pat
 
 }}]);return Sector;}(_react.Component);Sector.propTypes={angle:_react.PropTypes.number.isRequired,radius:_react.PropTypes.number.isRequired,offset:_react.PropTypes.shape({top:_react.PropTypes.number,left:_react.PropTypes.number})};Sector.defaultProps={offset:{top:0,left:0}};exports.default=Sector;
 }, 516, null, "react-native-progress/Shapes/Sector.js");
-__d(/* NVDB/src/actions/searchActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
+__d(/* VegAR/src/actions/searchActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
 
 
 
@@ -94159,8 +94159,8 @@ setURL=setURL;exports.
 generateURL=generateURL;var _utils=require(499 /* ../utilities/utils */);var _fylker=require(500 /* ../data/fylker */);var _kommuner=require(501 /* ../data/kommuner */);var _vegobjekttyper=require(502 /* ../data/vegobjekttyper */);function inputClosestRoads(input){return{type:"INPUT_CLOSEST_ROADS",payload:input};}function chooseKommune(input){return function(dispatch){var intInput=parseInt(input);var kommune;if(intInput){kommune=[_kommuner.kommuner.find(function(k){return k.nummer===intInput;})];}else{kommune=input;}dispatch({type:"CHOOSE_KOMMUNE",payload:kommune});var fylke=_fylker.fylker.find(function(f){return f.nummer===kommune[0].fylke;});dispatch({type:"CHOOSE_FYLKE_FROM_KOMMUNE",payload:fylke});};}function resetVegField(){return{type:"RESET_VEGFIELD"};}function inputFylke(input){return function(dispatch){if(input==""){dispatch({type:"INPUT_FYLKE_RESET"});}else{(0,_utils.searchForFylke)(input).then(function(result){if(result.length==1){dispatch({type:"INPUT_FYLKE_SINGLE",payload:{result:result,fylkeText:input}});}else{dispatch({type:"INPUT_FYLKE_MULTIPLE",payload:{result:result,fylkeText:input}});}}).catch(function(err){dispatch({type:"INPUT_FYLKE_NOT_VALID",payload:input});});}};}function chooseFylke(input){var intInput=parseInt(input);var fylke;if(intInput){fylke=[_fylker.fylker.find(function(f){return f.nummer===intInput;})];}else{fylke=input;}return{type:"CHOOSE_FYLKE",payload:fylke};}function inputVeg(input){return{type:"INPUT_VEG",payload:input};}function inputVegobjekttyper(input){return function(dispatch){(0,_utils.searchForVegobjekttyper)(input).then(function(result){if(result.length==1){dispatch({type:"INPUT_VEGOBJEKTTYPER_SINGLE",payload:{result:result,vegobjekttyperText:input}});}else{dispatch({type:"INPUT_VEGOBJEKTTYPER_MULTIPLE",payload:{result:result,vegobjekttyperText:input}});}}).catch(function(err){dispatch({type:"INPUT_VEGOBJEKTTYPER_NOT_VALID",payload:input});});};}function chooseVegobjekttyper(input){var intInput=parseInt(input);var vegobjekttype;if(intInput){vegobjekttype=[_vegobjekttyper.vegobjekttyper.find(function(v){return v.id===intInput;})];}else{vegobjekttype=input;}return{type:"CHOOSE_VEGOBJEKTTYPER",payload:vegobjekttype};}function setValidityOfVeg(input){return function(dispatch){if(input=='VALID'){dispatch({type:"INPUT_VEG_VALID"});}else if(input=='NOT_VALID'){dispatch({type:"INPUT_VEG_NOT_VALID"});}else{dispatch({type:"INPUT_VEG_NOT_CHOSEN"});}};}function inputKommune(input,fylke){return function(dispatch){if(input==""){dispatch({type:"INPUT_KOMMUNE_RESET"});}else{(0,_utils.searchForKommune)(input,fylke).then(function(result){if(result.length==1){dispatch({type:"INPUT_KOMMUNE_SINGLE",payload:{result:result,kommuneText:input}});}else{dispatch({type:"INPUT_KOMMUNE_MULTIPLE",payload:{result:result,kommuneText:input}});}}).catch(function(err){dispatch({type:"INPUT_KOMMUNE_NOT_VALID",payload:input});});}};}function combineSearchParameters(fylkeInput,vegInput,kommuneInput,vegobjekttype){var combinedSearchParameters=[fylkeInput,vegInput,kommuneInput,vegobjekttype];return{type:"COMBINE_PARAMETERS",payload:combinedSearchParameters};}function resetPositionSearchParameters(){return{type:"RESET_POSITION_SEARCH_PARAMETERS"};}function resetSearchParameters(){return{type:"RESET_SEARCH_PARAMETERS"};}function selectSearchCoordinate(coordinate){return{type:"SELECT_SEARCH_COORDINATE",payload:coordinate};}function setFylkeCoordinates(coordinates){return{type:"SET_FYLKE_COORDINATES",payload:coordinates};}function setURL(url){return{type:"SET_URL",payload:url};}function generateURL(){
 return{type:"GENERATE_URL"};
 }
-}, 517, null, "NVDB/src/actions/searchActions.js");
-__d(/* NVDB/src/components/views/ObjectInfoView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 517, null, "VegAR/src/actions/searchActions.js");
+__d(/* VegAR/src/components/views/ObjectInfoView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -94481,8 +94481,8 @@ setShowReport:(0,_redux.bindActionCreators)(reportActions.setShowReport,dispatch
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(ObjectInfoView);
-}, 518, null, "NVDB/src/components/views/ObjectInfoView.js");
-__d(/* NVDB/src/components/misc/SettingSwitch.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 518, null, "VegAR/src/components/views/ObjectInfoView.js");
+__d(/* VegAR/src/components/misc/SettingSwitch.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -94535,8 +94535,8 @@ return{theme:state.settingsReducer.themeStyle};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(SettingSwitch);
-}, 519, null, "NVDB/src/components/misc/SettingSwitch.js");
-__d(/* NVDB/src/utilities/values.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
+}, 519, null, "VegAR/src/components/misc/SettingSwitch.js");
+__d(/* VegAR/src/utilities/values.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
 var comparators=exports.comparators={
 HAS_VALUE:"Har verdi",
 HAS_NOT_VALUE:"Har ikke verdi",
@@ -94568,10 +94568,10 @@ HISTORISK:9};
 
 var facts=exports.facts=[
 "Visste du at det ofte er høyere fartsgrenser på bedre veier",
-"I 2016 var det 423 millioner oppslag mot NVDB",
+"I 2016 var det 423 millioner oppslag mot VegAR",
 "Du finner et julenisseskilt i Drøbak"];
-}, 520, null, "NVDB/src/utilities/values.js");
-__d(/* NVDB/src/actions/reportActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.incrementChangeCount=incrementChangeCount;exports.
+}, 520, null, "VegAR/src/utilities/values.js");
+__d(/* VegAR/src/actions/reportActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.incrementChangeCount=incrementChangeCount;exports.
 
 
 
@@ -94618,8 +94618,8 @@ type:"SET_SHOW_REPORT",
 payload:show};
 
 }
-}, 521, null, "NVDB/src/actions/reportActions.js");
-__d(/* NVDB/src/actions/uiActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.setKeyboardPadding=setKeyboardPadding;exports.
+}, 521, null, "VegAR/src/actions/reportActions.js");
+__d(/* VegAR/src/actions/uiActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.setKeyboardPadding=setKeyboardPadding;exports.
 
 
 
@@ -94632,8 +94632,8 @@ type:"SET_CHOSEN_SEARCH_TAB",
 payload:input};
 
 }
-}, 522, null, "NVDB/src/actions/uiActions.js");
-__d(/* NVDB/src/components/views/ReportView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 522, null, "VegAR/src/actions/uiActions.js");
+__d(/* VegAR/src/components/views/ReportView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -94756,8 +94756,8 @@ selectObject:(0,_redux.bindActionCreators)(dataActions.selectObject,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(ReportView);
-}, 523, null, "NVDB/src/components/views/ReportView.js");
-__d(/* NVDB/src/components/views/RoadMapView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 523, null, "VegAR/src/components/views/ReportView.js");
+__d(/* VegAR/src/components/views/RoadMapView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -95129,7 +95129,7 @@ setCluster:(0,_redux.bindActionCreators)(mapActions.setCluster,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(RoadMapView);
-}, 524, null, "NVDB/src/components/views/RoadMapView.js");
+}, 524, null, "VegAR/src/components/views/RoadMapView.js");
 __d(/* react-native-maps/index.js */function(global, require, module, exports) {var _MapView=require(526 /* ./components/MapView */);var _MapView2=babelHelpers.interopRequireDefault(_MapView);
 
 module.exports=_MapView2.default;
@@ -97463,7 +97463,7 @@ var dy=ay-by;
 return dx*dx+dy*dy;
 }
 }, 540, null, "kdbush/src/within.js");
-__d(/* NVDB/src/components/misc/MarkerCallout.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(/* VegAR/src/components/misc/MarkerCallout.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -97583,8 +97583,8 @@ searchSaved:(0,_redux.bindActionCreators)(dataActions.searchSaved,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(MarkerCallout);
-}, 541, null, "NVDB/src/components/misc/MarkerCallout.js");
-__d(/* NVDB/src/components/misc/SidebarMain.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 541, null, "VegAR/src/components/misc/MarkerCallout.js");
+__d(/* VegAR/src/components/misc/SidebarMain.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -97714,8 +97714,8 @@ toggleSecondSidebar:(0,_redux.bindActionCreators)(mapActions.toggleSecondSidebar
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(SidebarMain);
-}, 542, null, "NVDB/src/components/misc/SidebarMain.js");
-__d(/* NVDB/src/actions/filterActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.selectFunction=selectFunction;exports.
+}, 542, null, "VegAR/src/components/misc/SidebarMain.js");
+__d(/* VegAR/src/actions/filterActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.selectFunction=selectFunction;exports.
 
 
 
@@ -97777,8 +97777,8 @@ removeFilter=removeFilter;exports.
 removeAllFilters=removeAllFilters;function selectFunction(selectedFunction){return{type:"SELECT_FUNCTION",payload:selectedFunction};}function deselectFunction(){return{type:"DESELECT_FUNCTION"};}function selectFilter(filter){return{type:"SELECT_FILTER",payload:filter};}function deselectFilter(){return{type:"DESELECT_FILTER"};}function selectFilterValue(filterValue){return{type:"SELECT_FILTER_VALUE",payload:filterValue};}function deselectFilterValue(){return{type:"DESELECT_FILTER_VALUE"};}function inputFilterValueText(text){return{type:"INPUT_FILTER_VALUE_TEXT",payload:text};}function clearFilterValueText(){return{type:"CLEAR_FILTER_VALUE_TEXT"};}function addFilter(filter){return{type:"ADD_FILTER",payload:filter};}function removeFilter(filter){console.log(filter);return{type:"REMOVE_FILTER",payload:filter};}function removeAllFilters(){
 return{type:"REMOVE_ALL_FILTERS"};
 }
-}, 543, null, "NVDB/src/actions/filterActions.js");
-__d(/* NVDB/src/components/misc/SidebarSecondary.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 543, null, "VegAR/src/actions/filterActions.js");
+__d(/* VegAR/src/components/misc/SidebarSecondary.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -98199,8 +98199,8 @@ addFilter:(0,_redux.bindActionCreators)(filterActions.addFilter,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(SidebarSecondary);
-}, 544, null, "NVDB/src/components/misc/SidebarSecondary.js");
-__d(/* NVDB/src/components/misc/ComparatorComponent.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 544, null, "VegAR/src/components/misc/SidebarSecondary.js");
+__d(/* VegAR/src/components/misc/ComparatorComponent.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -98290,8 +98290,8 @@ deselectFilterValue:(0,_redux.bindActionCreators)(filterActions.deselectFilterVa
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(ComparatorComponent);
-}, 545, null, "NVDB/src/components/misc/ComparatorComponent.js");
-__d(/* NVDB/src/components/views/SearchView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 545, null, "VegAR/src/components/misc/ComparatorComponent.js");
+__d(/* VegAR/src/components/views/SearchView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -98331,7 +98331,7 @@ var _uiActions=require(522 /* ../../actions/uiActions */);var uiActions=babelHel
 var _fylker=require(500 /* ../../data/fylker */);
 var _kommuner=require(501 /* ../../data/kommuner */);var Color=require(551 /* color */);
 
-var baseURL='https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+var baseURL='https://www.vegvesen.no/VegAR/api/v2/vegobjekter/';
 
 var tabs={
 SEARCH:"Søk",
@@ -98666,8 +98666,8 @@ resetPositionSearchParameters:(0,_redux.bindActionCreators)(searchActions.resetP
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(SearchView);
-}, 546, null, "NVDB/src/components/views/SearchView.js");
-__d(/* NVDB/src/components/misc/InputField.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 546, null, "VegAR/src/components/views/SearchView.js");
+__d(/* VegAR/src/components/misc/InputField.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -98784,8 +98784,8 @@ return{theme:state.settingsReducer.themeStyle};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(InputField);
-}, 547, null, "NVDB/src/components/misc/InputField.js");
-__d(/* NVDB/src/components/misc/LocationInputComponent.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 547, null, "VegAR/src/components/misc/InputField.js");
+__d(/* VegAR/src/components/misc/LocationInputComponent.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 var _propTypes=require(491 /* prop-types */);var _propTypes2=babelHelpers.interopRequireDefault(_propTypes);
@@ -98890,8 +98890,8 @@ inputVeg:(0,_redux.bindActionCreators)(searchActions.inputVeg,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(LocationInputComponent);
-}, 548, null, "NVDB/src/components/misc/LocationInputComponent.js");
-__d(/* NVDB/src/components/misc/TabBar.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 548, null, "VegAR/src/components/misc/LocationInputComponent.js");
+__d(/* VegAR/src/components/misc/TabBar.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -98990,8 +98990,8 @@ chosenSearchTab:state.uiReducer.chosenSearchTab};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(TabBar);
-}, 549, null, "NVDB/src/components/misc/TabBar.js");
-__d(/* NVDB/src/components/views/search/SearchMap.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 549, null, "VegAR/src/components/misc/TabBar.js");
+__d(/* VegAR/src/components/views/search/SearchMap.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -99076,7 +99076,7 @@ resetPositionSearchParameters:(0,_redux.bindActionCreators)(searchActions.resetP
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(SearchMap);
-}, 550, null, "NVDB/src/components/views/search/SearchMap.js");
+}, 550, null, "VegAR/src/components/views/search/SearchMap.js");
 __d(/* color/index.js */function(global, require, module, exports) {'use strict';
 
 var colorString=require(552 /* color-string */);
@@ -101022,7 +101022,7 @@ conversion[toModel]=wrapConversion(toModel,graph);
 return conversion;
 };
 }, 558, null, "color-convert/route.js");
-__d(/* NVDB/src/components/views/SettingsView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(/* VegAR/src/components/views/SettingsView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -101093,8 +101093,8 @@ chooseKommune:(0,_redux.bindActionCreators)(searchActions.chooseKommune,dispatch
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(SettingsView);
-}, 559, null, "NVDB/src/components/views/SettingsView.js");
-__d(/* NVDB/src/actions/settingsActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
+}, 559, null, "VegAR/src/components/views/SettingsView.js");
+__d(/* VegAR/src/actions/settingsActions.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
 
 setClustering=setClustering;exports.
 
@@ -101109,8 +101109,8 @@ type:"SET_DARK_MODE",
 payload:on};
 
 }
-}, 560, null, "NVDB/src/actions/settingsActions.js");
-__d(/* NVDB/src/components/views/StartingView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 560, null, "VegAR/src/actions/settingsActions.js");
+__d(/* VegAR/src/components/views/StartingView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -101207,8 +101207,8 @@ theme:state.settingsReducer.themeStyle};
 
 function mapDispatchToProps(dispatch){return(0,_redux.bindActionCreators)(userActions,dispatch);}exports.default=
 (0,_reactRedux.connect)(mapStateToProps,null)(StartingView);
-}, 561, null, "NVDB/src/components/views/StartingView.js");
-__d(/* NVDB/src/components/views/StoredDataView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 561, null, "VegAR/src/components/views/StartingView.js");
+__d(/* VegAR/src/components/views/StoredDataView.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(42 /* react-native */);
 
 
@@ -101232,7 +101232,7 @@ var _storageEngine=require(505 /* ../../utilities/storageEngine */);var _storage
 var _templates=require(496 /* ../../utilities/templates */);var templates=babelHelpers.interopRequireWildcard(_templates);
 var _dataActions=require(504 /* ../../actions/dataActions */);var dataActions=babelHelpers.interopRequireWildcard(_dataActions);
 
-var storage=(0,_storageEngine2.default)('NVDB-storage');
+var storage=(0,_storageEngine2.default)('VegAR-storage');
 var ds=new _reactNative.ListView.DataSource({rowHasChanged:function rowHasChanged(r1,r2){return r1!==r2;}});var
 
 
@@ -101360,8 +101360,8 @@ deleteSearch:(0,_redux.bindActionCreators)(dataActions.deleteSearch,dispatch)};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,mapDispatchToProps)(StoredDataView);
-}, 562, null, "NVDB/src/components/views/StoredDataView.js");
-__d(/* NVDB/src/components/misc/NavigationBar.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+}, 562, null, "VegAR/src/components/views/StoredDataView.js");
+__d(/* VegAR/src/components/misc/NavigationBar.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNativeRouterFlux=require(437 /* react-native-router-flux */);
 
 var _reactRedux=require(399 /* react-redux */);var
@@ -101379,8 +101379,8 @@ navigationBarStyle:state.settingsReducer.themeStyle.navigationBarStyle};
 }exports.default=
 
 (0,_reactRedux.connect)(mapStateToProps,null)(NavigationBar);
-}, 563, null, "NVDB/src/components/misc/NavigationBar.js");
-__d(/* NVDB/src/store.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.store=undefined;
+}, 563, null, "VegAR/src/components/misc/NavigationBar.js");
+__d(/* VegAR/src/store.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.store=undefined;
 
 var _redux=require(410 /* redux */);
 
@@ -101401,7 +101401,7 @@ var store=(0,_redux.createStore)(_reducers2.default,middleware);exports.
 
 
 store=store;
-}, 564, null, "NVDB/src/store.js");
+}, 564, null, "VegAR/src/store.js");
 __d(/* redux-logger/lib/index.js */function(global, require, module, exports) {'use strict';
 
 Object.defineProperty(exports,"__esModule",{
@@ -102473,7 +102473,7 @@ return value&&typeof value.then==='function';
 return false;
 }
 }, 573, null, "redux-promise-middleware/dist/isPromise.js");
-__d(/* NVDB/src/reducers/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
+__d(/* VegAR/src/reducers/index.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});
 
 
 
@@ -102498,8 +102498,8 @@ reportReducer:_reportReducer2.default,
 searchReducer:_searchReducer2.default,
 settingsReducer:_settingsReducer2.default,
 uiReducer:_uiReducer2.default});
-}, 574, null, "NVDB/src/reducers/index.js");
-__d(/* NVDB/src/reducers/dataReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 574, null, "VegAR/src/reducers/index.js");
+__d(/* VegAR/src/reducers/dataReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 
 reducer;function reducer()
 
@@ -102630,8 +102630,8 @@ return babelHelpers.extends({},state,{objekttypeInfo:action.payload});
 
 return state;
 }
-}, 575, null, "NVDB/src/reducers/dataReducer.js");
-__d(/* NVDB/src/reducers/fileReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 575, null, "VegAR/src/reducers/dataReducer.js");
+__d(/* VegAR/src/reducers/fileReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 reducer;function reducer()
 
 
@@ -102653,8 +102653,8 @@ state);
 
 return state;
 }
-}, 576, null, "NVDB/src/reducers/fileReducer.js");
-__d(/* NVDB/src/reducers/filterReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 576, null, "VegAR/src/reducers/fileReducer.js");
+__d(/* VegAR/src/reducers/filterReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 reducer;function reducer()
 
 
@@ -102709,8 +102709,8 @@ return babelHelpers.extends({},state,{allSelectedFilters:[]});
 
 return state;
 }
-}, 577, null, "NVDB/src/reducers/filterReducer.js");
-__d(/* NVDB/src/reducers/mapReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 577, null, "VegAR/src/reducers/filterReducer.js");
+__d(/* VegAR/src/reducers/mapReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 
 
 
@@ -102752,8 +102752,8 @@ return babelHelpers.extends({},state,{cluster:action.payload});
 
 return state;
 }
-}, 578, null, "NVDB/src/reducers/mapReducer.js");
-__d(/* NVDB/src/reducers/reportReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=reducer;function reducer()
+}, 578, null, "VegAR/src/reducers/mapReducer.js");
+__d(/* VegAR/src/reducers/reportReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=reducer;function reducer()
 
 
 
@@ -102806,8 +102806,8 @@ return babelHelpers.extends({},state,{showReport:action.payload});
 
 return state;
 }
-}, 579, null, "NVDB/src/reducers/reportReducer.js");
-__d(/* NVDB/src/reducers/searchReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 579, null, "VegAR/src/reducers/reportReducer.js");
+__d(/* VegAR/src/reducers/searchReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 
 
 
@@ -102909,7 +102909,7 @@ url:action.payload});
 
 }
 case"GENERATE_URL":{
-var baseURL='https://www.vegvesen.no/nvdb/api/v2/vegobjekter/';
+var baseURL='https://www.vegvesen.no/VegAR/api/v2/vegobjekter/';
 var tStr='',fStr='',kStr='',vStr='';
 var tChosen=state.vegobjekttyperChosen;
 var fChosen=state.fylkeChosen;
@@ -103169,8 +103169,8 @@ return babelHelpers.extends({},state,{fylkeCoordinates:action.payload});
 
 return state;
 }
-}, 580, null, "NVDB/src/reducers/searchReducer.js");
-__d(/* NVDB/src/reducers/settingsReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
+}, 580, null, "VegAR/src/reducers/searchReducer.js");
+__d(/* VegAR/src/reducers/settingsReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=
 
 
 
@@ -103197,8 +103197,8 @@ return babelHelpers.extends({},state,{darkModeOn:action.payload,themeStyle:(0,_t
 
 return state;
 }
-}, 581, null, "NVDB/src/reducers/settingsReducer.js");
-__d(/* NVDB/src/utilities/theme/theme.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
+}, 581, null, "VegAR/src/reducers/settingsReducer.js");
+__d(/* VegAR/src/utilities/theme/theme.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.
 
 
 
@@ -103256,8 +103256,8 @@ borderTopWidth:1}};
 
 
 }
-}, 582, null, "NVDB/src/utilities/theme/theme.js");
-__d(/* NVDB/src/utilities/theme/light.js */function(global, require, module, exports) {var _templates=require(496 /* ../templates */);var templates=babelHelpers.interopRequireWildcard(_templates);
+}, 582, null, "VegAR/src/utilities/theme/theme.js");
+__d(/* VegAR/src/utilities/theme/light.js */function(global, require, module, exports) {var _templates=require(496 /* ../templates */);var templates=babelHelpers.interopRequireWildcard(_templates);
 
 module.exports={
 backgroundColor:templates.colors.white,
@@ -103269,8 +103269,8 @@ secondaryTextColor:templates.colors.darkGray,
 placeholderTextColor:templates.colors.middleGray,
 
 tabChosen:{textColor:templates.colors.black}};
-}, 583, null, "NVDB/src/utilities/theme/light.js");
-__d(/* NVDB/src/utilities/theme/dark.js */function(global, require, module, exports) {var _templates=require(496 /* ../templates */);var templates=babelHelpers.interopRequireWildcard(_templates);
+}, 583, null, "VegAR/src/utilities/theme/light.js");
+__d(/* VegAR/src/utilities/theme/dark.js */function(global, require, module, exports) {var _templates=require(496 /* ../templates */);var templates=babelHelpers.interopRequireWildcard(_templates);
 
 module.exports={
 backgroundColor:templates.colors.black,
@@ -103282,8 +103282,8 @@ secondaryTextColor:templates.colors.middleGray,
 placeholderTextColor:'#a4a4a4',
 
 tabChosen:{textColor:templates.colors.white}};
-}, 584, null, "NVDB/src/utilities/theme/dark.js");
-__d(/* NVDB/src/reducers/uiReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=reducer;function reducer()
+}, 584, null, "VegAR/src/utilities/theme/dark.js");
+__d(/* VegAR/src/reducers/uiReducer.js */function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});exports.default=reducer;function reducer()
 
 
 
@@ -103303,7 +103303,7 @@ chosenSearchTab:action.payload});
 
 return state;
 }
-}, 585, null, "NVDB/src/reducers/uiReducer.js");
+}, 585, null, "VegAR/src/reducers/uiReducer.js");
 ;require(192);
 ;require(0);
 //# sourceMappingURL=/index.android.map?platform=android

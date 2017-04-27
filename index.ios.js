@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import App from './src/index'
 import {store, purgeStore} from './src/store'
 
-class NVDB extends Component {
+class VegAR extends Component {
   render() {
     return (
       <Provider store = {store}>
@@ -19,4 +19,4 @@ class NVDB extends Component {
     },
   });
 
-  AppRegistry.registerComponent('NVDB', () => NVDB);
+  AppRegistry.registerComponent('VegAR', () => VegAR);
