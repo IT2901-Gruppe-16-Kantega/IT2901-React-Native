@@ -8,6 +8,7 @@ import {
   TextInput,
   LayoutAnimation,
   Platform,
+  UIManager,
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';

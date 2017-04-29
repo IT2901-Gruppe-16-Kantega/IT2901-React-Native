@@ -277,13 +277,19 @@ class RoadMapView extends React.Component {
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={marker.properties.roadObject.id}
             pinColor={templates.colors.blue} >
-            <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
+            <MapView.Callout onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
               <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
           </MapView.Marker>
         }
       }
     })
+  }
+
+
+  openObjectInformation(roadObject) {
+  	this.props.selectObject(roadObject);
+    Actions.ObjectInfoView();
   }
 
   changeRegion(region) {
