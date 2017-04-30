@@ -27,6 +27,24 @@ function fetchFromAPI(callback, url) {
   })
 }
 
+//Not used now, but kept in case we need them
+var veger = [];
+function fetchVegerFromAPI(fylke, vegtype){
+  fetchVeger(fylke, vegtype).then((result) => {
+    for(i=0; i<result.objekter.length; i++){
+      for(z=0; z<result.objekter[i].egenskaper.length; z++){
+        if(result.objekter[i].egenskaper[z].id === 4568){
+          if(veger.some(vegerContains, result.objekter[i].egenskaper[z].verdi)){
+          }
+          else{
+            veger.push(result.objekter[i].egenskaper[z].verdi)
+          }
+        }
+      }
+    }
+  });
+}
+
 
 //recursively fetches if result from api contains many object, data "paginert" by NVDB
 function recursiveFetch(object, objects, callback){

@@ -1,93 +1,6 @@
+import userDefaults from 'react-native-user-defaults'
 
-import {fylker} from '../data/fylker';
-import {kommuner} from '../data/kommuner';
-import {vegobjekttyper} from '../data/vegobjekttyper';
-//Not used:
-import {fetchVeger} from './wrapper';
-
-
-//NOT used??
-function filterFylke(f) {
-    return f.fylke === parseInt(this);
-  }
-
-
-function searchForFylke(fylke_navn) {
-    return new Promise(function(resolve, reject){
-      var fylkerArray = fylker.filter(compareInput, fylke_navn);
-      if(fylkerArray.length > 0 && fylkerArray.length != 19) {
-        resolve(fylkerArray);
-      }
-      else {
-        reject(Error("Not a valid fylke"));
-      }
-    })
-  }
-
-function searchForVegobjekttyper(input){
-  return new Promise(function(resolve, reject){
-    var vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
-    if(vegobjekttyperArray.length > 0 && vegobjekttyperArray.length != 391) {
-      resolve(vegobjekttyperArray);
-    }
-    else {
-      reject(Error("Not a valid vegobjekttype"));
-    }
-  })
-}
-
-//handle chosen fylke
-function searchForKommune(input, fylke) {
-  if(fylke.length == 0) {
-    var filteredKommuneList = kommuner;
-  }
-  else {
-    var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
-  }
-  return new Promise(function(resolve, reject){
-    var kommunerArray = filteredKommuneList.filter(compareInput, input);
-    if(kommunerArray.length > 0 && kommunerArray.length != filteredKommuneList.length) {
-      resolve(kommunerArray);
-    }
-    else {
-      reject(Error("Not a valid kommune"));
-    }
-  })
-}
-
-//Comparator used by all search functions
-function compareInput(input){
-    let stringInput = this.toString().toLowerCase();
-    return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
-  }
-
-function filterKommuneList(input){
-  return input.fylke == this;
-}
-
-//Not used now, but kept in case we need them
-var veger = [];
-function fetchVegerFromAPI(fylke, vegtype){
-  fetchVeger(fylke, vegtype).then((result) => {
-    for(i=0; i<result.objekter.length; i++){
-      for(z=0; z<result.objekter[i].egenskaper.length; z++){
-        if(result.objekter[i].egenskaper[z].id==4568){
-          if(veger.some(vegerContains, result.objekter[i].egenskaper[z].verdi)){
-          }
-          else{
-            veger.push(result.objekter[i].egenskaper[z].verdi)
-          }
-        }
-      }
-    }
-  });
-}
-
-function vegerContains(value) {
-  if(value == this){
-    return true;
-  }
-}
+const arURL = 'vegar.ar:';
 
 function parseGeometry(string) {
   const wkt = string.slice(string.lastIndexOf("(") + 1, -1);
@@ -116,4 +29,24 @@ function randomColor(alpha) {
   return color;
 }
 
-export {searchForKommune, searchForFylke, searchForVegobjekttyper, parseGeometry, randomColor};
+function AR(platform, search, callback) {
+  const data = JSON.stringify(search);
+
+  if(platform === "ios") {
+    userDefaults.set("currentRoadSearch", data, "group.vegar", (err, data) => {
+      if(!err) callback(arURL);
+      else alert(err);
+    });
+  } else if (platform === "android") {
+    // Save data.json
+    let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
+    RNFS.writeFile(dataPath, data, "utf8")
+    .then((success) => callback(arURL)).catch((err) => alert(err))
+    // TODO Save roads.json here
+    //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
+  } else {
+    console.log("Not ios or android")
+  }
+}
+
+export {parseGeometry, randomColor, AR};

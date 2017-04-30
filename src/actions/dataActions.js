@@ -181,6 +181,13 @@ export function setObjekttypeInfo(objekttypeInfo) {
   }
 }
 
+export function setFilteredRoadObjects(roadObjects) {
+  return {
+    type: "SET_FILTERED_ROAD_OBJECTS",
+    payload: roadObjects,
+  }
+}
+
 //TODO blir denne brukt????
 
 export function inputFylke(input){

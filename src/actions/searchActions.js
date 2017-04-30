@@ -1,5 +1,5 @@
 //
-import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/utils';
+import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/searchUtils';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';

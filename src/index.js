@@ -13,11 +13,11 @@ import {
 } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 
-// redux imports
+import moment from 'moment';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import userDefaults from 'react-native-user-defaults'
 
-import moment from 'moment';
 
 // application view imports
 import CurrentSearchView from './components/views/CurrentSearchView'
@@ -124,7 +124,6 @@ class App extends Component {
   }
 
   handleDeepLink(e) {
-	console.log(e.url);
     const route = e.url.replace(/.*?:\/\//g, "");
     const mainParts = route.split("?");
 
@@ -142,11 +141,28 @@ class App extends Component {
     this.props.setDarkMode(darkMode);
     if(mainParts[0] === "rapport") {
       const id = parseInt(result["id"]);
-	  const storage = storageEngine('NVDB-storage')
-	  storage.loadReport(id);
       this.props.setCurrentRoadSearch(id);
-      //Actions.ReportView();
-      Actions.CurrentSearchView();
+
+      if(Platform.OS === "android") {
+        const storage = storageEngine('NVDB-storage')
+        storage.loadReport(id);
+      }
+      else {
+        userDefaults.get("report", "group.vegar", (err, data) => {
+          const obj = JSON.parse(data);
+
+          for(var i = 0; i < obj.reportObjects.length; i++) {
+            const reportObject = obj.reportObjects[i];
+            this.props.selectObject(reportObject.vegobjekt);
+            for(var j = 0; j < reportObject.endringer.length; j++) {
+              const change = reportObject.endringer[j];
+              this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+            }
+          }
+        });
+      }
+
+      Actions.ReportView();
     }
     else {
       const vegobjekttype = parseInt(result["t"]);
@@ -200,6 +216,9 @@ function mapStateToProps(state) {
     fylkeInput: state.searchReducer.fylkeInput,
     kommuneInput: state.searchReducer.kommuneInput,
     vegInput: state.searchReducer.vegInput,
+
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    selectedObject: state.dataReducer.selectedObject,
   };
 }
 
@@ -225,6 +244,8 @@ function mapDispatchToProps(dispatch) {
 
     setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
+    reportChange: bindActionCreators(dataActions.reportChange, dispatch),
   }
 }
 

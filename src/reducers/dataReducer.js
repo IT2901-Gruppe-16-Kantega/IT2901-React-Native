@@ -14,6 +14,7 @@ export default function reducer(state={
   //this holds the currently chosen roadSearch to avoid calling the entire array all the time
   currentRoadSearch: null,
   selectedObject: null,
+  filteredRoadObjects: [],
 
   // used by currentSearchView
   description: "",
@@ -34,13 +35,16 @@ export default function reducer(state={
     case "REPORT_CHANGE": {
       const search = action.payload;
       const searches = state.allSearches;
-      var newSearches = searches.splice(searches.indexOf(search), 1);
+      var newSearches = searches.splice(searches.indexOf(s => s.key === search.key), 1);
       newSearches.push(search);
 
       return {...state, allSearches: newSearches, currentRoadSearch: search}
     }
     case "SELECT_OBJECT": {
-      return {...state, selectedObject: action.payload}
+      var object;
+      if(action.payload.id) { object = action.payload }
+      else { object = state.currentRoadSearch.roadObjects.find(o => o.id === action.payload) }
+      return {...state, selectedObject: object}
     }
     case "SET_DESCRIPTION": {
       return {...state, description: action.payload}
@@ -124,7 +128,10 @@ export default function reducer(state={
       }
     }
     case "SET_OBJEKTTYPE_INFO": {
-      return{...state, objekttypeInfo: action.payload}
+      return {...state, objekttypeInfo: action.payload}
+    }
+    case "SET_FILTERED_ROAD_OBJECTS": {
+      return {...state, filteredRoadObjects: action.payload}
     }
   }
   return state

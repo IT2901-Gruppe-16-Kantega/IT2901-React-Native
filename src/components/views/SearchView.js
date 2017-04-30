@@ -28,7 +28,7 @@ import TabBar from '../misc/TabBar';
 
 import SearchMap from './search/SearchMap';
 
-import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
+import {searchForFylke} from '../../utilities/searchUtils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
