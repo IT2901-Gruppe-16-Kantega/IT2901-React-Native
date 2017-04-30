@@ -31,15 +31,13 @@ class MarkerCallout extends React.Component {
 
   render() {
     var {roadObject} = this.props;
-
     return <View style={{flex: 1}}>
       <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
       <PropertyValue property={"ID"} value={roadObject.id} />
       {this.getEgenskapInfo()}
-      <Button type="list" text="Informasjon" onPress={() => this.openObjectInformation()} />
+	  <Button text="Informasjon" type="list" onPress={this.openObjectInformation.bind(this)} />
     </View>
   }
-
   // Called when the user taps the title of the callout
   // Opens the object info view.
   openObjectInformation() {

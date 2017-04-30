@@ -285,7 +285,7 @@ class RoadMapView extends React.Component {
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={marker.properties.roadObject.id}
             pinColor={templates.colors.blue} >
-            <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
+            <MapView.Callout onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
               <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
           </MapView.Marker>
@@ -295,8 +295,7 @@ class RoadMapView extends React.Component {
   }
 
   openObjectInformation(roadObject) {
-    console.log(roadObject)
-    this.props.selectObject(roadObject);
+  	this.props.selectObject(roadObject);
     Actions.ObjectInfoView();
   }
 
@@ -325,8 +324,6 @@ class RoadMapView extends React.Component {
     map.animateToRegion(newRegion, 200);
   }
 }
-
-//{"fylker":[16],"vegreferanser":[{"kategori":"F","status":"V","nummer":905}]},"geometri":{"wkt":"POINT Z (63.43276477217664 10.405222809223927 7.104522963840131)","srid":4326,"egengeometri":false},"lokasjon":{"kommuner":[1601],"fylker":[16],"regioner":[4],"vegavdelinger":[16],"kontraktsområder":[{"navn":"1610 Trondheim Indre 2015-2020"}],"riksvegruter":[{"nummer":"6A","navn":"RUTE6A","periode":"2010-2019"},{"nummer":"6A","navn":"RUTE6A","periode":"2014-2023"}],"vegreferanser":[{"fylke":16,"kommune":0,"kategori":"F","status":"V","nummer":905,"hp":2,"meter":152,"kortform":"1600 Fv905 hp2 m151"}],"stedfestinger":[{"veglenkeid":72812,"posisjon":0.968503826915234,"kortform":"0.968503826915234@72812","retning":"MED","sideposisjon":"V"}],"geometri":{"wkt":"POINT Z (63.43276477217664 10.405222809223927 7.104522963840131)","srid":4326}},"vegsegmenter":[{"stedfesting":{"veglenkeid":72812,"posisjon":0.968503826915234,"kortform":"0.968503826915234@72812","retning":"MED","sideposisjon":"V"},"geometri":{"wkt":"POINT Z (63.43276477217664 10.405222809223927 7.104522963840131)","srid":4326},"kommune":1601,"fylke":16,"region":4,"vegavdeling":16,"vegreferanse":{"fylke":16,"kommune":0,"kategori":"F","status":"V","nummer":905,"hp":2,"meter":152,"kortform":"1600 Fv905 hp2 m151"}}],"relasjoner":{"foreldre":[{"type":{"id":95,"navn":"Skiltpunkt"},"vegobjekter":[287162858
 
 var styles = StyleSheet.create({
   cluster: {
