@@ -56,29 +56,43 @@ class CurrentSearchView extends React.Component {
   }
 
   createInfoView() {
-    var kommuneValue = "Ikke spesifisert"
-    if (this.props.currentRoadSearch.searchParameters[2] != null) {
-      kommuneValue = this.props.currentRoadSearch.searchParameters[2].navn
-    }
-    const key = this.props.currentRoadSearch.key;
+    const {currentRoadSearch} = this.props;
+    const {vegobjekttype, kommune, fylke, veg} = currentRoadSearch.searchParameters;
+
+    const kommuneValue = kommune ? kommune.navn : "Ikke spesifisert";
+    const fylkeValue = fylke ? fylke.navn : "Ikke spesifisert";
+    const vegValue = veg ? veg : "Ikke spesifisert";
 
     return (
       <View style={{flex: 2, padding: 20 }}>
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
           <View style={styles.informationArea}>
             <View style={styles.info}>
-              <Button type={"small"} text={key + ""} onPress={() => Share.share({ message: "vegar.kart://rapport?id=" + key })} />
-              <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
-              <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
-              <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+              <Button type={"small"} text={"Del dette søket"} onPress={this.shareSearch.bind(this)} />
+              <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
+              <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Fylke"} value={fylkeValue} />
               <PropertyValue property={"Kommune"} value={kommuneValue} />
-              <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+              <PropertyValue property={"Veg"} value={vegValue} />
               {this.createDescriptionArea()}
             </View>
           </View>
         </TouchableWithoutFeedback>
       </View>
     );
+  }
+
+  shareSearch() {
+    //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
+    const params = this.props.currentRoadSearch.searchParameters;
+    var url = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
+
+    if(params.fylke) url += "fylke=" + params.fylke.nummer + "&"
+    if(params.kommune) url += "kommune=" + params.kommune.nummer + "&"
+    if(params.veg) url += "vegreferanse=" + params.veg + "&"
+
+    console.log(url)
+    Share.share({ message: url })
   }
 
   createDescriptionArea() {

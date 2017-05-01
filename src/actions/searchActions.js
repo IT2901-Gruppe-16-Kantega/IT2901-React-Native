@@ -146,7 +146,7 @@ export function inputKommune(input, fylke) {
     else{
       searchForKommune(input, fylke)
       .then((result) => {
-        if(result.length == 1){
+        if(result.length === 1) {
           dispatch({type: "INPUT_KOMMUNE_SINGLE", payload: {
             result: result,
             kommuneText: input,
@@ -168,11 +168,10 @@ export function inputKommune(input, fylke) {
 
 
 
-export function combineSearchParameters(fylkeInput, vegInput, kommuneInput, vegobjekttype) {
-  var combinedSearchParameters = [fylkeInput, vegInput, kommuneInput, vegobjekttype];
+export function combineSearchParameters(parameters) {
   return {
     type: "COMBINE_PARAMETERS",
-    payload: combinedSearchParameters,
+    payload: parameters,
   }
 }
 
@@ -187,6 +186,8 @@ export function resetSearchParameters() {
 }
 
 export function selectSearchCoordinate(coordinate) {
+  coordinate.latitudeDelta = 0.005;
+  coordinate.longitudeDelta = 0.005;
   return {
     type: "SELECT_SEARCH_COORDINATE",
     payload: coordinate,

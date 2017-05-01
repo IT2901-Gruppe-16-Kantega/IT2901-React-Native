@@ -53,8 +53,6 @@ class SearchMap extends React.Component {
         this.props.inputVeg(veg);
         this.props.chooseFylke([closest.fylke]);
         if(closest.vegreferanse.kategori == "K") { this.props.chooseKommune([closest.kommune]) }
-        coordinate.latitudeDelta = 0.1;
-        coordinate.longitudeDelta = 0.1;
         this.props.selectSearchCoordinate(coordinate);
 
         setTimeout(() => {

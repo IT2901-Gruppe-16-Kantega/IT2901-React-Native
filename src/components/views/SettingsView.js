@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 
 import * as Progress from 'react-native-progress';
 
+import Button from '../misc/Button';
 import Container from '../misc/Container';
 import LocationInputComponent from '../misc/LocationInputComponent';
 import SettingSwitch from '../misc/SettingSwitch';
@@ -30,6 +31,7 @@ class SettingsView extends React.Component {
         value={this.props.darkModeOn}
         title={"Nattmodus"}
         description={"BETA: Mørk bakgrunn og lys tekst."} />
+      <Button type="list" text="Hjelp" onPress={Actions.HelpView} />
     </Container>
   }
 }

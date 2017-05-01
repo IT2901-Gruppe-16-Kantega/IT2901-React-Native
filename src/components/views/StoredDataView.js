@@ -47,7 +47,7 @@ class StoredDataView extends React.Component {
     } else {
       return (
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-          <Text>Ingen søk...</Text>
+          <Text style={this.props.theme.text}>Ingen søk...</Text>
           <Button type={"small"} text={"Gjør et søk"} onPress={Actions.SearchView} />
         </View>
       );
@@ -56,9 +56,10 @@ class StoredDataView extends React.Component {
 
   // Render each saved road search row
   renderRow(roadSearch, sectionID, rowID, highlightRow) {
-    // If the search parameters exists, set the names
-    const fylkeNavn = roadSearch.searchParameters[0] == null ? null : roadSearch.searchParameters[0].navn;
-    const kommuneNavn = roadSearch.searchParameters[2] == null ? null : roadSearch.searchParameters[2].navn;
+    const {fylke, kommune} = roadSearch.searchParameters;
+
+    const fylkeNavn = fylke ? fylke.navn : "";
+    const kommuneNavn = kommune ? kommune.navn : "";
 
     const vegobjekttype = roadSearch.objekttypeInfo;
 

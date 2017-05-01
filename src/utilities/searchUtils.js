@@ -18,7 +18,7 @@ function searchForFylke(fylkeNavn) {
     })
   }
 
-function searchForVegobjekttyper(input){
+function searchForVegobjekttyper(input) {
   return new Promise(function(resolve, reject){
     var vegobjekttyperArray = vegobjekttyper.filter(compareInput, input);
     if(vegobjekttyperArray.length > 0 && vegobjekttyperArray.length != 391) {
@@ -32,13 +32,11 @@ function searchForVegobjekttyper(input){
 
 //handle chosen fylke
 function searchForKommune(input, fylke) {
-  if(fylke.length === 0) {
-    var filteredKommuneList = kommuner;
-  }
-  else {
-    var filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer);
-  }
-  return new Promise(function(resolve, reject){
+  var filteredKommuneList;
+  if(fylke.length === 0) filteredKommuneList = kommuner
+  else filteredKommuneList = kommuner.filter(filterKommuneList, fylke[0].nummer)
+
+  return new Promise(function(resolve, reject) {
     var kommunerArray = filteredKommuneList.filter(compareInput, input);
     if(kommunerArray.length > 0 && kommunerArray.length != filteredKommuneList.length) {
       resolve(kommunerArray);
@@ -50,13 +48,19 @@ function searchForKommune(input, fylke) {
 }
 
 //Comparator used by all search functions
-function compareInput(input){
-    let stringInput = this.toString().toLowerCase();
-    return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+function compareInput(input) {
+  const intInput = parseInt(this);
+  if(intInput) {
+    if(input.nummer) return input.nummer === intInput;
+    else if(input.id) return input.id === intInput;
   }
 
-function filterKommuneList(input){
-  return input.fylke === this;
+  const stringInput = this.toString().toLowerCase();
+  return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+}
+
+function filterKommuneList(input) {
+  return input.fylke == this;
 }
 
 function vegerContains(value) {
