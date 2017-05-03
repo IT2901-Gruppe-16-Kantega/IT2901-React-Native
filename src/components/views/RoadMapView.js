@@ -33,26 +33,24 @@ var map = null;
 View that holds the map
 */
 class RoadMapView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.changeRegion = this.changeRegion.bind(this);
-  }
-
   componentDidMount() {
     setTimeout(() => {
-      this.createCluster();
+      this.createCluster(true);
     }, 1000);
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
+      console.log("componentDidUpdate:")
+
       setTimeout(() => {
         this.createCluster();
       }, 10)
     }
   }
 
-  createCluster() {
+  createCluster(isNew) {
+    console.log("createCluster:")
     const cluster = supercluster({
       maxZoom: 14,
       radius: 70,
@@ -60,39 +58,45 @@ class RoadMapView extends React.Component {
     });
 
     var features = [];
+    var filteredObjects = [];
+
     for(var i = 0; i < this.props.roadObjects.length; i++) {
       const roadObject = this.props.roadObjects[i]
 
       if(this.shouldSkipObject(roadObject)) {
         continue;
       }
+      filteredObjects.push(roadObject);
 
       const geo = parseGeometry(roadObject.geometri.wkt);
       const feature = { properties: { roadObject: roadObject }, geometry: { type: "Point", coordinates: [geo[0].latitude, geo[0].longitude] } };
       features.push(feature);
 
-      if(!this.props.region) {
-        this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 1, longitudeDelta: 1 })
+      if(i === 0 && isNew) { // Set region based on first object
+        const region = { latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.05, longitudeDelta: 0.05 }
+        this.props.setRegion(region);
       }
-      //this.props.setRegion({ latitude: geo[0].latitude, longitude: geo[0].longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 })
     }
     cluster.load(features);
     this.props.setCluster(cluster);
+    this.props.setFilteredRoadObjects(filteredObjects);
+
 
     setTimeout(() => {
       this.setMarkersAtRegion();
-    }, 500)
+    }, 100)
   }
 
   render() {
     return <Container>
       <View style={{ flex: 1 }}>
         <MapView
+          keyboardShouldPersistTaps='always'
           ref={(ref) => {map = ref} }
           style={{ flex: 1 }}
           showsUserLocation={true}
           region={this.props.region}
-          onRegionChange={this.changeRegion} >
+          onRegionChange={this.changeRegion.bind(this)} >
           {this.props.markers}
         </MapView>
         <SidebarMain />
@@ -168,13 +172,14 @@ class RoadMapView extends React.Component {
   }
 
   setMarkersAtRegion() {
+    console.log("setMarkersAtRegion:")
     if(this.props.cluster && this.props.cluster.getClusters) {
-      const m = 2;
+      const padding = 0.25;
       const markers = this.props.cluster.getClusters([
-        this.props.region.latitude - (this.props.region.latitudeDelta * m),
-        this.props.region.longitude - (this.props.region.longitudeDelta * m),
-        this.props.region.latitude + (this.props.region.latitudeDelta * m),
-        this.props.region.longitude + (this.props.region.longitudeDelta * m),
+        this.props.region.latitude - (this.props.region.latitudeDelta * (0.5 + padding)),
+        this.props.region.longitude - (this.props.region.longitudeDelta * (0.5 + padding)),
+        this.props.region.latitude + (this.props.region.latitudeDelta * (0.5 + padding)),
+        this.props.region.longitude + (this.props.region.longitudeDelta * (0.5 + padding)),
       ], this.getZoomLevel());
 
       if(markers) {
@@ -248,6 +253,7 @@ class RoadMapView extends React.Component {
   }
 
   createMapFeatures(markers) {
+    console.log("createMapFeatures:")
     return markers.map((marker, index) => {
       if(marker.properties.cluster) {
         return <MapView.Marker
@@ -274,10 +280,12 @@ class RoadMapView extends React.Component {
             strokeColor={templates.colors.blue} />
         } else {
           return <MapView.Marker
+            onPress={this.markerPressed.bind(this, marker)}
+            onSelect={this.markerPressed.bind(this, marker)}
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={marker.properties.roadObject.id}
             pinColor={templates.colors.blue} >
-            <MapView.Callout style={{ zIndex: 10, flex: 1, position: 'relative'}}>
+            <MapView.Callout onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
               <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
           </MapView.Marker>
@@ -286,7 +294,13 @@ class RoadMapView extends React.Component {
     })
   }
 
+  openObjectInformation(roadObject) {
+  	this.props.selectObject(roadObject);
+    Actions.ObjectInfoView();
+  }
+
   changeRegion(region) {
+    console.log("changeRegion:")
     this.props.setRegion(region);
     this.setMarkersAtRegion()
   }
@@ -295,6 +309,7 @@ class RoadMapView extends React.Component {
     let isCluster = marker.properties && marker.properties.cluster;
 
     if(!isCluster) {
+      console.log(JSON.stringify(this.props.markers.length))
       return;
     }
 
@@ -338,6 +353,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    filteredRoadObjects: state.dataReducer.filteredRoadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
 
@@ -366,6 +382,7 @@ function mapDispatchToProps(dispatch) {
     setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     setMarkers: bindActionCreators(mapActions.setMarkers, dispatch),
     setCluster: bindActionCreators(mapActions.setCluster, dispatch),
+    setFilteredRoadObjects: bindActionCreators(dataActions.setFilteredRoadObjects, dispatch),
   }
 }
 

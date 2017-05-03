@@ -28,7 +28,8 @@ import TabBar from '../misc/TabBar';
 
 import SearchMap from './search/SearchMap';
 
-import {searchForFylke, fetchVegerFromAPI} from '../../utilities/utils';
+import {searchForFylke} from '../../utilities/searchUtils';
+import {parseGeometry} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
@@ -163,9 +164,11 @@ class SearchView extends React.Component {
 
   chooseClosestRoad(road) {
     this.props.resetPositionSearchParameters();
+    console.log(road)
 
     const vegreferanse = road.vegreferanse;
     const {fylke, kommune, kategori, status, nummer} = vegreferanse;
+    this.props.selectSearchCoordinate(parseGeometry(road.geometri.wkt)[0]);
 
     if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
@@ -209,62 +212,40 @@ class SearchView extends React.Component {
   }
 
   validate() {
+    if(!this.props.vegobjekttyperChosen) return
+
     // Reset count before finding new number
     this.props.setNumberOfObjectsToBeFetched(0);
+    this.props.generateURL();
 
-    this.forceUpdate(() => {
-      var vegobjektStr = '532'
-      var fylkeStr = ''
-      var kommuneStr = ''
-      var vegString = ''
-      var isValidatingVeg = false
-      if(this.props.vegobjekttyperChosen) { vegobjektStr = this.props.vegobjekttyperInput[0].id }
-      if(this.props.fylkeChosen) { fylkeStr = 'fylke=' + this.props.fylkeInput[0].nummer + '&' }
-      if(this.props.kommuneChosen) { kommuneStr = 'kommune=' + this.props.kommuneInput[0].nummer + '&' }
-      if(this.props.vegInput !== "") {
-        isValidatingVeg = true
-        vegString = '&vegreferanse=' + this.props.vegInput + '&'}
-      else {
-        this.props.setValidityOfVeg('NOT_CHOSEN')
-      }
-      var url = baseURL + vegobjektStr + '/statistikk?' + fylkeStr + kommuneStr + vegString;
-      this.check(url, this.props.vegobjekttyperChosen, isValidatingVeg)
-    })
-    /*setTimeout(() => {
-      this.props.generateURL();
-    }, 10);*/
-  }
-
-  check(url, shouldFetchNumber, isValidatingVeg) {
-    // Create a new fetching url from getting the number of objects to
-    // the actual objects.
-    var fetchingURL = url.replace("/statistikk", "")
-    fetchingURL += 'inkluder=alle&srid=4326&antall=8000'
-
-    this.props.setURL(fetchingURL)
-    fetchData(url).then((response) => {
-      if(response.antall === 0) {
-        this.props.setValidityOfVeg('NOT_VALID')
-      }
-      else if(response.antall > 0) {
-        if(isValidatingVeg) { this.props.setValidityOfVeg('VALID') }
-        if(shouldFetchNumber) { this.props.setNumberOfObjectsToBeFetched(response.antall) }
-      }
-      else if(response[0].code === 4005) {
-        if(isValidatingVeg) { this.props.setValidityOfVeg('NOT_VALID') }
-      }
-    })
+    setTimeout(() => {
+      fetchData(this.props.statisticsURL).then((response) => {
+        if(response.antall === 0) {
+          this.props.setValidityOfVeg('NOT_VALID')
+        }
+        else if(response.antall > 0) {
+          if(this.props.vegInput) { this.props.setValidityOfVeg('VALID') }
+          if(this.props.vegobjekttyperChosen) { this.props.setNumberOfObjectsToBeFetched(response.antall) }
+        }
+        else if(response[0].code === 4005) {
+          if(this.props.vegInput) { this.props.setValidityOfVeg('NOT_VALID') }
+        }
+      })
+    }, 5);
   }
 
   searchButtonPressed() {
     this.forceUpdate(() => {
       var numObjects = this.props.numberOfObjectsToBeFetched;
-      if(numObjects === 0) {
+      if(!this.props.vegobjekttyperChosen) {
+        Alert.alert(alertType.ERROR, "Du må velge vegobjekttype før du starter søket.");
+      }
+      else if(numObjects === 0) {
         Alert.alert(alertType.ERROR, "Dette søket genererer ingen objekter " +
           "(eller så må du vente på at søket fullføres). Det kan også hende at du " +
           "må trykke på et felt på nytt for å oppdatere telleren.");
       }
-      else if (!this.props.vegobjekttyperChosen) {
+      else if(!this.props.vegobjekttyperChosen) {
         Alert.alert(alertType.ERROR, "Ingen vegobjekttyper spesifisert");
       }
       else {
@@ -274,7 +255,7 @@ class SearchView extends React.Component {
             this.initiateSearch(numObjects);
           }
           else {
-            Alert.alert(alertType.ERROR, "Kommune må spesifiseres når vegtype er kommunalveg")
+            Alert.alert(alertType.ERROR, "Kommune må spesifiseres når vegtype er kommunalveg.")
           }
         }
         else {
@@ -297,8 +278,12 @@ class SearchView extends React.Component {
 
   search() {
     const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
-    this.props.combineSearchParameters(
-      fylkeInput ? fylkeInput[0] : null, vegInput, kommuneInput ? kommuneInput[0] : null, vegobjekttyperInput ? vegobjekttyperInput[0] : null);
+    this.props.combineSearchParameters({
+      fylke: fylkeInput ? fylkeInput[0] : null,
+      veg: vegInput,
+      kommune: kommuneInput ? kommuneInput[0] : null,
+      vegobjekttype: vegobjekttyperInput ? vegobjekttyperInput[0] : null,
+    });
     Actions.LoadingView();
   }
 }
@@ -333,6 +318,9 @@ function mapStateToProps(state) {
     vegobjekttyperChosen: state.searchReducer.vegobjekttyperChosen,
     vegobjekttyperColor: state.searchReducer.vegobjekttyperColor,
 
+    statisticsURL: state.searchReducer.statisticsURL,
+    url: state.searchReducer.url,
+
     //misc
     closestRoadsList: state.searchReducer.closestRoadsList,
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
@@ -359,6 +347,7 @@ function mapDispatchToProps(dispatch) {
     chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
 
     inputClosestRoads: bindActionCreators(searchActions.inputClosestRoads, dispatch),
+    selectSearchCoordinate: bindActionCreators(searchActions.selectSearchCoordinate, dispatch),
 
     setURL: bindActionCreators(searchActions.setURL, dispatch),
     generateURL: bindActionCreators(searchActions.generateURL, dispatch),

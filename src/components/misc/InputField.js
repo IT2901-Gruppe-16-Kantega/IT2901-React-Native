@@ -19,6 +19,8 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+var changed = false;
+
 class InputField extends React.Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
@@ -52,15 +54,20 @@ class InputField extends React.Component {
           placeholderTextColor={this.props.theme.placeholderTextColor}
           placeholder={'Skriv inn ' + this.props.type}
           onChangeText={(text) => {
-            this.props.updateFunction()
-            if(this.props.type === 'kommune'){
+            changed = true;
+
+            if(this.props.type === 'kommune') {
               this.props.inputFunction(text, this.props.extData)
-            }else{
+            } else {
               this.props.inputFunction(text)
+            }
+            if(!this.props.chooserFunction || text === '') {
+              this.props.updateFunction();
             }
           }}
           value={this.props.textType}
-          onBlur={this.props.updateFunction}
+          onFocus={() => changed = false}
+          onBlur={this.update.bind(this)}
           keyboardType="default"
           returnKeyType='done'
           />
@@ -94,6 +101,12 @@ class InputField extends React.Component {
           }
           }}/>
     </View>
+  }
+
+  update() {
+    if(changed) {
+      this.props.updateFunction();
+    }
   }
 
   renderHeader() {

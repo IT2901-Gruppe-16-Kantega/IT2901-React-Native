@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 
 import * as Progress from 'react-native-progress';
 
+import Button from '../misc/Button';
 import Container from '../misc/Container';
 import LocationInputComponent from '../misc/LocationInputComponent';
 import SettingSwitch from '../misc/SettingSwitch';
@@ -26,20 +27,11 @@ class SettingsView extends React.Component {
   render() {
     return <Container>
       <SettingSwitch
-        onValueChange={this.props.setClustering}
-        value={this.props.clusteringOn}
-        title={"Markørgruppering"}
-        description={"BETA: Grupper nære martmarkører."} />
-      <SettingSwitch
-        onValueChange={this.props.incrementChangeCount}
-        value={false}
-        title={"Gjør endring"}
-        description={"Antall endringer: " + this.props.changeCount} />
-      <SettingSwitch
         onValueChange={this.props.setDarkMode}
         value={this.props.darkModeOn}
         title={"Nattmodus"}
-        description={"Mørk bakgrunn og lys tekst."} />
+        description={"BETA: Mørk bakgrunn og lys tekst."} />
+      <Button type="list" text="Hjelp" onPress={Actions.HelpView} />
     </Container>
   }
 }

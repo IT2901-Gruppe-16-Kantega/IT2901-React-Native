@@ -8,7 +8,8 @@ import {
   TextInput,
   Platform,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Share
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -16,13 +17,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import RNFS from 'react-native-fs'
-import userDefaults from 'react-native-user-defaults'
 
 import Button from '../misc/Button'
 import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
-import {parseGeometry} from '../../utilities/utils'
+import {parseGeometry, AR} from '../../utilities/utils'
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as mapActions from '../../actions/mapActions'
@@ -49,8 +49,6 @@ class CurrentSearchView extends React.Component {
       );
     }
 
-    console.log(this.props.currentRoadSearch)
-
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
@@ -58,26 +56,43 @@ class CurrentSearchView extends React.Component {
   }
 
   createInfoView() {
-    var kommuneValue = "Ikke spesifisert"
-    if (this.props.currentRoadSearch.searchParameters[2] != null) {
-      kommuneValue = this.props.currentRoadSearch.searchParameters[2].navn
-    }
+    const {currentRoadSearch} = this.props;
+    const {vegobjekttype, kommune, fylke, veg} = currentRoadSearch.searchParameters;
+
+    const kommuneValue = kommune ? kommune.navn : "Ikke spesifisert";
+    const fylkeValue = fylke ? fylke.navn : "Ikke spesifisert";
+    const vegValue = veg ? veg : "Ikke spesifisert";
+
     return (
       <View style={{flex: 2, padding: 20 }}>
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
           <View style={styles.informationArea}>
             <View style={styles.info}>
-              <PropertyValue property={"Vegobjekttype"} value={this.props.currentRoadSearch.searchParameters[3].navn} />
-              <PropertyValue property={"Antall vegobjekter"} value={this.props.currentRoadSearch.roadObjects.length} />
-              <PropertyValue property={"Fylke"} value={this.props.currentRoadSearch.searchParameters[0].navn} />
+              <Button type={"small"} text={"Del dette søket"} onPress={this.shareSearch.bind(this)} />
+              <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
+              <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Fylke"} value={fylkeValue} />
               <PropertyValue property={"Kommune"} value={kommuneValue} />
-              <PropertyValue property={"Vei"} value={this.props.currentRoadSearch.searchParameters[1]} />
+              <PropertyValue property={"Veg"} value={vegValue} />
               {this.createDescriptionArea()}
             </View>
           </View>
         </TouchableWithoutFeedback>
       </View>
     );
+  }
+
+  shareSearch() {
+    //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
+    const params = this.props.currentRoadSearch.searchParameters;
+    var url = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
+
+    if(params.fylke) url += "fylke=" + params.fylke.nummer + "&"
+    if(params.kommune) url += "kommune=" + params.kommune.nummer + "&"
+    if(params.veg) url += "vegreferanse=" + params.veg + "&"
+
+    console.log(url)
+    Share.share({ message: url })
   }
 
   createDescriptionArea() {
@@ -134,26 +149,14 @@ class CurrentSearchView extends React.Component {
   }
 
   openAR() {
-    //kan brukes ved mottak av data fra unity
-    //this.props.fetchDataReturned(objects, true);
-    if(Platform.OS === "ios") {
-      userDefaults.set("HEI", this.props.currentRoadSearch.roadObjects, "group.vegar", (err, data) => {
-        if(!err) Linking.openURL("vegar.ar:");
-      });
-    } else if (Platform.OS === "android"){
-      // Save data.json
-      let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
-      console.log(dataPath);
-      var data = JSON.stringify(this.props.currentRoadSearch.key);
-      RNFS.writeFile(dataPath, data, "utf8")
-      .then((success) => console.log("data.json saved successfully"))
-      .catch((err) => console.error("An error occurred when saving data.json", err));
-      Linking.openURL("vegar.ar:").catch(err => console.error('An error occurred', err));
-      // TODO Save roads.json here
-      //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
-    } else {
-      console.log("Not ios or android")
-    }
+    AR(Platform.OS, this.props.currentRoadSearch, url => {
+      if(url) {
+        Linking.canOpenURL(url).then(supported => {
+          if(supported) Linking.openURL(url)
+          else alert("AR-applikasjon ikke installert.")
+        })
+      }
+    });
   }
 }
 

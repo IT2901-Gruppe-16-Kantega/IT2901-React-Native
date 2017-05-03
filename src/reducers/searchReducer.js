@@ -34,6 +34,7 @@ export default function reducer(state={
 
   //
   url: '',
+  statisticsURL: '',
 
   //rekkefølgen på objektene i denne må bli definert
   combinedSearchParameters: {},
@@ -114,7 +115,7 @@ export default function reducer(state={
       const statisticsURL = baseURL + tStr + '/statistikk?' + fStr + kStr + vStr;
       var fetchingURL = statisticsURL.replace("/statistikk", "") + 'inkluder=alle&srid=4326&antall=8000';
 
-      return {...state}
+      return {...state, statisticsURL: statisticsURL, url: fetchingURL}
     }
 
     case "INPUT_FYLKE_MULTIPLE": {

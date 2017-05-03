@@ -27,7 +27,7 @@ view shown when fetching/loading data
 */
 class LoadingView extends React.Component {
   componentWillMount() {
-    fetchObjekttypeInfo(this.props.combinedSearchParameters[3].id, function(data) {
+    fetchObjekttypeInfo(this.props.combinedSearchParameters.vegobjekttype.id, function(data) {
       this.props.setObjekttypeInfo(data);
 
       fetchFromAPI(this.props.fetchDataReturned, this.props.url);

@@ -13,14 +13,15 @@ import {
 } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 
-// redux imports
+import moment from 'moment';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import userDefaults from 'react-native-user-defaults'
 
-import moment from 'moment';
 
 // application view imports
 import CurrentSearchView from './components/views/CurrentSearchView'
+import HelpView from './components/views/HelpView'
 import LoadingView from './components/views/LoadingView'
 import ObjectInfoView from './components/views/ObjectInfoView'
 import ReportView from './components/views/ReportView'
@@ -66,45 +67,21 @@ class App extends Component {
 
     scenes = Actions.create(
       <Scene key="root">
-        <Scene
-          key="StartingView"
-          component={StartingView}
-          type='reset'
-          initial={true} />
-        <Scene
-          key="SearchView"
-          component={SearchView} />
-        <Scene
-          key="StoredDataView"
-          component={StoredDataView}
-          title="Lagrede søk" />
-        <Scene
-          key="SettingsView"
-          component={SettingsView}
-          title="Innstillinger" />
-        <Scene
-          key="LoadingView"
-          component={LoadingView}
-          type='reset' />
-        <Scene
-          key="CurrentSearchView"
-          component={CurrentSearchView}
-          title="Informasjon om søk" />
-        <Scene
-          key="ReportView"
-          component={ReportView}
-          title="Rapport" />
-        <Scene
-          key="RoadMapView"
+        <Scene key="StartingView" component={StartingView} type='reset' initial={true} />
+        <Scene key="SearchView" component={SearchView} />
+        <Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" />
+        <Scene key="SettingsView" component={SettingsView} title="Innstillinger" />
+        <Scene key="HelpView" component={HelpView} title="Hjelp" />
+        <Scene key="LoadingView" component={LoadingView} type='reset' />
+        <Scene key="CurrentSearchView" component={CurrentSearchView} title="Informasjon om søk" />
+        <Scene key="ReportView" component={ReportView} title="Rapport" />
+        <Scene key="ObjectInfoView" component={ObjectInfoView} />
+        <Scene key="RoadMapView"
           component={RoadMapView}
           onRight={ () => this.toggleSidebar() }
           rightTitle="Filtrer"
           onBack={() => this.exitMap()}
           navigationBarStyle={this.props.navigationBarStyle} />
-        <Scene
-          key="ObjectInfoView"
-          component={ObjectInfoView}
-          sceneStyle={{paddingTop: 64}} />
     </Scene>
     );
   }
@@ -123,46 +100,90 @@ class App extends Component {
     )
   }
 
-  handleDeepLink(e) {
-	console.log(e.url);
-    const route = e.url.replace(/.*?:\/\//g, "");
-    const mainParts = route.split("?");
-
+  // Supported links:
+  //...rapport/124123123123
+  //...vegobjekter/96?fylke=16&kommune=1601&&vegreferanse=K5040&inkluder=alle&srid=4326&antall=8000
+  getParameters(value) {
     var result = {};
-    if(mainParts) {
-      if(mainParts.length > 1) {
-        mainParts[1].split("&").forEach(part => {
-          const param = part.split("=");
-          result[param[0]] = decodeURI(param[1]);
-        })
-      }
+    if(value && value.length > 1) {
+      value.split("&").forEach(part => {
+        const param = part.split("=");
+        result[param[0]] = param[1] ? decodeURI(param[1]) : null;
+      })
     }
+    return result;
+  }
 
-    const darkMode = result["dm"];
-    this.props.setDarkMode(darkMode);
-    if(mainParts[0] === "rapport") {
-      const id = parseInt(result["id"]);
-	  const storage = storageEngine('NVDB-storage')
-	  storage.loadReport(id);
-      this.props.setCurrentRoadSearch(id);
-      //Actions.ReportView();
-      Actions.CurrentSearchView();
+  getRoute(value) {
+    const routeParts = value.split("/");
+
+    const route = routeParts[0].toLowerCase();
+    const id = parseInt(routeParts[1]);
+
+    if(['vegobjekter', 'søk'].indexOf(route >= 0)) {
+      return { type: "søk", vegobjekttype: id };
     }
-    else {
-      const vegobjekttype = parseInt(result["t"]);
-      const fylke = parseInt(result["f"]);
-      const kommune = parseInt(result["k"]);
-      const veg = result["v"];
+    else if(mainRoute === 'rapport') {
+      return { type: "rapport", id: id }
+    }
+  }
+
+  handleDeepLink(e) {
+    const url = e.url.replace(/.*?:\/\//g, "");
+    const parts = url.split("?");
+
+    const route = this.getRoute(parts[0]);
+    const params = this.getParameters(parts[1]);
+
+    this.props.setDarkMode(params["natt"]);
+
+    if(route.type === 'søk') {
+      const vegobjekttype = route.vegobjekttype;
+      const fylke = parseInt(params["fylke"]) || parseInt(params["f"]);
+      const kommune = parseInt(params["kommune"]) || parseInt(params["k"]);
+      const veg = params["vegreferanse"] || params["v"];
 
       if(vegobjekttype) { this.props.chooseVegobjekttyper(vegobjekttype) }
       if(fylke) { this.props.chooseFylke(fylke) }
       if(kommune) { this.props.chooseKommune(kommune) }
       if(veg) { this.props.inputVeg(veg) }
 
-      this.props.setURL();
+      this.props.generateURL();
 
-      Actions.SearchView();
+      setTimeout(() => {
+        const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
+        this.props.combineSearchParameters({
+          fylke: fylkeInput ? fylkeInput[0] : null,
+          veg: vegInput,
+          kommune: kommuneInput ? kommuneInput[0] : null,
+          vegobjekttype: vegobjekttyperInput ? vegobjekttyperInput[0] : null,
+        });
+        Actions.LoadingView();
+      }, 10);
     }
+    else if(route.type === 'rapport') {
+      this.props.setCurrentRoadSearch(route.id);
+      if(Platform.OS === "android") {
+        const storage = storageEngine('NVDB-storage')
+        storage.loadReport(id);
+      }
+      else {
+        userDefaults.get("report", "group.vegar", (err, data) => {
+          const obj = JSON.parse(data);
+
+          for(var i = 0; i < obj.reportObjects.length; i++) {
+            const reportObject = obj.reportObjects[i];
+            this.props.selectObject(reportObject.vegobjekt);
+            for(var j = 0; j < reportObject.endringer.length; j++) {
+              const change = reportObject.endringer[j];
+              this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+            }
+          }
+        })
+      }
+    }
+
+    return;
   }
 
   toggleSidebar(close) {
@@ -200,6 +221,9 @@ function mapStateToProps(state) {
     fylkeInput: state.searchReducer.fylkeInput,
     kommuneInput: state.searchReducer.kommuneInput,
     vegInput: state.searchReducer.vegInput,
+
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    selectedObject: state.dataReducer.selectedObject,
   };
 }
 
@@ -221,10 +245,12 @@ function mapDispatchToProps(dispatch) {
     inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
 
     combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
-    setURL: bindActionCreators(searchActions.setURL, dispatch),
+    generateURL: bindActionCreators(searchActions.generateURL, dispatch),
 
     setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
+    reportChange: bindActionCreators(dataActions.reportChange, dispatch),
   }
 }
 

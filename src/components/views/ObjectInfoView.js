@@ -8,6 +8,7 @@ import {
   TextInput,
   LayoutAnimation,
   Platform,
+  UIManager,
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -111,6 +112,7 @@ class ObjectInfoView extends React.Component {
             <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
           </Text>
           <Text>{"Verdi: " + change.egenskap.verdi}</Text>
+          <Text>{change.beskrivelse}</Text>
           <Text>{change.dato}</Text>
         </View>
       </View>

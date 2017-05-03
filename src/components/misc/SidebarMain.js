@@ -4,7 +4,9 @@ import {
   ListView,
   StyleSheet,
   TouchableHighlight,
-  Text
+  Text,
+  Platform,
+  Linking
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -13,6 +15,7 @@ import { connect } from 'react-redux';
 import Button from '../misc/Button'
 
 import * as templates from '../../utilities/templates';
+import {AR} from '../../utilities/utils'
 import {comparators} from '../../utilities/values';
 
 import * as dataActions from '../../actions/dataActions';
@@ -67,12 +70,8 @@ class SidebarMain extends React.Component {
       const linebreak = verdi ? " " : "\n";
       const linebreak2 = verdi ? "\n" : null;
       views.push(
-        <View key={key} style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: templates.colors.black, alignItems: 'center'}}>
-          <TouchableHighlight
-            onPress={this.props.removeFilter.bind(this, filter)}
-            >
-            <Text style={{color: templates.colors.red, fontSize: 15, fontWeight: 'bold', paddingLeft: 10}}>❌</Text>
-          </TouchableHighlight>
+        <View key={key} style={{ flexDirection: 'row', alignItems: 'center'}}>
+          <Button text={"X"} onPress={this.props.removeFilter.bind(this, filter)} type={"small"} />
           <Text style={style}>
             <Text style={{fontWeight: 'bold'}}>{filter.egenskap.navn}</Text>
             <Text>{linebreak}{filter.funksjon.toLowerCase()}{linebreak2}</Text>
@@ -82,11 +81,31 @@ class SidebarMain extends React.Component {
       );
     }
 
-    var chosenFiltersText;
-    if(views.length > 0) {
-      chosenFiltersText = <Text style={[style, {fontSize: 18, fontWeight: 'bold'}]}>Valgte filtre:</Text>;
-    }
-    return <View style={{backgroundColor: templates.colors.blue}}>{chosenFiltersText}{views}</View>;
+    return (
+      <View style={{backgroundColor: templates.colors.blue}}>
+        <Text style={style}>{"Objekter: " + this.props.roadObjects.length}</Text>
+        {views.length > 0 && <View>
+          <Text style={style}>{"Etter filtrering: " + this.props.filteredRoadObjects.length}</Text>
+          <Text style={[style, {fontSize: 18, fontWeight: 'bold'}]}>Valgte filtre:</Text>
+        </View>}
+        {views}
+        <Button type={"small"} onPress={this.openARWithFilters.bind(this)} text={"AR"} />
+      </View>
+    );
+  }
+
+  openARWithFilters() {
+    const copy = this.props.currentRoadSearch;
+    copy.roadObjects = this.props.filteredRoadObjects;
+
+    AR(Platform.OS, this.props.currentRoadSearch, url => {
+      if(url) {
+        Linking.canOpenURL(url).then(supported => {
+          if(supported) Linking.openURL(url)
+          else alert("AR-applikasjon ikke installert.")
+        })
+      }
+    });
   }
 
   selectFilter(filter) {
@@ -116,6 +135,10 @@ function mapStateToProps(state) {
     sidebarFrame: state.mapReducer.sidebarFrame,
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
+
+    currentRoadSearch: state.dataReducer.currentRoadSearch,
+    roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    filteredRoadObjects: state.dataReducer.filteredRoadObjects,
   }
 }
 
