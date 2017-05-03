@@ -21,7 +21,7 @@ import ComparatorComponent from './ComparatorComponent';
 
 import {comparators, datatype} from '../../utilities/values';
 import * as templates from '../../utilities/templates';
-import { utils } from '../../utilities/utils';
+import { isAndroid } from '../../utilities/utils';
 import * as filterActions from '../../actions/filterActions';
 import * as mapActions from '../../actions/mapActions';
 
