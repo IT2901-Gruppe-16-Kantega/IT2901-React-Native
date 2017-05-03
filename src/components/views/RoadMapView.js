@@ -218,8 +218,10 @@ class RoadMapView extends React.Component {
               }
             }
             else {
-              const isEqual = markerProperty.verdi === filter.verdi;
-              if((isEqual && filter.funksjon === comparators.NOT_EQUAL) || (!isEqual && filter.funksjon === comparators.EQUAL)) {
+              const matches = new RegExp("^" + filter.verdi.toLowerCase().split("*").join(".*") + "$").test(markerProperty.verdi.toLowerCase());
+              //const isEqual = markerProperty.verdi === filter.verdi;
+              console.log(matches + ' | ' + markerProperty.verdi);
+              if((matches && filter.funksjon === comparators.NOT_EQUAL) || (!matches && filter.funksjon === comparators.EQUAL)) {
                 return true;
               }
 
@@ -237,13 +239,13 @@ class RoadMapView extends React.Component {
           else {
             // Skip the marker if the property doesn't exist
             if(filter.funksjon === comparators.HAS_VALUE || 
-               filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+               filter.funksjon === comparators.EQUAL ||// filter.funksjon === comparators.NOT_EQUAL ||
                filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
           }
         }
         else {
           if(filter.funksjon === comparators.HAS_VALUE || 
-             filter.funksjon === comparators.EQUAL || filter.funksjon === comparators.NOT_EQUAL ||
+             filter.funksjon === comparators.EQUAL ||// filter.funksjon === comparators.NOT_EQUAL ||
              filter.funksjon === comparators.LARGER_OR_EQUAL || filter.funksjon === comparators.SMALLER_OR_EQUAL) { return true }
         }
       }

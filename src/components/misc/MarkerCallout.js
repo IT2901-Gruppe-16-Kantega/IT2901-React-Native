@@ -35,7 +35,7 @@ class MarkerCallout extends React.Component {
       <View style={{flex: 1}}>
         <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
         {this.getEgenskapInfo()}
-        <Button key={roadObject.id} text={roadObject.id + ""} type="medium" onPress={this.openObjectInformation.bind(this, roadObject)} />
+        <Button key={roadObject.id} text={roadObject.id + ""} type="small" onPress={this.openObjectInformation.bind(this, roadObject)} />
         {this.renderSiblings()}
       </View>
     );
