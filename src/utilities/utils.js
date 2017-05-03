@@ -1,6 +1,15 @@
 import userDefaults from 'react-native-user-defaults'
+import { Platform } from 'react-native';
 
 const arURL = 'vegar.ar:';
+
+function isAndroid() {
+  return Platform.OS === 'android';
+}
+
+function isIOS() {
+  return Platform.OS === 'ios';
+}
 
 function parseGeometry(string) {
   const wkt = string.slice(string.lastIndexOf("(") + 1, -1);
@@ -49,4 +58,4 @@ function AR(platform, search, callback) {
   }
 }
 
-export {parseGeometry, randomColor, AR};
+export {parseGeometry, randomColor, AR, isAndroid, isIOS};
