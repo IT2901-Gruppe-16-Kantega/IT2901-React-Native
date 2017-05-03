@@ -188,7 +188,7 @@ class SearchView extends React.Component {
         this.props.inputClosestRoads(closestList);
 
       }.bind(this));
-    }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    }, (error) => alert(error.message), {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
     );
   }
 
