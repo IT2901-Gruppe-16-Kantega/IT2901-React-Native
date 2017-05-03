@@ -23,6 +23,7 @@ import SettingSwitch from '../misc/SettingSwitch';
 
 import * as templates from '../../utilities/templates';
 import {datatype} from '../../utilities/values';
+import { isAndroid } from '../../utilities/utils';
 
 import * as dataActions from '../../actions/dataActions';
 import * as reportActions from '../../actions/reportActions';
@@ -42,7 +43,7 @@ const reportType = {
 
 class ObjectInfoView extends React.Component {
   componentWillMount() {
-  	if(Platform.OS === "android") {
+  	if(isAndroid()) {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
   }

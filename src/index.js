@@ -36,6 +36,7 @@ import NavigationBar from './components/misc/NavigationBar'
 // misc imports
 import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
+import { isAndroid } from './utilities/utils'
 
 import * as dataActions from './actions/dataActions'
 import * as filterActions from './actions/filterActions'
@@ -60,7 +61,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-  	if(Platform.OS === "android") {
+  	if(isAndroid()) {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
 
@@ -182,7 +183,7 @@ class App extends Component {
     }
     else if(route.type === 'rapport') {
       this.props.setCurrentRoadSearch(route.id);
-      if(Platform.OS === "android") {
+      if(isAndroid()) {
         const storage = storageEngine('NVDB-storage')
         storage.loadReport(id);
       }

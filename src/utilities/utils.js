@@ -41,20 +41,18 @@ function randomColor(alpha) {
 function AR(platform, search, callback) {
   const data = JSON.stringify(search);
 
-  if(platform === "ios") {
+  if(isIOS()) {
     userDefaults.set("currentRoadSearch", data, "group.vegar", (err, data) => {
       if(!err) callback(arURL);
       else alert(err);
     });
-  } else if (platform === "android") {
+  } else {
     // Save data.json
     let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
     RNFS.writeFile(dataPath, data, "utf8")
     .then((success) => callback(arURL)).catch((err) => alert(err))
     // TODO Save roads.json here
     //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";
-  } else {
-    console.log("Not ios or android")
   }
 }
 
