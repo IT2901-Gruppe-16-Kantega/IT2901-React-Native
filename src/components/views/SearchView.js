@@ -87,7 +87,7 @@ class SearchView extends React.Component {
           'Internett utilgjengelig',
           'Du ser ikke ut til å være tilkoblet internett',
           [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'Tilbake', onPress: () => {Actions.pop()}},
           ],
           { cancelable: false }
         )
