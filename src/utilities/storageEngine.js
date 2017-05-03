@@ -18,6 +18,26 @@ export default (key) => ({
     console.log('initializing storage');
     RNFS.mkdir(this.rootPath());
     RNFS.mkdir(this.searchesPath());
+
+  },
+
+  getSettings(callback) {
+    const defaultSettings = {darkMode: false};
+    const settingsPath = this.rootPath() + '/settings.json';
+    RNFS.readFile(settingsPath).then(value => {
+      console.log("Settings loaded")
+      callback(JSON.parse(value), false);
+    }).catch(err => {
+      console.log("Defaults set");
+      this.writeFile(settingsPath, JSON.stringify(defaultSettings));
+      callback(defaultSettings, true);
+    })
+  },
+
+  clearSettings() {
+    RNFS.unlink(this.rootPath() + '/settings.json').then(success => {
+      this.setAndGetSettings();
+    }).catch(err => console.log(err));
   },
 
   load(progress) {
@@ -82,8 +102,8 @@ export default (key) => ({
     return this.writeFile(this.getPath(pathType.SEARCHES, roadSearch.key), JSON.stringify(roadSearch))
   },
 
-  writeFile(dataPath, jsonSearch) {
-    return RNFS.writeFile(dataPath, jsonSearch)
+  writeFile(dataPath, json) {
+    return RNFS.writeFile(dataPath, json)
     .then((success) => {
       console.log("data saved successfully")
     })

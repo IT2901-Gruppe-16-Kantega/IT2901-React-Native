@@ -30,6 +30,7 @@ import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
+import WelcomeView from './components/views/WelcomeView'
 
 import NavigationBar from './components/misc/NavigationBar'
 
@@ -58,6 +59,8 @@ class App extends Component {
     })
 
     this.props.setNavbarHeight(Navigator.NavigationBar.Styles.General.TotalNavHeight);
+
+    this.load();
   }
 
   componentWillMount() {
@@ -65,10 +68,9 @@ class App extends Component {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
 
-    this.load();
-
     scenes = Actions.create(
       <Scene key="root">
+        <Scene key="WelcomeView" component={WelcomeView} hideNavBar={true} />
         <Scene key="StartingView" component={StartingView} type='reset' initial={true} hideNavBar={true} />
         <Scene key="SearchView" component={SearchView} title="Nytt søk" hideNavBar={false} />
         <Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" hideNavBar={false} />
@@ -89,11 +91,16 @@ class App extends Component {
   }
 
   load(done) {
-    const storage = storageEngine('NVDB-storage')
+    const storage = storageEngine('NVDB-storage');
     storage.initialize();
-    var stored = storage.load(function(progress) {
+
+    storage.getSettings((settings, firstOpen) => {
+      if(firstOpen) Actions.WelcomeView({type: 'reset'})
+    });
+
+    var stored = storage.load(progress => {
       this.props.setLoadingProgress(progress);
-    }.bind(this));
+    });
     this.props.loadSearches(stored)
   }
 
