@@ -41,7 +41,7 @@ class RoadMapView extends React.Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
-      console.log("componentDidUpdate:")
+      //console.log("componentDidUpdate:")
 
       setTimeout(() => {
         this.createCluster();
@@ -50,7 +50,7 @@ class RoadMapView extends React.Component {
   }
 
   createCluster(isNew) {
-    console.log("createCluster:")
+    //console.log("createCluster:")
     const cluster = supercluster({
       maxZoom: 14,
       radius: 70,
@@ -172,7 +172,7 @@ class RoadMapView extends React.Component {
   }
 
   setMarkersAtRegion() {
-    console.log("setMarkersAtRegion:")
+    //console.log("setMarkersAtRegion:")
     if(this.props.cluster && this.props.cluster.getClusters) {
       const padding = 0.25;
       const markers = this.props.cluster.getClusters([
@@ -253,8 +253,12 @@ class RoadMapView extends React.Component {
   }
 
   createMapFeatures(markers) {
-    console.log("createMapFeatures:")
+    //console.log("createMapFeatures:")
+
+    var indexesToSkip = [];
     return markers.map((marker, index) => {
+      if(indexesToSkip.indexOf(index) >= 0) return;
+
       if(marker.properties.cluster) {
         return <MapView.Marker
           coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
@@ -279,12 +283,25 @@ class RoadMapView extends React.Component {
             strokeWidth={3}
             strokeColor={templates.colors.blue} />
         } else {
+          const {roadObject} = marker.properties;
+          if(roadObject.relasjoner && roadObject.relasjoner.foreldre) {
+            for(var i = index; i < markers.length; i++) {
+              const innerObject = markers[i].properties.roadObject;
+              if(innerObject.relasjoner && innerObject.relasjoner.foreldre) {
+                if(roadObject.relasjoner.foreldre[0].vegobjekter[0] === innerObject.relasjoner.foreldre[0].vegobjekter[0]) {
+                  indexesToSkip.push(i);
+                }
+              }
+            }
+          }
+
           return <MapView.Marker
             onPress={this.markerPressed.bind(this, marker)}
             onSelect={this.markerPressed.bind(this, marker)}
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={marker.properties.roadObject.id}
-            pinColor={templates.colors.blue} >
+            pinColor={templates.colors.blue}
+            onMarkerPress={this.openObjectInformation.bind(this, marker.properties.roadObject)}>
             <MapView.Callout onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
               <MarkerCallout roadObject={marker.properties.roadObject} />
             </MapView.Callout>
@@ -300,7 +317,7 @@ class RoadMapView extends React.Component {
   }
 
   changeRegion(region) {
-    console.log("changeRegion:")
+    //console.log("changeRegion:")
     this.props.setRegion(region);
     this.setMarkersAtRegion()
   }
@@ -309,7 +326,6 @@ class RoadMapView extends React.Component {
     let isCluster = marker.properties && marker.properties.cluster;
 
     if(!isCluster) {
-      console.log(JSON.stringify(this.props.markers.length))
       return;
     }
 

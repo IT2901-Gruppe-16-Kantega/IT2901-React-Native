@@ -90,7 +90,7 @@ export default class Button extends React.Component {
 
   textStyle() {
     const {type} = this.props;
-    var style = { color: templates.colors.white, fontSize: 16 }
+    var style = { color: templates.colors.white, fontSize: 18 }
 
     switch(type) {
       case types.TITLE:
