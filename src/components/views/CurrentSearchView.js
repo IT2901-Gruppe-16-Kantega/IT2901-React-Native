@@ -91,7 +91,6 @@ class CurrentSearchView extends React.Component {
     if(params.kommune) url += "kommune=" + params.kommune.nummer + "&"
     if(params.veg) url += "vegreferanse=" + params.veg + "&"
 
-    console.log(url)
     Share.share({ message: url })
   }
 
@@ -108,7 +107,7 @@ class CurrentSearchView extends React.Component {
           padding: 5,
           fontSize: 15,
           color: theme.secondaryTextColor,
-          backgroundColor: theme.container.backgroundColor,
+          backgroundColor: theme.color,
         }}
         multiline={true}
         placeholderTextColor={theme.placeholderTextColor}

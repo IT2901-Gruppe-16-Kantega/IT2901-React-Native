@@ -2,6 +2,7 @@ export default function reducer(state={
   keyboardPadding: 0,
 
   chosenSearchTab: "Søk",
+  navbarHeight: 0,
 
 }, action) {
   //simple switch statement based on type of action
@@ -14,6 +15,9 @@ export default function reducer(state={
         ...state,
         chosenSearchTab: action.payload
       }
+    }
+    case "SET_NAVBAR_HEIGHT": {
+      return {...state, navbarHeight: action.payload}
     }
   }
   return state

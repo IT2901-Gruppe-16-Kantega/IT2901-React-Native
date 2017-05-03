@@ -14,6 +14,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
+var Color = require('color');
 
 import Button from '../misc/Button';
 import Container from '../misc/Container';
@@ -51,7 +52,7 @@ class ObjectInfoView extends React.Component {
     const {metadata} = selectedObject;
 
     return <Container>
-        <View style={styles.mainInfo}>
+        <View style={this.mainBoxStyle()}>
           <Text style={this.props.theme.title}>{objekttypeInfo.navn}</Text>
           <PropertyValue property={"ID"} value={selectedObject.id} />
           <PropertyValue property={"Beskrivelse"} value={objekttypeInfo.beskrivelse} />
@@ -73,25 +74,30 @@ class ObjectInfoView extends React.Component {
   renderHeader() {
     const {isEditingRoadObject, theme} = this.props;
     return (
-      <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor }}>
-        <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-          <Button type={"small"} text="Legg til egenskap" onPress={() => this.props.setIsEditingRoadObject(!isEditingRoadObject)} />
+      <View>
+        <View style={{ justifyContent: 'center', flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: theme.primaryTextColor, paddingTop: 10, paddingBottom: 10 }}>
+          <Button type={"small"} text={isEditingRoadObject ? "Avbryt" : "Legg til egenskap"} onPress={() => this.props.setIsEditingRoadObject(!isEditingRoadObject)} />
           <Button type={"small"} text={this.props.showReport ? "Skjul rapport" : "Vis rapport"} onPress={() => this.props.setShowReport(!this.props.showReport)} />
         </View>
-        {this.props.newProperty && this.renderRow(this.props.newProperty)}
-        {isEditingRoadObject && this.renderNotExistingProperties()}
-        {this.renderReport()}
+        <View style={{ }}>
+          {this.props.newProperty && this.renderRow(this.props.newProperty)}
+          {this.renderReport()}
+          {isEditingRoadObject && this.renderNotExistingProperties()}
+          <View style={{height: 1, backgroundColor: theme.secondaryTextColor, marginTop: 10 }}/>
+          <Text style={[this.props.theme.title, { marginTop: 10 }]}>Objektegenskaper</Text>
+        </View>
       </View>
     );
   }
 
   renderReport() {
     const report = this.getReport();
+    const {theme} = this.props;
 
-    if(!(report && this.props.showReport)) { return <View />}
+    if(!((report && report.endringer.length > 0) && this.props.showReport)) { return <View /> }
     return (
-      <View>
-        <Text style={this.props.theme.subtitle}>Rapport:</Text>
+      <View style={{ paddingTop: 10 }}>
+        <Text style={theme.title}>Rapport</Text>
         <ListView
           dataSource={ds.cloneWithRows(report.endringer)}
           renderRow={this.renderReportChange.bind(this)}
@@ -102,18 +108,20 @@ class ObjectInfoView extends React.Component {
   }
 
   renderReportChange(change, sectionID, rowID) {
+    const {theme} = this.props;
+
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>
           <Button type={"small"} text={"X"} onPress={this.removeFromReport.bind(this, change)} />
         </View>
-        <View style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: templates.colors.middleGray }} key={rowID + 'change'}>
-          <Text style={this.props.theme.text} >
+        <View style={{ flex: 1, padding: 5, borderBottomWidth: 1, borderBottomColor: theme.placeholderTextColor }} key={rowID + 'change'}>
+          <Text style={theme.subtitle} >
             <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
           </Text>
-          <Text>{"Verdi: " + change.egenskap.verdi}</Text>
-          <Text>{change.beskrivelse}</Text>
-          <Text>{change.dato}</Text>
+          <PropertyValue property={"Verdi"} value={change.egenskap.verdi} />
+          {change.egenskap.beskrivelse && <PropertyValue property={"Kommentar"} value={change.egenskap.beskrivelse} />}
+          <PropertyValue property={"Tidspunkt"} value={change.dato} />
         </View>
       </View>
     );
@@ -145,14 +153,13 @@ class ObjectInfoView extends React.Component {
     var notExistingProperties = objekttypeInfo.egenskapstyper.filter(typeEgenskap => {
       const findFunction = function(objektEgenskap) { return objektEgenskap.id === typeEgenskap.id }
       var existsInReport = false;
-      //if(report) { existsInReport = report.endringer.find(e => findFunction(e.egenskap)) }
       return !(selectedObject.egenskaper.find(findFunction) || existsInReport)
     });
 
     return (
       <ListView
         dataSource={ds.cloneWithRows(notExistingProperties)}
-        renderRow={property => <TouchableHighlight style={{ padding: 5, borderBottomWidth: 1 }} onPress={() => this.addOrChangeProperty(property)}><Text style={this.props.theme.text}>{property.navn}</Text></TouchableHighlight>}
+        renderRow={property => <TouchableHighlight style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: Color(templates.colors.white).alpha(0.5) }} onPress={() => this.addOrChangeProperty(property)}><Text style={[styles.text, styles.subtitle]}>{property.navn}</Text></TouchableHighlight>}
         enableEmptySections={true}
       />
     );
@@ -280,17 +287,17 @@ class ObjectInfoView extends React.Component {
       padding: 10,
     }
   }
-}
 
-var styles = StyleSheet.create({
-  mainInfo: {
-    backgroundColor: templates.colors.blue,
-    zIndex: 2,
-    borderBottomColor: templates.colors.darkGray,
-    borderBottomWidth: 3,
-    padding: 10,
-  },
-})
+  mainBoxStyle() {
+    return {
+      backgroundColor: this.props.theme.color,
+      zIndex: 2,
+      borderBottomColor: templates.colors.darkGray,
+      borderBottomWidth: 3,
+      padding: 10,
+    }
+  }
+}
 
 function mapStateToProps(state) {
   return {

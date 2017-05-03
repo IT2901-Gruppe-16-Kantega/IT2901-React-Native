@@ -1,7 +1,8 @@
 import * as templates from '../templates';
 
 module.exports = {
-  backgroundColor: templates.colors.black,
+  color: templates.colors.black,
+  backgroundColor: templates.colors.darkGray,
   containerColor: templates.colors.darkGray,
   navigationBackground: templates.colors.darkGray,
 

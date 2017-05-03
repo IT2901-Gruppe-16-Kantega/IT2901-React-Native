@@ -93,7 +93,7 @@ class RoadMapView extends React.Component {
         <MapView
           keyboardShouldPersistTaps='always'
           ref={(ref) => {map = ref} }
-          style={{ flex: 1 }}
+          style={{ position: 'absolute', top: -this.props.navbarHeight, right: 0, left: 0, bottom: 0 }}
           showsUserLocation={true}
           region={this.props.region}
           onRegionChange={this.changeRegion.bind(this)} >
@@ -370,6 +370,8 @@ function mapStateToProps(state) {
     markers: state.mapReducer.markers,
     cluster: state.mapReducer.cluster,
     clusteringOn: state.settingsReducer.clusteringOn,
+
+    navbarHeight: state.uiReducer.navbarHeight,
   }
 }
 

@@ -42,15 +42,21 @@ import * as filterActions from './actions/filterActions'
 import * as mapActions from './actions/mapActions'
 import * as searchActions from './actions/searchActions'
 import * as settingsActions from './actions/settingsActions'
+import * as uiActions from './actions/uiActions'
 
 let ScreenWidth = Dimensions.get("window").width;
-
 
 var scenes = null;
 
 class App extends Component {
   componentDidMount() {
     Linking.addEventListener('url', this.handleDeepLink.bind(this));
+
+    Linking.getInitialURL().then(url => {
+      this.handleDeepLink(url);
+    })
+
+    this.props.setNavbarHeight(Navigator.NavigationBar.Styles.General.TotalNavHeight);
   }
 
   componentWillMount() {
@@ -58,32 +64,36 @@ class App extends Component {
   		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   	}
 
+    this.load();
+
+    scenes = Actions.create(
+      <Scene key="root">
+        <Scene key="StartingView" component={StartingView} type='reset' initial={true} hideNavBar={true} />
+        <Scene key="SearchView" component={SearchView} title="Nytt søk" hideNavBar={false} />
+        <Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" hideNavBar={false} />
+        <Scene key="SettingsView" component={SettingsView} title="Innstillinger" hideNavBar={false} />
+        <Scene key="HelpView" component={HelpView} title="Hjelp" hideNavBar={false} />
+        <Scene key="LoadingView" component={LoadingView} type='reset' hideNavBar={true} />
+        <Scene key="CurrentSearchView" component={CurrentSearchView} title="Info om søk" hideNavBar={false} />
+        <Scene key="ReportView" component={ReportView} title="Rapport" hideNavBar={false} />
+        <Scene key="ObjectInfoView" component={ObjectInfoView} title="Objektinfo" hideNavBar={false} />
+        <Scene key="RoadMapView"
+          navigationBarStyle={{ backgroundColor: 'rgba(0,0,0,0) '}}
+          component={RoadMapView}
+          onRight={ () => this.toggleSidebar() }
+          rightTitle="Filtrer"
+          onBack={() => this.exitMap()} />
+    </Scene>
+    );
+  }
+
+  load(done) {
     const storage = storageEngine('NVDB-storage')
     storage.initialize();
     var stored = storage.load(function(progress) {
       this.props.setLoadingProgress(progress);
     }.bind(this));
     this.props.loadSearches(stored)
-
-    scenes = Actions.create(
-      <Scene key="root">
-        <Scene key="StartingView" component={StartingView} type='reset' initial={true} />
-        <Scene key="SearchView" component={SearchView} />
-        <Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" />
-        <Scene key="SettingsView" component={SettingsView} title="Innstillinger" />
-        <Scene key="HelpView" component={HelpView} title="Hjelp" />
-        <Scene key="LoadingView" component={LoadingView} type='reset' />
-        <Scene key="CurrentSearchView" component={CurrentSearchView} title="Informasjon om søk" />
-        <Scene key="ReportView" component={ReportView} title="Rapport" />
-        <Scene key="ObjectInfoView" component={ObjectInfoView} />
-        <Scene key="RoadMapView"
-          component={RoadMapView}
-          onRight={ () => this.toggleSidebar() }
-          rightTitle="Filtrer"
-          onBack={() => this.exitMap()}
-          navigationBarStyle={this.props.navigationBarStyle} />
-    </Scene>
-    );
   }
 
   componentWillUnmount() {
@@ -95,7 +105,7 @@ class App extends Component {
       <Router
         scenes={scenes}
         navBar={NavigationBar}
-        sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
+        sceneStyle={{ paddingTop: this.props.navbarHeight }}>
       </Router>
     )
   }
@@ -129,8 +139,17 @@ class App extends Component {
   }
 
   handleDeepLink(e) {
-    const url = e.url.replace(/.*?:\/\//g, "");
-    const parts = url.split("?");
+    const url = e ? e.url : e;
+    if(!url) return;
+
+    if(this.props.loadingProgress < 1) {
+      setTimeout(() => {
+        this.handleDeepLink(url);
+      }, 100);
+      return;
+    }
+
+    const parts = url.replace(/.*?:\/\//g, "").split("?");
 
     const route = this.getRoute(parts[0]);
     const params = this.getParameters(parts[1]);
@@ -181,9 +200,8 @@ class App extends Component {
           }
         })
       }
+      Actions.ReportView();
     }
-
-    return;
   }
 
   toggleSidebar(close) {
@@ -212,6 +230,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
+    navigationBarStyle: state.settingsReducer.themeStyle.navigationBarStyle,
     loadingProgress: state.dataReducer.loadingProgress,
     sidebarFrame: state.mapReducer.sidebarFrame,
     isEditingRoadObject: state.dataReducer.isEditingRoadObject,
@@ -224,6 +243,8 @@ function mapStateToProps(state) {
 
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     selectedObject: state.dataReducer.selectedObject,
+
+    navbarHeight: state.uiReducer.navbarHeight,
   };
 }
 
@@ -251,6 +272,8 @@ function mapDispatchToProps(dispatch) {
     setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
     selectObject: bindActionCreators(dataActions.selectObject, dispatch),
     reportChange: bindActionCreators(dataActions.reportChange, dispatch),
+
+    setNavbarHeight: bindActionCreators(uiActions.setNavbarHeight, dispatch),
   }
 }
 
