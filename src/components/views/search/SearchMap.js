@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  StyleSheet,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -9,10 +10,16 @@ import { connect } from 'react-redux';
 
 import MapView from 'react-native-maps';
 
-import MarkerCallout from '../../misc/MarkerCallout'
+import Button from '../../misc/Button';
+import MarkerCallout from '../../misc/MarkerCallout';
 
-import {fetchCloseby} from '../../../utilities/wrapper'
-import * as searchActions from '../../../actions/searchActions'
+import {getCurrentPosition} from '../../../utilities/utils';
+import {fetchCloseby} from '../../../utilities/wrapper';
+
+import * as mapActions from '../../../actions/mapActions';
+import * as searchActions from '../../../actions/searchActions';
+
+var map = null;
 
 class SearchMap extends React.Component {
   static propTypes = {
@@ -20,14 +27,47 @@ class SearchMap extends React.Component {
   }
 
   render() {
-    return <MapView
-      showsMyLocationButton={true}
-      initialRegion={this.props.searchCoordinate}
-      style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}
-      showsUserLocation={true}
-      onPress={this.mapPressed.bind(this)}>
-      {this.renderMarker()}
-    </MapView>
+    return (
+      <View style={{ flex: 1 }}>
+        <MapView
+          ref={ref => {map = ref}}
+          showsMyLocationButton={false}
+          followsUserLocation={this.props.followsUser}
+          initialRegion={this.props.searchCoordinate}
+          style={StyleSheet.absoluteFill}
+          showsUserLocation={true}
+          onPress={this.mapPressed.bind(this)}>
+          {this.renderMarker()}
+        </MapView>
+        <View style={{ position: 'absolute', right: 10, top: 10, width: 50 }}>
+          <Button type={"small"} text={this.props.followsUser ? "📍" : "🚗"} onPress={this.toggleMapCenter.bind(this)} />
+        </View>
+      </View>
+    );
+  }
+
+  toggleMapCenter() {
+    if(map) {
+      if(this.props.followsUser) {
+        if(this.props.searchCoordinate) {
+          map.animateToRegion(this.props.searchCoordinate)
+        }
+      } else {
+        getCurrentPosition(pos => {
+          const {coords} = pos;
+          const region = {
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          };
+          map.animateToRegion(region);
+          this.props.setCurrentUserPosition(pos);
+        })
+      }
+
+      this.props.toggleFollowUser();
+    }
   }
 
   renderMarker() {
@@ -68,6 +108,8 @@ function mapStateToProps(state) {
   return {
     vegInput: state.searchReducer.vegInput,
     searchCoordinate: state.searchReducer.searchCoordinate,
+    followsUser: state.mapReducer.followsUser,
+    currentUserPosition: state.mapReducer.currentUserPosition,
   }
 }
 
@@ -78,6 +120,9 @@ function mapDispatchToProps(dispatch) {
     chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
     selectSearchCoordinate: bindActionCreators(searchActions.selectSearchCoordinate, dispatch),
     resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
+
+    toggleFollowUser: bindActionCreators(mapActions.toggleFollowUser, dispatch),
+    setCurrentUserPosition: bindActionCreators(mapActions.setCurrentUserPosition, dispatch),
   }
 }
 

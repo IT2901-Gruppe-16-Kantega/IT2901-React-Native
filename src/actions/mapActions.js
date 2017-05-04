@@ -39,3 +39,15 @@ export function setCluster(cluster) {
     payload: cluster,
   }
 }
+
+export function toggleFollowUser() {
+  return { type: "TOGGLE_FOLLOW_USER" }
+}
+
+
+export function setCurrentUserPosition(position) {
+  return {
+    type: "SET_CURRENT_USER_POSITION",
+    payload: position,
+  }
+}

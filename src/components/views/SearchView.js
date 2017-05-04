@@ -14,8 +14,9 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
 var Color = require('color');
 
@@ -29,11 +30,12 @@ import TabBar from '../misc/TabBar';
 import SearchMap from './search/SearchMap';
 
 import {searchForFylke} from '../../utilities/searchUtils';
-import {parseGeometry} from '../../utilities/utils';
+import {parseGeometry, getCurrentPosition} from '../../utilities/utils';
 import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
+import * as mapActions from '../../actions/mapActions'
 import * as searchActions from '../../actions/searchActions'
 import * as uiActions from '../../actions/uiActions'
 import {fylker} from '../../data/fylker';
@@ -58,6 +60,10 @@ var selectedVegreferanse;
 View used when user specifies what data to be fetched from NVDB
 */
 class SearchView extends React.Component {
+  componentDidMount() {
+    this.getUserPosition();
+  }
+
   render() {
     return (
       <Container>
@@ -65,12 +71,15 @@ class SearchView extends React.Component {
         {this.renderDownloadButton()}
         <TabBar
           tabs={[
-            {title: tabs.SEARCH, onPress: ()=>{this.props.setChosenSearchTab(tabs.SEARCH)}},
-            {title: tabs.MAP, onPress: ()=>{this.props.setChosenSearchTab(tabs.MAP)}},
-            {title: tabs.CLOSEST, onPress: ()=>{
-              this.props.setChosenSearchTab(tabs.CLOSEST)
-              this.getUserPosition() // Should be done somewhere else
-            }},
+            {title: tabs.SEARCH, onPress: () => this.props.setChosenSearchTab(tabs.SEARCH)},
+            {title: tabs.MAP, onPress: () => this.props.setChosenSearchTab(tabs.MAP)},
+            {title: tabs.CLOSEST, onPress: () => {
+              if(this.props.chosenSearchTab === tabs.CLOSEST) {
+                this.getUserPosition(true);
+              } else {
+                this.props.setChosenSearchTab(tabs.CLOSEST);
+              }
+            }}
           ]}
           />
       </Container>
@@ -182,14 +191,22 @@ class SearchView extends React.Component {
     this.validate()
   }
 
-  getUserPosition() {
-    navigator.geolocation.getCurrentPosition((initialPosition) => {
-      fetchCloseby(10, initialPosition.coords, function(closestList) {
-        this.props.inputClosestRoads(closestList);
+  getUserPosition(force) {
+    const {currentUserPosition} = this.props;
 
-      }.bind(this));
-    }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
+    if(!currentUserPosition || force) {
+      console.log("getting position")
+      getCurrentPosition(position => {
+        this.fetchRoads(position.coords);
+        this.props.setCurrentUserPosition(position);
+      });
+    }
+  }
+
+  fetchRoads(coords) {
+    fetchCloseby(10, coords, closeList => {
+      this.props.inputClosestRoads(closeList);
+    })
   }
 
   typeInputStyleForMap() {
@@ -204,8 +221,8 @@ class SearchView extends React.Component {
       position: 'absolute',
       top: 10,
       left: 10,
-      right: 10,
-      backgroundColor: Color(this.props.theme.backgroundColor).alpha(0.4),
+      right: 70,
+      backgroundColor: Color(this.props.theme.color).alpha(0.5),
       borderRadius: 10,
       height: height,
     }
@@ -331,6 +348,8 @@ function mapStateToProps(state) {
     chosenSearchTab: state.uiReducer.chosenSearchTab,
 
     theme: state.settingsReducer.themeStyle,
+
+    currentUserPosition: state.mapReducer.currentUserPosition,
   }
 }
 
@@ -359,6 +378,8 @@ function mapDispatchToProps(dispatch) {
     setChosenSearchTab: bindActionCreators(uiActions.setChosenSearchTab, dispatch),
 
     resetPositionSearchParameters: bindActionCreators(searchActions.resetPositionSearchParameters, dispatch),
+
+    setCurrentUserPosition: bindActionCreators(mapActions.setCurrentUserPosition, dispatch),
   }
 }
 
