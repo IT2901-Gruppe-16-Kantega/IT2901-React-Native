@@ -117,7 +117,7 @@ class SearchView extends React.Component {
         <InputField type='vegobjekttype'
           list={this.props.vegobjekttyperInput}
           textType={this.props.vegobjekttyperText}
-          choosen={this.props.vegobjekttyperChosen}
+          chosen={this.props.vegobjekttyperChosen}
           inputFunction={this.props.inputVegobjekttyper}
           chooserFunction={this.props.chooseVegobjekttyper}
           colorController={this.props.vegobjekttyperColor}
@@ -291,6 +291,7 @@ class SearchView extends React.Component {
 var styles = StyleSheet.create({
   content: {
     padding: 10,
+    marginBottom: 110,
   },
   downloadButtonContainer: {
     alignItems: 'center',

@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Text,
   TouchableHighlight,
-  View,
   Dimensions
 } from 'react-native';
 
@@ -10,6 +9,7 @@ import PropTypes from 'prop-types';
 
 import * as templates from '../../utilities/templates'
 
+// The different button types that can be sent in as a prop, changes style
 const types = {
   TITLE: "title",
   SEARCH: "search",
@@ -21,6 +21,9 @@ const types = {
 
 let ScreenWidth = Dimensions.get("window").width;
 
+/*
+Orange button component, available in different styles
+*/
 export default class Button extends React.Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
@@ -30,17 +33,15 @@ export default class Button extends React.Component {
 
   render() {
     return <TouchableHighlight
-      style={this.buttonStyle()}
+      style={this.styleButton()}
       onPress={this.props.onPress}
-      underlayColor={templates.colors.blue}
-      >
-      <View>
-        <Text style={this.textStyle()}>{this.props.text}</Text>
-      </View>
+      underlayColor={templates.colors.green}>
+      <Text style={this.styleText()}>{this.props.text}</Text>
     </TouchableHighlight>
   }
 
-  buttonStyle() {
+  // Creates style of button based on type
+  styleButton() {
     const {type} = this.props;
     var style = {
       backgroundColor: templates.colors.orange,
@@ -71,7 +72,7 @@ export default class Button extends React.Component {
         break;
 
       case types.LIST_SELECTED:
-        style.backgroundColor = templates.colors.blue;
+        style.backgroundColor = templates.colors.green;
         style.padding = 10;
 
       case types.LIST:
@@ -88,7 +89,8 @@ export default class Button extends React.Component {
     return style;
   }
 
-  textStyle() {
+  // Creates style of button text based on type
+  styleText() {
     const {type} = this.props;
     var style = { color: templates.colors.white, fontSize: 18 }
 

@@ -91,6 +91,7 @@ class RoadMapView extends React.Component {
     return <Container>
       <View style={{ flex: 1 }}>
         <MapView
+          showsCompass={false}
           keyboardShouldPersistTaps='always'
           ref={(ref) => {map = ref} }
           style={{ position: 'absolute', top: -this.props.navbarHeight, right: 0, left: 0, bottom: 0 }}
