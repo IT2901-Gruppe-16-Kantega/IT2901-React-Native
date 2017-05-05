@@ -59,31 +59,35 @@ export default (key) => ({
   // no console.error in case the id is wrong;
   // TODO Currently only saves the report, but does not reload the storage or affect the storage in memory
   loadReport(reportKey) {
-	  console.log("====================================================")
 	  console.log("Loading report " + reportKey);
-	  RNFS.readFile(rootPathAndroid + "/report.json")
-	  .then((reportSuccess) => {
-		  var reportData = JSON.parse(reportSuccess);
-		  RNFS.readFile(searchesPathAndroid + "/" + reportKey + ".json")
-		  .then((dataSuccess) => {
-			  var searchData = JSON.parse(dataSuccess);
-			  for (var i = 0; i < reportData.reportObjects.length; i++) {
-				  console.log(reportData.reportObjects[i]);
-				  searchData.report.push(reportData.reportObjects[i] || {});
-			  }
-			  this.writeFile(searchesPathAndroid + "/" + reportKey + ".json", JSON.stringify(searchData))
-			  .then((success) => {
-				  console.log("Report loaded from VegAR(AR) and saved successfully");
+	  return new Promise((resolve, reject) => {
+		  RNFS.readFile(rootPathAndroid + "/report.json")
+		  .then((reportSuccess) => {
+			  var reportData = JSON.parse(reportSuccess);
+			  RNFS.readFile(searchesPathAndroid + "/" + reportKey + ".json")
+			  .then((dataSuccess) => {
+				  var searchData = JSON.parse(dataSuccess);
+				  for (var i = 0; i < reportData.reportObjects.length; i++) {
+					  console.log(reportData.reportObjects[i]);
+					  searchData.report.push(reportData.reportObjects[i] || {});
+				  }
+				  this.writeFile(searchesPathAndroid + "/" + reportKey + ".json", JSON.stringify(searchData))
+				  .then((success) => {
+					  console.log("Report loaded from VegAR(AR) and saved successfully");
+					  resolve(reportData);
+				  }).catch((err) => {
+					  console.log("Failed to save report from VegAR(AR)", err);
+					  reject(err);
+				  })
 			  }).catch((err) => {
-				  console.log("Failed to save report from VegAR(AR)", err);
+				  console.log("Failed to read search data with given key: " + reportKey, err);
+				  reject(err);
 			  })
 		  }).catch((err) => {
-			  console.log("Failed to read search data with given key: " + reportKey, err);
+			  console.log("Failed to load report from unity", err);
+			  reject(err);
 		  })
-	  }).catch((err) => {
-		  console.log("Failed to load report from unity", err)
-	  })
-	  console.log("====================================================")
+	  });
   },
 
   //clean, move body into own function
