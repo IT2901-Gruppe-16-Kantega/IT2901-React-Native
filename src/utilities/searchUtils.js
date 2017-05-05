@@ -56,7 +56,8 @@ function compareInput(input) {
   }
 
   const stringInput = this.toString().toLowerCase();
-  return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+  return input.navn.toLowerCase().indexOf(stringInput) >= 0;
+  //return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
 }
 
 function filterKommuneList(input) {
