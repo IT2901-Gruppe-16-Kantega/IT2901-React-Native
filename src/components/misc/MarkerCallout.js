@@ -93,13 +93,17 @@ class MarkerCallout extends React.Component {
           continue;
         }
 
-        // Finds the information about the selected property of this object
-        const egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
-          return e.id == filter.egenskap.id;
-        })
+        var egenskapsInfo;
+        // Check if roadObject has any properties first
+        if(this.props.roadObject.egenskaper) {
+          // Finds the information about the selected property of this object
+          egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
+            return e.id === filter.egenskap.id;
+          })
+        }
 
         var tekst = "-";
-        if(egenskapsInfo) { tekst = egenskapsInfo.verdi }
+        if(egenskapsInfo) tekst = egenskapsInfo.verdi;
 
         textComponents.push(
           <PropertyValue key={filter.egenskap.id + i} property={filter.egenskap.navn} value={tekst} />

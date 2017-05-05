@@ -211,3 +211,11 @@ export function setURL(url) {
 export function generateURL() {
   return { type: "GENERATE_URL" }
 }
+
+export function incrementFakeProgress() {
+  return { type: "INCREMENT_FAKE_PROGRESS" }
+}
+
+export function resetFakeProgress() {
+  return { type: "RESET_FAKE_PROGRESS" }
+}

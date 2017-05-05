@@ -4,6 +4,7 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  Dimensions
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -12,6 +13,7 @@ import { connect } from 'react-redux'
 
 import * as Progress from 'react-native-progress';
 
+import Button from '../misc/Button'
 import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
@@ -21,6 +23,8 @@ import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as mapActions from '../../actions/mapActions'
 import * as searchActions from '../../actions/searchActions'
+
+const ScreenWidth = Dimensions.get("window").width;
 
 /*
 view shown when fetching/loading data
@@ -36,24 +40,13 @@ class LoadingView extends React.Component {
     this.props.fetchDataStart();
   }
 
-  render() {
-    return <Container>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Progress.CircleSnail
-          animated={this.props.fetching}
-          size={200}
-          thickness={10}
-          color={[templates.colors.orange, templates.colors.blue, templates.colors.green]} />
-      </View>
+  componentDidMount() {
+    this.interval = setInterval(this.increment.bind(this), 1000);
+  }
 
-      <View style={{ flex: 1 }}>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={this.props.theme.title}>Informasjon om søket</Text>
-          <PropertyValue property={"Antall objekter hentet"} value={this.props.numberOfObjectsFetchedSoFar} />
-          <PropertyValue property={"Antall objekter totalt"} value={this.props.numberOfObjectsToBeFetched} />
-        </View>
-      </View>
-    </Container>
+  increment() {
+    console.log(this.props.fakeProgress)
+    this.props.incrementFakeProgress();
   }
 
   //this may be really bad as componentDidUpdate may be called a lot of times
@@ -68,8 +61,42 @@ class LoadingView extends React.Component {
       );
 
       this.props.resetSearchParameters();
+      this.props.resetFakeProgress();
       Actions.CurrentSearchView({type: 'reset'});
     }
+  }
+
+  render() {
+    const {numberOfObjectsToBeFetched, numberOfObjectsFetchedSoFar} = this.props;
+    const progress = numberOfObjectsFetchedSoFar / numberOfObjectsToBeFetched;
+
+    return (
+      <Container>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Progress.Circle
+            size={ScreenWidth / 1.5}
+            progress={progress}
+            borderWidth={3}
+            thickness={10}
+            showsText={true}
+            color={templates.colors.green} />
+        </View>
+
+        <View style={{ flex: 1 }}>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={this.props.theme.title}>Informasjon om søket</Text>
+            <PropertyValue property={"Antall objekter hentet"} value={this.props.numberOfObjectsFetchedSoFar + this.props.fakeProgress} />
+            <PropertyValue property={"Antall objekter totalt"} value={this.props.numberOfObjectsToBeFetched} />
+            <Button type="title" text="Avbryt" onPress={Actions.SearchView} />
+          </View>
+        </View>
+      </Container>
+    );
+  }
+
+  randomColor() {
+    const colors = [templates.colors.orange, templates.colors.blue, templates.colors.green];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }
 
@@ -95,6 +122,8 @@ function mapStateToProps(state) {
     objekttypeInfo: state.dataReducer.objekttypeInfo,
     allSearches: state.dataReducer.allSearches,
     selectedFilter: state.filterReducer.selectedFilter,
+
+    fakeProgress: state.searchReducer.fakeProgress,
   }
 }
 
@@ -107,6 +136,9 @@ function mapDispatchToProps(dispatch) {
     resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
     setObjekttypeInfo: bindActionCreators(dataActions.setObjekttypeInfo, dispatch),
     resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+
+    resetFakeProgress: bindActionCreators(searchActions.resetFakeProgress, dispatch),
+    incrementFakeProgress: bindActionCreators(searchActions.incrementFakeProgress, dispatch),
   }
 }
 

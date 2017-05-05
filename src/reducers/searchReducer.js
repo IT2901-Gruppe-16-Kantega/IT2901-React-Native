@@ -50,6 +50,8 @@ export default function reducer(state={
   kommuneNavn: '',
   vegobjekttyperNavn: '',
 
+  fakeProgress: 0,
+
 }, action) {
   switch (action.type) {
     case "INPUT_CLOSEST_ROADS": {
@@ -357,6 +359,12 @@ export default function reducer(state={
 
     case "SET_FYLKE_COORDINATES": {
       return {...state, fylkeCoordinates: action.payload}
+    }
+    case "INCREMENT_FAKE_PROGRESS": {
+      return {...state, fakeProgress: state.fakeProgress + 1}
+    }
+    case "RESET_FAKE_PROGRESS": {
+      return {...state, fakeProgress: 0}
     }
   }
   return state
