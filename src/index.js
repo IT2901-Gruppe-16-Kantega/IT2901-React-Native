@@ -165,7 +165,20 @@ class App extends Component {
       this.props.setCurrentRoadSearch(route.id);
       if(Platform.OS === "android") {
         const storage = storageEngine('NVDB-storage')
-        storage.loadReport(id);
+        storage.loadReport(id)
+		.then((success) => {
+			for(var i = 0; i < success.reportObjects.length; i++) {
+              const reportObject = success.reportObjects[i];
+              this.props.selectObject(reportObject.vegobjekt);
+              for(var j = 0; j < reportObject.endringer.length; j++) {
+                const change = reportObject.endringer[j];
+                this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+              }
+            }
+		})
+		.catch((err) => {
+			console.log("Error when loading report. ", err);
+		});
       }
       else {
         userDefaults.get("report", "group.vegar", (err, data) => {
