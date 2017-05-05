@@ -126,9 +126,10 @@ class App extends Component {
     if(value && value.length > 1) {
       value.split("&").forEach(part => {
         const param = part.split("=");
-        result[param[0]] = param[1] ? decodeURI(param[1]) : null;
+        result[param[0]] = param[1] ? param[1] : null;
       })
     }
+    console.log(result);
     return result;
   }
 
@@ -137,12 +138,19 @@ class App extends Component {
 
     const route = routeParts[0].toLowerCase();
     const id = parseInt(routeParts[1]);
+    console.log(id)
 
-    if(['vegobjekter', 'søk'].indexOf(route >= 0)) {
+    if(isNaN(id)) {
+      return { type: 'feil', message: "Klarte ikke å tolke " + value }
+    }
+    else if(route == 'vegobjekter') {
       return { type: "søk", vegobjekttype: id };
     }
-    else if(mainRoute === 'rapport') {
+    else if(route === 'rapport') {
       return { type: "rapport", id: id }
+    }
+    else {
+      return { type: 'feil', message: 'Støtter ikke denne URLen.' }
     }
   }
 
@@ -157,14 +165,17 @@ class App extends Component {
       return;
     }
 
-    const parts = url.replace(/.*?:\/\//g, "").split("?");
+    const decoded = decodeURI(url);
+    const parts = decoded.replace(/.*?:\/\//g, "").split("?");
 
     const route = this.getRoute(parts[0]);
     const params = this.getParameters(parts[1]);
 
     this.props.setDarkMode(params["natt"]);
-
-    if(route.type === 'søk') {
+    if(route.type === 'feil') {
+      this.handleError(route.message);
+    }
+    else if(route.type === 'søk') {
       const vegobjekttype = route.vegobjekttype;
       const fylke = parseInt(params["fylke"]) || parseInt(params["f"]);
       const kommune = parseInt(params["kommune"]) || parseInt(params["k"]);
@@ -189,27 +200,41 @@ class App extends Component {
       }, 10);
     }
     else if(route.type === 'rapport') {
+      this.props.setCurrentRoadSearch(null);
       this.props.setCurrentRoadSearch(route.id);
-      if(isAndroid()) {
-        const storage = storageEngine('NVDB-storage')
-        storage.loadReport(id);
-      }
-      else {
-        userDefaults.get("report", "group.vegar", (err, data) => {
-          const obj = JSON.parse(data);
 
-          for(var i = 0; i < obj.reportObjects.length; i++) {
-            const reportObject = obj.reportObjects[i];
-            this.props.selectObject(reportObject.vegobjekt);
-            for(var j = 0; j < reportObject.endringer.length; j++) {
-              const change = reportObject.endringer[j];
-              this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
-            }
+      setTimeout(() => {
+        if(this.props.currentRoadSearch) {
+          if(isAndroid()) {
+            const storage = storageEngine('NVDB-storage')
+            storage.loadReport(id);
           }
-        })
-      }
-      Actions.ReportView();
+          else {
+            userDefaults.get("report", "group.vegar", (err, data) => {
+              if(!err) {
+                const obj = JSON.parse(data);
+                for(var i = 0; i < obj.reportObjects.length; i++) {
+                  const reportObject = obj.reportObjects[i];
+                  this.props.selectObject(reportObject.vegobjekt);
+                  for(var j = 0; j < reportObject.endringer.length; j++) {
+                    const change = reportObject.endringer[j];
+                    this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+                  }
+                }
+              }
+            }).catch(err => console.log(err))
+          }
+          Actions.CurrentSearchView();
+          //Actions.ReportView();
+        } else {
+          alert("Søket med ID " + route.id + " finnes ikke.")
+        }
+      }, 10);
     }
+  }
+
+  handleError(message) {
+    alert(message)
   }
 
   toggleSidebar(close) {

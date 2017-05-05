@@ -68,7 +68,11 @@ class CurrentSearchView extends React.Component {
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
           <View style={styles.informationArea}>
             <View style={styles.info}>
-              <Button type={"small"} text={"Del dette søket"} onPress={this.shareSearch.bind(this)} />
+              <Button type={"small"} text={"Del dette søket"} onPress={() => this.shareString()} />
+              <TouchableHighlight
+                onPress={this.shareString.bind(this, currentRoadSearch.key)}>
+                <View><PropertyValue property={"Søke-ID"} value={currentRoadSearch.key} /></View>
+              </TouchableHighlight>
               <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
               <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
               <PropertyValue property={"Fylke"} value={fylkeValue} />
@@ -82,16 +86,19 @@ class CurrentSearchView extends React.Component {
     );
   }
 
-  shareSearch() {
-    //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
-    const params = this.props.currentRoadSearch.searchParameters;
-    var url = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
+  shareString(value) {
+    var message;
+    if(!value) {
+      //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
+      const params = this.props.currentRoadSearch.searchParameters;
+      message = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
 
-    if(params.fylke) url += "fylke=" + params.fylke.nummer + "&"
-    if(params.kommune) url += "kommune=" + params.kommune.nummer + "&"
-    if(params.veg) url += "vegreferanse=" + params.veg + "&"
+      if(params.fylke) message += "fylke=" + params.fylke.nummer + "&"
+      if(params.kommune) message += "kommune=" + params.kommune.nummer + "&"
+      if(params.veg) message += "vegreferanse=" + params.veg + "&"
+    } else message = value + "";
 
-    Share.share({ message: url })
+    Share.share({ message })
   }
 
   createDescriptionArea() {

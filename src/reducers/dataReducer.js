@@ -72,14 +72,11 @@ export default function reducer(state={
       }
     }
     case "SET_CURRENT_ROAD_SEARCH": {
-      var search = null;
-      if(action.payload.key) { search = action.payload }
+      var search;
+      if(action.payload && action.payload.key) { search = action.payload }
       else { search = state.allSearches.find(s => s.key === action.payload) }
 
-      return {
-        ...state,
-        currentRoadSearch: search,
-      }
+      return {...state, currentRoadSearch: search}
     }
 
     // cases associated with fetching
