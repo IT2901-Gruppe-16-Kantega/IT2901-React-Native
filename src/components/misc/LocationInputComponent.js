@@ -28,10 +28,10 @@ class LocationInputComponent extends React.Component {
   createFylkeInput() {
     return (
       <View>
-        <InputField type='fylke'
+        <InputField type={"fylke"}
           list={this.props.fylkeInput}
           textType={this.props.fylkeText}
-          choosen={this.props.fylkeChosen}
+          chosen={this.props.fylkeChosen}
           inputFunction={this.props.inputFylke}
           chooserFunction={this.props.chooseFylke}
           colorController={this.props.fylkeColor}
@@ -44,10 +44,10 @@ class LocationInputComponent extends React.Component {
   createKommuneInput() {
     return (
       <View>
-        <InputField type='kommune'
+        <InputField type={"kommune"}
           list={this.props.kommuneInput}
           textType={this.props.kommuneText}
-          choosen={this.props.kommuneChosen}
+          chosen={this.props.kommuneChosen}
           inputFunction={this.props.inputKommune}
           chooserFunction={this.props.chooseKommune}
           colorController={this.props.kommuneColor}
@@ -62,8 +62,8 @@ class LocationInputComponent extends React.Component {
     return (
       <InputField type={"veg"}
         list={[]}
-        textType={this.props.vegInput}
-        choosen={true}
+        textType={this.props.vegInput.toUpperCase()}
+        chosen={true}
         inputFunction={this.props.inputVeg}
         chooserFunction={null}
         colorController={this.props.vegColor}

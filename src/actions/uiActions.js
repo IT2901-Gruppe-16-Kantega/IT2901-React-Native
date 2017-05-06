@@ -11,3 +11,10 @@ export function setChosenSearchTab(input) {
     payload: input,
   }
 }
+
+export function setNavbarHeight(height) {
+  return {
+    type: "SET_NAVBAR_HEIGHT",
+    payload: height,
+  }
+}

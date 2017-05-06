@@ -1,15 +1,15 @@
 // react imports
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  LayoutAnimation,
-  Dimensions,
-  Navigator,
-  Platform,
-  UIManager,
-  Linking
+	StyleSheet,
+	Text,
+	View,
+	LayoutAnimation,
+	Dimensions,
+	Navigator,
+	Platform,
+	UIManager,
+	Linking
 } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 
@@ -30,228 +30,277 @@ import SearchView from './components/views/SearchView'
 import SettingsView from './components/views/SettingsView'
 import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
+import WelcomeView from './components/views/WelcomeView'
 
 import NavigationBar from './components/misc/NavigationBar'
 
 // misc imports
 import storageEngine from './utilities/storageEngine'
 import * as templates from './utilities/templates'
+import { isAndroid } from './utilities/utils'
 
 import * as dataActions from './actions/dataActions'
 import * as filterActions from './actions/filterActions'
 import * as mapActions from './actions/mapActions'
 import * as searchActions from './actions/searchActions'
 import * as settingsActions from './actions/settingsActions'
+import * as uiActions from './actions/uiActions'
 
 let ScreenWidth = Dimensions.get("window").width;
-
 
 var scenes = null;
 
 class App extends Component {
-  componentDidMount() {
-    Linking.addEventListener('url', this.handleDeepLink.bind(this));
-  }
+	componentDidMount() {
+		Linking.addEventListener('url', this.handleDeepLink.bind(this));
 
-  componentWillMount() {
-  	if(Platform.OS === "android") {
-  		UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-  	}
+		Linking.getInitialURL().then(url => {
+			this.handleDeepLink(url);
+		})
 
-    const storage = storageEngine('NVDB-storage')
-    storage.initialize();
-    var stored = storage.load(function(progress) {
-      this.props.setLoadingProgress(progress);
-    }.bind(this));
-    this.props.loadSearches(stored)
+		this.props.setNavbarHeight(Navigator.NavigationBar.Styles.General.TotalNavHeight);
 
-    scenes = Actions.create(
-      <Scene key="root">
-        <Scene key="StartingView" component={StartingView} type='reset' initial={true} />
-        <Scene key="SearchView" component={SearchView} />
-        <Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" />
-        <Scene key="SettingsView" component={SettingsView} title="Innstillinger" />
-        <Scene key="HelpView" component={HelpView} title="Hjelp" />
-        <Scene key="LoadingView" component={LoadingView} type='reset' />
-        <Scene key="CurrentSearchView" component={CurrentSearchView} title="Informasjon om søk" />
-        <Scene key="ReportView" component={ReportView} title="Rapport" />
-        <Scene key="ObjectInfoView" component={ObjectInfoView} />
-        <Scene key="RoadMapView"
-          component={RoadMapView}
-          onRight={ () => this.toggleSidebar() }
-          rightTitle="Filtrer"
-          onBack={() => this.exitMap()}
-          navigationBarStyle={this.props.navigationBarStyle} />
-    </Scene>
-    );
-  }
+		this.load();
+	}
 
-  componentWillUnmount() {
-    Linking.removeEventListener('url', this.handleDeepLink.bind(this))
-  }
+	componentWillMount() {
+		if(isAndroid()) {
+			UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+		}
 
-  render() {
-    return (
-      <Router
-        scenes={scenes}
-        navBar={NavigationBar}
-        sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight}}>
-      </Router>
-    )
-  }
+		scenes = Actions.create(
+			<Scene key="root">
+				<Scene key="WelcomeView" component={WelcomeView} hideNavBar={true} />
+				<Scene key="StartingView" component={StartingView} type='reset' initial={true} hideNavBar={true} />
+				<Scene key="SearchView" component={SearchView} title="Nytt søk" hideNavBar={false} />
+				<Scene key="StoredDataView" component={StoredDataView} title="Lagrede søk" hideNavBar={false} />
+				<Scene key="SettingsView" component={SettingsView} title="Innstillinger" hideNavBar={false} />
+				<Scene key="HelpView" component={HelpView} title="Hjelp" hideNavBar={false} />
+				<Scene key="LoadingView" component={LoadingView} type='reset' hideNavBar={true} />
+				<Scene key="CurrentSearchView" component={CurrentSearchView} title="Info om søk" hideNavBar={false} />
+				<Scene key="ReportView" component={ReportView} title="Rapport" hideNavBar={false} />
+				<Scene key="ObjectInfoView" component={ObjectInfoView} title="Objektinfo" hideNavBar={false} />
+				<Scene key="RoadMapView"
+					navigationBarStyle={{ backgroundColor: 'rgba(0,0,0,0) '}}
+					component={RoadMapView}
+					onRight={ () => this.toggleSidebar() }
+					rightTitle="Filtrer"
+					onBack={() => this.exitMap()} />
+			</Scene>
+		);
+	}
 
-  // Supported links:
-  //...rapport/124123123123
-  //...vegobjekter/96?fylke=16&kommune=1601&&vegreferanse=K5040&inkluder=alle&srid=4326&antall=8000
-  getParameters(value) {
-    var result = {};
-    if(value && value.length > 1) {
-      value.split("&").forEach(part => {
-        const param = part.split("=");
-        result[param[0]] = param[1] ? decodeURI(param[1]) : null;
-      })
-    }
-    return result;
-  }
+	load(done) {
+		const storage = storageEngine('NVDB-storage');
+		storage.initialize();
 
-  getRoute(value) {
-    const routeParts = value.split("/");
+		storage.getSettings((settings, firstOpen) => {
+			if(firstOpen) Actions.WelcomeView({type: 'reset'})
+		});
 
-    const route = routeParts[0].toLowerCase();
-    const id = parseInt(routeParts[1]);
+		var stored = storage.load(progress => {
+			this.props.setLoadingProgress(progress);
+		});
+		this.props.loadSearches(stored)
+	}
 
-    if(['vegobjekter', 'søk'].indexOf(route >= 0)) {
-      return { type: "søk", vegobjekttype: id };
-    }
-    else if(mainRoute === 'rapport') {
-      return { type: "rapport", id: id }
-    }
-  }
+	componentWillUnmount() {
+		Linking.removeEventListener('url', this.handleDeepLink.bind(this))
+	}
 
-  handleDeepLink(e) {
-    const url = e.url.replace(/.*?:\/\//g, "");
-    const parts = url.split("?");
+	render() {
+		return (
+			<Router
+				scenes={scenes}
+				navBar={NavigationBar}
+				sceneStyle={{ paddingTop: this.props.navbarHeight }}>
+			</Router>
+		)
+	}
 
-    const route = this.getRoute(parts[0]);
-    const params = this.getParameters(parts[1]);
+	// Supported links:
+	//...rapport/124123123123
+	//...vegobjekter/96?fylke=16&kommune=1601&&vegreferanse=K5040&inkluder=alle&srid=4326&antall=8000
+	getParameters(value) {
+		var result = {};
+		if(value && value.length > 1) {
+			value.split("&").forEach(part => {
+				const param = part.split("=");
+				result[param[0]] = param[1] ? decodeURI(param[1]) : null;
+			})
+		}
+		return result;
+	}
 
-    this.props.setDarkMode(params["natt"]);
+	getRoute(value) {
+		const routeParts = value.split("/");
 
-    if(route.type === 'søk') {
-      const vegobjekttype = route.vegobjekttype;
-      const fylke = parseInt(params["fylke"]) || parseInt(params["f"]);
-      const kommune = parseInt(params["kommune"]) || parseInt(params["k"]);
-      const veg = params["vegreferanse"] || params["v"];
+		const route = routeParts[0].toLowerCase();
+		const id = parseInt(routeParts[1]);
 
-      if(vegobjekttype) { this.props.chooseVegobjekttyper(vegobjekttype) }
-      if(fylke) { this.props.chooseFylke(fylke) }
-      if(kommune) { this.props.chooseKommune(kommune) }
-      if(veg) { this.props.inputVeg(veg) }
+		if(['vegobjekter', 'søk'].indexOf(route) >= 0) {
+			return { type: "søk", vegobjekttype: id };
+		} else if(route === 'rapport') {
+			return { type: "rapport", id: id };
+		} else {
+			// When url is blank
+			return { type: "main"};
+		}
+	}
 
-      this.props.generateURL();
+	handleDeepLink(e) {
+		const url = e ? e.url : e;
+		if(!url) return;
 
-      setTimeout(() => {
-        const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
-        this.props.combineSearchParameters({
-          fylke: fylkeInput ? fylkeInput[0] : null,
-          veg: vegInput,
-          kommune: kommuneInput ? kommuneInput[0] : null,
-          vegobjekttype: vegobjekttyperInput ? vegobjekttyperInput[0] : null,
-        });
-        Actions.LoadingView();
-      }, 10);
-    }
-    else if(route.type === 'rapport') {
-      this.props.setCurrentRoadSearch(route.id);
-      if(Platform.OS === "android") {
-        const storage = storageEngine('NVDB-storage')
-        storage.loadReport(id);
-      }
-      else {
-        userDefaults.get("report", "group.vegar", (err, data) => {
-          const obj = JSON.parse(data);
+		if(this.props.loadingProgress < 1) {
+			setTimeout(() => {
+				this.handleDeepLink(url);
+			}, 100);
+			return;
+		}
 
-          for(var i = 0; i < obj.reportObjects.length; i++) {
-            const reportObject = obj.reportObjects[i];
-            this.props.selectObject(reportObject.vegobjekt);
-            for(var j = 0; j < reportObject.endringer.length; j++) {
-              const change = reportObject.endringer[j];
-              this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
-            }
-          }
-        })
-      }
-    }
+		const parts = url.replace(/.*?:\/\//g, "").split("?");
 
-    return;
-  }
+		const route = this.getRoute(parts[0]);
+		const params = this.getParameters(parts[1]);
 
-  toggleSidebar(close) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+		this.props.setDarkMode(params["natt"]);
 
-    var width = ScreenWidth / 2.2;
-    var xPos = ScreenWidth - width + 3;
-    var frame = {width: width, top: 10};
+		if(route.type === 'søk') {
+			const vegobjekttype = route.vegobjekttype;
+			const fylke = parseInt(params["fylke"]) || parseInt(params["f"]);
+			const kommune = parseInt(params["kommune"]) || parseInt(params["k"]);
+			const veg = params["vegreferanse"] || params["v"];
 
-    if((this.props.sidebarFrame.left == xPos) || close) {
-      frame.left = ScreenWidth;
-      this.props.toggleSecondSidebar(false);
-    } else {
-      frame.left = xPos;
-    }
+			if(vegobjekttype) { this.props.chooseVegobjekttyper(vegobjekttype) }
+			if(fylke) { this.props.chooseFylke(fylke) }
+			if(kommune) { this.props.chooseKommune(kommune) }
+			if(veg) { this.props.inputVeg(veg) }
 
-    this.props.setSidebarFrame(frame);
-  }
+			this.props.generateURL();
 
-  exitMap() {
-    Actions.pop();
-    this.toggleSidebar(true);
-    this.props.removeAllFilters();
-  }
+			setTimeout(() => {
+				const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
+				this.props.combineSearchParameters({
+					fylke: fylkeInput ? fylkeInput[0] : null,
+					veg: vegInput,
+					kommune: kommuneInput ? kommuneInput[0] : null,
+					vegobjekttype: vegobjekttyperInput ? vegobjekttyperInput[0] : null,
+				});
+				Actions.LoadingView();
+			}, 10);
+		} else if(route.type === 'rapport') {
+			console.log(route);
+			this.props.setCurrentRoadSearch(route.id);
+			if(isAndroid()) {
+				const storage = storageEngine('NVDB-storage')
+				storage.loadReport(route.id)
+				.then((success) => {
+					for(var i = 0; i < success.reportObjects.length; i++) {
+						const reportObject = success.reportObjects[i];
+						this.props.selectObject(reportObject.vegobjekt);
+						for(var j = 0; j < reportObject.endringer.length; j++) {
+							const change = reportObject.endringer[j];
+							this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+						}
+					}
+				})
+				.catch((err) => {
+					console.log("Error when loading report. ", err);
+				});
+			}
+			else {
+				userDefaults.get("report", "group.vegar", (err, data) => {
+					const obj = JSON.parse(data);
+
+					for(var i = 0; i < obj.reportObjects.length; i++) {
+						const reportObject = obj.reportObjects[i];
+						this.props.selectObject(reportObject.vegobjekt);
+						for(var j = 0; j < reportObject.endringer.length; j++) {
+							const change = reportObject.endringer[j];
+							this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
+						}
+					}
+				})
+			}
+			Actions.CurrentSearchView();
+		} else if (route.type === "main") {
+			// When url is blank, go to StartingView
+			Actions.StartingView();
+		}
+	}
+
+	toggleSidebar(close) {
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+		var width = ScreenWidth / 2.2;
+		var xPos = ScreenWidth - width + 3;
+		var frame = {width: width, top: 10};
+
+		if((this.props.sidebarFrame.left == xPos) || close) {
+			frame.left = ScreenWidth;
+			this.props.toggleSecondSidebar(false);
+		} else {
+			frame.left = xPos;
+		}
+
+		this.props.setSidebarFrame(frame);
+	}
+
+	exitMap() {
+		Actions.pop();
+		this.toggleSidebar(true);
+		this.props.removeAllFilters();
+	}
 }
 
 function mapStateToProps(state) {
-  return {
-    loadingProgress: state.dataReducer.loadingProgress,
-    sidebarFrame: state.mapReducer.sidebarFrame,
-    isEditingRoadObject: state.dataReducer.isEditingRoadObject,
-    reportViewType: state.reportReducer.reportViewType,
+	return {
+		navigationBarStyle: state.settingsReducer.themeStyle.navigationBarStyle,
+		loadingProgress: state.dataReducer.loadingProgress,
+		sidebarFrame: state.mapReducer.sidebarFrame,
+		isEditingRoadObject: state.dataReducer.isEditingRoadObject,
+		reportViewType: state.reportReducer.reportViewType,
 
-    vegobjekttyperInput: state.searchReducer.vegobjekttyperInput,
-    fylkeInput: state.searchReducer.fylkeInput,
-    kommuneInput: state.searchReducer.kommuneInput,
-    vegInput: state.searchReducer.vegInput,
+		vegobjekttyperInput: state.searchReducer.vegobjekttyperInput,
+		fylkeInput: state.searchReducer.fylkeInput,
+		kommuneInput: state.searchReducer.kommuneInput,
+		vegInput: state.searchReducer.vegInput,
 
-    currentRoadSearch: state.dataReducer.currentRoadSearch,
-    selectedObject: state.dataReducer.selectedObject,
-  };
+		currentRoadSearch: state.dataReducer.currentRoadSearch,
+		selectedObject: state.dataReducer.selectedObject,
+
+		navbarHeight: state.uiReducer.navbarHeight,
+	};
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    removeAllFilters: bindActionCreators(filterActions.removeAllFilters, dispatch),
-    loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
-    setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
-    setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
-    toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
+	return {
+		removeAllFilters: bindActionCreators(filterActions.removeAllFilters, dispatch),
+		loadSearches: bindActionCreators(dataActions.loadSearches, dispatch),
+		setLoadingProgress: bindActionCreators(dataActions.setLoadingProgress, dispatch),
+		setSidebarFrame: bindActionCreators(mapActions.setSidebarFrame, dispatch),
+		toggleSecondSidebar: bindActionCreators(mapActions.toggleSecondSidebar, dispatch),
 
-    inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
-    inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
-    inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
+		inputVegobjekttyper: bindActionCreators(searchActions.inputVegobjekttyper, dispatch),
+		inputFylke: bindActionCreators(searchActions.inputFylke, dispatch),
+		inputKommune: bindActionCreators(searchActions.inputKommune, dispatch),
 
-    chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
-    chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
-    chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
-    inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
+		chooseVegobjekttyper: bindActionCreators(searchActions.chooseVegobjekttyper, dispatch),
+		chooseFylke: bindActionCreators(searchActions.chooseFylke, dispatch),
+		chooseKommune: bindActionCreators(searchActions.chooseKommune, dispatch),
+		inputVeg: bindActionCreators(searchActions.inputVeg, dispatch),
 
-    combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
-    generateURL: bindActionCreators(searchActions.generateURL, dispatch),
+		combineSearchParameters: bindActionCreators(searchActions.combineSearchParameters, dispatch),
+		generateURL: bindActionCreators(searchActions.generateURL, dispatch),
 
-    setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
-    setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
-    selectObject: bindActionCreators(dataActions.selectObject, dispatch),
-    reportChange: bindActionCreators(dataActions.reportChange, dispatch),
-  }
+		setDarkMode: bindActionCreators(settingsActions.setDarkMode, dispatch),
+		setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
+		selectObject: bindActionCreators(dataActions.selectObject, dispatch),
+		reportChange: bindActionCreators(dataActions.reportChange, dispatch),
+
+		setNavbarHeight: bindActionCreators(uiActions.setNavbarHeight, dispatch),
+	}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (App);

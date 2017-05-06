@@ -31,17 +31,50 @@ class MarkerCallout extends React.Component {
 
   render() {
     var {roadObject} = this.props;
-    return <View style={{flex: 1}}>
-      <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
-      <PropertyValue property={"ID"} value={roadObject.id} />
-      {this.getEgenskapInfo()}
-	  <Button text="Informasjon" type="list" onPress={this.openObjectInformation.bind(this)} />
-    </View>
+    return (
+      <View style={{flex: 1}}>
+        <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
+        {this.getEgenskapInfo()}
+        <Button key={roadObject.id} text={roadObject.id + ""} type="small" onPress={this.openObjectInformation.bind(this, roadObject)} />
+        {this.renderSiblings()}
+      </View>
+    );
   }
+
+  renderSiblings() {
+    const {roadObject} = this.props;
+
+    // The roadObject that belongs to the callout has no parents,
+    // and therefore no siblings
+    if(!(roadObject.relasjoner && roadObject.relasjoner.foreldre)) return <View />;
+
+    const siblings = this.props.roadObjects.filter(this.findSiblings.bind(this));
+    if(siblings.length === 0) return <View />
+
+    var siblingButtons = siblings.map(ro => {
+      return <Button key={ro.id} text={ro.id + ""} type="small" onPress={this.openObjectInformation.bind(this, ro)} />
+    })
+
+    return (
+      <View>
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 20 }}>Søskenobjekter</Text>
+        {siblingButtons}
+      </View>
+    );
+  }
+
+  findSiblings(o) {
+    const {roadObject} = this.props;
+    const parentOfThis = roadObject.relasjoner.foreldre[0].vegobjekter[0];
+    if(!(o.relasjoner && o.relasjoner.foreldre)) return false;
+
+    return parentOfThis === o.relasjoner.foreldre[0].vegobjekter[0] && o.id !== roadObject.id;
+  }
+
   // Called when the user taps the title of the callout
   // Opens the object info view.
-  openObjectInformation() {
-    this.props.selectObject(this.props.roadObject);
+  openObjectInformation(ro) {
+    this.props.selectObject(ro);
     Actions.ObjectInfoView();
   }
 
@@ -105,6 +138,8 @@ function mapStateToProps(state) {
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
     currentRoadSearch: state.dataReducer.currentRoadSearch,
+
+    roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
   }
 }
 

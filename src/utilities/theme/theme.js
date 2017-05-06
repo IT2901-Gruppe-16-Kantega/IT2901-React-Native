@@ -1,10 +1,12 @@
 import * as light from './light.js'
 import * as dark from './dark.js';
+import * as fun from './fun.js';
 import * as templates from '../templates';
 
 export function getTheme(name) {
   const themeColors = name === 'light' ? light : dark;
   return {
+    color: themeColors.color,
     primaryTextColor: themeColors.primaryTextColor,
     secondaryTextColor: themeColors.secondaryTextColor,
     placeholderTextColor: themeColors.placeholderTextColor,

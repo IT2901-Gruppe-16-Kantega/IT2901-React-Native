@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  View,
   Text,
   TouchableHighlight,
 } from 'react-native';
@@ -26,12 +25,10 @@ class ComparatorComponent extends React.Component {
   render() {
     return (
       <TouchableHighlight
-        style={this.buttonStyle()}
+        style={this.styleButton()}
         underlayColor={templates.colors.blue}
         onPress={this.selectFunction.bind(this, this.props.type)}>
-        <View>
-          <Text style={this.textStyle()}>{this.props.type}</Text>
-        </View>
+        <Text style={this.styleText()}>{this.props.type}</Text>
       </TouchableHighlight>
     );
   }
@@ -53,18 +50,18 @@ class ComparatorComponent extends React.Component {
   }
 
   // The style of the container
-  buttonStyle() {
+  styleButton() {
     return {
       flex: 1,
       margin: 2,
       padding: 5,
       borderRadius: 3,
-      backgroundColor: this.isSelected() ? templates.colors.blue : templates.colors.orange,
+      backgroundColor: this.isSelected() ? templates.colors.green : templates.colors.orange,
     }
   }
 
   // The style of the text
-  textStyle() {
+  styleText() {
     return {
       fontSize: 15,
       textAlign: 'center',
