@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {fetchFylker} from '../utilities/wrapper';
+import {fetchFromAPI} from '../utilities/wrapper';
 
 //Creating storage, should move to own file to handel storing settings etc
 import storageEngine from '../utilities/storageEngine'
@@ -127,7 +127,9 @@ export function setNumberOfObjectsToBeFetched(number){
 }
 
 //Function that sets fetching=true
-export function fetchDataStart() {
+export function fetchDataStart(url) {
+  fetchFromAPI(fetchDataReturned, url);
+
   return {
     type: "FETCH_DATA_START"
   }
