@@ -63,9 +63,15 @@ class RoadMapView extends React.Component {
     for(var i = 0; i < this.props.roadObjects.length; i++) {
       const roadObject = this.props.roadObjects[i]
 
+      // If the road object don't have geometry, skip it
+      if(!(roadObject.geometri && roadObject.geometri.wkt)) {
+        continue;
+      }
+
       if(this.shouldSkipObject(roadObject)) {
         continue;
       }
+
       filteredObjects.push(roadObject);
 
       const geo = parseGeometry(roadObject.geometri.wkt);
@@ -208,9 +214,8 @@ class RoadMapView extends React.Component {
           // If the marker has the selected property
           if(markerProperty) {
             // Skip the marker if the selected filter is HAS_NOT_VALUE
-            if(filter.funksjon === comparators.HAS_NOT_VALUE) {
-              return true;
-            }
+            if(filter.funksjon === comparators.HAS_NOT_VALUE) return true;
+            if(filter.funksjon === comparators.HAS_VALUE) return false;
 
             if(filter.egenskap.tillatte_verdier && filter.verdi) {
               const isEqual = markerProperty.enum_id === filter.verdi.id;
@@ -284,13 +289,14 @@ class RoadMapView extends React.Component {
             key={marker.properties.roadObject.id + 'poly'}
             coordinates={objectCoordinates}
             strokeWidth={3}
+            onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)}
             strokeColor={templates.colors.blue} />
         } else {
           const {roadObject} = marker.properties;
-          if(roadObject.relasjoner && roadObject.relasjoner.foreldre) {
+          if(roadObject && roadObject.relasjoner && roadObject.relasjoner.foreldre) {
             for(var i = index; i < markers.length; i++) {
               const innerObject = markers[i].properties.roadObject;
-              if(innerObject.relasjoner && innerObject.relasjoner.foreldre) {
+              if(innerObject && innerObject.relasjoner && innerObject.relasjoner.foreldre) {
                 if(roadObject.relasjoner.foreldre[0].vegobjekter[0] === innerObject.relasjoner.foreldre[0].vegobjekter[0]) {
                   indexesToSkip.push(i);
                 }

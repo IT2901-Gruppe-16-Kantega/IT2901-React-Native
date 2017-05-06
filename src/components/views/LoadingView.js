@@ -17,7 +17,7 @@ import Button from '../misc/Button'
 import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
-import {fetchFromAPI, fetchObjekttypeInfo, fetchTotalNumberOfObjects} from '../../utilities/wrapper'
+import {fetchFromAPI, fetchObjekttypeInfo} from '../../utilities/wrapper'
 import * as templates from '../../utilities/templates'
 
 import * as dataActions from '../../actions/dataActions'
@@ -55,6 +55,7 @@ class LoadingView extends React.Component {
       this.props.createSearchObject(
         '', // description
         this.props.objects,
+        [], // roads
         [], // report
         this.props.combinedSearchParameters,
         this.props.objekttypeInfo

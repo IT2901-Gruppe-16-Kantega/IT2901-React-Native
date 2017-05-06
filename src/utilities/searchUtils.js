@@ -2,8 +2,6 @@
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';
-//Not used:
-import {fetchVeger} from './wrapper';
 
 
 function searchForFylke(fylkeNavn) {

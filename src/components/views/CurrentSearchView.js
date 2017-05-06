@@ -133,16 +133,20 @@ class CurrentSearchView extends React.Component {
   }
 
   createButtons() {
-    return <View>
-      <View style={styles.topButtons}>
-        <Button text="Kart" type={"half"} onPress={Actions.RoadMapView} />
-        <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
+    const objektNavn = this.props.currentRoadSearch.searchParameters.vegobjekttype.navn;
+
+    return (
+      <View>
+        <View style={styles.topButtons}>
+          <Button text="Kart" type={"half"} onPress={() => Actions.RoadMapView({title: objektNavn})} />
+          <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
+        </View>
+        <View style={styles.bottomButtons}>
+          <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
+          <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
+        </View>
       </View>
-      <View style={styles.bottomButtons}>
-        <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
-        <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
-      </View>
-    </View>
+    );
   }
 
   goBack() {

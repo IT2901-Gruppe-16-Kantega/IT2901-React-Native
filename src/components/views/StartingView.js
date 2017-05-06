@@ -33,11 +33,13 @@ class StartingView extends React.Component {
   }
 
   renderLoadingView() {
-    if(this.props.loadingProgress < 1) {
+    const {loadingProgress, deeplink} = this.props;
+
+    if(loadingProgress < 1) {
       return <View style={styles.loadingProgress}>
         <View style={styles.part}>
           <Progress.Circle
-            progress={this.props.loadingProgress}
+            progress={loadingProgress}
             color={templates.colors.orange}
             showsText={true}
             thickness={10}
@@ -45,12 +47,11 @@ class StartingView extends React.Component {
         </View>
         <View style={[styles.part, styles.bottomPart]}>
           <Text style={this.props.theme.subtitle}>Laster inn lagrede søk. Vennligst vent...</Text>
+          {deeplink.length > 0 && <Text>Går deretter til {deeplink}</Text>}
         </View>
       </View>
     }
-    else {
-      return <View/>
-    }
+    else return <View/>
   }
 }
 
@@ -90,6 +91,7 @@ function mapStateToProps(state) {
     loadingProgress: state.dataReducer.loadingProgress,
     fetching: state.dataReducer.fetching,
     theme: state.settingsReducer.themeStyle,
+    deeplink: state.uiReducer.deeplink,
   }
 }
 

@@ -31,7 +31,7 @@ import SearchMap from './search/SearchMap';
 
 import {searchForFylke} from '../../utilities/searchUtils';
 import {parseGeometry, getCurrentPosition} from '../../utilities/utils';
-import {fetchTotalNumberOfObjects, fetchVeg, fetchCloseby, fetchData} from '../../utilities/wrapper'
+import {fetchCloseby, fetchData} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'

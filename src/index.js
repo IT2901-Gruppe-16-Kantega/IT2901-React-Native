@@ -158,6 +158,9 @@ class App extends Component {
     const url = e ? e.url : e;
     if(!url) return;
 
+    const decoded = decodeURI(url);
+    this.props.setDeeplink(decoded);
+
     if(this.props.loadingProgress < 1) {
       setTimeout(() => {
         this.handleDeepLink(url);
@@ -165,7 +168,8 @@ class App extends Component {
       return;
     }
 
-    const decoded = decodeURI(url);
+    this.props.setDeeplink("");
+
     const parts = decoded.replace(/.*?:\/\//g, "").split("?");
 
     const route = this.getRoute(parts[0]);
@@ -278,6 +282,7 @@ function mapStateToProps(state) {
     selectedObject: state.dataReducer.selectedObject,
 
     navbarHeight: state.uiReducer.navbarHeight,
+    deeplink: state.uiReducer.deeplink,
   };
 }
 
@@ -307,6 +312,7 @@ function mapDispatchToProps(dispatch) {
     reportChange: bindActionCreators(dataActions.reportChange, dispatch),
 
     setNavbarHeight: bindActionCreators(uiActions.setNavbarHeight, dispatch),
+    setDeeplink: bindActionCreators(uiActions.setDeeplink, dispatch),
   }
 }
 
