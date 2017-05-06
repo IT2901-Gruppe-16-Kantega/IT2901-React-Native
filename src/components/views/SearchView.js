@@ -11,6 +11,7 @@ import {
   Animated,
   Modal,
   ActivityIndicator,
+  NetInfo
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -75,6 +76,23 @@ class SearchView extends React.Component {
           />
       </Container>
     );
+  }
+
+
+// Error message if no internet connectivity
+  componentDidMount(){
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (!isConnected){
+        Alert.alert(
+          'Internett utilgjengelig',
+          'Du ser ikke ut til å være tilkoblet internett',
+          [
+            {text: 'Tilbake', onPress: () => {Actions.pop()}},
+          ],
+          { cancelable: false }
+        )
+      }
+    });
   }
 
   renderMainContent() {
@@ -188,7 +206,7 @@ class SearchView extends React.Component {
         this.props.inputClosestRoads(closestList);
 
       }.bind(this));
-    }, (error) => alert(error.message), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    }, (error) => alert(error.message), {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
     );
   }
 
