@@ -18,3 +18,10 @@ export function setNavbarHeight(height) {
     payload: height,
   }
 }
+
+export function setDeeplink(value) {
+  return {
+    type: "SET_DEEPLINK",
+    payload: value,
+  }
+}

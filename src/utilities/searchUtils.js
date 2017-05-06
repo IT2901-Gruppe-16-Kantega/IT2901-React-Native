@@ -2,8 +2,6 @@
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 import {vegobjekttyper} from '../data/vegobjekttyper';
-//Not used:
-import {fetchVeger} from './wrapper';
 
 
 function searchForFylke(fylkeNavn) {
@@ -56,7 +54,8 @@ function compareInput(input) {
   }
 
   const stringInput = this.toString().toLowerCase();
-  return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
+  return input.navn.toLowerCase().indexOf(stringInput) >= 0;
+  //return input.navn.toLowerCase().substring(0, stringInput.length) === stringInput;
 }
 
 function filterKommuneList(input) {

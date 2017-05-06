@@ -15,6 +15,7 @@ import * as Progress from 'react-native-progress';
 import Button from '../misc/Button';
 import Container from '../misc/Container';
 import LocationInputComponent from '../misc/LocationInputComponent';
+import PropertyValue from '../misc/PropertyValue';
 import SettingSwitch from '../misc/SettingSwitch';
 
 import * as templates from '../../utilities/templates';
@@ -31,6 +32,11 @@ class SettingsView extends React.Component {
         value={this.props.darkModeOn}
         title={"Nattmodus"}
         description={"BETA: Mørk bakgrunn og lys tekst."} />
+      <View style={{ padding: 10 }}>
+        <Text style={this.props.theme.title}>Statistikk</Text>
+        <PropertyValue property={"Antall søk"} value={0} />
+        <PropertyValue property={"Antall endringer"} value={this.props.changeCount} />
+      </View>
       <Button type="list" text="Hjelp" onPress={Actions.HelpView} />
     </Container>
   }
@@ -38,6 +44,7 @@ class SettingsView extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    theme: state.settingsReducer.themeStyle,
     clusteringOn: state.settingsReducer.clusteringOn,
     darkModeOn: state.settingsReducer.darkModeOn,
     changeCount: state.reportReducer.changeCount,

@@ -68,7 +68,11 @@ class CurrentSearchView extends React.Component {
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
           <View style={styles.informationArea}>
             <View style={styles.info}>
-              <Button type={"small"} text={"Del dette søket"} onPress={this.shareSearch.bind(this)} />
+              <Button type={"small"} text={"Del dette søket"} onPress={() => this.shareString()} />
+              <TouchableHighlight
+                onPress={this.shareString.bind(this, currentRoadSearch.key)}>
+                <View><PropertyValue property={"Søke-ID"} value={currentRoadSearch.key} /></View>
+              </TouchableHighlight>
               <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
               <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
               <PropertyValue property={"Fylke"} value={fylkeValue} />
@@ -82,16 +86,19 @@ class CurrentSearchView extends React.Component {
     );
   }
 
-  shareSearch() {
-    //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
-    const params = this.props.currentRoadSearch.searchParameters;
-    var url = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
+  shareString(value) {
+    var message;
+    if(!value) {
+      //vegar.kart://vegobjekter/<type>?fylke=16&kommune=1601&vegreferanse=K5040
+      const params = this.props.currentRoadSearch.searchParameters;
+      message = 'vegar.kart://vegobjekter/' + params.vegobjekttype.id + '?';
 
-    if(params.fylke) url += "fylke=" + params.fylke.nummer + "&"
-    if(params.kommune) url += "kommune=" + params.kommune.nummer + "&"
-    if(params.veg) url += "vegreferanse=" + params.veg + "&"
+      if(params.fylke) message += "fylke=" + params.fylke.nummer + "&"
+      if(params.kommune) message += "kommune=" + params.kommune.nummer + "&"
+      if(params.veg) message += "vegreferanse=" + params.veg + "&"
+    } else message = value + "";
 
-    Share.share({ message: url })
+    Share.share({ message })
   }
 
   createDescriptionArea() {
@@ -126,16 +133,20 @@ class CurrentSearchView extends React.Component {
   }
 
   createButtons() {
-    return <View>
-      <View style={styles.topButtons}>
-        <Button text="Kart" type={"half"} onPress={Actions.RoadMapView} />
-        <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
+    const objektNavn = this.props.currentRoadSearch.searchParameters.vegobjekttype.navn;
+
+    return (
+      <View>
+        <View style={styles.topButtons}>
+          <Button text="Kart" type={"half"} onPress={() => Actions.RoadMapView({title: objektNavn})} />
+          <Button text="AR" type={"half"} onPress={this.openAR.bind(this)} />
+        </View>
+        <View style={styles.bottomButtons}>
+          <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
+          <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
+        </View>
       </View>
-      <View style={styles.bottomButtons}>
-        <Button text="Rapport" type={"half"} onPress={Actions.ReportView} />
-        <Button text="Tilbake" type={"half"} onPress={this.goBack.bind(this)} />
-      </View>
-    </View>
+    );
   }
 
   goBack() {

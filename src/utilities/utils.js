@@ -57,4 +57,11 @@ function AR(platform, search, callback) {
   }
 }
 
-export {parseGeometry, randomColor, AR, isAndroid, isIOS};
+function getCurrentPosition(callback) {
+  navigator.geolocation.getCurrentPosition((pos) => {
+    callback(pos);
+  }, (error) => alert(error.message), {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+  );
+}
+
+export {parseGeometry, randomColor, AR, isAndroid, isIOS, getCurrentPosition};

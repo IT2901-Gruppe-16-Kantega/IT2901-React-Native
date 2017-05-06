@@ -50,7 +50,8 @@ class ObjectInfoView extends React.Component {
 
   render() {
     const {selectedObject, objekttypeInfo} = this.props;
-    const {metadata} = selectedObject;
+    const {metadata, egenskaper} = selectedObject;
+    const dataSource = ds.cloneWithRows(egenskaper || [])
 
     return <Container>
         <View style={this.mainBoxStyle()}>
@@ -64,7 +65,7 @@ class ObjectInfoView extends React.Component {
         <ListView
           keyboardShouldPersistTaps='always'
           style={{marginBottom: this.props.keyboardPadding}}
-          dataSource={ds.cloneWithRows(selectedObject.egenskaper)}
+          dataSource={dataSource}
           renderHeader={this.renderHeader.bind(this)}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
@@ -154,6 +155,7 @@ class ObjectInfoView extends React.Component {
     var notExistingProperties = objekttypeInfo.egenskapstyper.filter(typeEgenskap => {
       const findFunction = function(objektEgenskap) { return objektEgenskap.id === typeEgenskap.id }
       var existsInReport = false;
+      if(!selectedObject.egenskaper) return !(existsInReport);
       return !(selectedObject.egenskaper.find(findFunction) || existsInReport)
     });
 

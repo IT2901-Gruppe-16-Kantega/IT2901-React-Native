@@ -93,12 +93,13 @@ export function setCurrentRoadSearch(roadSearch) {
 }
 
 
-export function createSearchObject(description, objects, report, combParams, objekttypeInfo) {
+export function createSearchObject(description, objects, roads, report, combParams, objekttypeInfo) {
   var roadSearch = {
     key: Date.now(),
     date: moment().format('MMMM Do YYYY, h:mm:ss a'),
     description: description,
     roadObjects: objects,
+    roads: roads,
     report: report,
     searchParameters: combParams,
     objekttypeInfo: objekttypeInfo,

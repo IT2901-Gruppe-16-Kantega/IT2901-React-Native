@@ -15,6 +15,8 @@ export default function reducer(state={
   region: null,
   markers: null,
   cluster: null,
+  followsUser: false,
+  currentUserPosition: null,
 
 }, action) {
   //simple switch statement based on type of action
@@ -36,6 +38,12 @@ export default function reducer(state={
     }
     case "SET_CLUSTER": {
       return {...state, cluster: action.payload}
+    }
+    case "TOGGLE_FOLLOW_USER": {
+      return {...state, followsUser: !state.followsUser}
+    }
+    case "SET_CURRENT_USER_POSITION": {
+      return {...state, currentUserPosition: action.payload}
     }
   }
   return state
