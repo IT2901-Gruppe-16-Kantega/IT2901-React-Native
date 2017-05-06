@@ -11,7 +11,8 @@ import {
   Animated,
   Modal,
   ActivityIndicator,
-  NetInfo
+  NetInfo,
+  Platform
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -61,10 +62,6 @@ var selectedVegreferanse;
 View used when user specifies what data to be fetched from NVDB
 */
 class SearchView extends React.Component {
-  componentDidMount() {
-    this.getUserPosition();
-  }
-
   render() {
     return (
       <Container>
@@ -90,8 +87,14 @@ class SearchView extends React.Component {
 
 
   componentDidMount() {
+    this.getUserPosition();
     // Add netinfo listener on mount
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
+    if (Platform.OS === 'android'){
+      NetInfo.isConnected.fetch().then(isConnected => {
+        this.handleConnectionChange(isConnected);
+      });
+    }
   }
 
   componentWillUnmount() {
