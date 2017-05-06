@@ -1,15 +1,15 @@
 // react imports
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  LayoutAnimation,
-  Dimensions,
-  Navigator,
-  Platform,
-  UIManager,
-  Linking
+	StyleSheet,
+	Text,
+	View,
+	LayoutAnimation,
+	Dimensions,
+	Navigator,
+	Platform,
+	UIManager,
+	Linking
 } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 
@@ -150,7 +150,7 @@ class App extends Component {
       return { type: "rapport", id: id }
     }
     else {
-      return { type: 'feil', message: 'Støtter ikke denne URLen.' }
+      return { type: 'main' }
     }
   }
 
@@ -234,6 +234,8 @@ class App extends Component {
           alert("Søket med ID " + route.id + " finnes ikke.")
         }
       }, 10);
+    } else {
+      Actions.StartingView();
     }
   }
 
@@ -283,7 +285,7 @@ function mapStateToProps(state) {
 
     navbarHeight: state.uiReducer.navbarHeight,
     deeplink: state.uiReducer.deeplink,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

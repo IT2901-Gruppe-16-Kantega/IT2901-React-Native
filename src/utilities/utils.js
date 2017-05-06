@@ -1,5 +1,6 @@
 import userDefaults from 'react-native-user-defaults'
 import { Platform } from 'react-native';
+import RNFS from 'react-native-fs'
 
 const arURL = 'vegar.ar:';
 
@@ -49,7 +50,7 @@ function AR(platform, search, callback) {
   } else {
     // Save data.json
     let dataPath = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files/data.json";
-    RNFS.writeFile(dataPath, data, "utf8")
+    RNFS.writeFile(dataPath, JSON.stringify(search.key), "utf8")
     .then((success) => callback(arURL)).catch((err) => alert(err))
     // TODO Save roads.json here
     //let roadsPath = RNFS.ExternalDirectoryPath + "/roads.json";

@@ -12,12 +12,12 @@ Kommer
 - React Native
 
 ## Laget av
-- Vegard Bjørgan
-- Martin Bårnes
-- Ninh Qui Do
-- Mahamud Abdirahman Hussein
-- Sondre Tharaldsen
-- Magnus Warvik
+- [Vegard Bjørgan](https://github.com/vegabj)
+- [Martin Bårnes](https://github.com/barnes89)
+- [Ninh Qui Do](https://github.com/NinhDo)
+- [Mahamud Abdirahman Hussein](https://github.com/uxud)
+- [Sondre Tharaldsen](https://github.com/sontha)
+- [Magnus Warvik](https://github.com/mwarvik)
 
 ## Lisens
 Dette prosjektet har åpen kildekode.
