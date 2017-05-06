@@ -269,7 +269,6 @@ function mapStateToProps(state) {
 
 		currentRoadSearch: state.dataReducer.currentRoadSearch,
 		selectedObject: state.dataReducer.selectedObject,
-
 		navbarHeight: state.uiReducer.navbarHeight,
 	};
 }
@@ -298,7 +297,6 @@ function mapDispatchToProps(dispatch) {
 		setCurrentRoadSearch: bindActionCreators(dataActions.setCurrentRoadSearch, dispatch),
 		selectObject: bindActionCreators(dataActions.selectObject, dispatch),
 		reportChange: bindActionCreators(dataActions.reportChange, dispatch),
-
 		setNavbarHeight: bindActionCreators(uiActions.setNavbarHeight, dispatch),
 	}
 }

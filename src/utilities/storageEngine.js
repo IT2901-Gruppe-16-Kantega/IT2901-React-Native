@@ -11,7 +11,6 @@ const pathType = {
 
 const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
 const rootPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files";
-const searchesPathAndroid = rootPathAndroid + "/searches";
 
 export default (key) => ({
 
@@ -73,14 +72,14 @@ export default (key) => ({
 			RNFS.readFile(rootPathAndroid + "/report.json")
 			.then((reportSuccess) => {
 				var reportData = JSON.parse(reportSuccess);
-				RNFS.readFile(searchesPathAndroid + "/" + reportKey + ".json")
+				RNFS.readFile(searchesPath() + "/" + reportKey + ".json")
 				.then((dataSuccess) => {
 					var searchData = JSON.parse(dataSuccess);
 					for (var i = 0; i < reportData.reportObjects.length; i++) {
 						console.log(reportData.reportObjects[i]);
 						searchData.report.push(reportData.reportObjects[i] || {});
 					}
-					this.writeFile(searchesPathAndroid + "/" + reportKey + ".json", JSON.stringify(searchData))
+					this.writeFile(searchesPath() + "/" + reportKey + ".json", JSON.stringify(searchData))
 					.then((success) => {
 						console.log("Report loaded from VegAR(AR) and saved successfully");
 						resolve(reportData);
