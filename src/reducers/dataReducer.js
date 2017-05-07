@@ -8,6 +8,7 @@ export default function reducer(state={
   numberOfObjectsFetchedSoFar: 0,
 
   objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
+  roads: [],
 
   allSearches:[],
 
@@ -98,7 +99,7 @@ export default function reducer(state={
         numberOfObjectsFetchedSoFar: action.payload.currentlyFetched
       }
     }
-    case "FETCH_DATA_RETURNED":{
+    case "FETCH_DATA_RETURNED": {
       return {
         ...state,
         fetching: action.payload.fetching,
@@ -129,6 +130,13 @@ export default function reducer(state={
     }
     case "SET_FILTERED_ROAD_OBJECTS": {
       return {...state, filteredRoadObjects: action.payload}
+    }
+
+    case "OBJECTS_RETURNED": {
+      return {...state, objects: action.payload, numberOfObjectsFetchedSoFar: action.payload.length}
+    }
+    case "ROADS_RETURNED": {
+      return {...state, roads: action.payload}
     }
   }
   return state

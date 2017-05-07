@@ -60,8 +60,9 @@ class RoadMapView extends React.Component {
     var features = [];
     var filteredObjects = [];
 
-    for(var i = 0; i < this.props.roadObjects.length; i++) {
-      const roadObject = this.props.roadObjects[i]
+    const combined = this.props.roadObjects.concat(this.props.roads);
+    for(var i = 0; i < combined.length; i++) {
+      const roadObject = combined[i]
 
       // If the road object don't have geometry, skip it
       if(!(roadObject.geometri && roadObject.geometri.wkt)) {
@@ -378,6 +379,8 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    roads: state.dataReducer.currentRoadSearch.roads,
+
     filteredRoadObjects: state.dataReducer.filteredRoadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,

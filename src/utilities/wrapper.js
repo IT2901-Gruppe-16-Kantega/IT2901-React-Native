@@ -12,8 +12,50 @@ const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antagelig vil firstobjet.metadata.returnert feile og denne må håndteres
 
+function startSearch(id, url, statsURL, call) {
+  console.log(url)
+  var values = {number: null, objects: null, roads: null, info: null}
+  call(values);
+
+  fetchFromAPI(callback => {
+    values.objects = callback;
+    call(values);
+  }, url);
+
+  fetchObjekttypeInfo(96, callback => {
+    values.info = callback;
+    call(values);
+  })
+
+  getNumberOfObjects(statsURL, callback => {
+    values.number = callback;
+    call(values);
+  })
+
+  if(id !== 532) {
+    const roadURL = url.replace("vegobjekter/" + id, 'vegobjekter/532').replace("inkluder=alle", "inkluder=geometri");
+    console.log(roadURL)
+    fetchFromAPI(callback => {
+      values.roads = callback;
+      call(values);
+    }, roadURL);
+  }
+}
+
+function getNumberOfObjects(url, callback) {
+  console.log(url)
+  fetchData(url).then(response => {
+    console.log(response)
+    if(!response.antall && response.length > 0 && response[0].code === 4005) {
+      callback(0);
+    } else {
+      callback(response.antall);
+    }
+  });
+}
+
 function fetchFromAPI(callback, url) {
-  //console.log('#wrapper.fetchFromAPI');
+  console.log('#wrapper.fetchFromAPI:');
   var objects = [];
   fetchData(url).then(function(firstObject) {
     var flere = firstObject.metadata.returnert;
@@ -103,4 +145,4 @@ function fetchObjekttypeInfo(objekttypeID, callback) {
   })
 }
 
-export {fetchFromAPI, fetchKommuner, fetchObjekttypeInfo, fetchCloseby, fetchData};
+export {fetchFromAPI, fetchKommuner, fetchObjekttypeInfo, fetchCloseby, fetchData, startSearch, getNumberOfObjects};
