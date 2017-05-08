@@ -159,7 +159,6 @@ class App extends Component {
     if(!url) return;
 
     const decoded = decodeURI(url);
-    this.props.setDeeplink(decoded);
 
     if(this.props.loadingProgress < 1) {
       setTimeout(() => {
@@ -167,8 +166,6 @@ class App extends Component {
       }, 100);
       return;
     }
-
-    this.props.setDeeplink("");
 
     const parts = decoded.replace(/.*?:\/\//g, "").split("?");
 
@@ -224,8 +221,9 @@ class App extends Component {
                     const change = reportObject.endringer[j];
                     this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
                   }
-                }
               }
+							userDefaults.set("report", null, "group.vegar");
+						}
             }).catch(err => console.log(err))
           }
           Actions.CurrentSearchView();
@@ -268,23 +266,27 @@ class App extends Component {
 	    const progress = (roads.length + objects.length + fakeProgress) / (numberOfRoadsToBeFetched + numberOfObjectsToBeFetched);
 
 			this.props.setProgress(Math.min(progress, 1));
-
-			if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo) {
-				this.props.createSearchObject(
-					'', // description
-					objects,
-					roads, // roads
-					[], // report
-					this.props.combinedSearchParameters,
-					objekttypeInfo
-				);
-
-				this.props.resetSearchParameters();
-				this.props.resetFakeProgress();
-				this.props.setProgress(0);
-				Actions.CurrentSearchView({type: 'reset'});
-			}
 		}
+
+		setTimeout(() => {
+			if(this.props.fetching) {
+				if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo) {
+					this.props.createSearchObject(
+						'', // description
+						objects,
+						roads, // roads
+						[], // report
+						this.props.combinedSearchParameters,
+						objekttypeInfo
+					);
+
+					this.props.resetSearchParameters();
+					this.props.resetFakeProgress();
+					this.props.setProgress(0);
+					Actions.CurrentSearchView({type: 'reset'});
+				}
+			}
+		}, 10);
 	}
 
   toggleSidebar(close) {
@@ -377,6 +379,7 @@ function mapDispatchToProps(dispatch) {
 		createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
 
 		resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
+		setFetching: bindActionCreators(dataActions.setFetching, dispatch),
   }
 }
 
