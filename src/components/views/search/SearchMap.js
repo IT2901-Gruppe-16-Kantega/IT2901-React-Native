@@ -40,7 +40,7 @@ class SearchMap extends React.Component {
           {this.renderMarker()}
         </MapView>
         <View style={{ position: 'absolute', right: 10, top: 10, width: 50 }}>
-          <Button type={"small"} text={this.props.followsUser ? "📍" : "🚗"} onPress={this.toggleMapCenter.bind(this)} />
+          <Button type={"small"} text={this.props.followsUser ? "📍" : "ⵙ"} onPress={this.toggleMapCenter.bind(this)} />
         </View>
       </View>
     );
