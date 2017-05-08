@@ -32,6 +32,8 @@ export default function reducer(state={
   vegobjekttyperChosen: false,
   vegobjekttyperColor: templates.colors.red,
 
+  objekttypeInfo: [],
+
   //
   url: '',
   statisticsURL: '',
@@ -51,9 +53,13 @@ export default function reducer(state={
   vegobjekttyperNavn: '',
 
   fakeProgress: 0,
+  progress: 0,
 
 }, action) {
   switch (action.type) {
+    case "SET_OBJEKTTYPE_INFO": {
+      return {...state, objekttypeInfo: action.payload}
+    }
     case "INPUT_CLOSEST_ROADS": {
       return {
         ...state,
@@ -361,10 +367,13 @@ export default function reducer(state={
       return {...state, fylkeCoordinates: action.payload}
     }
     case "INCREMENT_FAKE_PROGRESS": {
-      return {...state, fakeProgress: state.fakeProgress + 1}
+      return {...state, fakeProgress: state.fakeProgress + action.payload}
     }
     case "RESET_FAKE_PROGRESS": {
       return {...state, fakeProgress: 0}
+    }
+    case "SET_PROGRESS": {
+      return {...state, progress: action.payload}
     }
   }
   return state

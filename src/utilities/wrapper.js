@@ -13,8 +13,7 @@ const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
 //MEN antagelig vil firstobjet.metadata.returnert feile og denne må håndteres
 
 function startSearch(id, url, statsURL, call) {
-  console.log(url)
-  var values = {number: null, objects: null, roads: null, info: null}
+  var values = {number: 1, objects: null, roads: null, info: null, roadNumber: 1}
   call(values);
 
   fetchFromAPI(callback => {
@@ -22,7 +21,7 @@ function startSearch(id, url, statsURL, call) {
     call(values);
   }, url);
 
-  fetchObjekttypeInfo(96, callback => {
+  fetchObjekttypeInfo(id, callback => {
     values.info = callback;
     call(values);
   })
@@ -34,11 +33,16 @@ function startSearch(id, url, statsURL, call) {
 
   if(id !== 532) {
     const roadURL = url.replace("vegobjekter/" + id, 'vegobjekter/532').replace("inkluder=alle", "inkluder=geometri");
-    console.log(roadURL)
     fetchFromAPI(callback => {
       values.roads = callback;
       call(values);
     }, roadURL);
+
+    const roadStatsURL = statsURL.replace("vegobjekter/" + id, 'vegobjekter/532');
+    getNumberOfObjects(roadStatsURL, callback => {
+      values.roadNumber = callback;
+      call(values);
+    }, roadStatsURL);
   }
 }
 

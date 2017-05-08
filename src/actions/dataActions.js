@@ -103,6 +103,7 @@ export function createSearchObject(description, objects, roads, report, combPara
     searchParameters: combParams,
     objekttypeInfo: objekttypeInfo,
   }
+  console.log(roadSearch);
   searchSaved(roadSearch)
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
@@ -174,13 +175,6 @@ export function writingFile() {
   }
 }
 
-export function setObjekttypeInfo(objekttypeInfo) {
-  return {
-    type: "SET_OBJEKTTYPE_INFO",
-    payload: objekttypeInfo,
-  }
-}
-
 export function setFilteredRoadObjects(roadObjects) {
   return {
     type: "SET_FILTERED_ROAD_OBJECTS",
@@ -224,5 +218,12 @@ export function roadsReturned(roads) {
   return {
     type: "ROADS_RETURNED",
     payload: roads,
+  }
+}
+
+export function setNumberOfRoadsToBeFetched(number) {
+  return {
+    type: "SET_NUMBER_OF_ROADS_TO_BE_FETCHED",
+    payload: number,
   }
 }

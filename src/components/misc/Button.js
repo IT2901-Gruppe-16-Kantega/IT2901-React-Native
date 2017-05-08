@@ -29,10 +29,12 @@ export default class Button extends React.Component {
     text: PropTypes.string.isRequired,
     onPress: PropTypes.func.isRequired,
     type: PropTypes.oneOf(Object.values(types)).isRequired,
+    disabled: PropTypes.bool,
   }
 
   render() {
     return <TouchableHighlight
+      disabled={this.props.disabled || false}
       style={this.styleButton()}
       onPress={this.props.onPress}
       underlayColor={templates.colors.green}>
@@ -44,7 +46,7 @@ export default class Button extends React.Component {
   styleButton() {
     const {type} = this.props;
     var style = {
-      backgroundColor: templates.colors.orange,
+      backgroundColor: this.props.disabled ? templates.colors.lightGray : templates.colors.orange,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 2,

@@ -212,10 +212,27 @@ export function generateURL() {
   return { type: "GENERATE_URL" }
 }
 
-export function incrementFakeProgress() {
-  return { type: "INCREMENT_FAKE_PROGRESS" }
+export function incrementFakeProgress(number) {
+  return {
+    type: "INCREMENT_FAKE_PROGRESS",
+    payload: number,
+  }
 }
 
 export function resetFakeProgress() {
   return { type: "RESET_FAKE_PROGRESS" }
+}
+
+export function setProgress(progress) {
+  return {
+    type: "SET_PROGRESS",
+    payload: progress,
+  }
+}
+
+export function setObjekttypeInfo(objekttypeInfo) {
+  return {
+    type: "SET_OBJEKTTYPE_INFO",
+    payload: objekttypeInfo,
+  }
 }

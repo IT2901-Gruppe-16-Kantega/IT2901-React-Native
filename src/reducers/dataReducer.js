@@ -7,6 +7,8 @@ export default function reducer(state={
   numberOfObjectsToBeFetched: 0,
   numberOfObjectsFetchedSoFar: 0,
 
+  numberOfRoadsToBeFetched: 0,
+
   objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
   roads: [],
 
@@ -22,8 +24,6 @@ export default function reducer(state={
 
   //used by filewriter
   writingFile: false,
-
-  objekttypeInfo: [], // Not used?
 
   isEditingRoadObject: false,
   editingProperty: null,
@@ -125,9 +125,6 @@ export default function reducer(state={
         writingFile: true,
       }
     }
-    case "SET_OBJEKTTYPE_INFO": {
-      return {...state, objekttypeInfo: action.payload}
-    }
     case "SET_FILTERED_ROAD_OBJECTS": {
       return {...state, filteredRoadObjects: action.payload}
     }
@@ -137,6 +134,9 @@ export default function reducer(state={
     }
     case "ROADS_RETURNED": {
       return {...state, roads: action.payload}
+    }
+    case "SET_NUMBER_OF_ROADS_TO_BE_FETCHED": {
+      return {...state, numberOfRoadsToBeFetched: action.payload}
     }
   }
   return state

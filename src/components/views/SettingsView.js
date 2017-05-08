@@ -32,11 +32,6 @@ class SettingsView extends React.Component {
         value={this.props.darkModeOn}
         title={"Nattmodus"}
         description={"BETA: Mørk bakgrunn og lys tekst."} />
-      <View style={{ padding: 10 }}>
-        <Text style={this.props.theme.title}>Statistikk</Text>
-        <PropertyValue property={"Antall søk"} value={0} />
-        <PropertyValue property={"Antall endringer"} value={this.props.changeCount} />
-      </View>
       <Button type="list" text="Hjelp" onPress={Actions.HelpView} />
     </Container>
   }
