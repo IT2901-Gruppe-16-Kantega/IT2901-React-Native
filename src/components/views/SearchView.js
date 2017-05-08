@@ -79,6 +79,7 @@ class SearchView extends React.Component {
                 this.getUserPosition(true);
               } else {
                 this.props.setChosenSearchTab(tabs.CLOSEST);
+                this.getUserPosition(true);
               }
             }}
           ]}
@@ -213,10 +214,10 @@ class SearchView extends React.Component {
     const {currentUserPosition} = this.props;
 
     if(!currentUserPosition || force) {
-      console.log("getting position")
       getCurrentPosition(position => {
-        this.fetchRoads(position.coords);
-        this.props.setCurrentUserPosition(position);
+        fetchCloseby(10, position.coords, function(closestList) {
+          this.props.inputClosestRoads(closestList);
+        }.bind(this));
       });
     }
   }
