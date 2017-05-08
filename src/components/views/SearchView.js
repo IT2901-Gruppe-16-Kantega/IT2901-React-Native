@@ -97,7 +97,7 @@ class SearchView extends React.Component {
           'Internett utilgjengelig',
           'Du ser ikke ut til å være tilkoblet internett',
           [
-            {text: 'Tilbake', onPress: () => {Actions.pop()}},
+            {text: 'Tilbake', onPress: () => {Actions.pop()}}
           ],
           { cancelable: false }
         )
@@ -274,6 +274,10 @@ class SearchView extends React.Component {
         Alert.alert(alertType.ERROR, "Dette søket genererer ingen objekter " +
           "(eller så må du vente på at søket fullføres). Det kan også hende at du " +
           "må trykke på et felt på nytt for å oppdatere telleren.");
+      }
+      else if(numObjects >= 31999) {
+        Alert.alert(alertType.ERROR, "Det er ikke mulig å hente flere enn 32000" +
+        " objekter i et søk, prøv å begrens ditt søk ytterligere.");
       }
       else if(!this.props.vegobjekttyperChosen) {
         Alert.alert(alertType.ERROR, "Ingen vegobjekttyper spesifisert");
