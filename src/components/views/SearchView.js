@@ -11,7 +11,8 @@ import {
   Animated,
   Modal,
   ActivityIndicator,
-  NetInfo
+  NetInfo,
+  Platform
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -92,6 +93,12 @@ class SearchView extends React.Component {
   componentDidMount() {
     // Add netinfo listener on mount
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
+    // Get inital state for Android
+    if (Platform.OS === 'android'){
+      NetInfo.isConnected.fetch().then(isConnected => {
+        this.handleConnectionChange(isConnected);
+      });
+    }
   }
 
   componentWillUnmount() {
