@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   Picker,
+  UIManager,
 } from 'react-native';
 
 
