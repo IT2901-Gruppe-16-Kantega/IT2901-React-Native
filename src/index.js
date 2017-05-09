@@ -32,6 +32,7 @@ import StartingView from './components/views/StartingView'
 import StoredDataView from './components/views/StoredDataView'
 import WelcomeView from './components/views/WelcomeView'
 
+import MarkerCallout from './components/misc/MarkerCallout'
 import NavigationBar from './components/misc/NavigationBar'
 
 // misc imports
@@ -80,7 +81,8 @@ class App extends Component {
         <Scene key="CurrentSearchView" component={CurrentSearchView} title="Info om søk" hideNavBar={false} />
         <Scene key="ReportView" component={ReportView} title="Rapport" hideNavBar={false} />
         <Scene key="ObjectInfoView" component={ObjectInfoView} title="Objektinfo" hideNavBar={false} />
-        <Scene key="RoadMapView"
+				<Scene key="MarkerCallout" component={MarkerCallout} hideNavBar={false} />
+				<Scene key="RoadMapView"
           navigationBarStyle={{ backgroundColor: 'rgba(0,0,0,0) '}}
           component={RoadMapView}
           onRight={ () => this.toggleSidebar() }

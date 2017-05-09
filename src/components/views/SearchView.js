@@ -11,7 +11,8 @@ import {
   Animated,
   Modal,
   ActivityIndicator,
-  NetInfo
+  NetInfo,
+  Platform
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -75,6 +76,7 @@ class SearchView extends React.Component {
             {title: tabs.SEARCH, onPress: () => this.props.setChosenSearchTab(tabs.SEARCH)},
             {title: tabs.MAP, onPress: () => this.props.setChosenSearchTab(tabs.MAP)},
             {title: tabs.CLOSEST, onPress: () => {
+              // If user retaps same tab, then force user position refresh
               if(this.props.chosenSearchTab === tabs.CLOSEST) {
                 this.getUserPosition(true);
               } else {
@@ -88,23 +90,33 @@ class SearchView extends React.Component {
     );
   }
 
+  componentDidMount() {
+    // Add netinfo listener on mount
+    NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
+    // Get inital state for Android
+    if (Platform.OS === 'android'){
+      NetInfo.isConnected.fetch().then(isConnected => {
+        this.handleConnectionChange(isConnected);
+      });
+    }
+  }
 
-// Error message if no internet connectivity
-  componentDidMount(){
-    /*
-    NetInfo.isConnected.fetch().then(isConnected => {
-      if (!isConnected){
-        Alert.alert(
-          'Internett utilgjengelig',
-          'Du ser ikke ut til å være tilkoblet internett',
-          [
-            {text: 'Tilbake', onPress: () => {Actions.pop()}}
-          ],
-          { cancelable: false }
-        )
-      }
-    });
-    */
+  componentWillUnmount() {
+    // Remove netinfo listener on unmount
+    NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
+  }
+
+  handleConnectionChange(isConnected) {
+    // Error message if no internet connectivity
+    if (!isConnected){
+      Alert.alert(
+        alertType.WARNING,
+        'Du ser ikke ut til å være tilkoblet internett.',
+        [{text: 'Tilbake', onPress: () => {Actions.pop()}}],
+        { cancelable: false }
+      )
+    }
+
   }
 
   renderMainContent() {
