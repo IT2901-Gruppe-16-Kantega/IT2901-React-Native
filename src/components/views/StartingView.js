@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  NativeEventEmitter
+  NativeEventEmitter,
+  TouchableHighlight
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -15,7 +16,10 @@ import * as Progress from 'react-native-progress';
 import Button from '../misc/Button'
 import Container from '../misc/Container'
 
+import storageEngine from '../../utilities/storageEngine';
 import * as templates from '../../utilities/templates'
+import * as dataActions from '../../actions/dataActions';
+const storage = storageEngine('NVDB-storage');
 
 /*
 starting page of application
@@ -34,7 +38,6 @@ class StartingView extends React.Component {
 
   renderLoadingView() {
     const {loadingProgress, deeplink} = this.props;
-
     if(loadingProgress < 1) {
       return <View style={styles.loadingProgress}>
         <View style={styles.part}>
@@ -53,7 +56,15 @@ class StartingView extends React.Component {
     }
     else return <View/>
   }
+
+  issueDeleteAllSearches() {
+    console.log('asd')
+    storage.clear();
+    this.props.clearAllSearches();
+  }
 }
+
+
 
 var styles = StyleSheet.create({
   loadingProgress: {
@@ -92,6 +103,12 @@ function mapStateToProps(state) {
     fetching: state.dataReducer.fetching,
     theme: state.settingsReducer.themeStyle,
     deeplink: state.uiReducer.deeplink,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    clearAllSearches: bindActionCreators(dataActions.clearAllSearches, dispatch),
   }
 }
 

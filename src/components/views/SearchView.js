@@ -91,6 +91,7 @@ class SearchView extends React.Component {
 
 // Error message if no internet connectivity
   componentDidMount(){
+    /*
     NetInfo.isConnected.fetch().then(isConnected => {
       if (!isConnected){
         Alert.alert(
@@ -103,6 +104,7 @@ class SearchView extends React.Component {
         )
       }
     });
+    */
   }
 
   renderMainContent() {
