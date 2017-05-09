@@ -17,7 +17,7 @@ import Button from '../misc/Button'
 import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
-import {fetchFromAPI, fetchObjekttypeInfo} from '../../utilities/wrapper'
+import {fetchFromAPI, fetchObjekttypeInfo, startSearch} from '../../utilities/wrapper'
 import * as templates from '../../utilities/templates'
 
 import * as dataActions from '../../actions/dataActions'
@@ -31,52 +31,25 @@ view shown when fetching/loading data
 */
 class LoadingView extends React.Component {
   componentWillMount() {
-    fetchObjekttypeInfo(this.props.combinedSearchParameters.vegobjekttype.id, function(data) {
-      this.props.setObjekttypeInfo(data);
+    this.props.fetchDataStart();
 
-      fetchFromAPI(this.props.fetchDataReturned, this.props.url);
-    }.bind(this));
-
-    this.props.fetchDataStart(this.props.url);
-  }
-
-  componentDidMount() {
-    this.interval = setInterval(this.increment.bind(this), 1000);
-  }
-
-  increment() {
-    console.log(this.props.fakeProgress)
-    this.props.incrementFakeProgress();
-  }
-
-  //this may be really bad as componentDidUpdate may be called a lot of times
-  componentDidUpdate() {
-    if(this.props.fetched) {
-      this.props.createSearchObject(
-        '', // description
-        this.props.objects,
-        [], // roads
-        [], // report
-        this.props.combinedSearchParameters,
-        this.props.objekttypeInfo
-      );
-
-      this.props.resetSearchParameters();
-      this.props.resetFakeProgress();
-      Actions.CurrentSearchView({type: 'reset'});
-    }
+    const id = this.props.combinedSearchParameters.vegobjekttype.id;
+    startSearch(id, this.props.url, this.props.statisticsURL, callback => {
+      if(callback.number) this.props.setNumberOfObjectsToBeFetched(callback.number);
+      if(callback.info) this.props.setObjekttypeInfo(callback.info);
+      if(callback.roads) this.props.roadsReturned(callback.roads);
+      if(callback.objects) this.props.objectsReturned(callback.objects);
+      if(callback.roadNumber) this.props.setNumberOfRoadsToBeFetched(callback.roadNumber);
+    })
   }
 
   render() {
-    const {numberOfObjectsToBeFetched, numberOfObjectsFetchedSoFar} = this.props;
-    const progress = numberOfObjectsFetchedSoFar / numberOfObjectsToBeFetched;
-
     return (
       <Container>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <Progress.Circle
             size={ScreenWidth / 1.5}
-            progress={progress}
+            progress={this.props.progress}
             borderWidth={3}
             thickness={10}
             showsText={true}
@@ -86,18 +59,13 @@ class LoadingView extends React.Component {
         <View style={{ flex: 1 }}>
           <View style={{ alignItems: 'center' }}>
             <Text style={this.props.theme.title}>Informasjon om søket</Text>
-            <PropertyValue property={"Antall objekter hentet"} value={this.props.numberOfObjectsFetchedSoFar + this.props.fakeProgress} />
-            <PropertyValue property={"Antall objekter totalt"} value={this.props.numberOfObjectsToBeFetched} />
-            <Button type="title" text="Avbryt" onPress={Actions.SearchView} />
+            <PropertyValue property={"Info hentet"} value={this.props.objekttypeInfo ? "JA" : "NEI"} />
+            <PropertyValue property={"Veger hentet"} value={this.props.roads.length + "/" + this.props.numberOfRoadsToBeFetched} />
+            <PropertyValue property={"Objekter hentet"} value={this.props.objects.length + Math.round(this.props.fakeProgress) + "/" + this.props.numberOfObjectsToBeFetched} />
           </View>
         </View>
       </Container>
     );
-  }
-
-  randomColor() {
-    const colors = [templates.colors.orange, templates.colors.blue, templates.colors.green];
-    return colors[Math.floor(Math.random() * colors.length)];
   }
 }
 
@@ -106,40 +74,36 @@ function mapStateToProps(state) {
     theme: state.settingsReducer.themeStyle,
 
     url: state.searchReducer.url,
-
-    //Fields used when creating URL
-    kommune: state.searchReducer.kommuneInput,
+    statisticsURL: state.searchReducer.statisticsURL,
 
     //Needed when creating roadSearch object
     objects: state.dataReducer.objects,
+    roads: state.dataReducer.roads,
+
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
 
     //Status information about search
-    fetching: state.dataReducer.fetching,
-    fetched: state.dataReducer.fetched,
     numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
-    numberOfObjectsFetchedSoFar: state.dataReducer.numberOfObjectsFetchedSoFar,
 
-    objekttypeInfo: state.dataReducer.objekttypeInfo,
-    allSearches: state.dataReducer.allSearches,
-    selectedFilter: state.filterReducer.selectedFilter,
+    numberOfRoadsToBeFetched: state.dataReducer.numberOfRoadsToBeFetched,
+
+    objekttypeInfo: state.searchReducer.objekttypeInfo,
 
     fakeProgress: state.searchReducer.fakeProgress,
+    progress: state.searchReducer.progress,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchDataStart: bindActionCreators(dataActions.fetchDataStart, dispatch),
-    fetchDataReturned: bindActionCreators(dataActions.fetchDataReturned, dispatch),
-    createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
     setNumberOfObjectsToBeFetched: bindActionCreators(dataActions.setNumberOfObjectsToBeFetched, dispatch),
-    resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
-    setObjekttypeInfo: bindActionCreators(dataActions.setObjekttypeInfo, dispatch),
-    resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
+    setNumberOfRoadsToBeFetched: bindActionCreators(dataActions.setNumberOfRoadsToBeFetched, dispatch),
 
-    resetFakeProgress: bindActionCreators(searchActions.resetFakeProgress, dispatch),
-    incrementFakeProgress: bindActionCreators(searchActions.incrementFakeProgress, dispatch),
+    setObjekttypeInfo: bindActionCreators(searchActions.setObjekttypeInfo, dispatch),
+
+    objectsReturned: bindActionCreators(dataActions.objectsReturned, dispatch),
+    roadsReturned: bindActionCreators(dataActions.roadsReturned, dispatch),
   }
 }
 

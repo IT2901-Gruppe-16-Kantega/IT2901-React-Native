@@ -379,6 +379,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
+
     filteredRoadObjects: state.dataReducer.filteredRoadObjects,
 
     objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,

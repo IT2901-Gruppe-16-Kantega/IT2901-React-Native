@@ -75,6 +75,7 @@ class CurrentSearchView extends React.Component {
               </TouchableHighlight>
               <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
               <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
+              <PropertyValue property={"Antall veger"} value={currentRoadSearch.roads.length} />
               <PropertyValue property={"Fylke"} value={fylkeValue} />
               <PropertyValue property={"Kommune"} value={kommuneValue} />
               <PropertyValue property={"Veg"} value={vegValue} />

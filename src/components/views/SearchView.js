@@ -32,8 +32,8 @@ import TabBar from '../misc/TabBar';
 import SearchMap from './search/SearchMap';
 
 import {searchForFylke} from '../../utilities/searchUtils';
-import {parseGeometry, getCurrentPosition} from '../../utilities/utils';
-import {fetchCloseby, fetchData} from '../../utilities/wrapper'
+import {parseGeometry, getCurrentPosition, isAndroid} from '../../utilities/utils';
+import {fetchCloseby, fetchData, getNumberOfObjects} from '../../utilities/wrapper'
 import {vegobjekttyper} from '../../data/vegobjekttyper';
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
@@ -108,7 +108,7 @@ class SearchView extends React.Component {
 
   handleConnectionChange(isConnected) {
     // Error message if no internet connectivity
-    if (!isConnected){
+    if (!isConnected) {
       Alert.alert(
         alertType.WARNING,
         'Du ser ikke ut til å være tilkoblet internett.',
@@ -263,18 +263,13 @@ class SearchView extends React.Component {
     this.props.generateURL();
 
     setTimeout(() => {
-      fetchData(this.props.statisticsURL).then((response) => {
-        if(response.antall === 0) {
-          this.props.setValidityOfVeg('NOT_VALID')
+      getNumberOfObjects(this.props.statisticsURL, number => {
+        if(number === 0) this.props.setValidityOfVeg('NOT_VALID');
+        else {
+          if(this.props.vegInput) this.props.setValidityOfVeg('VALID')
+          if(this.props.vegobjekttyperChosen) this.props.setNumberOfObjectsToBeFetched(number)
         }
-        else if(response.antall > 0) {
-          if(this.props.vegInput) { this.props.setValidityOfVeg('VALID') }
-          if(this.props.vegobjekttyperChosen) { this.props.setNumberOfObjectsToBeFetched(response.antall) }
-        }
-        else if(response[0].code === 4005) {
-          if(this.props.vegInput) { this.props.setValidityOfVeg('NOT_VALID') }
-        }
-      })
+      });
     }, 5);
   }
 

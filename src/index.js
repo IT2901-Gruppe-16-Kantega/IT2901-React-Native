@@ -245,6 +245,50 @@ class App extends Component {
     alert(message)
   }
 
+	increment() {
+		if(this.props.numberOfObjectsToBeFetched) {
+			const num = Math.min((this.props.numberOfObjectsToBeFetched / 25), Math.random() * 50);
+			this.props.incrementFakeProgress(num);
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.fetching && !this.props.fetching) {
+			this.interval = setInterval(this.increment.bind(this), 1000);
+		}
+
+		if(this.props.fetching) {
+			const {roads, numberOfRoadsToBeFetched, objects, numberOfObjectsToBeFetched, fakeProgress, objekttypeInfo} = this.props;
+
+	    if(nextProps.fakeProgress > numberOfObjectsToBeFetched) {
+	      this.props.incrementFakeProgress(-(numberOfObjectsToBeFetched / 10));
+	    }
+	    if(nextProps.objects.length > objects.length) {
+	      this.props.resetFakeProgress();
+	    }
+
+	    const progress = (roads.length + objects.length + fakeProgress) / (numberOfRoadsToBeFetched + numberOfObjectsToBeFetched);
+
+			this.props.setProgress(Math.min(progress, 1));
+
+			if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo) {
+				this.props.createSearchObject(
+					'', // description
+					objects,
+					roads, // roads
+					[], // report
+					this.props.combinedSearchParameters,
+					objekttypeInfo
+				);
+
+				this.props.resetSearchParameters();
+				this.props.resetFakeProgress();
+				this.props.setProgress(0);
+				Actions.CurrentSearchView({type: 'reset'});
+			}
+		}
+	}
+
   toggleSidebar(close) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
@@ -287,6 +331,17 @@ function mapStateToProps(state) {
 
     navbarHeight: state.uiReducer.navbarHeight,
     deeplink: state.uiReducer.deeplink,
+
+		// SEARCHING
+		objects: state.dataReducer.objects,
+		roads: state.dataReducer.roads,
+		fetching: state.dataReducer.fetching,
+		numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
+		numberOfRoadsToBeFetched: state.dataReducer.numberOfRoadsToBeFetched,
+		fakeProgress: state.searchReducer.fakeProgress,
+		progress: state.searchReducer.progress,
+		objekttypeInfo: state.searchReducer.objekttypeInfo,
+		combinedSearchParameters: state.searchReducer.combinedSearchParameters,
   }
 }
 
@@ -317,6 +372,13 @@ function mapDispatchToProps(dispatch) {
 
     setNavbarHeight: bindActionCreators(uiActions.setNavbarHeight, dispatch),
     setDeeplink: bindActionCreators(uiActions.setDeeplink, dispatch),
+
+		setProgress: bindActionCreators(searchActions.setProgress, dispatch),
+		resetFakeProgress: bindActionCreators(searchActions.resetFakeProgress, dispatch),
+		incrementFakeProgress: bindActionCreators(searchActions.incrementFakeProgress, dispatch),
+		createSearchObject: bindActionCreators(dataActions.createSearchObject, dispatch),
+
+		resetSearchParameters: bindActionCreators(searchActions.resetSearchParameters, dispatch),
   }
 }
 

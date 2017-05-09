@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  NativeEventEmitter
+  NativeEventEmitter,
+  Image
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -25,11 +26,25 @@ class StartingView extends React.Component {
     return <Container>
       {this.renderLoadingView()}
       <View style={styles.contents}>
-        <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} />
+        <Image source={require('../../assets/logo.png')} />
+        <Text/>
+        <Text/>
+        <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} disabled={this.props.fetching} />
         <Button type={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
         <Button type={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
       </View>
+      {this.props.fetching &&
+          <Button text={this.buttonText()} type="list" onPress={Actions.LoadingView} />
+      }
     </Container>
+  }
+
+  buttonText() {
+    const text = "Laster ned ";
+    const progressPercentage = Math.round(this.props.progress * 100) + "% ";
+    const objectsFetched = this.props.roads.length + this.props.objects.length + Math.round(this.props.fakeProgress);
+    const objectsToBeFetched = this.props.numberOfObjectsToBeFetched + this.props.numberOfRoadsToBeFetched;
+    return text + progressPercentage + "(" + objectsFetched + "/" + objectsToBeFetched + ")";
   }
 
   renderLoadingView() {
@@ -88,10 +103,18 @@ The return of mapDispatchToProps is which actions this component has access to
 */
 function mapStateToProps(state) {
   return {
+    fetching: state.dataReducer.fetching,
     loadingProgress: state.dataReducer.loadingProgress,
     fetching: state.dataReducer.fetching,
     theme: state.settingsReducer.themeStyle,
     deeplink: state.uiReducer.deeplink,
+    progress: state.searchReducer.progress,
+    objects: state.dataReducer.objects,
+    roads: state.dataReducer.roads,
+    fakeProgress: state.searchReducer.fakeProgress,
+
+    numberOfRoadsToBeFetched: state.dataReducer.numberOfRoadsToBeFetched,
+    numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
   }
 }
 

@@ -1,5 +1,4 @@
 import moment from 'moment';
-import {fetchFromAPI} from '../utilities/wrapper';
 
 //Creating storage, should move to own file to handel storing settings etc
 import storageEngine from '../utilities/storageEngine'
@@ -104,6 +103,7 @@ export function createSearchObject(description, objects, roads, report, combPara
     searchParameters: combParams,
     objekttypeInfo: objekttypeInfo,
   }
+  console.log(roadSearch);
   searchSaved(roadSearch)
   return {
     type: "ADD_NEW_SEARCH_OBJECT",
@@ -127,9 +127,7 @@ export function setNumberOfObjectsToBeFetched(number){
 }
 
 //Function that sets fetching=true
-export function fetchDataStart(url) {
-  fetchFromAPI(fetchDataReturned, url);
-
+export function fetchDataStart() {
   return {
     type: "FETCH_DATA_START"
   }
@@ -177,13 +175,6 @@ export function writingFile() {
   }
 }
 
-export function setObjekttypeInfo(objekttypeInfo) {
-  return {
-    type: "SET_OBJEKTTYPE_INFO",
-    payload: objekttypeInfo,
-  }
-}
-
 export function setFilteredRoadObjects(roadObjects) {
   return {
     type: "SET_FILTERED_ROAD_OBJECTS",
@@ -213,5 +204,26 @@ export function inputFylke(input){
     .catch((err) => {
       dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
     })
+  }
+}
+
+export function objectsReturned(objects) {
+  return {
+    type: "OBJECTS_RETURNED",
+    payload: objects,
+  }
+}
+
+export function roadsReturned(roads) {
+  return {
+    type: "ROADS_RETURNED",
+    payload: roads,
+  }
+}
+
+export function setNumberOfRoadsToBeFetched(number) {
+  return {
+    type: "SET_NUMBER_OF_ROADS_TO_BE_FETCHED",
+    payload: number,
   }
 }
