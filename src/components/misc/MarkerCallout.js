@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   Picker,
+  UIManager,
 } from 'react-native';
 
 
@@ -16,6 +17,8 @@ import PropTypes from 'prop-types';
 import PropertyValue from './PropertyValue';
 import Button from '../misc/Button'
 
+import {isAndroid} from '../../utilities/utils';
+
 import * as templates from '../../utilities/templates';
 import * as mapActions from '../../actions/mapActions'
 import * as dataActions from '../../actions/dataActions'
@@ -26,49 +29,30 @@ The callout shown when the user taps a pin on the map view.
 */
 class MarkerCallout extends React.Component {
   static propTypes = {
-    roadObject: PropTypes.object.isRequired,
+    fullscreen: PropTypes.bool,
+    siblings: PropTypes.array.isRequired,
   }
 
   render() {
-    var {roadObject} = this.props;
+    var {siblings, fullscreen, objekttypeInfo} = this.props;
+
     return (
-      <View style={{flex: 1}}>
-        <Text style={styles.title}>{roadObject.metadata.type.navn}</Text>
-        {this.getEgenskapInfo()}
-        <Button key={roadObject.id} text={roadObject.id + ""} type="small" onPress={this.openObjectInformation.bind(this, roadObject)} />
+      <View style={{flex: 1, padding: fullscreen ? 10 : 0}}>
+        <Text style={styles.title}>{objekttypeInfo.navn}</Text>
         {this.renderSiblings()}
       </View>
     );
   }
 
   renderSiblings() {
-    const {roadObject} = this.props;
-
-    // The roadObject that belongs to the callout has no parents,
-    // and therefore no siblings
-    if(!(roadObject.relasjoner && roadObject.relasjoner.foreldre)) return <View />;
-
-    const siblings = this.props.roadObjects.filter(this.findSiblings.bind(this));
-    if(siblings.length === 0) return <View />
-
-    var siblingButtons = siblings.map(ro => {
-      return <Button key={ro.id} text={ro.id + ""} type="small" onPress={this.openObjectInformation.bind(this, ro)} />
+    return this.props.siblings.map(ro => {
+      return (
+        <View key={ro.id} style={{ backgroundColor: templates.colors.lightGray, marginBottom: 5, padding: 5, borderRadius: 2 }}>
+          {this.getEgenskapInfo(ro)}
+          <Button text={ro.id + ""} type="list" onPress={this.openObjectInformation.bind(this, ro)} />
+        </View>
+      );
     })
-
-    return (
-      <View>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 20 }}>Søskenobjekter</Text>
-        {siblingButtons}
-      </View>
-    );
-  }
-
-  findSiblings(o) {
-    const {roadObject} = this.props;
-    const parentOfThis = roadObject.relasjoner.foreldre[0].vegobjekter[0];
-    if(!(o.relasjoner && o.relasjoner.foreldre)) return false;
-
-    return parentOfThis === o.relasjoner.foreldre[0].vegobjekter[0] && o.id !== roadObject.id;
   }
 
   // Called when the user taps the title of the callout
@@ -80,8 +64,8 @@ class MarkerCallout extends React.Component {
 
   // Cycles through all the selected filters, and adds information
   // about each of them to the callout bubble.
-  getEgenskapInfo() {
-    var textComponents = [<Text key={"spacer"}> </Text>];
+  getEgenskapInfo(roadObject) {
+    var textComponents = [];
     var propertiesAdded = [];
 
     if(this.props.allSelectedFilters) {
@@ -95,9 +79,9 @@ class MarkerCallout extends React.Component {
 
         var egenskapsInfo;
         // Check if roadObject has any properties first
-        if(this.props.roadObject.egenskaper) {
+        if(roadObject.egenskaper) {
           // Finds the information about the selected property of this object
-          egenskapsInfo = this.props.roadObject.egenskaper.find(e => {
+          egenskapsInfo = roadObject.egenskaper.find(e => {
             return e.id === filter.egenskap.id;
           })
         }
@@ -141,9 +125,7 @@ function mapStateToProps(state) {
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
-    currentRoadSearch: state.dataReducer.currentRoadSearch,
-
-    roadObjects: state.dataReducer.currentRoadSearch.roadObjects,
+    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
   }
 }
 

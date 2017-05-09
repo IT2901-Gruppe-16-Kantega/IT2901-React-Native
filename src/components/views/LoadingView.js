@@ -37,7 +37,7 @@ class LoadingView extends React.Component {
       fetchFromAPI(this.props.fetchDataReturned, this.props.url);
     }.bind(this));
 
-    this.props.fetchDataStart();
+    this.props.fetchDataStart(this.props.url);
   }
 
   componentDidMount() {
