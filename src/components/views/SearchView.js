@@ -11,7 +11,8 @@ import {
   Animated,
   Modal,
   ActivityIndicator,
-  NetInfo
+  NetInfo,
+  Platform
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -80,6 +81,7 @@ class SearchView extends React.Component {
                 this.getUserPosition(true);
               } else {
                 this.props.setChosenSearchTab(tabs.CLOSEST);
+                this.getUserPosition(true);
               }
             }}
           ]}
@@ -88,12 +90,11 @@ class SearchView extends React.Component {
     );
   }
 
-
   componentDidMount() {
     // Add netinfo listener on mount
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
-
-    if(isAndroid()) {
+    // Get inital state for Android
+    if (Platform.OS === 'android'){
       NetInfo.isConnected.fetch().then(isConnected => {
         this.handleConnectionChange(isConnected);
       });
@@ -115,6 +116,7 @@ class SearchView extends React.Component {
         { cancelable: false }
       )
     }
+
   }
 
   renderMainContent() {
@@ -226,10 +228,10 @@ class SearchView extends React.Component {
     const {currentUserPosition} = this.props;
 
     if(!currentUserPosition || force) {
-      console.log("getting position")
       getCurrentPosition(position => {
-        this.fetchRoads(position.coords);
-        this.props.setCurrentUserPosition(position);
+        fetchCloseby(10, position.coords, function(closestList) {
+          this.props.inputClosestRoads(closestList);
+        }.bind(this));
       });
     }
   }
@@ -281,6 +283,10 @@ class SearchView extends React.Component {
         Alert.alert(alertType.ERROR, "Dette søket genererer ingen objekter " +
           "(eller så må du vente på at søket fullføres). Det kan også hende at du " +
           "må trykke på et felt på nytt for å oppdatere telleren.");
+      }
+      else if(numObjects >= 31999) {
+        Alert.alert(alertType.ERROR, "Det er ikke mulig å hente flere enn 32000" +
+        " objekter i et søk, prøv å begrens ditt søk ytterligere.");
       }
       else if(!this.props.vegobjekttyperChosen) {
         Alert.alert(alertType.ERROR, "Ingen vegobjekttyper spesifisert");

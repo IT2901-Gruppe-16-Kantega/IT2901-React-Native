@@ -19,7 +19,7 @@ import SidebarMain from '../misc/SidebarMain'
 import SidebarSecondary from '../misc/SidebarSecondary'
 
 import * as templates from '../../utilities/templates';
-import {parseGeometry, randomColor} from '../../utilities/utils'
+import {parseGeometry, randomColor, isAndroid} from '../../utilities/utils'
 import {comparators, datatype, importance} from '../../utilities/values';
 
 import * as dataActions from '../../actions/dataActions';
@@ -69,6 +69,7 @@ class RoadMapView extends React.Component {
       }
 
       if(this.shouldSkipObject(roadObject)) {
+        console.log(roadObject.id)
         continue;
       }
 
@@ -293,11 +294,14 @@ class RoadMapView extends React.Component {
             strokeColor={templates.colors.blue} />
         } else {
           const {roadObject} = marker.properties;
+          var siblings = [];
+
           if(roadObject && roadObject.relasjoner && roadObject.relasjoner.foreldre) {
             for(var i = index; i < markers.length; i++) {
               const innerObject = markers[i].properties.roadObject;
               if(innerObject && innerObject.relasjoner && innerObject.relasjoner.foreldre) {
                 if(roadObject.relasjoner.foreldre[0].vegobjekter[0] === innerObject.relasjoner.foreldre[0].vegobjekter[0]) {
+                  siblings.push(innerObject);
                   indexesToSkip.push(i);
                 }
               }
@@ -309,10 +313,9 @@ class RoadMapView extends React.Component {
             onSelect={this.markerPressed.bind(this, marker)}
             coordinate={{ latitude: marker.geometry.coordinates[0], longitude: marker.geometry.coordinates[1] }}
             key={marker.properties.roadObject.id}
-            pinColor={templates.colors.blue}
-            onMarkerPress={this.openObjectInformation.bind(this, marker.properties.roadObject)}>
-            <MapView.Callout onPress={this.openObjectInformation.bind(this, marker.properties.roadObject)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
-              <MarkerCallout roadObject={marker.properties.roadObject} />
+            pinColor={templates.colors.blue}>
+            <MapView.Callout onPress={this.openFullscreenCallout.bind(this, siblings)} style={{ zIndex: 10, flex: 1, position: 'relative'}}>
+              <MarkerCallout siblings={siblings} />
             </MapView.Callout>
           </MapView.Marker>
         }
@@ -320,9 +323,10 @@ class RoadMapView extends React.Component {
     })
   }
 
-  openObjectInformation(roadObject) {
-  	this.props.selectObject(roadObject);
-    Actions.ObjectInfoView();
+  openFullscreenCallout(siblings) {
+    if(isAndroid()) {
+      Actions.MarkerCallout({siblings, fullscreen: true})
+    }
   }
 
   changeRegion(region) {
@@ -333,10 +337,7 @@ class RoadMapView extends React.Component {
 
   markerPressed(marker) {
     let isCluster = marker.properties && marker.properties.cluster;
-
-    if(!isCluster) {
-      return;
-    }
+    if(!isCluster) return;
 
     let region = this.props.region;
 
