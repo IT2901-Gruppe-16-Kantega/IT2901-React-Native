@@ -68,7 +68,6 @@ class CurrentSearchView extends React.Component {
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
           <View style={styles.informationArea}>
             <View style={styles.info}>
-              <Button type={"small"} text={"Del dette søket"} onPress={() => this.shareString()} />
               <TouchableHighlight
                 onPress={this.shareString.bind(this, currentRoadSearch.key)}>
                 <View><PropertyValue property={"Søke-ID"} value={currentRoadSearch.key} /></View>
@@ -80,6 +79,8 @@ class CurrentSearchView extends React.Component {
               <PropertyValue property={"Kommune"} value={kommuneValue} />
               <PropertyValue property={"Veg"} value={vegValue} />
               {this.createDescriptionArea()}
+              <Button type={"small"} text={"Del"} onPress={() => this.shareString()} />
+
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -115,7 +116,7 @@ class CurrentSearchView extends React.Component {
           padding: 5,
           fontSize: 15,
           color: theme.secondaryTextColor,
-          backgroundColor: theme.color,
+          backgroundColor: theme.container.backgroundColor,
         }}
         multiline={true}
         placeholderTextColor={theme.placeholderTextColor}
