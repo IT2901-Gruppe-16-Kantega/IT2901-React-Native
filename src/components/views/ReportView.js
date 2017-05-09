@@ -54,13 +54,21 @@ class ReportView extends React.Component {
     const {theme} = this.props;
 
     return (
-      <TouchableHighlight key={reportItem.vegobjekt} onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}>
+      <TouchableHighlight
+        key={reportItem.vegobjekt}
+        onPress={() => this.goToObjectInfoView(reportItem.vegobjekt)}
+        onLongPress={this.issueDeleteReport(reportItem)}
+        >
         <View style={{ padding: 10, backgroundColor: theme.container.backgroundColor, borderBottomWidth: 1, borderBottomColor: theme.backgroundColor }}>
           <Text style={theme.title}>{reportItem.vegobjekt}</Text>
           <Text style={theme.subtitle}>{this.createSubtitle(reportItem)}</Text>
         </View>
       </TouchableHighlight>
     );
+  }
+  issueDeleteReport(reportItem) {
+    console.log(reportItem)
+
   }
 
   /*createSomething(reportItem) {

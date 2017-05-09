@@ -89,11 +89,11 @@ class SidebarMain extends React.Component {
           <Text style={[style, {fontSize: 18, fontWeight: 'bold'}]}>Valgte filtre:</Text>
         </View>}
         {views}
-        <Button type={"small"} onPress={this.openARWithFilters.bind(this)} text={"AR"} />
       </View>
     );
   }
 
+  /*  NOT IMPLEMENTED IN THIS VERSION
   openARWithFilters() {
     const copy = this.props.currentRoadSearch;
     copy.roadObjects = this.props.filteredRoadObjects;
@@ -107,7 +107,7 @@ class SidebarMain extends React.Component {
       }
     });
   }
-
+  */
   selectFilter(filter) {
     this.props.selectFilter(filter);
     this.props.toggleSecondSidebar(true);
