@@ -12,6 +12,8 @@ const pathType = {
 const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
 const rootPathAndroid = RNFS.ExternalStorageDirectoryPath + "/Android/data/com.vegar/files";
 
+var fetched = false;
+
 export default (key) => ({
 
 	initialize() {
@@ -46,6 +48,8 @@ export default (key) => ({
 	},
 
 	loadFiles(path, progress) {
+		fetched = false;
+		timeout = setTimeout(this.loadingTimedOut.bind(this), 120000)
 		var storedSearches = []
 		var successLength = 0;
 		RNFS.readdir(path).then(response => {
@@ -56,6 +60,7 @@ export default (key) => ({
 					successLength += 1;
 					storedSearches.push(JSON.parse(success) || {});
 					progress(successLength / response.length);
+					this.stopTimeout(timeout)
 				})
 				.catch((err) => {
 					console.error("An error occurred when trying to load file. Path: " + currentPath, err)
@@ -63,6 +68,15 @@ export default (key) => ({
 			}
 		})
 		return storedSearches;
+	},
+	stopTimeout(timeout) {
+		console.log('clear timeout')
+		clearTimeout(timeout)
+	},
+
+	loadingTimedOut() {
+		console.log('Loading timed out, stored searches now deleted')
+		this.clear()
 	},
 
 	// Loads the report data from VegAR(AR) and adds all of the roadObjects to the report object with the given key;
