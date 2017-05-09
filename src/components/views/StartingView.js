@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  NativeEventEmitter
+  NativeEventEmitter,
+  Image
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -25,6 +26,9 @@ class StartingView extends React.Component {
     return <Container>
       {this.renderLoadingView()}
       <View style={styles.contents}>
+        <Image source={require('../../assets/logo.png')} />
+        <Text/>
+        <Text/>
         <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} disabled={this.props.fetching} />
         <Button type={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
         <Button type={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
