@@ -61,7 +61,7 @@ class LoadingView extends React.Component {
             <Text style={this.props.theme.title}>Informasjon om søket</Text>
             <PropertyValue property={"Info hentet"} value={this.props.objekttypeInfo ? "JA" : "NEI"} />
             <PropertyValue property={"Veger hentet"} value={this.props.roads.length + "/" + this.props.numberOfRoadsToBeFetched} />
-            <PropertyValue property={"Objekter hentet"} value={this.props.objects.length + Math.round(this.props.fakeProgress) + "/" + this.props.numberOfObjectsToBeFetched} />
+            <PropertyValue property={"Objekter hentet"} value={Math.min(this.props.numberOfObjectsToBeFetched, (this.props.objects.length + Math.round(this.props.fakeProgress))) + "/" + this.props.numberOfObjectsToBeFetched} />
           </View>
         </View>
       </Container>

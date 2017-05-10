@@ -253,9 +253,8 @@ class App extends Component {
 			this.interval = setInterval(this.increment.bind(this), 1000);
 		}
 
+		const {roads, numberOfRoadsToBeFetched, objects, numberOfObjectsToBeFetched, fakeProgress, objekttypeInfo} = this.props;
 		if(this.props.fetching) {
-			const {roads, numberOfRoadsToBeFetched, objects, numberOfObjectsToBeFetched, fakeProgress, objekttypeInfo} = this.props;
-
 	    if(nextProps.fakeProgress > numberOfObjectsToBeFetched) {
 	      this.props.incrementFakeProgress(-(numberOfObjectsToBeFetched / 10));
 	    }
