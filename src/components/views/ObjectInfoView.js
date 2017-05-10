@@ -49,16 +49,16 @@ class ObjectInfoView extends React.Component {
   }
 
   render() {
-    const {selectedObject, objekttypeInfo} = this.props;
+    const {selectedObject, vegobjekttype} = this.props;
     const {metadata, egenskaper} = selectedObject;
     const dataSource = ds.cloneWithRows(egenskaper || [])
 
     return <Container>
         <View style={this.mainBoxStyle()}>
-          <Text style={this.props.theme.title}>{objekttypeInfo.navn}</Text>
+          <Text style={this.props.theme.title}>{vegobjekttype.navn}</Text>
           <PropertyValue property={"ID"} value={selectedObject.id} />
-          <PropertyValue property={"Beskrivelse"} value={objekttypeInfo.beskrivelse} />
-          <PropertyValue property={"Stedfesting"} value={objekttypeInfo.stedfesting} />
+          <PropertyValue property={"Beskrivelse"} value={vegobjekttype.beskrivelse} />
+          <PropertyValue property={"Stedfesting"} value={vegobjekttype.stedfesting} />
           <PropertyValue property={"Startdato"} value={metadata.startdato} />
           <PropertyValue property={"Sist modifisert"} value={metadata.sist_modifisert} />
         </View>
@@ -149,10 +149,10 @@ class ObjectInfoView extends React.Component {
   }
 
   renderNotExistingProperties() {
-    const {selectedObject, objekttypeInfo} = this.props;
+    const {selectedObject, vegobjekttype} = this.props;
     const report = this.getReport();
 
-    var notExistingProperties = objekttypeInfo.egenskapstyper.filter(typeEgenskap => {
+    var notExistingProperties = vegobjekttype.egenskapstyper.filter(typeEgenskap => {
       const findFunction = function(objektEgenskap) { return objektEgenskap.id === typeEgenskap.id }
       var existsInReport = false;
       if(!selectedObject.egenskaper) return !(existsInReport);
@@ -273,7 +273,7 @@ class ObjectInfoView extends React.Component {
     return this.props.propertyCurrentlyEditing === property;
   }
   getEgenskapstype(id) {
-    return this.props.objekttypeInfo.egenskapstyper.find(e => e.id == id);
+    return this.props.vegobjekttype.egenskapstyper.find(e => e.id == id);
   }
   isEnumType(property) {
     return ((property.datatype === datatype.flerverdiattributtTall) || (property.datatype === datatype.flerverdiAttributtTekst))
@@ -308,7 +308,7 @@ function mapStateToProps(state) {
 
     currentRoadSearch: state.dataReducer.currentRoadSearch,
     selectedObject: state.dataReducer.selectedObject,
-    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
+    vegobjekttype: state.dataReducer.currentRoadSearch.searchParameters.vegobjekttype,
     report: state.dataReducer.currentRoadSearch.report,
 
     isEditingRoadObject: state.reportReducer.isEditingRoadObject,

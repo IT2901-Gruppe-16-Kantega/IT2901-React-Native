@@ -23,6 +23,8 @@ import Container from '../misc/Container'
 import PropertyValue from '../misc/PropertyValue'
 
 import {parseGeometry, AR} from '../../utilities/utils'
+import storageEngine from '../../utilities/storageEngine'
+
 import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as mapActions from '../../actions/mapActions'
@@ -75,7 +77,6 @@ class CurrentSearchView extends React.Component {
               </TouchableHighlight>
               <PropertyValue property={"Vegobjekttype"} value={currentRoadSearch.searchParameters.vegobjekttype.navn} />
               <PropertyValue property={"Antall vegobjekter"} value={currentRoadSearch.roadObjects.length} />
-              <PropertyValue property={"Antall veger"} value={currentRoadSearch.roads.length} />
               <PropertyValue property={"Fylke"} value={fylkeValue} />
               <PropertyValue property={"Kommune"} value={kommuneValue} />
               <PropertyValue property={"Veg"} value={vegValue} />
@@ -160,6 +161,17 @@ class CurrentSearchView extends React.Component {
   }
 
   openAR() {
+    const {searchParameters} = this.props.currentRoadSearch;
+    if(searchParameters.kommune) {
+      const storage = storageEngine('NVDB-storage');
+      storage.loadRoadsFile(searchParameters.kommune.nummer, callback => {
+        console.log(callback);
+      });
+    } else {
+      alert("Du må spesifisere kommune for å laste ned veger");
+      return;
+    }
+
     AR(Platform.OS, this.props.currentRoadSearch, url => {
       if(url) {
         Linking.canOpenURL(url).then(supported => {

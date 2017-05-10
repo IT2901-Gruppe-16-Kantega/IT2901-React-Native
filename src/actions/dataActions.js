@@ -92,16 +92,14 @@ export function setCurrentRoadSearch(roadSearch) {
 }
 
 
-export function createSearchObject(description, objects, roads, report, combParams, objekttypeInfo) {
+export function createSearchObject(description, objects, report, combParams) {
   var roadSearch = {
     key: Date.now(),
     date: moment().format('MMMM Do YYYY, h:mm:ss a'),
     description: description,
     roadObjects: objects,
-    roads: roads,
     report: report,
     searchParameters: combParams,
-    objekttypeInfo: objekttypeInfo,
   }
   searchSaved(roadSearch)
   return {
@@ -213,10 +211,10 @@ export function objectsReturned(objects) {
   }
 }
 
-export function roadsReturned(roads) {
+export function roadsReturned(returned) {
   return {
     type: "ROADS_RETURNED",
-    payload: roads,
+    payload: returned,
   }
 }
 

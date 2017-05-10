@@ -98,9 +98,12 @@ class App extends Component {
       if(firstOpen) Actions.WelcomeView({type: 'reset'})
     });
 
+		//storage.clear();
+
     var stored = storage.load(progress => {
       this.props.setLoadingProgress(progress);
     });
+
     this.props.loadSearches(stored)
   }
 
@@ -253,8 +256,8 @@ class App extends Component {
 			this.interval = setInterval(this.increment.bind(this), 1000);
 		}
 
+		const {roads, numberOfRoadsToBeFetched, objects, numberOfObjectsToBeFetched, fakeProgress, objekttypeInfo} = this.props;
 		if(this.props.fetching) {
-			const {roads, numberOfRoadsToBeFetched, objects, numberOfObjectsToBeFetched, fakeProgress, objekttypeInfo} = this.props;
 
 	    if(nextProps.fakeProgress > numberOfObjectsToBeFetched) {
 	      this.props.incrementFakeProgress(-(numberOfObjectsToBeFetched / 10));
@@ -263,7 +266,7 @@ class App extends Component {
 	      this.props.resetFakeProgress();
 	    }
 
-	    const progress = (roads.length + objects.length + fakeProgress) / (numberOfRoadsToBeFetched + numberOfObjectsToBeFetched);
+	    const progress = (objects.length + roads.length + fakeProgress) / (numberOfRoadsToBeFetched + numberOfObjectsToBeFetched);
 
 			this.props.setProgress(Math.min(progress, 1));
 		}
@@ -271,13 +274,13 @@ class App extends Component {
 		setTimeout(() => {
 			if(this.props.fetching) {
 				if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo) {
+					var params = this.props.combinedSearchParameters;
+					params.vegobjekttype = objekttypeInfo;
 					this.props.createSearchObject(
 						'', // description
 						objects,
-						roads, // roads
 						[], // report
-						this.props.combinedSearchParameters,
-						objekttypeInfo
+						params,
 					);
 
 					this.props.resetSearchParameters();

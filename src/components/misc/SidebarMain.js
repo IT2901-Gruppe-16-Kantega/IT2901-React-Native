@@ -28,7 +28,7 @@ class SidebarMain extends React.Component {
   render() {
     return <View style={StyleSheet.flatten([templates.sidebar, this.props.sidebarFrame])}>
       <ListView
-        dataSource={ds.cloneWithRows(this.props.objekttypeInfo.egenskapstyper.sort((a, b) => {
+        dataSource={ds.cloneWithRows(this.props.vegobjekttype.egenskapstyper.sort((a, b) => {
           if(a.navn < b.navn) { return -1 }
           else { return 1 }
         }))}
@@ -133,7 +133,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     sidebarFrame: state.mapReducer.sidebarFrame,
-    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
+    vegobjekttype: state.dataReducer.currentRoadSearch.searchParameters.vegobjekttype,
     allSelectedFilters: state.filterReducer.allSelectedFilters,
 
     currentRoadSearch: state.dataReducer.currentRoadSearch,

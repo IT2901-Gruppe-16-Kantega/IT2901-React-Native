@@ -1,5 +1,6 @@
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
+import storageEngine from './storageEngine';
 
 /*
   wrapper.js: file wich contains methods used in fetching data from server
@@ -12,7 +13,8 @@ const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
 //kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
 //MEN antagelig vil firstobjet.metadata.returnert feile og denne må håndteres
 
-function startSearch(id, url, statsURL, call) {
+function startSearch(params, url, statsURL, call) {
+  const id = params.vegobjekttype.id;
   var values = {number: 1, objects: null, roads: null, info: null, roadNumber: 1}
   call(values);
 
@@ -31,18 +33,30 @@ function startSearch(id, url, statsURL, call) {
     call(values);
   })
 
-  if(id !== 532) {
-    const roadURL = url.replace("vegobjekter/" + id, 'vegobjekter/532').replace("inkluder=alle", "inkluder=geometri");
-    fetchFromAPI(callback => {
-      values.roads = callback;
-      call(values);
-    }, roadURL);
+  if(id !== 532 && params.kommune) {
+    const {nummer} = params.kommune;
+    const storage = storageEngine('NVDB-storage');
+    storage.loadRoadsFile(nummer, callback => {
+      if(callback.success) {
+        values.roads = callback.value;
+        call(values);
+      } else {
+        const roadBaseURL = baseURL + 'vegobjekter/532?kommune=' + nummer;
+        const roadURL = roadBaseURL + '&inkluder=geometri&srid=4326&antall=8000';
+        fetchFromAPI(roads => {
+          console.log(roads);
+          storage.saveRoads(nummer, roads);
+          values.roads = roads;
+          call(values);
+        }, roadURL);
 
-    const roadStatsURL = statsURL.replace("vegobjekter/" + id, 'vegobjekter/532');
-    getNumberOfObjects(roadStatsURL, callback => {
-      values.roadNumber = callback;
-      call(values);
-    }, roadStatsURL);
+        const roadStatsURL = roadBaseURL.replace('532', '532/statistikk');
+        getNumberOfObjects(roadStatsURL, callback => {
+          values.roadNumber = callback;
+          call(values);
+        }, roadStatsURL);
+      }
+    })
   }
 }
 

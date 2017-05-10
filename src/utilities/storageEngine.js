@@ -6,7 +6,8 @@ import { isAndroid } from './utils';
 
 const pathType = {
 	ROOT: '/',
-	SEARCHES: '/searches',
+	SEARCHES: '/searches/',
+	ROADS: '/roads/',
 }
 
 const rootPathIOS = RNFS.DocumentDirectoryPath + "/NVDB-storage";
@@ -18,7 +19,7 @@ export default (key) => ({
 		console.log('initializing storage');
 		RNFS.mkdir(this.rootPath());
 		RNFS.mkdir(this.searchesPath());
-
+		RNFS.mkdir(this.roadsPath());
 	},
 
 	getSettings(callback) {
@@ -48,12 +49,17 @@ export default (key) => ({
 	loadFiles(path, progress) {
 		var storedSearches = []
 		var successLength = 0;
+		progress(0);
+
 		RNFS.readdir(path).then(response => {
+			if(response.length == 0) progress(1);
+
 			for (var i = 0; i < response.length; i++) {
-				var currentPath = path + '/' + response[i]
+				var currentPath = path + response[i]
 				RNFS.readFile(currentPath)
 				.then((success) => {
 					successLength += 1;
+					console.log(JSON.parse(success));
 					storedSearches.push(JSON.parse(success) || {});
 					progress(successLength / response.length);
 				})
@@ -65,6 +71,18 @@ export default (key) => ({
 		return storedSearches;
 	},
 
+	loadRoads(progress) {
+		return this.loadFiles(this.roadsPath(), progress);
+	},
+
+	loadRoadsFile(id, callback) {
+		RNFS.readFile(this.roadsPath() + id + ".json").then(response => {
+			callback({success: true, value: JSON.parse(response)});
+		}).catch((err) => {
+			callback({success: false, value: err});
+		})
+	},
+
 	// Loads the report data from VegAR(AR) and adds all of the roadObjects to the report object with the given key;
 	loadReport(reportKey) {
 		console.log("Loading report " + reportKey);
@@ -72,14 +90,14 @@ export default (key) => ({
 			RNFS.readFile(rootPathAndroid + "/report.json")
 			.then((reportSuccess) => {
 				var reportData = JSON.parse(reportSuccess);
-				RNFS.readFile(searchesPath() + "/" + reportKey + ".json")
+				RNFS.readFile(searchesPath() + reportKey + ".json")
 				.then((dataSuccess) => {
 					var searchData = JSON.parse(dataSuccess);
 					for (var i = 0; i < reportData.reportObjects.length; i++) {
 						console.log(reportData.reportObjects[i]);
 						searchData.report.push(reportData.reportObjects[i] || {});
 					}
-					this.writeFile(searchesPath() + "/" + reportKey + ".json", JSON.stringify(searchData))
+					this.writeFile(searchesPath() + reportKey + ".json", JSON.stringify(searchData))
 					.then((success) => {
 						console.log("Report loaded from VegAR(AR) and saved successfully");
 						resolve(reportData);
@@ -98,11 +116,14 @@ export default (key) => ({
 		});
 	},
 
+	saveRoads(id, roads) {
+		return this.writeFile(this.getPath(pathType.ROADS, id), JSON.stringify(roads));
+	},
 
 	//clean, move body into own function
 	saveSearch(roadSearch) {
 		console.log('saving...')
-		return this.writeFile(this.getPath(pathType.SEARCHES, roadSearch.key), JSON.stringify(roadSearch))
+		return this.writeFile(this.getPath(pathType.SEARCHES, roadSearch.key), JSON.stringify(roadSearch));
 	},
 
 	writeFile(dataPath, json) {
@@ -131,11 +152,14 @@ export default (key) => ({
 	},
 
 	searchesPath() {
-		return this.rootPath() + '/searches';
+		return this.rootPath() + pathType.SEARCHES;
+	},
+
+	roadsPath() {
+		return this.rootPath() + pathType.ROADS;
 	},
 
 	getPath(type, key) {
-		var path = type === pathType.ROOT ? this.rootPath() : this.searchesPath();
-		return path + '/' + key + '.json';
+		return this.rootPath() + type + key + '.json';
 	},
 });

@@ -61,7 +61,7 @@ class StoredDataView extends React.Component {
     const fylkeNavn = fylke ? fylke.navn : "";
     const kommuneNavn = kommune ? kommune.navn : "";
 
-    const vegobjekttype = roadSearch.objekttypeInfo;
+    const vegobjekttype = roadSearch.searchParameters.vegobjekttype;
 
     // Create the title of the row
     var title = vegobjekttype.navn;

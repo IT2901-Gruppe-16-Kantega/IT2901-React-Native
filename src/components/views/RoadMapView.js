@@ -126,8 +126,8 @@ class RoadMapView extends React.Component {
 
     var wkt;
     var requiredProperties = [];
-    for(var i = 0; i < this.props.objekttypeInfo.egenskapstyper.length; i++) {
-      const egenskapstype = this.props.objekttypeInfo.egenskapstyper[i];
+    for(var i = 0; i < this.props.vegobjekttype.egenskapstyper.length; i++) {
+      const egenskapstype = this.props.vegobjekttype.egenskapstyper[i];
       if(egenskapstype.viktighet === importance.PAKREVD_ABSOLUTT || egenskapstype.viktighet === importance.PAKREVD) {
         var egenskap = {
           id: egenskapstype.id,
@@ -152,8 +152,8 @@ class RoadMapView extends React.Component {
       ny: true, // Add flag to show this is a newly created object
       metadata: {
         type: {
-          id: this.props.objekttypeInfo.id,
-          navn: this.props.objekttypeInfo.navn
+          id: this.props.vegobjekttype.id,
+          navn: this.props.vegobjekttype.navn
         },
         versjon: 1,
         sist_modifisert: now.format("YYYY-MM-DD HH:mm:ss"),
@@ -381,7 +381,7 @@ function mapStateToProps(state) {
 
     filteredRoadObjects: state.dataReducer.filteredRoadObjects,
 
-    objekttypeInfo: state.dataReducer.currentRoadSearch.objekttypeInfo,
+    vegobjekttype: state.dataReducer.currentRoadSearch.searchParameters.vegobjekttype,
 
     selectedFilter: state.filterReducer.selectedFilter,
     selectedFilterValue: state.filterReducer.selectedFilterValue,

@@ -33,13 +33,12 @@ class LoadingView extends React.Component {
   componentWillMount() {
     this.props.fetchDataStart();
 
-    const id = this.props.combinedSearchParameters.vegobjekttype.id;
-    startSearch(id, this.props.url, this.props.statisticsURL, callback => {
+    startSearch(this.props.combinedSearchParameters, this.props.url, this.props.statisticsURL, callback => {
       if(callback.number) this.props.setNumberOfObjectsToBeFetched(callback.number);
       if(callback.info) this.props.setObjekttypeInfo(callback.info);
-      if(callback.roads) this.props.roadsReturned(callback.roads);
       if(callback.objects) this.props.objectsReturned(callback.objects);
       if(callback.roadNumber) this.props.setNumberOfRoadsToBeFetched(callback.roadNumber);
+      if(callback.roads) this.props.roadsReturned(callback.roads);
     })
   }
 
@@ -61,7 +60,7 @@ class LoadingView extends React.Component {
             <Text style={this.props.theme.title}>Informasjon om søket</Text>
             <PropertyValue property={"Info hentet"} value={this.props.objekttypeInfo ? "JA" : "NEI"} />
             <PropertyValue property={"Veger hentet"} value={this.props.roads.length + "/" + this.props.numberOfRoadsToBeFetched} />
-            <PropertyValue property={"Objekter hentet"} value={this.props.objects.length + Math.round(this.props.fakeProgress) + "/" + this.props.numberOfObjectsToBeFetched} />
+            <PropertyValue property={"Objekter hentet"} value={Math.min(this.props.objects.length + Math.round(this.props.fakeProgress), this.props.numberOfObjectsToBeFetched) + "/" + this.props.numberOfObjectsToBeFetched} />
           </View>
         </View>
       </Container>

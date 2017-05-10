@@ -88,7 +88,6 @@ class SearchView extends React.Component {
     );
   }
 
-
   componentDidMount() {
     // Add netinfo listener on mount
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
