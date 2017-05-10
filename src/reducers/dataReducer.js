@@ -68,6 +68,7 @@ export default function reducer(state={
     case "ADD_NEW_SEARCH_OBJECT": {
       return {
         ...state,
+        fetching: false,
         allSearches: [...state.allSearches, action.payload],
         currentRoadSearch: action.payload,
       }
@@ -137,6 +138,9 @@ export default function reducer(state={
     }
     case "SET_NUMBER_OF_ROADS_TO_BE_FETCHED": {
       return {...state, numberOfRoadsToBeFetched: action.payload}
+    }
+    case "SET_FETCHING": {
+      return {...state, fetching: action.payload}
     }
   }
   return state
