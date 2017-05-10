@@ -66,7 +66,7 @@ class LocationInputComponent extends React.Component {
         inputFunction={this.props.inputVeg}
         chooserFunction={null}
         colorController={this.props.vegColor}
-        textType={this.props.vegInput.toUpperCase()}
+        textType={this.props.vegInput}
         updateFunction={this.props.validate}
       />
     );
