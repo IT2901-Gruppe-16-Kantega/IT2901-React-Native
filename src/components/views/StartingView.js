@@ -26,9 +26,7 @@ class StartingView extends React.Component {
     return <Container>
       {this.renderLoadingView()}
       <View style={styles.contents}>
-        <Image source={require('../../assets/logo.png')} />
-        <Text/>
-        <Text/>
+        <Image source={require('../../assets/logo_main.png')} style={{height: 250, width: 250}} />
         <Button type={"title"} text={"Nytt søk"} onPress={Actions.SearchView} disabled={this.props.fetching} />
         <Button type={"title"} text={"Lagrede søk"} onPress={Actions.StoredDataView} />
         <Button type={"title"} text={"Innstillinger"} onPress={Actions.SettingsView} />
