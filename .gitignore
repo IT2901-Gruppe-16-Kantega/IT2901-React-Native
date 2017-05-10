@@ -61,3 +61,4 @@ notis.js
 build_apk.sh
 install_apk.sh
 copy_apk.sh
+.vs/
