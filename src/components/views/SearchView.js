@@ -262,6 +262,10 @@ class SearchView extends React.Component {
     this.props.setNumberOfObjectsToBeFetched(0);
     this.props.generateURL();
 
+    if(!this.props.vegInput) {
+      this.props.setValidityOfVeg('INPUT_VEG_NOT_CHOSEN')
+    }
+
     setTimeout(() => {
       getNumberOfObjects(this.props.statisticsURL, number => {
         if(number === 0) this.props.setValidityOfVeg('NOT_VALID');
