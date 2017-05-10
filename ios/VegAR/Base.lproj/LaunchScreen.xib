@@ -16,14 +16,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ap3-ZG-tJ0">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                    <rect key="frame" x="20" y="0.0" width="440" height="480"/>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="0.9288744330406189" green="0.57914179563522339" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Ap3-ZG-tJ0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5gR-fP-K0u"/>
-                <constraint firstItem="Ap3-ZG-tJ0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HGi-0l-Krb"/>
-                <constraint firstAttribute="trailing" secondItem="Ap3-ZG-tJ0" secondAttribute="trailing" id="t1O-xo-Fij"/>
+                <constraint firstItem="Ap3-ZG-tJ0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="HGi-0l-Krb"/>
+                <constraint firstAttribute="trailing" secondItem="Ap3-ZG-tJ0" secondAttribute="trailing" constant="20" id="t1O-xo-Fij"/>
                 <constraint firstAttribute="bottom" secondItem="Ap3-ZG-tJ0" secondAttribute="bottom" id="zkr-WZ-KMk"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -32,6 +32,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="1024" height="1024"/>
+        <image name="logo" width="512" height="512"/>
     </resources>
 </document>
