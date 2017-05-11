@@ -331,6 +331,9 @@ export default function reducer(state={
         vegobjekttyperColor: templates.colors.orange,
 
         url: '',
+        statisticsURL: '',
+        progress: 0,
+        fakeProgress: 0,
 
         combinedSearchParameters: [],
       }

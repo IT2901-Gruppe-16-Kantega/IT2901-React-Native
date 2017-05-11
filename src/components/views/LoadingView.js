@@ -34,7 +34,7 @@ class LoadingView extends React.Component {
     this.props.fetchDataStart();
 
     const id = this.props.combinedSearchParameters.vegobjekttype.id;
-    startSearch(id, this.props.url, this.props.statisticsURL, callback => {
+    startSearch(id, this.props.url, this.props.statisticsURL, callback => {      
       if(callback.number) this.props.setNumberOfObjectsToBeFetched(callback.number);
       if(callback.info) this.props.setObjekttypeInfo(callback.info);
       if(callback.roads) this.props.roadsReturned(callback.roads);
@@ -47,13 +47,7 @@ class LoadingView extends React.Component {
     return (
       <Container>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Progress.Circle
-            size={ScreenWidth / 1.5}
-            progress={this.props.progress}
-            borderWidth={3}
-            thickness={10}
-            showsText={true}
-            color={templates.colors.green} />
+          {this.renderProgress()}
         </View>
 
         <View style={{ flex: 1 }}>
@@ -66,6 +60,28 @@ class LoadingView extends React.Component {
         </View>
       </Container>
     );
+  }
+
+  renderProgress() {
+    if(this.props.progress >= 1) {
+      return (
+        <Progress.CircleSnail
+          size={ScreenWidth / 1.5}
+          thickness={10}
+          color={[templates.colors.orange, templates.colors.blue, templates.colors.green]} />
+      );
+    }
+    else {
+      return (
+        <Progress.Circle
+          size={ScreenWidth / 1.5}
+          progress={this.props.progress}
+          borderWidth={3}
+          thickness={10}
+          showsText={true}
+          color={templates.colors.green} />
+      )
+    }
   }
 }
 

@@ -140,9 +140,12 @@ class App extends Component {
 
     const route = routeParts[0].toLowerCase();
     const id = parseInt(routeParts[1]);
-    console.log(id)
+    console.log(routeParts)
 
-    if(isNaN(id)) {
+		if(!routeParts[0] || !routeParts[1]) {
+			return { type: 'main' }
+		}
+    else if(isNaN(id)) {
       return { type: 'feil', message: "Klarte ikke å tolke " + value }
     }
     else if(route == 'vegobjekter') {
@@ -214,7 +217,7 @@ class App extends Component {
           }
           else {
             userDefaults.get("report", "group.vegar", (err, data) => {
-              if(!err) {
+              if(!err && data.length > 0) {
                 const obj = JSON.parse(data);
                 for(var i = 0; i < obj.reportObjects.length; i++) {
                   const reportObject = obj.reportObjects[i];
@@ -224,7 +227,7 @@ class App extends Component {
                     this.props.reportChange(this.props.currentRoadSearch, this.props.selectedObject, change);
                   }
               }
-							userDefaults.set("report", null, "group.vegar");
+							userDefaults.set("report", "", "group.vegar");
 						}
             }).catch(err => console.log(err))
           }
@@ -271,7 +274,13 @@ class App extends Component {
 
 		setTimeout(() => {
 			if(this.props.fetching) {
-				if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo) {
+				if(roads.length === numberOfRoadsToBeFetched && objects.length === numberOfObjectsToBeFetched && objekttypeInfo && objects.length > 0) {
+					console.log('roads.length:' + roads.length)
+					console.log('numberOfRoadsToBeFetched:' + numberOfRoadsToBeFetched)
+					console.log('objects.length:' + objects.length)
+					console.log('numberOfObjectsToBeFetched:' + numberOfObjectsToBeFetched)
+					console.log('objekttypeinfo:' + objekttypeInfo)
+
 					this.props.createSearchObject(
 						'', // description
 						objects,
@@ -282,8 +291,6 @@ class App extends Component {
 					);
 
 					this.props.resetSearchParameters();
-					this.props.resetFakeProgress();
-					this.props.setProgress(0);
 					Actions.CurrentSearchView({type: 'reset'});
 				}
 			}
