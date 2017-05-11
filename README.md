@@ -1,4 +1,4 @@
-# ![Logo](https://raw.githubusercontent.com/NinhDo/IT2901-React-Native/master/ios/VegAR/Images.xcassets/AppIcon.appiconset/Icon-App-76x76%403x.png?token=AKQ1jV8Mi_8aabDY3mWRSjEjcqybLhtGks5ZEq1QwA%3D%3D)
+<img src="https://github.com/NinhDo/IT2901-React-Native/blob/master/src/assets/logo_main.png" alt="Unified Logo" width=200/><img src="https://github.com/NinhDo/IT2901-React-Native/blob/master/src/assets/VegAR_LOGO_FULL-01.png" alt="RN Icon" width=200 float/>
 
 Last ned data fra Nasjonal vegdatabank (NVDB) for å ha lokalt på mobiltelefonen din.
 
