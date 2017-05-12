@@ -25,6 +25,16 @@ View that shows information about reports
 */
 class ReportView extends React.Component {
   render() {
+    if(!this.props.currentRoadSearch) {
+      return (
+        <Container>
+          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Text style={this.props.theme.title}>Ingen/feil søk spesifisert.</Text>
+          </View>
+        </Container>
+      );
+    }
+
     return (
       <Container>
         {this.renderReportObjects()}

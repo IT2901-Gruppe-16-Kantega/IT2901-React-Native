@@ -111,6 +111,7 @@ class ObjectInfoView extends React.Component {
 
   renderReportChange(change, sectionID, rowID) {
     const {theme} = this.props;
+    console.log(change);
 
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -122,7 +123,7 @@ class ObjectInfoView extends React.Component {
             <Text>{change.egenskap.navn + " (" + change.type + ")"}</Text>
           </Text>
           <PropertyValue property={"Verdi"} value={change.egenskap.verdi} />
-          {change.egenskap.beskrivelse && <PropertyValue property={"Kommentar"} value={change.egenskap.beskrivelse} />}
+          {change.beskrivelse.length > 0 && <PropertyValue property={"Kommentar"} value={change.beskrivelse} />}
           <PropertyValue property={"Tidspunkt"} value={change.dato} />
         </View>
       </View>

@@ -37,12 +37,15 @@ function startSearch(id, url, statsURL, call) {
       values.roads = callback;
       call(values);
     }, roadURL);
-
     const roadStatsURL = statsURL.replace("vegobjekter/" + id, 'vegobjekter/532');
     getNumberOfObjects(roadStatsURL, callback => {
       values.roadNumber = callback;
       call(values);
     }, roadStatsURL);
+  } else {
+    values.roadNumber = 0;
+    values.roads = [];
+    call(values);
   }
 }
 

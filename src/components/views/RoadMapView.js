@@ -41,7 +41,7 @@ class RoadMapView extends React.Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.allSelectedFilters !== this.props.allSelectedFilters) {
-      //console.log("componentDidUpdate:")
+      console.log("componentDidUpdate:")
 
       setTimeout(() => {
         this.createCluster();
@@ -69,7 +69,7 @@ class RoadMapView extends React.Component {
       }
 
       if(this.shouldSkipObject(roadObject)) {
-        console.log(roadObject.id)
+        console.log("skip " + roadObject.id)
         continue;
       }
 
@@ -216,7 +216,6 @@ class RoadMapView extends React.Component {
           if(markerProperty) {
             // Skip the marker if the selected filter is HAS_NOT_VALUE
             if(filter.funksjon === comparators.HAS_NOT_VALUE) return true;
-            if(filter.funksjon === comparators.HAS_VALUE) return false;
 
             if(filter.egenskap.tillatte_verdier && filter.verdi) {
               const isEqual = markerProperty.enum_id === filter.verdi.id;
@@ -225,11 +224,15 @@ class RoadMapView extends React.Component {
               }
             }
             else {
-              const matches = new RegExp("^" + filter.verdi.toLowerCase().split("*").join(".*") + "$").test(markerProperty.verdi.toLowerCase());
-              //const isEqual = markerProperty.verdi === filter.verdi;
-              console.log(matches + ' | ' + markerProperty.verdi);
-              if((matches && filter.funksjon === comparators.NOT_EQUAL) || (!matches && filter.funksjon === comparators.EQUAL)) {
-                return true;
+              if(filter.verdi && markerProperty.verdi) {
+                const fString = filter.verdi.toString().toLowerCase();
+                const pString = markerProperty.verdi.toString().toLowerCase();
+                const matches = new RegExp("^" + fString.split("*").join(".*") + "$").test(pString);
+                //const isEqual = markerProperty.verdi === filter.verdi;
+                console.log(matches + ' | ' + markerProperty.verdi);
+                if((matches && filter.funksjon === comparators.NOT_EQUAL) || (!matches && filter.funksjon === comparators.EQUAL)) {
+                  return true;
+                }
               }
 
               // If LARGER_OR_EQUAL, and the property value is less, skip it
@@ -242,6 +245,7 @@ class RoadMapView extends React.Component {
                 if(markerProperty.verdi > filter.verdi) { return true }
               }
             }
+            //return false;
           }
           else {
             // Skip the marker if the property doesn't exist
@@ -306,6 +310,8 @@ class RoadMapView extends React.Component {
                 }
               }
             }
+          } else {
+            siblings = [roadObject];
           }
 
           return <MapView.Marker
@@ -321,6 +327,11 @@ class RoadMapView extends React.Component {
         }
       }
     })
+  }
+
+  openObjectInformation(ro) {
+    this.props.selectObject(ro);
+    Actions.ObjectInfoView();
   }
 
   openFullscreenCallout(siblings) {

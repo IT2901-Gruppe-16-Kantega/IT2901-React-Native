@@ -229,9 +229,10 @@ class SearchView extends React.Component {
 
     if(!currentUserPosition || force) {
       getCurrentPosition(position => {
-        fetchCloseby(10, position.coords, function(closestList) {
+        fetchCloseby(10, position.coords, closestList => {
+          console.log(closestList)
           this.props.inputClosestRoads(closestList);
-        }.bind(this));
+        })
       });
     }
   }
