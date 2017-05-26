@@ -1,3 +1,5 @@
+# Dette er en prototype og vil derfor ha bugs og vil muligens kræsje
+
 <img src="https://github.com/NinhDo/IT2901-React-Native/blob/master/src/assets/logo_main.png" alt="Unified Logo" width=200/><img src="https://github.com/NinhDo/IT2901-React-Native/blob/master/src/assets/VegAR_LOGO_FULL-01.png" alt="RN Icon" width=200 float/>
 
 Last ned data fra Nasjonal vegdatabank (NVDB) for å ha lokalt på mobiltelefonen din.
