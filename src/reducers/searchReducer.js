@@ -1,10 +1,12 @@
-//SearchReducer holds all informartion typed in by user in searchFormField
-//and packages this into url
+/**
+* Redux reducer, handles all state values associated with the user input in SearchView
+* Contains the dynamically created url to be used when fetching from NVDB
+* Packages all input fields when user hits "search" into combinedSearchParameters
+*/
+
 import * as templates from '../utilities/templates'
 
 export default function reducer(state={
-  //legg inn react.proptypes
-
   // Fylke variables
   // List used to hold all the returned possible choises based on user input
   fylkeInput: [],
@@ -34,23 +36,15 @@ export default function reducer(state={
 
   objekttypeInfo: [],
 
-  //
+  // URL used when fetching from NVDB
   url: '',
   statisticsURL: '',
-
-  //rekkefølgen på objektene i denne må bli definert
+  
   combinedSearchParameters: {},
-
   searchCoordinate: null,
-
   fylkeCoordinates: null,
 
   closestRoadsList: [],
-
-  //To be removed:
-  fylkeNavn: '',
-  kommuneNavn: '',
-  vegobjekttyperNavn: '',
 
   fakeProgress: 0,
   progress: 0,
@@ -144,7 +138,6 @@ export default function reducer(state={
       return{
         ...state,
         fylkeInput: action.payload.result,
-        fylkeNavn: action.payload.result[0].navn,
         fylkeChosen: false,
         fylkeText: action.payload.fylkeText,
         fylkeColor: templates.colors.orange,
@@ -158,7 +151,6 @@ export default function reducer(state={
       return{
         ...state,
         fylkeInput: [],
-        fylkeNavn: '',
         fylkeText: action.payload,
         fylkeChosen: false,
         fylkeColor: 'red',
@@ -172,7 +164,6 @@ export default function reducer(state={
       return {
         ...state,
         fylkeInput: action.payload,
-        fylkeNavn: action.payload[0].navn,
         fylkeText: action.payload[0].navn,
         fylkeChosen: true,
         fylkeColor: templates.colors.green,
@@ -188,7 +179,6 @@ export default function reducer(state={
       return {
         ...state,
         fylkeInput: [action.payload],
-        fylkeNavn: action.payload.navn,
         fylkeText: action.payload.navn,
         fylkeChosen: true,
         fylkeColor: templates.colors.green,
@@ -230,7 +220,6 @@ export default function reducer(state={
       return{
         ...state,
         kommuneInput: action.payload.result,
-        kommuneNavn: action.payload.result[0].navn,
         kommuneText: action.payload.kommuneText,
         kommuneChosen: false,
         kommuneColor: templates.colors.orange,
@@ -240,7 +229,6 @@ export default function reducer(state={
       return{
         ...state,
         kommuneInput: [],
-        kommuneNavn: '',
         kommuneText: action.payload,
         kommuneChosen: false,
         kommuneColor: 'red',
@@ -250,7 +238,6 @@ export default function reducer(state={
       return {
         ...state,
         kommuneInput: action.payload,
-        kommuneNavn: action.payload[0].navn,
         kommuneText: action.payload[0].navn,
         kommuneChosen: true,
         kommuneColor: templates.colors.green,
@@ -271,7 +258,6 @@ export default function reducer(state={
       return{
         ...state,
         vegobjekttyperInput: action.payload.result,
-        vegobjekttyperNavn: action.payload.result[0].navn,
         vegobjekttyperChosen: false,
         vegobjekttyperText: action.payload.vegobjekttyperText,
         vegobjekttyperColor: templates.colors.orange,
@@ -281,7 +267,6 @@ export default function reducer(state={
       return{
         ...state,
         vegobjekttyperInput: [],
-        vegobjekttyperNavn: '',
         vegobjekttyperText: action.payload,
         vegobjekttyperChosen: false,
         vegobjekttyperColor: 'red',
@@ -291,7 +276,6 @@ export default function reducer(state={
       return {
         ...state,
         vegobjekttyperInput: action.payload,
-        vegobjekttyperNavn: action.payload[0].navn,
         vegobjekttyperText: action.payload[0].navn,
         vegobjekttyperChosen: true,
         vegobjekttyperColor: templates.colors.green,
@@ -309,7 +293,6 @@ export default function reducer(state={
       return {
         ...state,
         fylkeInput: [],
-        fylkeNavn: '',
         fylkeText: '',
         fylkeChosen: false,
         fylkeColor: templates.colors.orange,
@@ -319,13 +302,11 @@ export default function reducer(state={
         vegValid: false,
 
         kommuneInput: [],
-        kommuneNavn: '',
         kommuneText: '',
         kommuneChosen: false,
         kommuneColor: templates.colors.orange,
 
         vegobjekttyperInput: [],
-        vegobjekttyperNavn: '',
         vegobjekttyperText: '',
         vegobjekttyperChosen: false,
         vegobjekttyperColor: templates.colors.orange,
@@ -342,7 +323,6 @@ export default function reducer(state={
       return {
         ...state,
         fylkeInput: [],
-        fylkeNavn: '',
         fylkeText: '',
         fylkeChosen: false,
         fylkeColor: templates.colors.orange,
@@ -352,7 +332,6 @@ export default function reducer(state={
         vegValid: false,
 
         kommuneInput: [],
-        kommuneNavn: '',
         kommuneText: '',
         kommuneChosen: false,
         kommuneColor: templates.colors.orange,

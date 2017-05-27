@@ -1,12 +1,10 @@
- /*
-  COMBINES REDUCERS INTO ONE AND EXPORTS,
-  IMPORTED BY STORE.js
+/**
+* Combines all reducers into one and export the combined reducers
 */
 
 import {combineReducers} from 'redux'
 
 import dataReducer from './dataReducer'
-import fileReducer from './fileReducer'
 import filterReducer from './filterReducer'
 import mapReducer from './mapReducer'
 import reportReducer from './reportReducer'
@@ -16,7 +14,6 @@ import uiReducer from './uiReducer'
 
 export default combineReducers({
   dataReducer,
-  fileReducer,
   filterReducer,
   mapReducer,
   reportReducer,

@@ -1,36 +1,42 @@
-
+/**
+* Redux reducer, handles all state values associated with fetching data from NVDB.
+* Contains variables with values that gives information about the status of current fetch etc.
+* Also contains all the stored searches from NDVB, as well as the currently chosen roadSearch.
+*/
 
 export default function reducer(state={
+  // Information about the progress of current fetch
   fetching: false,
   fetched: false,
   error: null,
   numberOfObjectsToBeFetched: 0,
   numberOfObjectsFetchedSoFar: 0,
-
   numberOfRoadsToBeFetched: 0,
+  loadingProgress: 1,
 
-  objects: [], //objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
+  // Objects are stored here as they are fetched from NVDB, before added to a raodSearch Object
+  objects: [],
   roads: [],
 
+  // Contains all stored searches
   allSearches:[],
 
-  //this holds the currently chosen roadSearch to avoid calling the entire array all the time
+  // Holds the currently chosen roadSearch to avoid calling the entire array all the time
   currentRoadSearch: null,
   selectedObject: null,
   filteredRoadObjects: [],
 
-  // used by currentSearchView
+  // Used by currentSearchView
   description: "",
 
-  //used by filewriter
+  // Used by filewriter
   writingFile: false,
 
+  // Used in objectinfoview
   isEditingRoadObject: false,
   editingProperty: null,
   newPropertyValue: null,
-
-  loadingProgress: 1,
-
+  
 }, action) {
   switch (action.type) {
     case "REPORT_CHANGE": {
@@ -38,7 +44,6 @@ export default function reducer(state={
       const searches = state.allSearches;
       var newSearches = searches.splice(searches.indexOf(s => s.key === search.key), 1);
       newSearches.push(search);
-
       return {...state, allSearches: newSearches, currentRoadSearch: search}
     }
     case "SELECT_OBJECT": {
@@ -80,8 +85,6 @@ export default function reducer(state={
 
       return {...state, currentRoadSearch: search}
     }
-
-    // cases associated with fetching
     case "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED": {
       return {
         ...state,
@@ -119,7 +122,6 @@ export default function reducer(state={
         numberOfObjectsFetchedSoFar: 0,
       }
     }
-    //used by filewriter
     case "WRITING_FILE": {
       return {
         ...state,
@@ -129,7 +131,6 @@ export default function reducer(state={
     case "SET_FILTERED_ROAD_OBJECTS": {
       return {...state, filteredRoadObjects: action.payload}
     }
-
     case "OBJECTS_RETURNED": {
       return {...state, objects: action.payload, numberOfObjectsFetchedSoFar: action.payload.length}
     }

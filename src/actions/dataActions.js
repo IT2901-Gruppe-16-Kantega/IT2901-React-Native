@@ -1,6 +1,7 @@
 /**
 * Contains all Redux action functions associated with changing values in data reducer,
 * and handling data to/from NVDB
+* Also creates the search object when the fetched data is returned from NDVB
 */
 
 import moment from 'moment';
