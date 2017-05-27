@@ -1,25 +1,14 @@
-import moment from 'moment';
-
-//Creating storage, should move to own file to handel storing settings etc
-import storageEngine from '../utilities/storageEngine'
-const storage = storageEngine('NVDB-storage')
-/*
-  Actions associated with searches
+/**
+* Contains all Redux action functions associated with changing values in data reducer,
+* and handling data to/from NVDB
 */
 
-
-/*export function reportRoadObject(reportObject, roadSearch) {
-  roadSearch.report.push(reportObject)
-  storage.saveSearch(roadSearch)
-  return {
-    type: "REPORT_ROAD_OBJECT",
-    payload: roadSearch,
-  }
-}*/
+import moment from 'moment';
+import storageEngine from '../utilities/storageEngine'
+const storage = storageEngine('NVDB-storage')
 
 export function reportChange(search, object, change, shouldDelete) {
   const foundReport = search.report.find(r => r.vegobjekt === object.id);
-
   if(foundReport) {
     const indexOfFoundProperty = foundReport.endringer.map(e => e.egenskap.id).indexOf(change.egenskap.id);
     if(indexOfFoundProperty >= 0) {
@@ -52,7 +41,6 @@ export function setDescription(input) {
     payload: input,
   }
 }
-
 
 export function deleteSearch(allSearches, search) {
   allSearches.splice(allSearches.indexOf(search), 1)
@@ -91,7 +79,6 @@ export function setCurrentRoadSearch(roadSearch) {
   }
 }
 
-
 export function createSearchObject(description, objects, roads, report, combParams, objekttypeInfo) {
   var roadSearch = {
     key: Date.now(),
@@ -115,9 +102,6 @@ export function searchSaved(roadSearch) {
   return {type: "SEARCH_SAVED"}
 }
 
-/*
-  Actions associated with fetching
-*/
 export function setNumberOfObjectsToBeFetched(number){
   return{
     type: "SET_NUMBER_OF_OBJECTS_TO_BE_FETCHED",
@@ -125,19 +109,16 @@ export function setNumberOfObjectsToBeFetched(number){
   }
 }
 
-//Function that sets fetching=true
 export function fetchDataStart() {
   return {
     type: "FETCH_DATA_START"
   }
 }
 
-//Function callback called by fetchFromAPI_all with data from API
 export function fetchDataReturned(data, fetched) {
   var fetching = true;
   if(fetched) {
     fetching = false;
-    //return if all objects is fetched
     return {
       type: "FETCH_DATA_RETURNED",
       payload: {
@@ -148,7 +129,6 @@ export function fetchDataReturned(data, fetched) {
     }
   }
   else {
-    //return if not all objects are fetched
     return {
       type: "FETCHING_NOT_FINISHED",
       payload: {
@@ -165,9 +145,6 @@ export function resetFetching(){
   }
 }
 
-/*
-  Actions associated with filewriter
-*/
 export function writingFile() {
   return {
     type: "WRITING_FILE",
@@ -178,31 +155,6 @@ export function setFilteredRoadObjects(roadObjects) {
   return {
     type: "SET_FILTERED_ROAD_OBJECTS",
     payload: roadObjects,
-  }
-}
-
-//TODO blir denne brukt????
-
-export function inputFylke(input){
-  return function(dispatch) {
-    searchForFylke(input.text)
-    .then((result) => {
-      if(result.length == 1){
-        dispatch({type: "INPUT_FYLKE_SINGLE", payload: {
-          result: result,
-          fylkeText: input.text,
-        }})
-      }
-      else {
-        dispatch({type: "INPUT_FYLKE_MULTIPLE", payload: {
-          result: result,
-          fylkeText: input.text,
-        }})
-      }
-    })
-    .catch((err) => {
-      dispatch({type: "FYLKE_INPUT_NOT_VALID", payload: input.text})
-    })
   }
 }
 

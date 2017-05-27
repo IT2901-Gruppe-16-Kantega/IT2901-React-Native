@@ -1,4 +1,7 @@
-//
+/**
+* Contains all Redux action functions associated with changing values in search reducer,
+* and handling the input in searchView
+*/
 import {searchForKommune, searchForFylke, searchForVegobjekttyper} from '../utilities/searchUtils';
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
@@ -18,7 +21,6 @@ export function chooseKommune(input) {
     var kommune;
     if(intInput) { kommune = [kommuner.find(k => k.nummer === intInput)] }
     else { kommune = input }
-
     dispatch({
         type: "CHOOSE_KOMMUNE",
         payload: kommune,
