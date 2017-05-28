@@ -1,3 +1,8 @@
+/**
+* Contains static information about all vegobjekttyper in NVDB
+* The data is collected from NDVB, the file should be overwritten if vegobjekttyper needs to be updated
+*/
+
 var vegobjekttyper = [ {
     "id" : 3,
     "navn" : "Skjerm",

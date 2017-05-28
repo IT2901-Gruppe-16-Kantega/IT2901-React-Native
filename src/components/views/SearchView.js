@@ -1,3 +1,9 @@
+/**
+* Main view component giving the user ability to search for object from NDVB
+* The user has several ways of creating a search, manual input, picking from map, and closest roads.
+* This component also issues the search when user presses the search button
+*/
+
 import React from 'react';
 import {
   View,
@@ -58,14 +64,10 @@ const alertType = {
 
 var selectedVegreferanse;
 
-/*
-View used when user specifies what data to be fetched from NVDB
-*/
 class SearchView extends React.Component {
   componentDidMount() {
     this.getUserPosition();
   }
-
   render() {
     return (
       <Container>
@@ -76,7 +78,6 @@ class SearchView extends React.Component {
             {title: tabs.SEARCH, onPress: () => this.props.setChosenSearchTab(tabs.SEARCH)},
             {title: tabs.MAP, onPress: () => this.props.setChosenSearchTab(tabs.MAP)},
             {title: tabs.CLOSEST, onPress: () => {
-              // If user retaps same tab, then force user position refresh
               if(this.props.chosenSearchTab === tabs.CLOSEST) {
                 this.getUserPosition(true);
               } else {
@@ -89,23 +90,17 @@ class SearchView extends React.Component {
       </Container>
     );
   }
-
   componentDidMount() {
-    // Add netinfo listener on mount
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
-    // Get inital state for Android
     if (Platform.OS === 'android'){
       NetInfo.isConnected.fetch().then(isConnected => {
         this.handleConnectionChange(isConnected);
       });
     }
   }
-
   componentWillUnmount() {
-    // Remove netinfo listener on unmount
     NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
   }
-
   handleConnectionChange(isConnected) {
     // Error message if no internet connectivity
     if (!isConnected) {
@@ -116,9 +111,7 @@ class SearchView extends React.Component {
         { cancelable: false }
       )
     }
-
   }
-
   renderMainContent() {
     if (this.props.chosenSearchTab === tabs.SEARCH) {
       return (
@@ -152,7 +145,6 @@ class SearchView extends React.Component {
       );
     }
   }
-
   renderTypeInput(style) {
     return (
       <View style={[styles.inputArea, style]}>
@@ -168,7 +160,6 @@ class SearchView extends React.Component {
       </View>
     );
   }
-
   renderDownloadButton() {
     const count = this.props.numberOfObjectsToBeFetched || 0;
     const buttonText = "Last ned objekter (" + count + ")";
@@ -178,10 +169,8 @@ class SearchView extends React.Component {
       </View>
     );
   }
-
   renderClosestRoadsList() {
     var ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
-
     return (
       <View style={styles.content}>
         <Text style={this.props.theme.subtitle}>Nærmeste veger:</Text>
@@ -203,15 +192,11 @@ class SearchView extends React.Component {
       </View>
     );
   }
-
   chooseClosestRoad(road) {
     this.props.resetPositionSearchParameters();
-    console.log(road)
-
     const vegreferanse = road.vegreferanse;
     const {fylke, kommune, kategori, status, nummer} = vegreferanse;
     this.props.selectSearchCoordinate(parseGeometry(road.geometri.wkt)[0]);
-
     if(kategori === 'K') {
       this.props.inputVeg(kategori + status + nummer)
       this.props.chooseFylke(fylke)
@@ -223,10 +208,8 @@ class SearchView extends React.Component {
     }
     this.validate()
   }
-
   getUserPosition(force) {
     const {currentUserPosition} = this.props;
-
     if(!currentUserPosition || force) {
       getCurrentPosition(position => {
         fetchCloseby(10, position.coords, closestList => {
@@ -236,7 +219,6 @@ class SearchView extends React.Component {
       });
     }
   }
-
   typeInputStyleForMap() {
     var height;
     if(this.props.vegobjekttyperChosen) { height = 75 }
@@ -255,18 +237,13 @@ class SearchView extends React.Component {
       height: height,
     }
   }
-
   validate() {
     if(!this.props.vegobjekttyperChosen) return
-
-    // Reset count before finding new number
     this.props.setNumberOfObjectsToBeFetched(0);
     this.props.generateURL();
-
     if(!this.props.vegInput) {
       this.props.setValidityOfVeg('INPUT_VEG_NOT_CHOSEN')
     }
-
     setTimeout(() => {
       getNumberOfObjects(this.props.statisticsURL, number => {
         if(number === 0) this.props.setValidityOfVeg('NOT_VALID');
@@ -277,7 +254,6 @@ class SearchView extends React.Component {
       });
     }, 5);
   }
-
   searchButtonPressed() {
     this.forceUpdate(() => {
       var numObjects = this.props.numberOfObjectsToBeFetched;
@@ -312,7 +288,6 @@ class SearchView extends React.Component {
       }
     })
   }
-
   initiateSearch() {
     if(this.props.numberOfObjectsToBeFetched >= 8000) {
       Alert.alert(alertType.WARNING,
@@ -323,7 +298,6 @@ class SearchView extends React.Component {
     }
     else { this.search(); }
   }
-
   search() {
     const {fylkeInput, vegInput, kommuneInput, vegobjekttyperInput} = this.props;
     this.props.combineSearchParameters({
@@ -355,10 +329,8 @@ function mapStateToProps(state) {
   return {
     fylkeInput: state.searchReducer.fylkeInput,
     fylkeChosen: state.searchReducer.fylkeChosen,
-
     kommuneInput: state.searchReducer.kommuneInput,
     kommuneChosen: state.searchReducer.kommuneChosen,
-
     vegInput: state.searchReducer.vegInput,
 
     //vegobjekttyper fields

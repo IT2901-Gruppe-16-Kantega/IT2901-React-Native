@@ -1,3 +1,8 @@
+/**
+* Utility file containing several different small utility functions
+* used throught the application. Each function is implemented individually.
+*/
+
 import userDefaults from 'react-native-user-defaults'
 import { Platform } from 'react-native';
 import RNFS from 'react-native-fs'

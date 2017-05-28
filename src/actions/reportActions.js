@@ -1,3 +1,7 @@
+/**
+* Contains all Redux action functions associated with changing values in report reducer
+*/
+
 export function incrementChangeCount() {
   return {
     type: "INCREMENT_CHANGE_COUNT",
@@ -45,29 +49,3 @@ export function setShowReport(show) {
     payload: show,
   }
 }
-
-/*export function setReportViewType(input) {
-  return {
-    type: "SET_REPORTVIEW_TYPE",
-    payload: input,
-  }
-}
-export function setRoadObject(input) {
-  return {
-    type: "SET_ROAD_OBJECT",
-    payload: input,
-  }
-}
-export function setReportObject(input) {
-  return {
-    type: "SET_REPORT_OBJECT",
-    payload: input,
-  }
-}
-
-export function setErrorType(input) {
-  return  {
-    type: "SET_ERROR_TYPE",
-    payload: input,
-  }
-}*/

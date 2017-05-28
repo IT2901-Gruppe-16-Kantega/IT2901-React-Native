@@ -1,21 +1,17 @@
-// The store that handles all data associated with application
-//importing redux stuff
+/**
+* The Redux store component.
+* Handles the main core of a redux implementation
+*/
+
+//importing redux
 import { compose, applyMiddleware, createStore} from 'redux'
 //Importing middleWare
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
-import promise from 'redux-promise-middleware'
-import * as searchActions from './actions/searchActions'
+//importing reducers
 import reducers from './reducers'
 
-
-//Debug
-const middleware = applyMiddleware(promise(), thunk, /*logger()*/)
-
-//kjøring
-//const middleware = applyMiddleware(promise(), thunk)
-
+const middleware = applyMiddleware(thunk)
 const store = createStore(reducers, middleware)
-
 
 export {store}

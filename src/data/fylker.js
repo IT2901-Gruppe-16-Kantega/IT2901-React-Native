@@ -1,3 +1,8 @@
+/**
+* Contains static information about all fylker in Norway.
+* The data is collected from NDVB, the file should be overwritten if fylker needs to be updated
+*/
+
 var fylker = [ {
     "navn" : "Østfold",
     "nummer" : 1,

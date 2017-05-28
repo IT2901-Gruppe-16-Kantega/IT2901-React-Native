@@ -1,3 +1,8 @@
+/**
+* Main view component showing the list of stored searches to the user.
+* The user may chose a stored search, or delete single or all stored searches
+*/
+
 import React from 'react';
 import {
   View,
@@ -25,16 +30,12 @@ import * as dataActions from '../../actions/dataActions';
 const storage = storageEngine('NVDB-storage');
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-/*
-View that shows all stored data
-*/
 class StoredDataView extends React.Component {
   render() {
     return <Container>
       {this.renderSearches()}
     </Container>
   }
-
   renderSearches() {
     if(this.props.allSearches.length != 0) {
       return <ListView
@@ -53,21 +54,14 @@ class StoredDataView extends React.Component {
       );
     }
   }
-
-  // Render each saved road search row
   renderRow(roadSearch, sectionID, rowID, highlightRow) {
     const {fylke, kommune} = roadSearch.searchParameters;
-
     const fylkeNavn = fylke ? fylke.navn : "";
     const kommuneNavn = kommune ? kommune.navn : "";
-
     const vegobjekttype = roadSearch.objekttypeInfo;
-
-    // Create the title of the row
     var title = vegobjekttype.navn;
     if(kommuneNavn && fylkeNavn) { title += ", " + fylkeNavn + " (" + kommuneNavn + ")"; }
     else if(fylkeNavn) { title += ", " + fylkeNavn; }
-
     return <TouchableHighlight
       onPress={this.openSearch.bind(this, roadSearch)}
       onLongPress={this.issueDeleteSearch.bind(this, roadSearch)}
@@ -83,11 +77,9 @@ class StoredDataView extends React.Component {
       </View>
     </TouchableHighlight>
   }
-
   renderFooter() {
     return <Button type={"small"} text={"Slett alt"} onPress={this.issueDeleteAllSearches.bind(this)} style={"small"} />
   }
-
   issueDeleteSearch(search) {
     Alert.alert('Slette søk',
       'Klikk bekreft for å slette søk utført: ' + search.date,
@@ -101,7 +93,6 @@ class StoredDataView extends React.Component {
       ]
     );
   }
-
   issueDeleteAllSearches() {
     Alert.alert('Slette alle søk',
       'Klikk bekreft for å slette ALLE søk. Dette vil også slette alle ' +
@@ -115,8 +106,6 @@ class StoredDataView extends React.Component {
       ]
     );
   }
-
-  // Open the selected roadSearch item
   openSearch(search) {
     this.props.setCurrentRoadSearch(search);
     Actions.CurrentSearchView();

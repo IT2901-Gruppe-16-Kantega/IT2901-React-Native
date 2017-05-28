@@ -1,3 +1,8 @@
+/**
+* Tabbar component used at the bottom of search view
+* Creates a single tab used in choosing the type of search(eg. map/closest etc)
+*/
+
 import React from 'react';
 import {
   Text,

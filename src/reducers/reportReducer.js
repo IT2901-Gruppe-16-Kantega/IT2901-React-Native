@@ -1,3 +1,7 @@
+/**
+* Redux reducer, handles all state values associated with creating a report.
+*/
+
 export default function reducer(state={
   changeCount: 0,
 
@@ -5,27 +9,9 @@ export default function reducer(state={
   propertyCurrentlyEditing: null,
   newPropertyValue: null,
   newProperty: null,
-
   showReport: true,
-
-  /*chosenErrorType: "Ikke definert",
-  reportViewType: "NEW",
-  roadObject: null,
-  reportObject: null,*/
 }, action) {
   switch (action.type) {
-    /*case "SET_REPORT_OBJECT": {
-      return {...state, reportObject: action.payload}
-    }
-    case "SET_ROAD_OBJECT": {
-      return {...state, roadObject: action.payload}
-    }
-    case "SET_ERROR_TYPE": {
-      return {...state, chosenErrorType: action.payload}
-    }
-    case "SET_REPORTVIEW_TYPE": {
-      return {...state, reportViewType: action.payload}
-    }*/
     case "REPORT_CHANGE": {
       const newChangeCount = state.changeCount + 1;
       return {...state, changeCount: newChangeCount}
