@@ -1,3 +1,8 @@
+/**
+* Main view component showing information about the progress of the current fetch for NVDB
+* Componentet is also responsible for calling the functions that package and store the received data
+*/
+
 import React from 'react';
 import {
   View,
@@ -26,15 +31,11 @@ import * as searchActions from '../../actions/searchActions'
 
 const ScreenWidth = Dimensions.get("window").width;
 
-/*
-view shown when fetching/loading data
-*/
 class LoadingView extends React.Component {
   componentWillMount() {
     this.props.fetchDataStart();
-
     const id = this.props.combinedSearchParameters.vegobjekttype.id;
-    startSearch(id, this.props.url, this.props.statisticsURL, callback => {      
+    startSearch(id, this.props.url, this.props.statisticsURL, callback => {
       if(callback.number) this.props.setNumberOfObjectsToBeFetched(callback.number);
       if(callback.info) this.props.setObjekttypeInfo(callback.info);
       if(callback.roads) this.props.roadsReturned(callback.roads);
@@ -42,7 +43,6 @@ class LoadingView extends React.Component {
       if(callback.roadNumber) this.props.setNumberOfRoadsToBeFetched(callback.roadNumber);
     })
   }
-
   render() {
     return (
       <Container>
@@ -61,7 +61,6 @@ class LoadingView extends React.Component {
       </Container>
     );
   }
-
   renderProgress() {
     if(this.props.progress >= 1) {
       return (
@@ -87,26 +86,19 @@ class LoadingView extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    theme: state.settingsReducer.themeStyle,
-
-    url: state.searchReducer.url,
-    statisticsURL: state.searchReducer.statisticsURL,
-
-    //Needed when creating roadSearch object
+    numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
+    numberOfRoadsToBeFetched: state.dataReducer.numberOfRoadsToBeFetched,
     objects: state.dataReducer.objects,
     roads: state.dataReducer.roads,
 
     combinedSearchParameters: state.searchReducer.combinedSearchParameters,
-
-    //Status information about search
-    numberOfObjectsToBeFetched: state.dataReducer.numberOfObjectsToBeFetched,
-
-    numberOfRoadsToBeFetched: state.dataReducer.numberOfRoadsToBeFetched,
-
-    objekttypeInfo: state.searchReducer.objekttypeInfo,
-
     fakeProgress: state.searchReducer.fakeProgress,
+    objekttypeInfo: state.searchReducer.objekttypeInfo,
     progress: state.searchReducer.progress,
+    statisticsURL: state.searchReducer.statisticsURL,
+    url: state.searchReducer.url,
+
+    theme: state.settingsReducer.themeStyle,
   }
 }
 

@@ -1,36 +1,33 @@
+/**
+* Utility file containing all functions handling the actual communication with NVDB.
+* Makes it easier to fetch data from several locations in the application.
+* Handles the cases where NVDB contains several pages of data
+* and thus must be called several times in order to fetch all objects.
+*/
+
 import {fylker} from '../data/fylker';
 import {kommuner} from '../data/kommuner';
 
-/*
-  wrapper.js: file wich contains methods used in fetching data from server
-*/
-var fetchFinished = false; //bool used to keep information about fetching state
+var fetchFinished = false;
 const urlKommuner =  'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner';
 const objekttypeURL = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekttyper/';
 const baseURL = "https://www.vegvesen.no/nvdb/api/v2/";
-//fetches from api given url. When result is availiable-> calls callback function given as param
-//kan hende denne kan gjøres helt generell, altså at den henter kommuner osv også
-//MEN antagelig vil firstobjet.metadata.returnert feile og denne må håndteres
 
 function startSearch(id, url, statsURL, call) {
   var values = {number: 1, objects: null, roads: null, info: null, roadNumber: 1}
   call(values);
-
   fetchFromAPI(callback => {
     values.objects = callback;
     call(values);
   }, url);
-
   fetchObjekttypeInfo(id, callback => {
     values.info = callback;
     call(values);
   })
-
   getNumberOfObjects(statsURL, callback => {
     values.number = callback;
     call(values);
   })
-
   if(id !== 532) {
     const roadURL = url.replace("vegobjekter/" + id, 'vegobjekter/532').replace("inkluder=alle", "inkluder=geometri");
     fetchFromAPI(callback => {
@@ -67,7 +64,6 @@ function fetchFromAPI(callback, url) {
   fetchData(url).then(function(firstObject) {
     var flere = firstObject.metadata.returnert;
     if(flere > 0) {
-      //console.log('--> flere objekter finnes');
       recursiveFetch(firstObject, objects, callback);
     }
   })
@@ -99,10 +95,9 @@ function recursiveFetch(object, objects, callback) {
   return objects;
 }
 
-// the function wich handles all communication with NVDB
+// the function which handles all communication with NVDB
 // path is url of data to be fetched
 async function fetchData(path) {
-  //console.log('#wrapper.fetchdata');
   try {
     const response = await fetch(path);
     const data = await response.json();
@@ -113,10 +108,7 @@ async function fetchData(path) {
   }
 }
 
-/*
-  The following methods fetches data from NVDB to be used in specifying offline data
-  Kan hende generell fetchFromAPI burde håndtere alt, gjøres etterhver
-*/
+//Not currently used, should be used if functionallity for refreshing static data is implemented
 function fetchKommuner(callback){
   fetchData(urlKommuner).then(function(data){
     callback(data, true);
@@ -132,7 +124,6 @@ function fetchCloseby(count, coordinate, callback) {
         callback(firstObject, true);
         return;
       }
-
       firstObject.fylke = fylker.find(f => {
         return f.nummer === firstObject.vegreferanse.fylke;
       })

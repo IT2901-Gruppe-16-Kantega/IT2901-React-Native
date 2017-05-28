@@ -1,3 +1,8 @@
+/**
+* Contains static information about all kommuner in Norway.
+* The data is collected from NDVB, the file should be overwritten if kommuner needs to be updated
+*/
+
 var kommuner = [ {
     "navn" : "Halden",
     "nummer" : 101,

@@ -1,3 +1,9 @@
+/**
+* Main view component showing information about the search that the user has selected
+* Contains buttons for viewing the chosen search on map, viewing the search in the AR app,
+* or viewing registered report information
+*/
+
 import React from 'react';
 import {
   View,
@@ -27,9 +33,6 @@ import * as templates from '../../utilities/templates'
 import * as dataActions from '../../actions/dataActions'
 import * as mapActions from '../../actions/mapActions'
 
-/*
-Shows information about current search, buttons for viewing map and opening AR
-*/
 class CurrentSearchView extends React.Component {
   componentDidMount() {
     this.props.resetFetching();
@@ -37,7 +40,6 @@ class CurrentSearchView extends React.Component {
       this.props.setDescription(this.props.currentRoadSearch.description)
     }
   }
-
   render() {
     if(!this.props.currentRoadSearch) {
       return (
@@ -48,21 +50,17 @@ class CurrentSearchView extends React.Component {
         </Container>
       );
     }
-
     return <Container>
       {this.createInfoView()}
       <View style={styles.buttonArea}>{this.createButtons()}</View>
     </Container>
   }
-
   createInfoView() {
     const {currentRoadSearch} = this.props;
     const {vegobjekttype, kommune, fylke, veg} = currentRoadSearch.searchParameters;
-
     const kommuneValue = kommune ? kommune.navn : "Ikke spesifisert";
     const fylkeValue = fylke ? fylke.navn : "Ikke spesifisert";
     const vegValue = veg ? veg : "Ikke spesifisert";
-
     return (
       <View style={{flex: 2, padding: 20 }}>
         <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
@@ -87,7 +85,6 @@ class CurrentSearchView extends React.Component {
       </View>
     );
   }
-
   shareString(value) {
     var message;
     if(!value) {
@@ -102,7 +99,6 @@ class CurrentSearchView extends React.Component {
 
     Share.share({ message })
   }
-
   createDescriptionArea() {
     const {theme, description} = this.props;
     const placeholder = description || "Skriv inn en beskrivelse eller et notat"
@@ -128,12 +124,10 @@ class CurrentSearchView extends React.Component {
         />
     </View>
   }
-
   saveDescription() {
     this.props.currentRoadSearch.description = this.props.description;
     this.props.searchSaved(this.props.currentRoadSearch);
   }
-
   createButtons() {
     const objektNavn = this.props.currentRoadSearch.searchParameters.vegobjekttype.navn;
 
@@ -150,16 +144,13 @@ class CurrentSearchView extends React.Component {
       </View>
     );
   }
-
   goBack() {
-    // If from StoredDataView, pop, else go to StartingView (if from search)
     if(Actions.pop()) {
       Actions.pop();
     } else {
       Actions.StartingView();
     }
   }
-
   openAR() {
     AR(Platform.OS, this.props.currentRoadSearch, url => {
       if(url) {
@@ -189,7 +180,6 @@ var styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
-
   },
   buttonArea: {
     flex: 1,
@@ -217,7 +207,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //dataActions
     resetFetching: bindActionCreators(dataActions.resetFetching, dispatch),
     setRegion: bindActionCreators(mapActions.setRegion, dispatch),
     searchSaved: bindActionCreators(dataActions.searchSaved, dispatch),

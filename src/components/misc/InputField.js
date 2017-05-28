@@ -1,3 +1,8 @@
+/**
+* General component used in search view.
+* Creates a input field that the user may input som search variables (eg. fylke, kommune, etc)
+*/
+
 import React from 'react';
 import {
   View,
@@ -17,7 +22,6 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-// Used to run updateFunction only when value updated
 var changed = false;
 
 class InputField extends React.Component {
@@ -36,7 +40,6 @@ class InputField extends React.Component {
   render() {
     const ds = new ListView.DataSource({rowHasChanged:(r1, r2) => r1 !== r2})
     var list = this.props.list || [];
-
     return (
       <View style={{ padding: 10 }}>
         {this.renderHeader()}
